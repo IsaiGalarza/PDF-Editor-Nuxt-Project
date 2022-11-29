@@ -2,13 +2,14 @@
   <div
     class="border-2 border-paperdazgreen-400 w-full rounded-2xl overflow-hidden relative pb-5 h-[100%]"
   >
-    <div class="promoted-banner" v-if="tags">{{ stagingPackage.tag }}</div>
+    <!-- <div class="promoted-banner" v-if="tags">{{ stagingPackage.tag }}</div> -->
+    <div class="promoted-banner">Popular</div>
     <h4
       ref="packagename"
       class="text-lg px-5 py-4 text-center uppercase font-semibold no-outline truncate"
       :contenteditable="edited"
     >
-      {{ (stagingPackage || {}).packageName }}
+      {{ (stagingPackage || {}).name }}
     </h4>
     <div
       class="flex items-center justify-center text-white px-5 py-4"
@@ -66,6 +67,7 @@
     <div class="grid place-items-center" v-if="showBottomButton">
       <button
         @click="setPackageData"
+        :disabled="disableStart"
         class="text-sm text-white bg-paperdazgreen-400 hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150 rounded-lg shadow h-9 px-5"
       >
         Start Now
@@ -103,6 +105,10 @@ export default Vue.extend({
       type: String,
       default: '',
     },
+    disableStart: {
+      type: Boolean,
+      default: false
+    }
   },
   methods: {
     setPackageData() {

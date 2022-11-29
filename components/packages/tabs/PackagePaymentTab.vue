@@ -10,6 +10,7 @@
           :style="{ '--count': 1 }"
           @bottom-button-clicked="$emit('next-tab', $event)"
           :stagingPackage="stagingPackage"
+          :disableStart = "true"
         />
       </div>
       <div class="w-full md:w-2/3 p-2.5">

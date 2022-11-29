@@ -1,7 +1,8 @@
 <template>
   <div class="">
-    <div class="w-full max-w-5xl flex -m-2.5 flex-wrap sm:justify-center">
-      <div class="w-full sm:w-2/3 md:w-1/3 p-2.5">
+    <div class="flex flex-wrap gap-3 md:grid md:grid-cols-8">
+      <div class="col-span-1"></div>
+      <div class="col-span-2">
         <package-card
           :edited="false"
           :create="false"
@@ -10,9 +11,10 @@
           :style="{ '--count': 1 }"
           @bottom-button-clicked="$emit('next-tab', $event)"
           :stagingPackage="stagingPackage"
+          :disableStart = "true"
         />
       </div>
-      <div class="w-full md:w-2/3 p-2.5">
+      <div class="col-span-4">
         <form class="bg-paperdazgreen-400" @submit="submit">
           <div class="form-group">
             <div v-if="tooltip" class="absolute p-2 bg-white text-sm rounded-lg border -mt-16 w-[400px]">
@@ -130,6 +132,7 @@
           </div>
         </form>
       </div>
+      <div class="col-span-1"></div>
     </div>
   </div>
 </template>

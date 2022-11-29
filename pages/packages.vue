@@ -129,17 +129,17 @@ export default mixins(GlobalMixin).extend({
       let property = Object.values(query)
 
       const packages = await this.$axios
-        // .$get(`/packages/?${type}=${property}&isActive=1`)
-        // .then((response) => {
-        //   this.packages = response
-        //   this.alertEmptypackage(response.length < 1)
-        // })
-        .$get(`/subscriptions/?status=active`)
+        .$get(`/packages/?${type}=${property}&isActive=1`)
         .then((response) => {
-          console.log('response=====>',response);
-          this.packages = response.data;
+          this.packages = response
           this.alertEmptypackage(response.length < 1)
         })
+        // .$get(`/subscriptions/?status=active`)
+        // .then((response) => {
+        //   console.log('response=====>',response);
+        //   this.packages = response.data;
+        //   this.alertEmptypackage(response.length < 1)
+        // })
         .catch((err) => {
           this.$notify.error({
             title: 'Alert',

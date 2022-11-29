@@ -51,7 +51,7 @@
       :class="[uploaded ? 'z-[1]' : '-z-10']" :src="signature || ' '" />
     <img v-else src="../../../assets/img/sign-icon.png" attr="sign" :elemFill="uploaded && initialimgDisplay"
       :uploaded="uploaded" @click="setInitialImgDisplay" class="annot-button" :class="[
-        $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ', isAgreedSign == 1 ? '' : 'pointer-events-none'
+        $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ', isAgreedSign !== 1 && isSign ? 'pointer-events-none' : ''
       ]" width="18" />
   </div>
 
@@ -63,6 +63,8 @@ import SaveSignatureInitialsMixin from '~/mixins/SaveSignatureInitialsMixin'
 import mixins from 'vue-typed-mixins'
 import TeamAccess from '~/models/TeamAccess'
 import { mapState } from 'vuex'
+import FileAction from '~/models/FileAction'
+
 
 export default mixins(SaveSignatureInitialsMixin).extend({
   props: {
@@ -90,6 +92,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         case false:
           return false
       }
+    },
+    isSign() {
+      return String(this.file.fileAction).toLowerCase() === FileAction.SIGNED
     },
     isAgreedSign() {
       return this.$store.state.agreeSign;

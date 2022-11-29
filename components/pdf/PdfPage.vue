@@ -10,6 +10,8 @@
 <script>
 import * as PDFJS from "pdfjs-dist"
 import "pdfjs-dist/web/pdf_viewer.css"
+import FileAction from '~/models/FileAction'
+
 export default {
   props: {
     scale: Number,
@@ -20,7 +22,8 @@ export default {
     onMouseMoveOnPages: Function,
     onMouseLeaveFromPages: Function,
     setPageHeight: Function,
-    setPageWidth: Function
+    setPageWidth: Function,
+    file: Object,
   },
   data: () => ({
     scaleZ: 2,
@@ -31,6 +34,11 @@ export default {
 
     let pdfPage = document.getElementsByClassName("pdf-editor-view")[0];
     pdfPage.addEventListener("scroll", this.onScroll)
+  },
+  computed:{
+    isConfirm() {
+      return String(this.file.fileAction).toLowerCase() === FileAction.CONFIRM
+    },
   },
   methods: {
     async getPage() {
@@ -89,8 +97,7 @@ export default {
     },
     onScroll() {
       let pdfPage = document.getElementsByClassName("pdf-editor-view")[0];
-
-      if (pdfPage.scrollTop + 680 > pdfPage.scrollHeight) {
+      if (pdfPage.scrollTop + 680 > pdfPage.scrollHeight && this.isConfirm) {
         pdfPage.removeEventListener("scroll", this.onScroll)
         this.$store.commit('SET_PDF_PAGE_BOTTOM');
       }

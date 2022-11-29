@@ -16,7 +16,7 @@
     </div>
     <div v-else v-if="userRole == 'free_user' && isSign && isAgreedSign === 1"
       class="h-full pt-2 font-bold pl-2 text-[#77b450]">
-      You can sign amd intial now.
+      You can sign and initial now.
     </div>
     <div v-else v-if="userRole == 'free_user' && isSign && isAgreedSign === 0"
       class="h-full pt-2 font-bold pl-2 text-[#77b450]">

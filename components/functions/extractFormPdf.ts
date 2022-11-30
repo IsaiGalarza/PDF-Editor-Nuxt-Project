@@ -27,7 +27,7 @@ export const appendEditText = ({
   axisY,
   fontsize,
 }: any) => {
-  ;(parent.data as any).push({
+  ; (parent.data as any).push({
     page_number: subParent.indexOf(elem),
     type: 'DrawText',
     text: tools,
@@ -51,7 +51,7 @@ export const appendEditElement = ({
   svgWidth,
   svgHeight,
 }: any) => {
-  ;(parent.data as any).push({
+  ; (parent.data as any).push({
     page_number: subParent.indexOf(elem),
     svgPath: tools,
     axisX: axisX[1] - axisX[0],
@@ -77,7 +77,7 @@ export const appendUserActionElement = ({
   uploaded,
 }: any) => {
   //adding to the array for all annotation
-  ;(parent.data as any).push({
+  ; (parent.data as any).push({
     page_number: subParent.indexOf(elem),
     type: 'Image',
     uploaded,
@@ -100,7 +100,7 @@ export const appendEditImage = ({
   axisX2,
   axisY2,
 }: any) => {
-  ;(parent.data as any).push({
+  (parent.data as any).push({
     page_number: subParent.indexOf(elem),
     base64: tools,
     type: 'Image',
@@ -108,7 +108,8 @@ export const appendEditImage = ({
     axisX2: axisX2[1] - axisX2[0],
     axisY2: axisY2[1] - axisY2[0],
     axisY: axisY[1] > axisY[0] ? axisY[1] - axisY[0] : axisY[0] - axisY[1],
-    height: parseFloat(height) * 0.73,
+    // height: parseFloat(height) * 0.73,
+    uploaded: 'true'
   })
 }
 
@@ -120,7 +121,7 @@ export const appendDefaultConfirmSign = ({
   option,
   type,
 }: any) => {
-  ;(parent.data as any).push({
+  ; (parent.data as any).push({
     page_number: subParent.indexOf(elem),
     signaturePath,
     option,
@@ -136,7 +137,7 @@ export const appendDefaultConfirmText = ({
   option,
   type,
 }: any) => {
-  ;(parent.data as any).push({
+  ; (parent.data as any).push({
     page_number: subParent.indexOf(elem),
     text,
     option,
@@ -158,7 +159,7 @@ export const ExtractFormPdf = ({
     data: [],
   }
   let getToUserAction: any = []
-  
+
   //<< -- code for external added conponent -->>
   let pdfPages = document.querySelectorAll('.pdf-single-page-outer')
   let canvasPdf = document.querySelectorAll('.pdf-page')
@@ -265,7 +266,7 @@ export const ExtractFormPdf = ({
                     subParent: totalArray,
                     axisY: [
                       element.getBoundingClientRect().top -
-                        tools.children[0].getBoundingClientRect().height,
+                      tools.children[0].getBoundingClientRect().height,
                       item.children[0].children[0].children[0].getBoundingClientRect()
                         .top - pdfOffset_y,
                     ],
@@ -351,8 +352,10 @@ export const ExtractFormPdf = ({
                           item.getBoundingClientRect().left - pdfOffset_x,
                         ],
                         axisX2: [
-                          item.getBoundingClientRect().left,
-                          item.getBoundingClientRect().right,
+                          item.children[0].children[0].children[0].getBoundingClientRect()
+                            .left,
+                          item.children[0].children[0].children[0].getBoundingClientRect()
+                            .right,
                         ],
                         height: tools.children[0].getBoundingClientRect()
                           .height,
@@ -362,7 +365,7 @@ export const ExtractFormPdf = ({
                         subParent: totalArray,
                         axisY: [
                           element.getBoundingClientRect().top -
-                            tools.children[0].getBoundingClientRect().height,
+                          tools.children[0].getBoundingClientRect().height,
                           item.getBoundingClientRect().top - pdfOffset_y,
                         ],
 
@@ -395,7 +398,7 @@ export const ExtractFormPdf = ({
 
 
 
-  
+
   //<< -- code for form data component -->>
   let pdfPagesForm = document.querySelectorAll('.pdf-page')
   let totalArrayForm = Array.from(pdfPagesForm)
@@ -408,49 +411,49 @@ export const ExtractFormPdf = ({
           console.log(elementList.type)
           switch (elementList.type) {
             case 'text':
-              ;(pdfScrappedData.data as any).push({
+              ; (pdfScrappedData.data as any).push({
                 type: 'PDFTextField',
                 fieldName: elementList.name,
                 value: elementList.value,
               })
               break
             case 'textarea':
-              ;(pdfScrappedData.data as any).push({
+              ; (pdfScrappedData.data as any).push({
                 type: 'PDFTextField',
                 fieldName: elementList.name,
                 value: elementList.value,
               })
               break
             case 'date':
-              ;(pdfScrappedData.data as any).push({
+              ; (pdfScrappedData.data as any).push({
                 type: 'PDFTextField',
                 fieldName: elementList.name,
                 value: elementList.value,
               })
               break
             case 'checkbox':
-              ;(pdfScrappedData.data as any).push({
+              ; (pdfScrappedData.data as any).push({
                 type: 'PDFCheckBox',
                 fieldName: elementList.name,
                 isCheck: elementList.checked,
               })
               break
             case 'select-one':
-              ;(pdfScrappedData.data as any).push({
+              ; (pdfScrappedData.data as any).push({
                 type: 'PDFDropdown',
                 fieldName: elementList.name,
                 value: elementList.value,
               })
               break
             case 'select':
-                ;(pdfScrappedData.data as any).push({
-                  type: 'PDFDropdown',
-                  fieldName: elementList.name,
-                  value: elementList.value,
-                })
-                break
+              ; (pdfScrappedData.data as any).push({
+                type: 'PDFDropdown',
+                fieldName: elementList.name,
+                value: elementList.value,
+              })
+              break
             case 'radio':
-              ;(pdfScrappedData.data as any).push({
+              ; (pdfScrappedData.data as any).push({
                 type: 'PDFRadioGroup',
                 fieldName: elementList.name,
                 value: elementList.checked,

@@ -21,6 +21,9 @@ export default {
       }
     },
   },
+  mounted() {
+    console.log(this.position,'hhh');
+  }
 }
 </script>
 

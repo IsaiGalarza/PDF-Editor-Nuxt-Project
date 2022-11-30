@@ -35,6 +35,9 @@ export default {
     this.getPage();
     let pdfPage = document.getElementsByClassName("pdf-editor-view")[0];
     setTimeout(() => {
+      pdfPage.scrollTo(0, 0);
+    }, 300);
+    setTimeout(() => {
       pdfPage.addEventListener("scroll", this.onScroll);
     }, 500);
   },
@@ -100,10 +103,11 @@ export default {
     },
     onScroll() {
       let pdfPage = document.getElementsByClassName("pdf-editor-view")[0];
-      if (pdfPage.scrollTop + 1000 > pdfPage.scrollHeight && this.isConfirm) {
+      console.log(pdfPage.scrollTop + 1000 - pdfPage.scrollHeight);
+      if (pdfPage.scrollTop + 640 > pdfPage.scrollHeight && this.isConfirm) {
         pdfPage.removeEventListener("scroll", this.onScroll)
         this.$store.commit('SET_PDF_PAGE_BOTTOM');
-        !this.isCreator && this.confirmDone();
+        // !this.isCreator && this.confirmDone();
       }
 
     },

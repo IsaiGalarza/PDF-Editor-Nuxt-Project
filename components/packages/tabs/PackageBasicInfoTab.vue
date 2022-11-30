@@ -326,7 +326,7 @@ import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
 import MessageAlertWidget from '~/components/widgets/MessageAlertWidget.vue'
 import axios from "axios"
 import login from "~/mixins/login"
-import { ErrorHandler } from '~/components/functions/ErrorFunction'
+import { ErrorHandler } from '~/types/ErrorFunction'
 import { mapState } from 'vuex'
 import SignUpEmailVerify from '~/components/pdf/modals/SignUpEmailVerify.vue'
 

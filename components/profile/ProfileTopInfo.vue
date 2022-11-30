@@ -100,7 +100,7 @@ import QRCode from "qrcode";
 import login from "~/mixins/login";
 import mixins from "vue-typed-mixins";
 import SpinnerDottedIcon from "../svg-icons/SpinnerDottedIcon.vue";
-import { ErrorHandler } from "../functions/ErrorFunction";
+import { ErrorHandler } from '~/types/ErrorFunction'
 
 export default mixins(login).extend({
   name: "profile-top-info",

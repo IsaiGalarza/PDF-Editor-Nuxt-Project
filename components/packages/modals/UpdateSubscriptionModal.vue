@@ -183,7 +183,7 @@ import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
 import TickIcon from '~/components/svg-icons/TickIcon.vue'
 import AuthUser from '~/models/AuthUser'
 import ArrowDownIcon from '~/components/svg-icons/ArrowDownIcon.vue'
-import { ErrorHandler } from '~/components/functions/ErrorFunction'
+import { ErrorHandler } from '~/types/ErrorFunction'
 
 export default Vue.extend({
   name: 'UpdateSubscription',

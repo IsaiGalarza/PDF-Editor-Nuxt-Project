@@ -157,7 +157,7 @@ import { mapState } from 'vuex'
 import login from '~/mixins/login'
 import { countryCode } from '~/assets/json/countryCode'
 import { countryList } from '~/assets/json/coutry'
-import { ErrorHandler } from '~/components/functions/ErrorFunction'
+import { ErrorHandler } from '~/types/ErrorFunction'
 import mixins from 'vue-typed-mixins'
 
 export default mixins(login).extend({

@@ -136,9 +136,9 @@ import MessageAlertWidget from '~/components/widgets/MessageAlertWidget.vue'
 import PasswordField from '~/components/widgets/PasswordField.vue'
 import jwt, { decode, JsonWebTokenError } from 'jsonwebtoken'
 import login from '~/mixins/login'
-import { ErrorHandler } from '~/components/functions/ErrorFunction'
+import { ErrorHandler } from '~/types/ErrorFunction'
 import ChangeUserEmail from '~/components/company-files/Tabs/ChangeUserEmail.vue'
-import { NoAuthpages } from '~/components/functions/NoAuthPages'
+import { NoAuthpages } from '~/types/NoAuthPages'
 
 
 interface PassportUserProfile {

@@ -107,9 +107,10 @@ import InputField from '~/components/widgets/InputField.vue'
 import MessageAlertWidget from '~/components/widgets/MessageAlertWidget.vue'
 import PasswordField from '~/components/widgets/PasswordField.vue'
 import login from '~/mixins/login'
-import { ErrorHandler } from '~/components/functions/ErrorFunction'
+import { ErrorHandler } from '~/types/ErrorFunction'
 import ExclamationIcon from '~/components/svg-icons/ExclamationIcon.vue'
-import { NoAuthpages } from '~/components/functions/NoAuthPages'
+import { NoAuthpages } from '~/types/NoAuthPages'
+
 import SignUpEmailVerify from '~/components/pdf/modals/SignUpEmailVerify.vue'
 import SocialAuth from '~/components/auth/SocialAuth.vue'
 

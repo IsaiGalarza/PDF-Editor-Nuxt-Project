@@ -137,7 +137,8 @@ import LinkIcon from '~/components/svg-icons/LinkIcon.vue'
 import EnvelopeIconShare from '~/components/svg-icons/EnvelopeIconShare.vue'
 import QrcodeIcon from '../../svg-icons/QrcodeIcon.vue'
 import QrcodeShare from "./QrcodeShare.vue"
-import { ExtractFormPdf } from '~/components/functions/extractFormPdf'
+import { ExtractFormPdf } from '~/types/extractFormPdf'
+
 
 export default Vue.extend({
   name: 'edit-company-folder',

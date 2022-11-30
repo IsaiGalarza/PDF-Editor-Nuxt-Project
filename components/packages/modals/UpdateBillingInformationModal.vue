@@ -137,7 +137,7 @@ import Vue from 'vue'
 import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
 import MessageAlertWidget from '~/components/widgets/MessageAlertWidget.vue'
 import AuthUser from '~/models/AuthUser'
-import { ErrorHandler } from '~/components/functions/ErrorFunction'
+import { ErrorHandler } from '~/types/ErrorFunction'
 
 export default Vue.extend({
   name: 'UpdateBillingInformationModal',

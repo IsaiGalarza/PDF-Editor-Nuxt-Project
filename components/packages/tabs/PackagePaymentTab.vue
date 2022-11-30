@@ -144,7 +144,7 @@ import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
 import PaymentIcon from '~/components/svg-icons/PaymentIcon.vue'
 import MessageAlertWidget from '~/components/widgets/MessageAlertWidget.vue'
 import login from '~/mixins/login'
-import { ErrorHandler } from '~/components/functions/ErrorFunction'
+import { ErrorHandler } from '~/types/ErrorFunction'
 import PackageCard from '~/components/settings/PackageCard.vue'
 import UserTypeEnum from '~/models/UserTypeEnum'
 export default Vue.extend({

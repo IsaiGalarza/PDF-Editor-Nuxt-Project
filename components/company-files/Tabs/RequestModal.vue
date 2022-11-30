@@ -105,7 +105,7 @@ import EnvelopeIconShare from '~/components/svg-icons/EnvelopeIconShare.vue'
 import QrcodeIcon from '../../svg-icons/QrcodeIcon.vue'
 import QrcodeShare from "./QrcodeShare.vue"
 import jwt, { decode, JsonWebTokenError } from 'jsonwebtoken'
-import { ExtractFormPdf } from '~/components/functions/extractFormPdf'
+import { ExtractFormPdf } from '~/types/extractFormPdf'
 
 export default Vue.extend({
   name: 'request-modal',

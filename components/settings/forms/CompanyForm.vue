@@ -151,7 +151,7 @@ import login from '~/mixins/login'
 import { countryCode } from '~/assets/json/countryCode'
 import { countryList } from '~/assets/json/coutry'
 import MessageAlertWidget from '~/components/widgets/MessageAlertWidget.vue'
-import { ErrorHandler } from '~/components/functions/ErrorFunction'
+import { ErrorHandler } from '~/types/ErrorFunction'
 
 export default mixins(login).extend({
   name: 'CompanyForm',

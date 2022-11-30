@@ -9,7 +9,7 @@
       </p>
 
       <div
-        class="md:container my-12 grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-x-2 sm:gap-x-4 gap-y-10"
+        class="my-12 grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-x-2 sm:gap-x-6 gap-y-10"
       >
         <div v-for="(block, i) in fets" :key="i">
           <img

@@ -10,14 +10,14 @@
     <pdf-page-aside class="hidden md:block" @nextPage="nextPageHandler" @prevPage="prevPageHandler"
       :numPages="propsNumPages" :currentPage="currentPage" :pdf="pdf" @sideSetScrollPage="sideSetScrollPage"
       v-if="displayPDF" />
-    <main v-if="displayPDF" class="grid grid-rows-[max-content,max-content,1fr] gap-1 max-w-max mx-auto px-[2%]">
+    <main v-if="displayPDF" class="grid grid-rows-[max-content,max-content,1fr] gap-1 w-full mx-auto px-[2%]">
       <pdf-page-action-tray :file="file" @update-file="file = $event" :tools="tools" class="w-full"
         @isDeletedFunc="isDeletedFunc" :pdfContainerDimension="pdfContainerDimension"
         @publishFileFunction="publishFileFunction" />
 
       <tool-bar :file="file" @tool-change="onToolChange" :selectedToolType="selectedToolType" @undo="undo"
-        class="max-w-4xl" :isLoading="pdfLoading" />
-      <div class="pdf-editor-view relative custom-scrollbar overflow-y-scroll max-w-4xl" @scroll="setScrollPage"
+        class="w-full" :isLoading="pdfLoading" />
+      <div class="pdf-editor-view relative custom-scrollbar overflow-y-scroll w-full" @scroll="setScrollPage"
         v-if="pdf" ref="scrollingElement">
         <div class="pdf-pages-outer pb-6 relative" ref="PagesOuter" :style="pagesOuterStyle">
           <!-- <tool-wrapper
@@ -64,7 +64,7 @@
               <pdf-page :handlePanning="handlePanning" :onCLickSinglePageOuter="onCLickSinglePageOuter" :file="file"
                 :onMouseMoveOnPages="onMouseMoveOnPages" :onMouseLeaveFromPages="onMouseLeaveFromPages"
                 :page-number="pI + 1" :pdf="pdf" :scale="scale" @setPageHeight="setPageHeight"
-                :initialOrigin="setInitialOrigin" @setPageWidth="onloadPdfquery" />
+                :initialOrigin="setInitialOrigin" @setPageWidth="onloadPdfquery" :confirmDone="confirmDone" :isCreator="isCreator"/>
             </div>
           </div>
         </div>
@@ -72,7 +72,7 @@
         <div id="bottom"></div>
       </div>
       <button class="w-full bg-paperdazgreen-400 py-2 text-white overflow-hidden duration-300"
-        v-if="isScrollBottom && $auth.loggedIn && isCreator && isConfirm" id="confirmButtton"
+        v-if="(isScrollBottom && $auth.loggedIn && isConfirm && !isCreator)" id="confirmButtton"
         @click="confirmDocument()">
         Confirm
       </button>
@@ -92,7 +92,7 @@
     <BlockPrivateFile :file="file" v-model="showBlockPrivate" />
     <BlockDonotPostFile :file="file" v-model="showBlockDonotPost" />
     <SuccessFileModal :file="file" v-model="showSuccesshModal" />
-    <SignDoneModal :file="file" v-model="showSignDone" />
+    <DoneModal :file="file" v-model="showDoneModal"/>
     <!-- <AddToPageDrawOrType
     v-model="showInitialModal"
     :src="$auth?.user?.initialURL || ' '"
@@ -147,7 +147,7 @@ import jwt, { decode, JsonWebTokenError } from 'jsonwebtoken'
 import ExistFileManagerModal from '~/components/pdf/modals/ExistFileManagerModal.vue'
 import PublishPdfModal from '../../components/pdf/modals/PublishPdfModal.vue'
 import SuccessFileModal from '../../components/pdf/modals/SuccessFileModal.vue'
-import SignDoneModal from '../../components/pdf/modals/SignDoneModal.vue'
+import DoneModal from '../../components/pdf/modals/DoneModal.vue'
 import BlockPrivateFile from '../../components/pdf/modals/BlockPrivateFile.vue'
 import FilePrivacy from '~/models/FilePrivacy'
 import BlockDonotPostFile from '~/components/pdf/modals/BlockDonotPostFile.vue'
@@ -184,7 +184,7 @@ export default mixins(PdfAuth).extend({
     BlockPrivateFile,
     BlockDonotPostFile,
     AddToPageDrawOrType,
-    SignDoneModal
+    DoneModal
   },
   data: () => ({
     pdf: null,
@@ -212,7 +212,7 @@ export default mixins(PdfAuth).extend({
     initialTools: [],
     showPublishModal: false,
     showSuccesshModal: false,
-    showSignDone: false,
+    showDoneModal: false,
     isBottom: false,
     generatePDF: false,
     showBlockPrivate: false,
@@ -458,7 +458,7 @@ export default mixins(PdfAuth).extend({
           (item, index) => !item.hasAttribute('elemFill')
         )
         if (this.filteredAnnotationButton.length == 0 && this.isSign && type === "appendsigninitial") {
-          this.showSignDone = true;
+          this.showDoneModal = true;
         }
         if (this.filteredAnnotationButton[0]) {
           this.filteredAnnotationButton[0].classList.add('pulse')
@@ -485,6 +485,9 @@ export default mixins(PdfAuth).extend({
       } else {
         this.displayPDF = true
       }
+    },
+    confirmDone(){
+      this.showDoneModal = true;
     },
     checkFilePrivacyOnload() {
       switch (this.file.filePrivacy) {
@@ -524,7 +527,8 @@ export default mixins(PdfAuth).extend({
       this.showBlockPrivate = true
     },
     successFileFunction() {
-      this.showSuccesshModal = true
+      // this.showSuccesshModal = true
+      this.showDoneModal = true
       this.showPublishModal = false
     },
     checkForPrivateFile() {

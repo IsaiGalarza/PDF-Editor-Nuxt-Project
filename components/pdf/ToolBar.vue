@@ -1,9 +1,13 @@
 <template>
   <section>
-    <div class="bg-[#ec7272] text-white text-base px-6 py-2 flex items-center"
-      v-if="isConfirm && !isLoading && $auth.loggedIn && !isScrollBottom && isCreator">
+    <div class="bg-[#7CCA65] text-white text-base px-6 py-2 flex items-center"
+      v-if="isConfirm && !isLoading && $auth.loggedIn && isCreator">
       <exclamation-icon class="text-white mr-2" />
-      Please scroll to the end of file to confirm that you have read this file
+      Frse user will be asked to scroll to the bottom of last page to click Confirm. A copy with free user signature will be sent to all users.
+    </div>
+    <div class="w-full py-1 pb-2" v-if="isConfirm && !isScrollBottom && !isCreator">
+      <span class="float-left pt-2 px-2">Scroll to the bottom of file to confirm that you have read.</span>
+      <button class="text-white bg-zinc-500 rounded px-4 py-2 float-right mr-2">Cancel</button>
     </div>
     <div class="flex justify-between h-full pt-2" v-if="userRole == 'free_user' && isSign && isAgreedSign === -1">
       <span class="float-left m-2 text-sm font-bold ">I agree to apply my electronic signature/initials.
@@ -22,176 +26,118 @@
       class="h-full pt-2 font-bold pl-2 text-[#77b450]">
       You can't sign and initial action.
     </div>
-    <div v-if="!isLoading"
+
+    <div v-if="(!isLoading && !isCreator && isComplete)"
       class="tools-container-wrapper flex flex-wrap items-center justify-between bg-[#E8EAEC] w-full gap-x-1 gap-y-2 px-6 text-[#757575] text-base sm:text-2xl"
       :class="[isConfirm ? 'py-0' : 'py-2']">
       <button :class="[activeTool == TOOL_TYPE.text ? 'bg-paperdazgreen-300/40 tool' : '',
-      isCreator ? 'opacity-40' : 'opacity-100']" @click="setSelectedType(TOOL_TYPE.text)" v-if="isComplete">
+      isCreator ? 'opacity-40' : 'opacity-100']" @click="setSelectedType(TOOL_TYPE.text)">
         <pdf-text-tool-icon />
       </button>
       <button :class="[activeTool == TOOL_TYPE.tick ? 'bg-paperdazgreen-300/40 tool' : '',
-      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.tick)" v-if="isComplete">
+      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.tick)">
         <pdf-tick-icon />
       </button>
       <button :class="[activeTool == TOOL_TYPE.cross ? 'bg-paperdazgreen-300/40  tool' : '',
-      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.cross)" v-if="isComplete">
+      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.cross)">
         <pdf-times-icon />
       </button>
       <button :class="[activeTool == TOOL_TYPE.dot ? 'bg-paperdazgreen-300/40  tool' : '',
-      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.dot)" v-if="isComplete" class="text-base">
+      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.dot)" class="text-base">
         <solid-circle-icon />
       </button>
       <button :class="[activeTool == TOOL_TYPE.circle ? 'bg-paperdazgreen-300/40  tool' : '',
-      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.circle)" v-if="isComplete">
+      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.circle)">
         <hollow-circle-icon />
       </button>
       <button :class="[activeTool == TOOL_TYPE.line ? 'bg-paperdazgreen-300/40 tool' : '',
-      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.line)" v-if="isComplete">
+      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.line)">
         <pdf-rectangle-tool-icon />
       </button>
-      <button v-if="isComplete" :class="[activeTool == TOOL_TYPE.highlight ? 'bg-paperdazgreen-300/40 tool' : '',
+      <button :class="[activeTool == TOOL_TYPE.highlight ? 'bg-paperdazgreen-300/40 tool' : '',
       isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.highlight)" class="text-[#FFCF27]">
         <pdf-highlight-tool-icon />
       </button>
       <button :class="[activeTool == TOOL_TYPE.draw ? 'bg-paperdazgreen-300/40 tool' : '',
-      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.draw)" v-if="isComplete">
+      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.draw)">
         <pdf-pen-tool-icon />
       </button>
       <button :class="[activeTool == TOOL_TYPE.date ? 'bg-paperdazgreen-300/40 tool' : '',
-      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.date)" v-if="isComplete">
+      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.date)">
         <calendar-icon />
       </button>
-      <!-- <button 
-      :class="[activeTool == TOOL_TYPE.date ? 'bg-paperdazgreen-300/40 tool' : '']"
-      @click="setSelectedType(TOOL_TYPE.star)" v-if="isComplete">
-        <star-icon />
-      </button> -->
       <button :class="[activeTool == TOOL_TYPE.name ? 'bg-paperdazgreen-300/40 tool' : '',
-      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.name)" v-if="isComplete">
+      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.name)">
         <user-profile-solid-icon />
       </button>
-
-      <button class="text-[#5FA348]" @click="onImageClick" v-if="isComplete">
-        <input type="file" ref="image" class="hidden" />
-        <star-icon />
-      </button>
-      <!-- <button
-        v-if="isComplete || isSign"
-        @click="onSignClick"
-        class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm"
-      >
-        Sign
-        <span
-          class="inline-flex items-center justify-center px-2 py-2 bg-[#EAEAEA] text-paperdazgreen-300"
-          ><svg
-            width="12"
-            height="12"
-            viewBox="0 0 17 17"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M16.2869 8.24112L14.905 6.85919L9.42629 12.3281V0.400391H7.46611V12.3281L1.9972 6.84939L0.605469 8.24112L8.4462 16.0818L16.2869 8.24112Z"
-              fill="currentColor"
-            />
-          </svg>
-        </span>
-      </button> -->
-      <div v-if="isComplete" @click="onSignClick">
+      <div>
         <button
           class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm">
           Sign
           <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
-          <!-- <span
-          class="inline-flex items-center justify-center px-2 py-2 bg-[#EAEAEA] text-paperdazgreen-300"
-          ><svg
-            width="12"
-            height="12"
-            viewBox="0 0 17 17"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M16.2869 8.24112L14.905 6.85919L9.42629 12.3281V0.400391H7.46611V12.3281L1.9972 6.84939L0.605469 8.24112L8.4462 16.0818L16.2869 8.24112Z"
-              fill="currentColor"
-            />
-          </svg>
-        </span> -->
         </button>
-        <div v-if="!isCreator" class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-11 cursor-pointer"
+        <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-11 cursor-pointer"
           @click="openSignModal">
         </div>
       </div>
 
-      <!-- <button v-if="isSign && isCreator" @click="setSelectedType(TOOL_TYPE.appendSignature)" -->
+      <div>
+        <button
+          class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 tool-item text-white text-sm">
+          Initial
+          <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
+        </button>
+        <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-12 cursor-pointer"
+          @click="openInitialModal">
+        </div>
+      </div>
 
-      <button v-if="isSign && isCreator" @click="onSignClick"
-        class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm">
-        Sign
-        <!-- <span class="inline-flex items-center justify-center px-2 py-2 bg-[#EAEAEA] text-paperdazgreen-300"><svg
-            width="12" height="12" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M16.2869 8.24112L14.905 6.85919L9.42629 12.3281V0.400391H7.46611V12.3281L1.9972 6.84939L0.605469 8.24112L8.4462 16.0818L16.2869 8.24112Z"
-              fill="currentColor" />
-          </svg>
-        </span> -->
-        <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
-      </button>
+      <button @click="undoFunction" class="text-sm">UNDO</button>
+    </div>
 
-      <div v-if="isComplete">
+    <div v-if="isComplete && isCreator" class="flex items-center py-1">
+      <div class="w-1/3 text-center">
+        <button class="inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm"
+          @click="onImageClick">
+          <!-- <input type="file" ref="image" class="hidden" />
+          <star-icon /> -->
+          Require
+          <img src="../../assets/img/require-icon.png" width="18" class="bg-slate-200 p-[2px]" />
+        </button>
+      </div>
+      <div class="w-1/3 text-center">
+        <button class="inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm"
+          @click="onSignClick">
+          Sign
+          <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
+        </button>
+      </div>
+      <div class="w-1/3 text-center">
+        <button class="inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm"
+          @click="onInitialsClick">
+          Initial
+          <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
+        </button>
+      </div>
+    </div>
+
+    <div v-if="isSign && isCreator" class="flex items-center py-1">
+      <div class="w-1/2 text-center">
+        <button v-if="isSign && isCreator" @click="onSignClick"
+          class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm">
+          Sign
+          <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
+        </button>
+      </div>
+      <div class="w-1/2 text-center">
         <button
           class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 tool-item text-white text-sm"
           @click="onInitialsClick">
           Initial
           <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
-          <!-- <span
-          class="inline-flex items-center justify-center px-2 py-2 bg-[#EAEAEA] text-paperdazgreen-300"
-          ><svg
-            width="12"
-            height="12"
-            viewBox="0 0 17 17"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M16.2869 8.24112L14.905 6.85919L9.42629 12.3281V0.400391H7.46611V12.3281L1.9972 6.84939L0.605469 8.24112L8.4462 16.0818L16.2869 8.24112Z"
-              fill="currentColor"
-            />
-          </svg>
-        </span> -->
         </button>
-        <div v-if="!isCreator" class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-12 cursor-pointer"
-          @click="openInitialModal">
-        </div>
       </div>
 
-      <button v-if="isSign && isCreator"
-        class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 tool-item text-white text-sm"
-        @click="onInitialsClick">
-        <!-- @click="setSelectedType(TOOL_TYPE.appendInitial)"> -->
-
-        Initial
-        <!-- <span class="inline-flex items-center justify-center px-2 py-2 bg-[#EAEAEA] text-paperdazgreen-300"><svg
-            width="12" height="12" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M16.2869 8.24112L14.905 6.85919L9.42629 12.3281V0.400391H7.46611V12.3281L1.9972 6.84939L0.605469 8.24112L8.4462 16.0818L16.2869 8.24112Z"
-              fill="currentColor" />
-          </svg>
-        </span> -->
-        <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
-
-      </button>
-
-      <!-- <p @click="signaturePad = !signaturePad">Signature Pad</p> -->
-      <!--   
-      <button
-        @click="downloadPdf"
-        class="text-xs text-white bg-paperdazgreen-400 px-2 rounded h-8"
-      >
-        Download
-      </button> -->
-
-      <button @click="undoFunction" v-if="isComplete && !isCreator" class="text-sm">UNDO</button>
     </div>
 
     <draw-or-type-modal v-model="showSignatureModal" :src="`${$auth?.user?.signatureURL}`"

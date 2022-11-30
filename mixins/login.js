@@ -21,12 +21,10 @@ export default {
         .then(async (response) => {
         localStorage.setItem('paperdaz_userID', id)
         const [userData] = response.data
-        console.log("user",userData)
 
         // set the user
         this.$auth.setUser(userData)
         this.$store.commit('SET_PAGE_USER', this.$auth.user)
-        console.log(this.$auth.user, response)
 
 
           if(this.$auth.user.role == UserTypeEnum.TEAM) {

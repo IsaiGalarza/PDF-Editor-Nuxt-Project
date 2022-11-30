@@ -24,6 +24,8 @@ export default {
     setPageHeight: Function,
     setPageWidth: Function,
     file: Object,
+    confirmDone: Function,
+    isCreator: Boolean
   },
   data: () => ({
     scaleZ: 2,
@@ -31,11 +33,12 @@ export default {
   }),
   mounted() {
     this.getPage();
-
     let pdfPage = document.getElementsByClassName("pdf-editor-view")[0];
-    pdfPage.addEventListener("scroll", this.onScroll)
+    setTimeout(() => {
+      pdfPage.addEventListener("scroll", this.onScroll);
+    }, 500);
   },
-  computed:{
+  computed: {
     isConfirm() {
       return String(this.file.fileAction).toLowerCase() === FileAction.CONFIRM
     },
@@ -97,9 +100,10 @@ export default {
     },
     onScroll() {
       let pdfPage = document.getElementsByClassName("pdf-editor-view")[0];
-      if (pdfPage.scrollTop + 680 > pdfPage.scrollHeight && this.isConfirm) {
+      if (pdfPage.scrollTop + 1000 > pdfPage.scrollHeight && this.isConfirm) {
         pdfPage.removeEventListener("scroll", this.onScroll)
         this.$store.commit('SET_PDF_PAGE_BOTTOM');
+        !this.isCreator && this.confirmDone();
       }
 
     },

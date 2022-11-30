@@ -13,25 +13,27 @@
     </div>
     <!--End:: Close Button -->
     <template #title>
-      <span class="text-center font-semibold text-xl"></span>
+      <h4 class="text-center font-semibold text-2xl text-gray-800 pb-2" v-if="!isCreator">
+        All Done?
+      </h4>
     </template>
     <!-- Start:: Body -->
-    <div v-if="isCreator" class="flex justify-center pb-2">
+    <div v-if="isConfirm" class="flex justify-center pb-2">
       <CheckedFillIcon width="90" />
     </div>
-    <span v-if="!isCreator">Do you want these file to be saved as
-      {{ `${(file.fileAction + 'ed').replace('ee', 'e')}` }}?</span>
-    <span v-else class="w-full text-center block py-0 px-2 pb-8 text-[16px]">Publish file as
-      <span class="capitalize">{{
-          isCreator
-            ? file.fileAction
-            : `${(file.fileAction + 'ed').replace('ee', 'e')}`
-      }}</span>?</span>
+    <!-- <span v-if="!isCreator">Do you want these file to be saved as
+      {{ `${(file.fileAction + 'ed').replace('ee', 'e')}` }}?</span> -->
+    <span v-if="isCreator" class="w-full text-center block py-0 px-2 pb-8 text-[16px]">Do you want publish the file as
+      <span class="capitalize">
+        {{ file.fileAction + ' & ' + file.filePrivacy.replace('p', 'P') + '?' }}</span></span>
+    <span v-else class="w-full text-center block py-0 px-2 pb-8 text-[16px]">
+      If so, we will send a copy to your email.
+    </span>
     <div class="flex justify-around mt-6">
-      <button
-        class="disabled:bg-opacity-50 disabled:cursor-not-allowed h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgray-400"
-        type="button" :disabled="isLoading" @click="closeModal()">
-        Cancel
+      <button class="h-10 text-xs w-[150px] max-w-[50%] rounded-lg shadow border-[#D9251E] " type="button"
+        :disabled="isLoading" @click="closeModal()"
+        :class="isConfirm ? 'bg-zinc-500 border-[0px] text-white' : 'bg-white border-[1px] text-[#D9251E]'">
+        {{ isCreator ? 'Cancel' : 'Back' }}
       </button>
       <button
         class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400"
@@ -111,6 +113,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     isSign() {
       return this.file.fileAction == FileAction.SIGNED
+    },
+    isConfirm() {
+      return String(this.file.fileAction).toLowerCase() === FileAction.CONFIRM
     },
     isCreator() {
       return (
@@ -312,13 +317,13 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       this.closeModal();
       this.tools = this.tools.filter((e) => e.isDeleted != true);
       this.tools.map((val, ind) => {
-        if (val.type == "star"){
+        if (val.type == "star") {
           val['completed'] = true;
         }
-        if (val.type == "appendSignature"){
+        if (val.type == "appendSignature") {
           val['completed'] = this.signature;
         }
-        if (val.type == "appendInitial"){
+        if (val.type == "appendInitial") {
           val['completed'] = this.initial;
         }
       })

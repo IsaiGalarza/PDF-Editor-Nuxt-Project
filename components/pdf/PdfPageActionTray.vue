@@ -1,6 +1,6 @@
 <template>
-  <div class="py-2 flex items-center text-black gap-4 bg-white">
-    <div class="flex items-center gap-4 flex-1 justify-between max-w-4xl px-4 text-sm">
+  <div class="py-2 flex items-center text-black gap-4 bg-white flex justify-between">
+    <div class="flex items-center gap-4 flex-1 justify-between max-w-4xl px-4">
       <!-- If authenticated user is created -->
       <span v-if="!isCreator" class="capitalize font-medium">{{
           file.fileAction
@@ -66,7 +66,13 @@
           <el-dropdown-item command="save">
             <button v-if="!isConfirm && $auth.loggedIn"
               class="text-xs text-white bg-paperdazgreen-400 rounded px-5 h-7 w-[130px]">
-              Done
+              Publish
+            </button>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <button v-if="!isConfirm && $auth.loggedIn" @click="cancelPublish"
+              class="text-xs text-white bg-zinc-400 border rounded px-5 h-7 w-[130px]">
+              Cancel
             </button>
           </el-dropdown-item>
           <el-dropdown-item>
@@ -110,15 +116,15 @@
     </div>
 
     <div class="lg:flex items-center hidden">
+
       <button v-if="!isConfirm && $auth.loggedIn" @click="saveChanges"
-        class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-5 h-7">
-        Done
+        class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-2 h-7">
+        Publish
       </button>
-      <!-- <button
-      @click="$router.back()"
-       class="px-2">
-        <export-icon />
-      </button> -->
+      <button v-if="!isConfirm && $auth.loggedIn" @click="cancelPublish"
+        class="mr-2 text-xs text-white bg-zinc-400 border rounded px-2 h-7">
+        Cancel
+      </button>
     </div>
 
 
@@ -238,6 +244,10 @@ export default Vue.extend({
     }
   },
   methods: {
+    cancelPublish() {
+      // this.$nuxt.$router.push('/dashboard');
+      console.log('cance');
+    },
     showQrcodeFileFunc() {
       this.showQrcodeFiles = true
     },

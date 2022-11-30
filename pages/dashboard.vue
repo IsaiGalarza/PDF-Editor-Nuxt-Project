@@ -52,7 +52,7 @@ export default Vue.extend({
   // auth:'guest',
   mounted() {
     console.log('hi');
-    window.addEventListener("scroll", function(){console.log('scrolling!!!');})
+    window.addEventListener("scroll", function () { console.log('scrolling!!!'); })
   },
   data() {
     return {
@@ -126,19 +126,19 @@ export default Vue.extend({
 
   },
   methods: {
-    checkingLaggedPackage(){
+    checkingLaggedPackage() {
       let packageDetails = JSON.parse(localStorage.getItem("package-not-loggedin"))
       let toCreate = localStorage.getItem("create-package-not-loggedin")
-       switch (toCreate) {
+      switch (toCreate) {
         case 'true':
           this.$nuxt.$router.push('/package?tablevel=1')
           break;
-       
+
         default:
           this.$store.commit('PACKAGE_INFO', packageDetails)
           this.$nuxt.$router.push('/packages?tablevel=3')
           break;
-       }
+      }
     },
     showMaxPaperlinkModalFunc() {
       this.showMaxPaperlinkModal = true

@@ -53,7 +53,7 @@
           <div class="grid mb-10">
             <label class="input-label font-bold" for="">
               Credit Card
-              <payment-icon />
+              <img class="float-right inline w-[134px]" src="~/assets/img/payment.png" />
             </label>
           </div>
           <message-alert-widget

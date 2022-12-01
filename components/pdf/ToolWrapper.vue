@@ -21,7 +21,7 @@
         Decrease
       </div>
       -
-      <div class="delete" @click="onOutsideClick">OK</div>
+      <div class="delete" @click="onOutSideClick">OK</div>
     </div> -->
     <div
       class="h-8 rounded-full border border-black text-black inline-flex items-center px-4 gap-1.5 backdrop-blur-sm bg-white/30 absolute tool-menu"
@@ -47,7 +47,7 @@
       <button class="px-0.5 h-full" @click="handleDelete">
         <trash-x-icon />
       </button>
-      <button class="px-0.5 h-full" @click="onOutsideClick">
+      <button class="px-0.5 h-full" @click="onOutSideClick">
         <check-circle-icon />
       </button>
     </div>
@@ -70,7 +70,7 @@
         :elemScale="elemScale" :incDecCount="incDecCount" :points="points" :isActive="isActive" :fontSize="fontSize"
         :scale="scale" :file="file" :value="value" :justMounted="justMounted" @input="onInp" :generatePDF="generatePDF"
         :showPublishModal="showPublishModal" />
-      <div :class="[
+      <!-- <div :class="[
         'dr__right',
         { line: type == TOOL_TYPE.line },
         { 'line-alt': (x1 < x2 && y1 < y2) || (x1 > x2 && y1 > y2) },
@@ -80,7 +80,7 @@
         'dr__left',
         { line: type == TOOL_TYPE.line },
         { 'line-alt': (x1 < x2 && y1 < y2) || (x1 > x2 && y1 > y2) },
-      ]" v-hammer:pan="(ev) => handleToolDrag(ev, TOOL_DIRECTION.left)" v-if="isAvailableDrLeft && isCreator"></div>
+      ]" v-hammer:pan="(ev) => handleToolDrag(ev, TOOL_DIRECTION.left)" v-if="isAvailableDrLeft && isCreator"></div> -->
     </div>
   </div>
 </template>
@@ -295,24 +295,25 @@ export default {
         return false
       return true
     },
-    handleToolDrag(event, direction) {
-      if (this.altDirection) {
-        direction =
-          direction == this.TOOL_DIRECTION.left
-            ? this.TOOL_DIRECTION.right
-            : this.TOOL_DIRECTION.left
-      }
-      this.dragHandler(event, this.id, direction, this.pageNumber)
-      if (event.isFinal) {
-        if (
-          this.type == this.TOOL_TYPE.line ||
-          this.type == this.TOOL_TYPE.highlight
-        ) {
-          if (this.x2 < this.x1) this.altDirection = true
-          else this.altDirection = false
-        }
-      }
-    },
+    // handleToolDrag(event, direction) {
+    //   if (this.altDirection) {
+    //     direction =
+    //       direction == this.TOOL_DIRECTION.left
+    //         ? this.TOOL_DIRECTION.right
+    //         : this.TOOL_DIRECTION.left
+    //   }
+    //   console.log('hhh');
+    //   this.dragHandler(event, this.id, direction, this.pageNumber)
+    //   if (event.isFinal) {
+    //     if (
+    //       this.type == this.TOOL_TYPE.line ||
+    //       this.type == this.TOOL_TYPE.highlight
+    //     ) {
+    //       if (this.x2 < this.x1) this.altDirection = true
+    //       else this.altDirection = false
+    //     }
+    //   }
+    // },
     onClick() {
       this.$emit('resetJustMounted', this.id)
       if (!this.isCreator) return;
@@ -320,7 +321,7 @@ export default {
       this.$emit('toolWrapperBeforeChecked', this.id)
       // this.$BUS.$emit('tool-comp-click', this.id)
     },
-    onOutsideClick() {
+    onOutSideClick() {
       if (!this.isCreator) return
       this.$emit('toolWrapperAfterChecked', this.id)
       this.setActiveToolId(null)
@@ -411,6 +412,8 @@ export default {
       this.$emit('input', ...v)
     },
   },
+  mounted: function () {
+  }
 }
 </script>
 

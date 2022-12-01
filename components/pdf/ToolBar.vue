@@ -3,7 +3,8 @@
     <div class="bg-[#7CCA65] text-white text-base px-6 py-2 flex items-center"
       v-if="isConfirm && !isLoading && $auth.loggedIn && isCreator">
       <exclamation-icon class="text-white mr-2" />
-      Frse user will be asked to scroll to the bottom of last page to click Confirm. A copy with free user signature will be sent to all users.
+      Frse user will be asked to scroll to the bottom of last page to click Confirm. A copy with free user signature
+      will be sent to all users.
     </div>
     <div class="w-full py-1 pb-2" v-if="isConfirm && !isScrollBottom && !isCreator">
       <span class="float-left pt-2 px-2">Scroll to the bottom of file to confirm that you have read.</span>
@@ -76,8 +77,14 @@
           Sign
           <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         </button>
-        <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-11 cursor-pointer"
-          @click="openSignModal">
+        <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[47px] cursor-pointer"
+          @click="() => { showSignTray = !showSignTray; showSignTray && (showInitialTray = false); }">
+        </div>
+        <div v-if="(showSignTray)"
+          class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-4">
+          <img class="absolute-image border py-1 px-3 rounded h-[50px]" :src="signature || ' '" width="120" />
+          <img src="../../assets/img/pencil.png" class="cursor-pointer w-[20px] h-[22px] ml-1 mt-3"
+            @click="openSignModal" />
         </div>
       </div>
 
@@ -87,8 +94,14 @@
           Initial
           <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         </button>
-        <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-12 cursor-pointer"
-          @click="openInitialModal">
+        <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[54px] cursor-pointer"
+          @click="() => { showInitialTray = !showInitialTray; showInitialTray && (showSignTray = false); }">
+        </div>
+        <div v-if="showInitialTray"
+          class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-4">
+          <img class="absolute-image border py-1 px-3 rounded h-[50px]" :src="initial || ' '" width="120" />
+          <img src="../../assets/img/pencil.png" class="cursor-pointer w-[20px] h-[22px] ml-1 mt-3"
+            @click="openInitialModal" />
         </div>
       </div>
 
@@ -201,6 +214,10 @@ export default {
     showInitialsModal: false,
     showPdfNotLoggedInUser: false,
     signAgreeChecked: false,
+    initial: null,
+    signature: null,
+    showInitialTray: false,
+    showSignTray: false
   }),
   props: {
     file: {
@@ -327,6 +344,7 @@ export default {
     openInitialModal() {
       if (!this.isCreator) {
         this.showInitialsModal = true
+        this.showInitialTray = false
       }
     },
     onInitialsClick() {
@@ -341,6 +359,27 @@ export default {
         this.setSelectedType(this.TOOL_TYPE.appendInitial)
       }
     },
+    changeInitialToBase64() {
+      const toDataURL = (url) =>
+        fetch(url)
+          .then((response) => response.blob())
+          .then(
+            (blob) =>
+              new Promise((resolve, reject) => {
+                const reader = new FileReader()
+                reader.onloadend = () => resolve(reader.result)
+                reader.onerror = reject
+                reader.readAsDataURL(blob)
+              })
+          )
+
+      toDataURL(this.$auth?.user?.initialURL).then((dataUrl) => {
+        this.initial = dataUrl
+      })
+      toDataURL(this.$auth?.user?.signatureURL).then((dataUrl) => {
+        this.signature = dataUrl
+      })
+    },
   },
   watch: {
     'file.fileAction': function () {
@@ -348,9 +387,13 @@ export default {
     },
     selectedToolType: function () {
       this.activeTool = this.selectedToolType == null ? null : this.activeTool
-    }
+    },
+    '$auth.user.initialURL': async function () {
+      this.changeInitialToBase64()
+    },
   },
   mounted: function () {
+    this.changeInitialToBase64()
   }
 }
 </script>
@@ -360,6 +403,7 @@ export default {
   button {
     @apply p-2
   }
+
   .tool {
     @apply rounded-full;
   }

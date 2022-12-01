@@ -17,39 +17,15 @@
 
       <tool-bar :file="file" @tool-change="onToolChange" :selectedToolType="selectedToolType" @undo="undo"
         class="w-full" :isLoading="pdfLoading" />
-      <div class="pdf-editor-view relative custom-scrollbar overflow-y-scroll w-full" @scroll="setScrollPage"
-        v-if="pdf" ref="scrollingElement">
+      <div class="pdf-editor-view relative custom-scrollbar overflow-y-scroll w-full" @scroll="setScrollPage" v-if="pdf"
+        ref="scrollingElement">
         <div class="pdf-pages-outer pb-6 relative" ref="PagesOuter" :style="pagesOuterStyle">
-          <!-- <tool-wrapper
-            v-for="tool in fillteredTools"
-            :key="tool.id"
-            :dragHandler="handlePanning"
-            :id="tool.id"
-            :tool="tool"
-            :type="tool.type"
-            :x1="tool.x1"
-            :y1="tool.y1"
-            :x2="tool.x2"
-            :y2="tool.y2"
-            :points="tool.points"
-            :deleteTool="deleteTool"
-            :handleIncrease="handleIncrease"
-            :handleDecrease="handleDecrease"
-            :fontSize="tool.fontSize"
-            :scale="tool.scale"
-            :signature="signature"
-            @pos-change="onPosChange"
-            :activeToolId="activeToolId"
-            :setActiveToolId="setActiveToolId"
-          /> -->
-          <!-- <component :is="`${selectedToolType}-identifier`" v-if="selectedToolType && showToolIdentifier" :position="toolIdentifierPosition" /> -->
           <div class="pdf-single-pages-outer w-full" ref="pdf-single-pages-outer" v-if="pdf">
             <div :class="[
               'pdf-single-page-outer w-full',
               { 'mt-6': pI > 0 && !downloadingPdf },
             ]" :ref="`pdf-single-page-outer-${pI + 1}`" v-for="(page, pI) in pdf.numPages" :key="pI"
               style="position: relative;">
-              <!-- <div id="sai" class="w-full h-full absolute"> -->
 
               <tool-wrapper v-for="tool in fillteredTools(pI + 1)" :key="tool.id" :dragHandler="handlePanning"
                 :id="tool.id" :tool="tool" :type="tool.type" :x1="tool.x1" :y1="tool.y1" :x2="tool.x2" :y2="tool.y2"
@@ -64,7 +40,8 @@
               <pdf-page :handlePanning="handlePanning" :onCLickSinglePageOuter="onCLickSinglePageOuter" :file="file"
                 :onMouseMoveOnPages="onMouseMoveOnPages" :onMouseLeaveFromPages="onMouseLeaveFromPages"
                 :page-number="pI + 1" :pdf="pdf" :scale="scale" @setPageHeight="setPageHeight"
-                :initialOrigin="setInitialOrigin" @setPageWidth="onloadPdfquery" :confirmDone="confirmDone" :isCreator="isCreator"/>
+                :initialOrigin="setInitialOrigin" @setPageWidth="onloadPdfquery" :confirmDone="confirmDone"
+                :isCreator="isCreator" />
             </div>
           </div>
         </div>
@@ -77,12 +54,7 @@
         Confirm
       </button>
     </main>
-    <!-- <save-pdf-modal
-      :sendAction="saveFunction"
-      :file="file"
-      :canvasHeight="setContainerPdfHeight"
-      v-model="showSaveModal"
-    /> -->
+
     <ExistFileManagerModal :file="file" :tools="tools" @confirmExistFileManager="confirmExistFileManager"
       v-model="showExitFileManager" />
 
@@ -92,14 +64,7 @@
     <BlockPrivateFile :file="file" v-model="showBlockPrivate" />
     <BlockDonotPostFile :file="file" v-model="showBlockDonotPost" />
     <SuccessFileModal :file="file" v-model="showSuccesshModal" />
-    <DoneModal :file="file" v-model="showDoneModal"/>
-    <!-- <AddToPageDrawOrType
-    v-model="showInitialModal"
-    :src="$auth?.user?.initialURL || ' '"
-    @image-exported="imageExportedLocal($event, true)"
-    use-default-button
-  /> -->
-    <!-- <PdfRequestModal :file="file" :canvasHeight="setContainerPdfHeight" v-model="showRequestModal"/> -->
+    <DoneModal :file="file" v-model="showDoneModal" />
   </div>
 </template>
 
@@ -457,7 +422,7 @@ export default mixins(PdfAuth).extend({
         // }
         if (this.filteredAnnotationButton[0]) {
           this.filteredAnnotationButton[0].classList.add('pulse')
-          this.filteredAnnotationButton[0].scrollIntoView({ block: 'center', behavior: 'smooth'})
+          this.filteredAnnotationButton[0].scrollIntoView({ block: 'center', behavior: 'smooth' })
         }
       }, 100)
     },
@@ -481,7 +446,7 @@ export default mixins(PdfAuth).extend({
         this.displayPDF = true
       }
     },
-    confirmDone(){
+    confirmDone() {
       this.showDoneModal = true;
     },
     checkFilePrivacyOnload() {
@@ -562,7 +527,6 @@ export default mixins(PdfAuth).extend({
     checkUserPermission() {
       this.$axios.get(`/permissions?fileId=${this.file.id}`)
         .then((response) => {
-          // console.log("?????????permission", response)
         })
     },
     onloadPdfquery(val) {
@@ -675,7 +639,6 @@ export default mixins(PdfAuth).extend({
     toolWrapperAfterChecked(val) {
       if (val == undefined) return
       this.tools[val - 1].isChecked = true
-      // console.log('it is the outside',this.tools[val])
     },
     resetJustMounted(val) {
       this.tools[val - 1].justMounted = false
@@ -739,8 +702,6 @@ export default mixins(PdfAuth).extend({
         tool.type == this.TOOL_TYPE.text ||
         tool.type == this.TOOL_TYPE.date ||
         tool.type == this.TOOL_TYPE.name
-        // ||
-        // tool.type == this.TOOL_TYPE.initial
       ) {
         let fontSize = tool.fontSize || 12
         this.tools[index].fontSize = ++fontSize
@@ -808,69 +769,16 @@ export default mixins(PdfAuth).extend({
       await htmlToImage
         .toPng(document.querySelector('#sai'))
         .then(function (dataUrl) {
-          // console.log('hwmlhtmlhtmlhtml', dataUrl)
         })
         .catch(function (error) {
           console.error('oops, something went wrong!', error)
         })
-      // let newSaveData = ExtractFormPdf(this.file.downloadLink)[0]
-      // await this.$axios
-      //   .$post(`/pdf-generator`, { ...newSaveData })
-      //   .then((response) => {
-      //     this.downloadPdfToLocal(response.downloadLink, response.fileName)
-      //   })
-      //   .catch((err) => {
-      //     ;(async () => {
-      //     await this.$notify.error({
-      //     title: 'File',
-      //     message: 'Error Downloading file',
-      //     })
-      //     })()
-      //   })
-      // this.selectedToolId = null
-      // this.activeToolId = null
-      // let options = {
-      //   // pagebreak: { after: '.pdf-single-page-outer' },
-      //   image: { type: 'jpeg', quality: 1.0 },
-      //   margin: [0, 0, 0, 0],
-      //   html2canvas: { scale: 2 },
-      //   jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      // }
-      // let prevScale = this.scale
-      // this.scale = 1
-      // this.downloadingPdf = true
-      // await this.$nextTick()
-      // let elements = Array.from(this.$refs['pdf-single-pages-outer'].children)
-      // let worker = html2pdf()
-      //   .set(options)
-      //   .from(elements[0])
-      //   .toContainer()
-      //   .toCanvas()
-      //   .toPdf()
 
-      // if (elements.length > 1) {
-      //   elements.slice(1).forEach((element) => {
-      //     worker = worker
-      //       .get('pdf')
-      //       .then((pdf) => pdf.addPage())
-      //       .set(options)
-      //       .from(element)
-      //       .toContainer()
-      //       .toCanvas()
-      //       .toPdf()
-      //   })
-      // }
-
-      // await worker.save()
-      // this.scale = prevScale
-      // this.downloadingPdf = false
     },
     async deleteTool(id) {
       let index = this.tools.findIndex((t) => t.id == id)
       this.selectedToolId = null
       this.activeToolId = null
-      // this.tools.splice(index, 1)
-      // this.$forceUpdate()
       this.stack.push(id)
       this.tools[index].isDeleted = true
       await this.$nextTick()
@@ -882,6 +790,7 @@ export default mixins(PdfAuth).extend({
       direction = undefined,
       pageNumber
     ) {
+      console.log('here');
       var elem = this.$refs['pdf-single-pages-outer']
       if (!this.isPanning && id == undefined) {
         this.isPanning = true
@@ -902,9 +811,6 @@ export default mixins(PdfAuth).extend({
         this.selectedToolId = id
         this.selectedToolType = this.tools[index].type
       }
-
-      var posX = event.deltaX + this.lastPosX
-      var posY = event.deltaY + this.lastPosY
 
       const getPointPos = () => {
         let parent = this.$refs[`pdf-single-page-outer-${pageNumber}`]
@@ -1002,7 +908,7 @@ export default mixins(PdfAuth).extend({
         mouseXRelativeToScrollingElement + (scrollingElement.scrollLeft || 0)
       const y =
         mouseYRelativeToScrollingElement + (scrollingElement.scrollTop || 0)
-      
+
       return { x: x / this.scale, y: y / this.scale }
     },
     previousPointerPos(event, parent) {
@@ -1049,9 +955,8 @@ export default mixins(PdfAuth).extend({
         this.selectedToolType == this.TOOL_TYPE.highlight ||
         this.selectedToolType == this.TOOL_TYPE.draw
       )
-        return
+        return;
       this.placeTool(event, pageNumber)
-
       if (
         !(
           this.selectedToolType == this.TOOL_TYPE.line ||
@@ -1061,7 +966,6 @@ export default mixins(PdfAuth).extend({
       ) {
         this.onToolChange(null)
       }
-      // alert(this.selectedToolType)
     },
     placeTool(e, pageNumber, initialPoint) {
       let parent = this.$refs[`pdf-single-page-outer-${pageNumber}`]

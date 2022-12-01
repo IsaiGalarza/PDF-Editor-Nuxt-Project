@@ -103,7 +103,6 @@ export default {
     },
     onScroll() {
       let pdfPage = document.getElementsByClassName("pdf-editor-view")[0];
-      console.log(pdfPage.scrollTop + 1000 - pdfPage.scrollHeight);
       if (pdfPage.scrollTop + 640 > pdfPage.scrollHeight && this.isConfirm) {
         pdfPage.removeEventListener("scroll", this.onScroll)
         this.$store.commit('SET_PDF_PAGE_BOTTOM');

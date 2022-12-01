@@ -46,7 +46,7 @@ export default {
     d() {
       let l = this.points
         .map((p, i) => (i % 2 == 0 ? `L${p},` : `${p}`))
-        .join('')
+        .join(' ')
       return `M${this.points[0]},${this.points[1]}${l}`
     },
     style() {
@@ -84,10 +84,3 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.line {
-  width: 100%;
-  height: 100%;
-  background-color: #000;
-}
-</style>

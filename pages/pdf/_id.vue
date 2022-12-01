@@ -377,19 +377,19 @@ export default mixins(PdfAuth).extend({
         },
         [TOOL_TYPE.tick]: {
           identifier: { top: 20, left: 0 },
-          tool: { top: 20, left: 0 },
+          tool: { top: 7, left: 3 },
         },
         [TOOL_TYPE.cross]: {
           identifier: { top: 20, left: 0 },
-          tool: { top: 20, left: 0 },
+          tool: { top: 7, left: 5 },
         },
         [TOOL_TYPE.dot]: {
           identifier: { top: 20, left: 0 },
-          tool: { top: 10, left: 0 },
+          tool: { top: 5, left: 5 },
         },
         [TOOL_TYPE.circle]: {
           identifier: { top: 20, left: 0 },
-          tool: { top: 20, left: 0 },
+          tool: { top: 5, left: 6 },
         },
         [TOOL_TYPE.line]: {
           identifier: { top: 20, left: 0 },
@@ -405,7 +405,7 @@ export default mixins(PdfAuth).extend({
         },
         [TOOL_TYPE.date]: {
           identifier: { top: 20, left: 0 },
-          tool: { top: 12, left: 0 },
+          tool: { top: 10, left: 0 },
         },
         [TOOL_TYPE.name]: {
           identifier: { top: 20, left: 0 },
@@ -440,11 +440,6 @@ export default mixins(PdfAuth).extend({
       return this.$store.state.scrollPosition;
     }
   },
-  watch: {
-    pdf(v) {
-      this.handleScale()
-    },
-  },
   methods: {
     scrollToSignInitial(type = "") {
       if (this.isCreator || !this.$auth.loggedIn) return
@@ -457,12 +452,12 @@ export default mixins(PdfAuth).extend({
         this.filteredAnnotationButton = Array.from(annotationButton).filter(
           (item, index) => !item.hasAttribute('elemFill')
         )
-        if (this.filteredAnnotationButton.length == 0 && this.isSign && type === "appendsigninitial") {
-          this.showDoneModal = true;
-        }
+        // if (this.filteredAnnotationButton.length == 0 && this.isSign && type === "appendsigninitial") {
+        //   this.showDoneModal = true;
+        // }
         if (this.filteredAnnotationButton[0]) {
           this.filteredAnnotationButton[0].classList.add('pulse')
-          this.filteredAnnotationButton[0].scrollIntoView({ block: 'center' })
+          this.filteredAnnotationButton[0].scrollIntoView({ block: 'center', behavior: 'smooth'})
         }
       }, 100)
     },
@@ -661,8 +656,8 @@ export default mixins(PdfAuth).extend({
 
       if (this.filteredAnnotationButton.length > 0) {
         this.$notify.error({
-          title: 'Sign',
-          message: 'Kindly fill all sign and initial placeholders',
+          title: 'Kindly fill all sign and initial placeholders',
+          // message: '',
         })
         this.scrollToSignInitial()
         return
@@ -888,7 +883,6 @@ export default mixins(PdfAuth).extend({
       pageNumber
     ) {
       var elem = this.$refs['pdf-single-pages-outer']
-
       if (!this.isPanning && id == undefined) {
         this.isPanning = true
         this.lastPosX = elem.offsetLeft
@@ -919,7 +913,7 @@ export default mixins(PdfAuth).extend({
         let { x, y } = this.pointerPos(event.srcEvent, parent)
 
         if (y < 0) y = 0
-        if (y > elem.clientHeight) x = elem.clientHeight
+        if (y > elem.clientHeight) y = elem.clientHeight
         if (x < 0) x = 0
         if (x > elem.clientWidth) x = elem.clientWidth
 
@@ -975,7 +969,6 @@ export default mixins(PdfAuth).extend({
       // this.toolIdentifierPosition.left = x - this.TOOL_THRESHOLD[this.selectedToolType].identifier.left
     },
     onToolChange(type) {
-      console.log('type>>', type);
       this.selectedToolType = type
     },
     pointerPos(event, parent) {
@@ -993,7 +986,7 @@ export default mixins(PdfAuth).extend({
         document.scrollingElement ||
         document.body
 
-      const boundingRect = scrollingElement.getBoundingClientRect()
+      const boundingRect = scrollingElement.getBoundingClientRect();
 
       //if there is no clientX or there is no clientY on event
       // return 0, 0
@@ -1009,6 +1002,7 @@ export default mixins(PdfAuth).extend({
         mouseXRelativeToScrollingElement + (scrollingElement.scrollLeft || 0)
       const y =
         mouseYRelativeToScrollingElement + (scrollingElement.scrollTop || 0)
+      
       return { x: x / this.scale, y: y / this.scale }
     },
     previousPointerPos(event, parent) {

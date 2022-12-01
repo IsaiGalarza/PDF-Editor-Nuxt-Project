@@ -1,15 +1,7 @@
 <template>
   <svg preserveAspectRatio="none" :viewBox="viewBox" :style="style">
-    <path
-      options="opacity"
-      :x="x1"
-      :y="y1"
-      :y2="y2"
-      :x2="x2"
-      :d="d"
-      stroke-linecap="round"
-      style="fill: rgb(255, 255, 0); opacity: 0.4; stroke-width: 0"
-    ></path>
+    <path options="opacity" :x="x1" :y="y1" :y2="y2" :x2="x2" :d="d" stroke-linecap="round"
+      style="fill: rgb(255, 255, 0); opacity: 0.4; stroke-width: 0"></path>
   </svg>
 </template>
 

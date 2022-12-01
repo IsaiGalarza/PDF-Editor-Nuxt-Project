@@ -1,9 +1,7 @@
 <template>
   <div class="tool">
-    <img
-    :scaleDiff="scaleDiff"
-    :src="value" alt="" v-if="value" :style="style" />
-     <!-- <div class="no-signature" v-else>
+    <img :scaleDiff="scaleDiff" :src="value" alt="" v-if="value" :style="style" />
+    <!-- <div class="no-signature" v-else>
       <p>No Signature</p>
     </div> -->
   </div>
@@ -15,14 +13,14 @@ export default {
     scale: Number,
     value: String,
   },
-  mounted(){
+  mounted() {
     console.log(this.value);
   },
   methods: {
-   
+
   },
   computed: {
-    scaleDiff(){
+    scaleDiff() {
       return ((this.scale || 1) * 30) - 30
     },
     style() {
@@ -35,13 +33,15 @@ export default {
       }
     },
   },
-  watch:{
-   scale:function(){
+  watch: {
+    scale: function () {
       // alert('dchdcjhlj')
-   }
- }
+    }
+  }
 }
 
 </script>
 
-<style></style>
+<style>
+
+</style>

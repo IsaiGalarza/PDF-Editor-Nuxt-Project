@@ -80,7 +80,6 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   },
   mounted() {
     this.changeSignToBase64()
-    console.log(this.loadedPdfFile, this.$auth?.user?.id)
   },
   computed: {
     ...mapState(['loadedPdfFile']),

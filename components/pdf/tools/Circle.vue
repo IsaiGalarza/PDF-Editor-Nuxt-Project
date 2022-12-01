@@ -48,7 +48,6 @@ export default {
         }); 
 
         this.svgToImageData = dataPAz
-        // console.log('gggggggggggggggggg',  this.svgToImageData)
        },
   }
 }

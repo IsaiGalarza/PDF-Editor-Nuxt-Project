@@ -14,7 +14,7 @@ export default {
   //   text: `${this.$auth.user.firstName} ${this.$auth.user.lastName}`,
   // }),
   computed: {
-    text(){
+    text() {
       return `${this.$auth.user.firstName} ${this.$auth.user.lastName}`
     },
     style() {
@@ -26,4 +26,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>

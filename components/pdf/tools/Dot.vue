@@ -1,13 +1,9 @@
 <template>
   <div class="tool">
-    <svg 
-    ref="dotbox"
-    viewBox="0 0 24 24" :style="style" fill="black">
-  <path  options="dot"
-    :svgToImage="svgToImageData"
-    d="M 22 12 a 10 10 0 0 0 -10 -10 a 10 10 0 0 0 -10 10 a 10 10 0 0 0 10 10 a 10 10 0 0 0 10 -10"
-    />
-</svg>
+    <svg ref="dotbox" viewBox="0 0 24 24" :style="style" fill="black">
+      <path options="dot" :svgToImage="svgToImageData"
+        d="M 22 12 a 10 10 0 0 0 -10 -10 a 10 10 0 0 0 -10 10 a 10 10 0 0 0 10 10 a 10 10 0 0 0 10 -10" />
+    </svg>
   </div>
 </template>
 
@@ -22,23 +18,23 @@ export default {
       return {
         width: `${(this.scale || 1) * 12}px`,
         height: `${(this.scale || 1) * 12}px`,
-        fill:`black`,
+        fill: `black`,
       }
     },
   },
-  watch:{
-    generatePDF: function(){
-      if(this.generatePDF)
-      this.svgToImage()
+  watch: {
+    generatePDF: function () {
+      if (this.generatePDF)
+        this.svgToImage()
     },
   },
   data() {
     return {
-      svgToImageData:''
+      svgToImageData: ''
     }
   },
-  methods:{
-    async svgToImage(){
+  methods: {
+    async svgToImage() {
       this.svgToImageData = '';
       let dataPAz = ''
       await htmlToImage.toPng(this.$refs.dotbox)
@@ -47,13 +43,15 @@ export default {
         })
         .catch(function (error) {
           console.error('oops, something went wrong!', error);
-        }); 
+        });
 
-        this.svgToImageData = dataPAz
-        // console.log('gggggggggggggggggg',  this.svgToImageData)
-       },
+      this.svgToImageData = dataPAz
+      // console.log('gggggggggggggggggg',  this.svgToImageData)
+    },
   }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>

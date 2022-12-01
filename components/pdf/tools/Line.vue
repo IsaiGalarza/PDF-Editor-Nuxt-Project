@@ -1,18 +1,7 @@
 <template>
   <svg :viewBox="viewBox" :style="style" ref="lineBox" fill="black" type="DrawLine">
-    <path
-      :svgToImage="svgToImageData"
-      options="fill"
-      :x="x1"
-      :y="y1"
-      :y2="y2"
-      :x2="x2"
-      :length="x2"
-      :d="d"
-      stroke-linecap="round"
-      style="stroke: rgb(0, 0, 0); stroke-width: 3"
-      type="DrawLine"
-    ></path>
+    <path :svgToImage="svgToImageData" options="fill" :x="x1" :y="y1" :y2="y2" :x2="x2" :length="x2" :d="d"
+      stroke-linecap="round" style="stroke: rgb(0, 0, 0); stroke-width: 3" type="DrawLine"></path>
   </svg>
 </template>
 
@@ -28,19 +17,19 @@ export default {
     generatePDF: Boolean,
     showPublishModal: Boolean,
   },
-  watch:{
-    generatePDF: function(){
-      if(this.generatePDF)
-      this.svgToImage()
+  watch: {
+    generatePDF: function () {
+      if (this.generatePDF)
+        this.svgToImage()
     },
   },
   data() {
     return {
-      svgToImageData:''
+      svgToImageData: ''
     }
   },
-  methods:{
-    async svgToImage(){
+  methods: {
+    async svgToImage() {
       this.svgToImageData = '';
       let dataPAz = ''
       await htmlToImage.toPng(this.$refs.lineBox)
@@ -49,13 +38,13 @@ export default {
         })
         .catch(function (error) {
           console.error('oops, something went wrong!', error);
-        }); 
+        });
 
-        this.svgToImageData = dataPAz
-        // console.log('gggggggggggggggggg',  this.svgToImageData)
-       },
-      },
- 
+      this.svgToImageData = dataPAz
+      // console.log('gggggggggggggggggg',  this.svgToImageData)
+    },
+  },
+
   computed: {
     style() {
       return {

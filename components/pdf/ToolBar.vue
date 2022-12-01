@@ -360,9 +360,8 @@ export default {
   button {
     @apply p-2
   }
-
   .tool {
-    @apply w-12 h-12 grid place-items-center rounded-full;
+    @apply rounded-full;
   }
 }
 </style>

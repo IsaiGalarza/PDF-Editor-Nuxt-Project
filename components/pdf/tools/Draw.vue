@@ -1,13 +1,6 @@
 <template>
-  <svg preserveAspectRatio="none" :viewBox="viewBox" class="svg_element" ref="drawBox"
-  :style="style">
-
-    <path
-    :svgToImage="svgToImageData"
-    options="draw"
-    :x="x1"
-    :y="y1"
-    :d="d" stroke="#000" fill="none"></path>
+  <svg preserveAspectRatio="none" :viewBox="viewBox" class="svg_element" ref="drawBox" :style="style">
+    <path :svgToImage="svgToImageData" options="draw" :x="x1" :y="y1" :d="d" stroke="#000" fill="none"></path>
   </svg>
 </template>
 
@@ -17,42 +10,39 @@ export default {
     tool: Object,
     points: Array,
     showPublishModal: Boolean,
-    generatePDF: Boolean 
+    generatePDF: Boolean
   },
   data() {
     return {
-      svgToImageData:''
+      svgToImageData: ''
     }
   },
-  mounted(){
-     
+  mounted() {
+
   },
-  watch:{
-    generatePDF: function(){
-      if(this.generatePDF)
-      this.svgToImage()
+  watch: {
+    generatePDF: function () {
+      if (this.generatePDF)
+        this.svgToImage()
     },
   },
-  methods:{
-    async svgToImage(){
+  methods: {
+    async svgToImage() {
       this.svgToImageData = '';
       let dataPAz = '';
       await htmlToImage.toPng(this.$refs.drawBox)
         .then(function (dataUrl) {
           dataPAz = dataUrl;
-          console.log(dataPAz)
         })
         .catch(function (error) {
           console.error('oops, something went wrong!', error);
-        }); 
+        });
 
-        this.svgToImageData = dataPAz
-        // console.log('gggggggggggggggggg',  this.svgToImageData)
-       },
-      },
- 
+      this.svgToImageData = dataPAz
+    },
+  },
+
   computed: {
-    
     d() {
       let l = this.points
         .map((p, i) => (i % 2 == 0 ? `L${p},` : `${p}`))

@@ -377,19 +377,19 @@ export default mixins(PdfAuth).extend({
         },
         [TOOL_TYPE.tick]: {
           identifier: { top: 20, left: 0 },
-          tool: { top: 7, left: 0 },
+          tool: { top: 7, left: 3 },
         },
         [TOOL_TYPE.cross]: {
           identifier: { top: 20, left: 0 },
-          tool: { top: 8, left: 2 },
+          tool: { top: 7, left: 5 },
         },
         [TOOL_TYPE.dot]: {
           identifier: { top: 20, left: 0 },
-          tool: { top: 8, left: 2 },
+          tool: { top: 5, left: 5 },
         },
         [TOOL_TYPE.circle]: {
           identifier: { top: 20, left: 0 },
-          tool: { top: 8, left: 0 },
+          tool: { top: 5, left: 6 },
         },
         [TOOL_TYPE.line]: {
           identifier: { top: 20, left: 0 },
@@ -439,11 +439,6 @@ export default mixins(PdfAuth).extend({
     isScrollBottom() {
       return this.$store.state.scrollPosition;
     }
-  },
-  watch: {
-    pdf(v) {
-      this.handleScale()
-    },
   },
   methods: {
     scrollToSignInitial(type = "") {
@@ -918,7 +913,7 @@ export default mixins(PdfAuth).extend({
         let { x, y } = this.pointerPos(event.srcEvent, parent)
 
         if (y < 0) y = 0
-        if (y > elem.clientHeight) x = elem.clientHeight
+        if (y > elem.clientHeight) y = elem.clientHeight
         if (x < 0) x = 0
         if (x > elem.clientWidth) x = elem.clientWidth
 
@@ -991,7 +986,7 @@ export default mixins(PdfAuth).extend({
         document.scrollingElement ||
         document.body
 
-      const boundingRect = scrollingElement.getBoundingClientRect()
+      const boundingRect = scrollingElement.getBoundingClientRect();
 
       //if there is no clientX or there is no clientY on event
       // return 0, 0
@@ -1007,6 +1002,7 @@ export default mixins(PdfAuth).extend({
         mouseXRelativeToScrollingElement + (scrollingElement.scrollLeft || 0)
       const y =
         mouseYRelativeToScrollingElement + (scrollingElement.scrollTop || 0)
+      
       return { x: x / this.scale, y: y / this.scale }
     },
     previousPointerPos(event, parent) {

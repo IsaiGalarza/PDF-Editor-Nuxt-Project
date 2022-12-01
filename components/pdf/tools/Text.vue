@@ -1,8 +1,7 @@
 <template>
   <div class="text-field tool">
-    <input type="text" v-model="text" v-if="(isActive || justMounted) && !isCreator" :style="style" 
-    class="input-annotation"
-    />
+    <input type="text" v-model="text" v-if="(isActive || justMounted) && !isCreator" :style="style"
+      class="input-annotation" />
     <p v-else :style="style">{{ text || 'Click to type' }}</p>
   </div>
 </template>
@@ -21,21 +20,21 @@ export default {
   data: () => ({
     text: null,
   }),
-  created(){
+  created() {
     this.text = this.value
   },
   watch: {
-    value(v){
-      if(this.text != v) this.text = v;
+    value(v) {
+      if (this.text != v) this.text = v;
     },
-    text(v){
-      if(this.value != v) this.$emit('input', v)
+    text(v) {
+      if (this.value != v) this.$emit('input', v)
     },
   },
   computed: {
     isCreator() {
-        return (this.file.userId == this.$auth.user.id) || ((this.$auth.user.teamAccess == TeamAccess.COMPANY_FILE) && this.$auth.user.teamId == this.file.userId)
-      },
+      return (this.file.userId == this.$auth.user.id) || ((this.$auth.user.teamAccess == TeamAccess.COMPANY_FILE) && this.$auth.user.teamId == this.file.userId)
+    },
     style() {
       return {
         fontSize: `${this.fontSize || 11}px`,
@@ -51,10 +50,12 @@ input {
   background-color: transparent;
   border-radius: 4px;
 }
-.input-annotation:focus{
+
+.input-annotation:focus {
   border: 1px solid green
 }
-.input-annotation:blur{
+
+.input-annotation:blur {
   border: 1px solid transparent
 }
 </style>

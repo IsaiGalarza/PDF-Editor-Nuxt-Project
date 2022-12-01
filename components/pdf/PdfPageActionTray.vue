@@ -307,8 +307,6 @@ export default Vue.extend({
     },
   },
   mounted() {
-    console.log(this.file)
-    console.log(this.file.userId, (this.$auth?.user)?.id)
     this.checkFilePrivacy()
   },
   watch: {

@@ -50,10 +50,6 @@ export default Vue.extend({
   },
   layout: 'dashboard',
   // auth:'guest',
-  mounted() {
-    console.log('hi');
-    window.addEventListener("scroll", function () { console.log('scrolling!!!'); })
-  },
   data() {
     return {
       // ledger, confirmed, signed, saved, shared

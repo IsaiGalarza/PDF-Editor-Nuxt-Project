@@ -78,12 +78,11 @@
           <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         </button>
         <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[47px] cursor-pointer"
-          @click="() => { showSignTray = !showSignTray; showSignTray && (showInitialTray = false); }">
-        </div>
+          @click="() => { showSignTray = !showSignTray; showSignTray && (showInitialTray = false); }"></div>
         <div v-if="(showSignTray)"
-          class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-4">
-          <img class="absolute-image border py-1 px-3 rounded h-[50px]" :src="signature || ' '" width="120" />
-          <img src="../../assets/img/pencil.png" class="cursor-pointer w-[20px] h-[22px] ml-1 mt-3"
+          class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-6 mt-1 tray-mode">
+          <img class="absolute-image border py-1 px-3 rounded h-[50px]" :src="signature || ' '" width="140" />
+          <img src="../../assets/img/pencil.png" class="cursor-pointer w-[12px] h-[12px] ml-1 mt-3"
             @click="openSignModal" />
         </div>
       </div>
@@ -98,9 +97,9 @@
           @click="() => { showInitialTray = !showInitialTray; showInitialTray && (showSignTray = false); }">
         </div>
         <div v-if="showInitialTray"
-          class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-4">
+          class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-6 mt-1 tray-mode">
           <img class="absolute-image border py-1 px-3 rounded h-[50px]" :src="initial || ' '" width="120" />
-          <img src="../../assets/img/pencil.png" class="cursor-pointer w-[20px] h-[22px] ml-1 mt-3"
+          <img src="../../assets/img/pencil.png" class="cursor-pointer w-[12px] h-[12px] ml-1 mt-3"
             @click="openInitialModal" />
         </div>
       </div>
@@ -408,4 +407,18 @@ export default {
     @apply rounded-full;
   }
 }
+
+// .tray-mode {}
+
+// .tray-mode::before {  
+//   content: " ";
+//   position: absolute;
+//   background: white;
+//   border: solid 2px #84C870;
+//   width: 10px;
+//   height: 10px;
+//   z-index: 11;
+//   transform: rotate(45deg);
+//   margin-top: -20px;
+// }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="text-field tool">
     <svg ref="tickbox" :style="style" viewBox="0 0 20 19" fill="black" xmlns="http://www.w3.org/2000/svg">
-      <path :svgToImage="svgToImageData" options="fill"
+      <path svgToImage="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAAAXNSR0IArs4c6QAAALpJREFUKFOVkWENwjAQhb85wAE4gCkgKAAH4GCgAFAAKAAH4AAkMAXLHIACyCN3yyhNWC/pj7b39d57zUirHrDOEhgBV+CZAt2AMZB3hU7AHNgCmy7QEtgBJTCSnX/QDDib7xy4O7Sw0Ss/tCa9KuMK4CPLQ9Okl20ewMRANVYGNLLa0B4oAvDo+pVWoKDxdAGmkT87AAriqzwIydE/DFu3tU2T7CikQ4FKp28d8qeHfiqMfGApSa5WtN4gXh+N4JxwzAAAAABJRU5ErkJggg==" options="fill"
         d="M7.23415 19C6.61458 19 6.02394 18.7368 5.61845 18.2763L0.51216 12.4731C-0.252486 11.6039 -0.14912 10.2957 0.743192 9.55085C1.63511 8.80517 2.97802 8.90586 3.74357 9.77552L7.08178 13.5691L17.6323 1.17605C19.2654 -1.05235 20.9748 0.181643 19.3344 2.41957L8.9652 18.132C8.5848 18.6505 7.98094 18.9697 7.32779 18.9979C7.29626 18.9992 7.26523 19 7.23415 19Z"
         fill="black" />
     </svg>
@@ -19,12 +19,12 @@ export default {
       svgToImageData: ''
     }
   },
-  watch: {
-    generatePDF: function () {
-      if (this.generatePDF)
-        this.svgToImage()
-    },
-  },
+  // watch: {
+  //   generatePDF: function () {
+  //     if (this.generatePDF)
+  //       this.svgToImage()
+  //   },
+  // },
   computed: {
     style() {
       return {

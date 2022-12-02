@@ -197,6 +197,8 @@ export const ExtractFormPdf = ({
     }
 
     if (element.children.length > 1) {
+      console.clear();
+      let count = 1; 
       //--< formed array from the children element of the main container of holding the paperlink annotations>--
       Array.from(element.children).forEach((item) => {
         if (item.classList.contains('tool-wrapper')) {
@@ -204,6 +206,7 @@ export const ExtractFormPdf = ({
           Array.from((item.children[1] || item.children[0]).children).forEach(
             (tools: any) => {
               //--< START- check the element of the tool >--
+
               switch (tools.tagName) {
                 case 'svg':
                   appendEditElement({

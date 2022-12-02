@@ -790,7 +790,6 @@ export default mixins(PdfAuth).extend({
       direction = undefined,
       pageNumber
     ) {
-      console.log('here');
       var elem = this.$refs['pdf-single-pages-outer']
       if (!this.isPanning && id == undefined) {
         this.isPanning = true

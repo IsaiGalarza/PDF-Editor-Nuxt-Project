@@ -18,7 +18,6 @@ export default {
     }
   },
   mounted() {
-
   },
   watch: {
     generatePDF: function () {
@@ -71,8 +70,8 @@ export default {
     },
     viewBox() {
       let x1 = Math.min(this.x1, this.x2)
-      let y1 = this.y2 < this.y1 ? this.y2 : this.y1 //Math.min(this.y1, this.y2) : Math.max(this.y1, this.y2)
-      return `${x1 - 5} ${y1 - 5} ${this.width + 10} ${this.height + 10}`
+      let y1 = Math.min(this.y1, this.y2) //Math.min(this.y1, this.y2) : Math.max(this.y1, this.y2)
+      return `${x1 - 1.5} ${y1 - 1.5} ${this.width + 2} ${this.height + 2}`
     },
     width() {
       return Math.abs(this.x2 - this.x1)

@@ -25,6 +25,7 @@
               'pdf-single-page-outer w-full',
               { 'mt-6': pI > 0 && !downloadingPdf },
             ]" :ref="`pdf-single-page-outer-${pI + 1}`" v-for="(page, pI) in pdf.numPages" :key="pI"
+              v-hammer:pan="(ev) => handlePanning(ev, undefined, undefined, pI + 1)"
               style="position: relative;">
 
               <tool-wrapper v-for="tool in fillteredTools(pI + 1)" :key="tool.id" :dragHandler="handlePanning"

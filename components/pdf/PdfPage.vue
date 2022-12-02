@@ -1,7 +1,7 @@
 <template>
   <div class="pdf-page" ref="PdfPage">
     <div class="annotationLayer" ref="annotationLayer"></div>
-    <canvas v-hammer:pan="(ev) => handlePanning(ev, undefined, undefined, pageNumber)"
+    <canvas
       @click="e => onCLickSinglePageOuter(e, pageNumber)" @mousemove="onMouseMoveOnPages"
       @mouseleave="onMouseLeaveFromPages" ref="canvas" class="pdf-canvas"></canvas>
   </div>

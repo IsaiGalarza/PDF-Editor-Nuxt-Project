@@ -63,6 +63,7 @@
       closeModal() {
         // window.location.assign('/dashboard')
         this.$emit('updateVisibility', false)
+        this.$nuxt.$router.push('/dashboard');
       },
       
     },

@@ -86,12 +86,11 @@ export default {
       })
 
       this.renderAnnotation(page)
-      // console.log("view-port",viewport)
       this.$emit('setPageWidth', { width: canvas.width, height: canvas.height })
     },
     async renderAnnotation(page) {
       let annotationLayer = this.$refs.annotationLayer
-      let annotations = await page.getAnnotations()
+      let annotations = await page.getAnnotations();
       let v = page.getViewport({ scale: this.$store.state.pdfScale })
       await PDFJS.AnnotationLayer.render({
         viewport: v.clone({ dontFlip: true }),

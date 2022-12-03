@@ -60,10 +60,10 @@
             fill="#84C870" />
         </svg>
       </div>
-      <div v-else-if="type == 'appendSignature' && tool.completed">
+      <div v-else-if="(type == 'appendSignature' && tool.completed && isCreator)">
         <img :src="tool.completed" width="70" />
       </div>
-      <div v-else-if="type == 'appendInitial' && tool.completed">
+      <div v-else-if="(type == 'appendInitial' && tool.completed && isCreator)">
         <img :src="tool.completed" width="70" />
       </div>
       <component v-else :is="`${type}-tool`" :x1="x1" :y1="y1" :x2="x2" :y2="y2" :id="id" :tool="tool"

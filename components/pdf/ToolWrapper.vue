@@ -69,7 +69,8 @@
       <component v-else :is="`${type}-tool`" :x1="x1" :y1="y1" :x2="x2" :y2="y2" :id="id" :tool="tool"
         :elemScale="elemScale" :incDecCount="incDecCount" :points="points" :isActive="isActive" :fontSize="fontSize"
         :scale="scale" :file="file" :value="value" :justMounted="justMounted" @input="onInp" :generatePDF="generatePDF"
-        :showPublishModal="showPublishModal" />
+        :showPublishModal="showPublishModal" :selectedToolType="selectedToolType" :mouseUp="mouseUp" :lineStart="lineStart"
+        :toolLength="toolLength" :drawingStart="drawingStart" />
       <!-- <div :class="[
         'dr__right',
         { line: type == TOOL_TYPE.line },
@@ -137,7 +138,12 @@ export default {
     toolWrapperBeforeChecked: Function,
     toolWrapperAfterChecked: Function,
     justMounted: Boolean,
+    mouseUp: Boolean,
+    selectedToolType: String,
+    drawingStart:Boolean,
     value: undefined,
+    lineStart:Boolean,
+    toolLength: Number
   },
   components: {
     TextTool,

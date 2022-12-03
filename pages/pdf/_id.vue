@@ -25,18 +25,19 @@
               'pdf-single-page-outer w-full',
               { 'mt-6': pI > 0 && !downloadingPdf },
             ]" :ref="`pdf-single-page-outer-${pI + 1}`" v-for="(page, pI) in pdf.numPages" :key="pI"
-              v-hammer:pan="(ev) => handlePanning(ev, undefined, undefined, pI + 1)"
-              style="position: relative;">
+              v-hammer:pan="(ev) => handlePanning(ev, undefined, undefined, pI + 1)" @mouseup="onMouseUp"
+              @mousedown="(mouseUp = false)" style="position: relative;">
 
-              <tool-wrapper v-for="tool in fillteredTools(pI + 1)" :key="tool.id" :dragHandler="handlePanning"
-                :id="tool.id" :tool="tool" :type="tool.type" :x1="tool.x1" :y1="tool.y1" :x2="tool.x2" :y2="tool.y2"
-                :points="tool.points" :deleteTool="deleteTool" :handleIncrease="handleIncrease"
-                :handleDecrease="handleDecrease" :fontSize="tool.fontSize" :scale="tool.scale" @pos-change="onPosChange"
-                @resetJustMounted="resetJustMounted" :activeToolId="activeToolId" :setActiveToolId="setActiveToolId"
-                :pageNumber="pI + 1" :value="tool.value" :file="file" :justMounted="tool.justMounted"
-                :showPublishModal="showPublishModal" :generatePDF="generatePDF"
-                @toolWrapperBeforeChecked="toolWrapperBeforeChecked" @toolWrapperAfterChecked="toolWrapperAfterChecked"
-                v-model="tool.value" />
+              <tool-wrapper v-for="tool in   fillteredTools(pI + 1)" :toolLength="fillteredTools(pI + 1).length"
+                :key="tool.id" :selectedToolType="selectedToolType" :dragHandler="handlePanning" :id="tool.id"
+                :tool="tool" :type="tool.type" :x1="tool.x1" :y1="tool.y1" :x2="tool.x2" :y2="tool.y2"
+                :points="tool.points" :deleteTool="deleteTool" :handleIncrease="handleIncrease" :mouseUp="mouseUp"
+                :lineStart="lineStart" :handleDecrease="handleDecrease" :fontSize="tool.fontSize" :scale="tool.scale"
+                @pos-change="onPosChange" @resetJustMounted="resetJustMounted" :activeToolId="activeToolId"
+                :setActiveToolId="setActiveToolId" :pageNumber="pI + 1" :value="tool.value" :file="file"
+                :justMounted="tool.justMounted" :drawingStart="drawingStart" :showPublishModal="showPublishModal"
+                :generatePDF="generatePDF" @toolWrapperBeforeChecked="toolWrapperBeforeChecked"
+                @toolWrapperAfterChecked="toolWrapperAfterChecked" v-model="tool.value" />
               <!-- </div> -->
               <pdf-page :handlePanning="handlePanning" :onCLickSinglePageOuter="onCLickSinglePageOuter" :file="file"
                 :onMouseMoveOnPages="onMouseMoveOnPages" :onMouseLeaveFromPages="onMouseLeaveFromPages"
@@ -175,12 +176,15 @@ export default mixins(PdfAuth).extend({
     pdfContainerDimension: {},
     showExitFileManager: false,
     nextRoute: null,
+    drawingStart: false,
     initialTools: [],
     showPublishModal: false,
     showSuccesshModal: false,
     showDoneModal: false,
     isBottom: false,
     generatePDF: false,
+    mouseUp: false,
+    lineStart: false,
     showBlockPrivate: false,
     filePermission: true,
     displayPDF: false,
@@ -407,7 +411,10 @@ export default mixins(PdfAuth).extend({
     }
   },
   methods: {
-    scrollToSignInitial(type = "") {
+    onMouseUp: function () {
+      this.mouseUp = true;
+      setTimeout(() => { this.drawingStart = false; this.lineStart = false; }, 50);
+    }, scrollToSignInitial(type = "") {
       if (this.isCreator || !this.$auth.loggedIn) return
 
       setTimeout(() => {
@@ -797,12 +804,14 @@ export default mixins(PdfAuth).extend({
         this.lastPosX = elem.offsetLeft
         this.lastPosY = elem.offsetTop
         if (this.selectedToolType == this.TOOL_TYPE.line) {
+          this.lineStart = true;
           await this.placeTool(event.srcEvent, pageNumber)
           this.selectedToolId = this.tools[this.tools.length - 1].id
         } else if (this.selectedToolType == this.TOOL_TYPE.highlight) {
           await this.placeTool(event.srcEvent, pageNumber)
           this.selectedToolId = this.tools[this.tools.length - 1].id
         } else if (this.selectedToolType == this.TOOL_TYPE.draw) {
+          this.drawingStart = true;
           await this.placeTool(event.srcEvent, pageNumber)
           this.selectedToolId = this.tools[this.tools.length - 1].id
         }

@@ -24,31 +24,20 @@ export default {
       }
     },
   },
+
   // watch:{
   //   generatePDF: function(){
   //     if(this.generatePDF)
   //     this.svgToImage()
   //   },
   // },
+
   data() {
     return {
       svgToImageData:''
     }
   },
   methods:{
-    async svgToImage(){
-      this.svgToImageData = '';
-      let dataPAz = ''
-      await htmlToImage.toPng(this.$refs.circlebox)
-        .then(function (dataUrl) {
-          dataPAz = dataUrl;
-        })
-        .catch(function (error) {
-          console.error('oops, something went wrong!', error);
-        }); 
-
-        this.svgToImageData = dataPAz
-       },
   }
 }
 </script>

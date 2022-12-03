@@ -10,7 +10,10 @@ export default {
     tool: Object,
     points: Array,
     showPublishModal: Boolean,
-    generatePDF: Boolean
+    id: Number,
+    toolLength: Number,
+    drawingStart: Boolean,
+    mouseUp: Boolean
   },
   data() {
     return {
@@ -20,24 +23,23 @@ export default {
   mounted() {
   },
   watch: {
-    generatePDF: function () {
-      if (this.generatePDF)
-        this.svgToImage()
-    },
+    mouseUp: function () {
+      // console.log(this.id, '===',this.toolLength , '===', this.drawingStart , '===', this.mouseUp);
+      this.id === this.toolLength && this.drawingStart && this.mouseUp && this.converImage();
+    }
   },
   methods: {
-    async svgToImage() {
-      this.svgToImageData = '';
-      let dataPAz = '';
-      await htmlToImage.toPng(this.$refs.drawBox)
-        .then(function (dataUrl) {
-          dataPAz = dataUrl;
-        })
-        .catch(function (error) {
-          console.error('oops, something went wrong!', error);
-        });
-
-      this.svgToImageData = dataPAz
+    converImage: function () {
+      const svgElem = this.$refs.drawBox
+      let img = new Image(),
+        serializer = new XMLSerializer(),
+        svgStr = serializer.serializeToString(svgElem);
+      let canvas = document.createElement("canvas");
+      img.onload = () => {
+        canvas.getContext("2d").drawImage(img, 0, 0);
+        this.svgToImageData = canvas.toDataURL("image/png")
+      }
+      img.src = 'data:image/svg+xml;base64,' + window.btoa(svgStr);
     },
   },
 

@@ -411,7 +411,6 @@ export const ExtractFormPdf = ({
         // let inputs = document.querySelectorAll(".annotationLayer > input")
         let inputs = $('.annotationLayer').find(':input')
         Array.from(inputs).forEach((elementList: any) => {
-          console.log(elementList.type)
           switch (elementList.type) {
             case 'text':
               ; (pdfScrappedData.data as any).push({

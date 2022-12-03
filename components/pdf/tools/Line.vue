@@ -13,15 +13,16 @@ export default {
     x2: Number,
     y2: Number,
     tool: Object,
-    id: Number,
-    generatePDF: Boolean,
     showPublishModal: Boolean,
+    id: Number,
+    toolLength: Number,
+    lineStart: Boolean,
+    mouseUp: Boolean
   },
   watch: {
-    generatePDF: function () {
-      if (this.generatePDF)
-        this.svgToImage()
-    },
+    mouseUp: function () {
+      this.id === this.toolLength && this.lineStart && this.mouseUp && this.converImage();
+    }
   },
   data() {
     return {
@@ -29,19 +30,17 @@ export default {
     }
   },
   methods: {
-    async svgToImage() {
-      this.svgToImageData = '';
-      let dataPAz = ''
-      await htmlToImage.toPng(this.$refs.lineBox)
-        .then(function (dataUrl) {
-          dataPAz = dataUrl;
-        })
-        .catch(function (error) {
-          console.error('oops, something went wrong!', error);
-        });
-
-      this.svgToImageData = dataPAz
-      // console.log('gggggggggggggggggg',  this.svgToImageData)
+    converImage: function () {
+      const svgElem = this.$refs.lineBox
+      let img = new Image(),
+        serializer = new XMLSerializer(),
+        svgStr = serializer.serializeToString(svgElem);
+      let canvas = document.createElement("canvas");
+      img.onload = () => {
+        canvas.getContext("2d").drawImage(img, 0, 0);
+        this.svgToImageData = canvas.toDataURL("image/png")
+      }
+      img.src = 'data:image/svg+xml;base64,' + window.btoa(svgStr);
     },
   },
 
@@ -52,8 +51,12 @@ export default {
       }
     },
     viewBox() {
-      let x1 = this.x2 < this.x1 ? this.x2 - 3 : this.x1 - 3
-      let y1 = Math.min(this.y1, this.y2) - 3
+      let x1 = 0
+      let y1 = 0
+      if (this.x1 && this.x2 && this.y1 && this.y2) {
+        x1 = this.x2 < this.x1 ? this.x2 - 3 : this.x1 - 3
+        y1 = Math.min(this.y1, this.y2) - 3
+      }
       return `${x1} ${y1} ${this.width + 10} ${this.height + 10}`
     },
     width() {
@@ -63,11 +66,16 @@ export default {
       return Math.abs(this.y2 - this.y1)
     },
     d() {
-      let x1 = this.x1
-      let y1 = this.y1
-      let x2 = this.x2
-      let y2 = this.y2
-
+      let y2 = 0
+      let x1 = 0
+      let y1 = 0
+      let x2 = 0
+      if (this.x1 && this.x2 && this.y1 && this.y2) {
+        y2 = this.y2
+        x1 = this.x1
+        y1 = this.y1
+        x2 = this.x2
+      }
       return `M${x1},${y1}L${x2},${y2}`
     },
   },

@@ -64,8 +64,8 @@
         required
         v-model="folderTextareaData"
         class="w-full py-2 px-4 focus:border-paperdazgray-500 outline-none rounded-md h-28 resize-none border-[1px] border-paperdazgray-500"
-        placeholder="Note..."
-       /></textarea>
+        placeholder="Note...">
+      </textarea>
      </p>
     <div class="flex justify-around">
       <button

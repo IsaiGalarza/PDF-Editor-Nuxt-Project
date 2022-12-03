@@ -17,11 +17,17 @@ export default {
     id: Number,
     toolLength: Number,
     lineStart: Boolean,
-    mouseUp: Boolean
+    mouseUp: Boolean,
+    generatePDF:Boolean
   },
   watch: {
-    mouseUp: function () {
-      this.id === this.toolLength && this.lineStart && this.mouseUp && this.converImage();
+    // mouseUp: function () {
+    //   this.id === this.toolLength && this.lineStart && this.mouseUp && this.converImage();
+    // },
+    generatePDF: function () {
+      if (this.generatePDF) {
+        this.converImage();
+      }
     }
   },
   data() {

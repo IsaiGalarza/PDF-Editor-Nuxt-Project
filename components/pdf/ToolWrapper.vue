@@ -430,6 +430,7 @@ export default {
   height: 32px;
   position: absolute;
   top: -37px;
+  z-index: 30;
 }
 
 .tool-holder {

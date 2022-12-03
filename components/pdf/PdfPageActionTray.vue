@@ -170,6 +170,7 @@ import FilePrivacy from "~/models/FilePrivacy"
 import FileAction from '~/models/FileAction'
 import RemoveFileModal from './modals/RemoveFileModal.vue'
 import AddToPageDrawOrType from '../modals/AddToPageDrawOrType.vue'
+import DoneModal from '../../components/pdf/modals/DoneModal.vue'
 
 export default Vue.extend({
   components: {
@@ -188,7 +189,7 @@ export default Vue.extend({
     QrcodeShare,
     PublishPdfModal,
     RemoveFileModal,
-    AddToPageDrawOrType
+    AddToPageDrawOrType,
   },
   beforeMount() {
     // if(!this.$auth.loggedIn){  
@@ -214,7 +215,7 @@ export default Vue.extend({
       fullName: '',
       saveFunction: '',
       showPublishModal: false,
-      showRemoveModal: false
+      showRemoveModal: false,
     }
   },
   computed: {
@@ -245,7 +246,7 @@ export default Vue.extend({
   },
   methods: {
     cancelPublish() {
-      // this.$nuxt.$router.push('/dashboard');
+        // this.$nuxt.$router.push('/dashboard');
       window.location.assign('/dashboard')
     },
     showQrcodeFileFunc() {

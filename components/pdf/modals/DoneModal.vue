@@ -67,7 +67,8 @@ export default Vue.extend({
   },
   methods: {
     closeModal() {
-      window.location.assign('/dashboard')
+      // window.location.assign('/dashboard')
+      this.$nuxt.$router.push("/dashboard")
       this.$emit('updateVisibility', false)
     },
 

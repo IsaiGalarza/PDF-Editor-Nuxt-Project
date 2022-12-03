@@ -77,10 +77,10 @@
           Sign
           <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         </button>
-        <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[47px] cursor-pointer"
+        <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[47px] cursor-pointer" id="signtraybtn"
           @click="() => { showSignTray = !showSignTray; showSignTray && (showInitialTray = false); }"></div>
-        <div v-if="(showSignTray)"
-          class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-6 mt-1 tray-mode">
+        <div v-if="(showSignTray)" v-click-outside="handleSignFocusOut"
+          class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-10 mt-1 tray-mode">
           <img class="absolute-image border py-1 px-3 rounded h-[50px]" :src="signature || ' '" width="140" />
           <img src="../../assets/img/pencil.png" class="cursor-pointer w-[12px] h-[12px] ml-1 mt-3"
             @click="openSignModal" />
@@ -94,10 +94,11 @@
           <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         </button>
         <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[54px] cursor-pointer"
+          id="initialtraybtn"
           @click="() => { showInitialTray = !showInitialTray; showInitialTray && (showSignTray = false); }">
         </div>
-        <div v-if="showInitialTray"
-          class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-6 mt-1 tray-mode">
+        <div v-if="showInitialTray" v-click-outside="handleInitialFocusOut" 
+          class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-10 mt-1 tray-mode">
           <img class="absolute-image border py-1 px-3 rounded h-[50px]" :src="initial || ' '" width="120" />
           <img src="../../assets/img/pencil.png" class="cursor-pointer w-[12px] h-[12px] ml-1 mt-3"
             @click="openInitialModal" />
@@ -266,6 +267,16 @@ export default {
         this.setSelectedType(this.TOOL_TYPE.star)
       }
     },
+    handleInitialFocusOut(e) {
+      if (e.target.id !== 'initialtraybtn') {
+        this.showInitialTray = false;
+      };
+    },
+    handleSignFocusOut(e) {
+      if (e.target.id !== 'signtraybtn') {
+        this.showSignTray = false;
+      };
+    },
     signContinue() {
       if (this.signAgreeChecked) {
         this.$store.commit('SET_AGREE_SIGN');
@@ -343,7 +354,6 @@ export default {
     openInitialModal() {
       if (!this.isCreator) {
         this.showInitialsModal = true
-        this.showInitialTray = false
       }
     },
     onInitialsClick() {

@@ -16,7 +16,7 @@ export const state = () => ({
   editAnnotation: true,
   loadedPdfFile: {},
   pdfExit: false,
-  pdfScale: 1.345,
+  pdfScale: 1.305,
   pdfOffset_y: 0,
   pdfOffset_x: 0,
   scrollPosition: false,

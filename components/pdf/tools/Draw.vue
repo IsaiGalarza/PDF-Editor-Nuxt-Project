@@ -13,7 +13,8 @@ export default {
     id: Number,
     toolLength: Number,
     drawingStart: Boolean,
-    mouseUp: Boolean
+    mouseUp: Boolean,
+    generatePDF:Boolean
   },
   data() {
     return {
@@ -23,9 +24,14 @@ export default {
   mounted() {
   },
   watch: {
-    mouseUp: function () {
-      // console.log(this.id, '===',this.toolLength , '===', this.drawingStart , '===', this.mouseUp);
-      this.id === this.toolLength && this.drawingStart && this.mouseUp && this.converImage();
+    // mouseUp: function () {
+    //   // console.log(this.id, '===',this.toolLength , '===', this.drawingStart , '===', this.mouseUp);
+    //   this.id === this.toolLength && this.drawingStart && this.mouseUp && this.converImage();
+    // },
+    generatePDF: function () {
+      if (this.generatePDF) {
+        this.converImage();
+      }
     }
   },
   methods: {

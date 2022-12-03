@@ -246,8 +246,8 @@ export default Vue.extend({
   },
   methods: {
     cancelPublish() {
-        // this.$nuxt.$router.push('/dashboard');
       window.location.assign('/dashboard')
+      // this.$nuxt.$router.push('/dashboard');
     },
     showQrcodeFileFunc() {
       this.showQrcodeFiles = true

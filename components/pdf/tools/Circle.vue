@@ -24,6 +24,14 @@ export default {
       }
     },
   },
+
+  // watch:{
+  //   generatePDF: function(){
+  //     if(this.generatePDF)
+  //     this.svgToImage()
+  //   },
+  // },
+
   data() {
     return {
       svgToImageData:''

@@ -1,7 +1,15 @@
 <template>
-  <div class="text-field tool">
-    <input type="text" v-model="text" v-if="(isActive || justMounted) && !isCreator" :style="style"
-      class="input-annotation" />
+  <div
+    class="text-field tool"
+    style="height: 19px; display: flex; align-items: end"
+  >
+    <input
+      type="text"
+      v-model="text"
+      v-if="(isActive || justMounted) && !isCreator"
+      :style="style"
+      class="input-annotation"
+    />
     <p v-else :style="style">{{ text || 'Click to type' }}</p>
   </div>
 </template>
@@ -15,32 +23,36 @@ export default {
     fontSize: Number,
     value: String,
     file: Object,
-    justMounted: Boolean,
+    justMounted: Boolean
   },
   data: () => ({
-    text: null,
+    text: null
   }),
-  created() {
+  created () {
     this.text = this.value
   },
   watch: {
-    value(v) {
-      if (this.text != v) this.text = v;
+    value (v) {
+      if (this.text != v) this.text = v
     },
-    text(v) {
+    text (v) {
       if (this.value != v) this.$emit('input', v)
-    },
+    }
   },
   computed: {
-    isCreator() {
-      return (this.file.userId == this.$auth.user.id) || ((this.$auth.user.teamAccess == TeamAccess.COMPANY_FILE) && this.$auth.user.teamId == this.file.userId)
+    isCreator () {
+      return (
+        this.file.userId == this.$auth.user.id ||
+        (this.$auth.user.teamAccess == TeamAccess.COMPANY_FILE &&
+          this.$auth.user.teamId == this.file.userId)
+      )
     },
-    style() {
+    style () {
       return {
-        fontSize: `${this.fontSize || 11}px`,
+        fontSize: `${this.fontSize || 11}px`
       }
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -52,10 +64,10 @@ input {
 }
 
 .input-annotation:focus {
-  border: 1px solid green
+  border: 1px solid green;
 }
 
 .input-annotation:blur {
-  border: 1px solid transparent
+  border: 1px solid transparent;
 }
 </style>

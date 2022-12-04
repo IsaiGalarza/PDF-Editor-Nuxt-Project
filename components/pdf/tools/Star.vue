@@ -32,8 +32,8 @@ export default {
   computed: {
     style() {
       return {
-        width: `${(this.scale || 1) * 16}px`,
-        height: `${(this.scale || 1) * 20}px`,
+        width: `${(this.scale || 1) * 18}px`,
+        height: `${(this.scale || 1) * 24}px`,
       }
     },
     notBtn() {

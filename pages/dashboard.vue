@@ -145,7 +145,6 @@ export default Vue.extend({
     async maxFileUpload() {
       await this.$axios.get(`/subscriptions/${this.$auth.user.subscriptionId}`)
         .then((response) => {
-          console.log(">>>>>>>>>> max file", response.data)
           this.totalRegisteredPaperlink = response?.data?.paperlink
         })
         .finally(() => { this.showUploadIcon = true })

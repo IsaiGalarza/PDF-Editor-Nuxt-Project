@@ -173,10 +173,12 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     signLabel () {
       let date = new Date()
-      return `P${date.getFullYear()}${this.convertToDoubleString(
+      return `P${this.convertToDoubleString(
+        date.getUTCMonth() + 1
+      )}${this.convertToDoubleString(
         date.getUTCDate()
       )}${this.convertToDoubleString(
-        date.getUTCDay()
+        date.getFullYear()
       )}${this.convertToDoubleString(
         date.getUTCHours()
       )}${this.convertToDoubleString(

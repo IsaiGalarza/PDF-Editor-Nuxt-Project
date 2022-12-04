@@ -887,7 +887,6 @@ export default mixins(PdfAuth).extend({
       this.selectedToolType = type
     },
     pointerPos(event, parent) {
-      // console.log('cancle-obj', event.currentTarget.parentElement)
       const elParent =
         parent ||
         event.currentTarget.parentElement ||
@@ -973,7 +972,7 @@ export default mixins(PdfAuth).extend({
           this.selectedToolType == this.TOOL_TYPE.draw
         )
       ) {
-        this.onToolChange(null)
+        // this.onToolChange(null)
       }
     },
     placeTool(e, pageNumber, initialPoint) {

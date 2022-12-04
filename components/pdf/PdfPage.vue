@@ -1,9 +1,8 @@
 <template>
   <div class="pdf-page" ref="PdfPage">
     <div class="annotationLayer" ref="annotationLayer"></div>
-    <canvas
-      @click="e => onCLickSinglePageOuter(e, pageNumber)" @mousemove="onMouseMoveOnPages"
-      @mouseleave="onMouseLeaveFromPages" ref="canvas" class="pdf-canvas"></canvas>
+    <canvas @click="e => onCLickSinglePageOuter(e, pageNumber)"  @mousemove="onMouseMoveOnPages" @mouseleave="onMouseLeaveFromPages" ref="canvas"
+      class="pdf-canvas"></canvas>
   </div>
 </template>
 
@@ -51,7 +50,6 @@ export default {
       this.pdf.getPage(this.pageNumber).then(page => {
         this.$store.commit('SET_PDF_OFFSET_Y', page.view[1])
         this.$store.commit('SET_PDF_OFFSET_X', page.view[0])
-        console.log("pdf_oofset_initial",this.$store.state.pdfOffset_y, this.$store.state.pdfOffset_x)
       });
       let page = await this.pdf.getPage(this.pageNumber)
 

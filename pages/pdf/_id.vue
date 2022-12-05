@@ -28,7 +28,30 @@
               @mousemove="(ev) => handlePanning(ev, undefined, undefined, pI + 1)" @mouseup="onMouseUp"
               @mousedown="onMouseDown" style="position: relative;">
 
-              <tool-wrapper v-for="tool in   fillteredTools(pI + 1)" :toolLength="fillteredTools(pI + 1).length"
+              <div
+                v-if="((filteredAnnotationButton.length > 0) && isSign && curSignInitialPage == ('sign' + (pI + 1)) && isAgreedSign == 1)"
+                class="flex absolute" :style="signAlaram">
+                <div class="bg-[#77B550] p-1 text-white text-[12px] border-rounded-lg">
+                  {{ "Sign " + signNumber }}
+                </div>
+                <div
+                  class="w-0 h-0 border-t-[14px] -ml-[1px] border-b-[14px] border-t-transparent border-b-transparent border-l-[14px] border-l-[#77B550]">
+                </div>
+              </div>
+
+              <div
+                v-if="((filteredAnnotationButton.length > 0) && isSign && curSignInitialPage == ('initial' + (pI + 1)) && isAgreedSign == 1)"
+                :style="signAlaram" class="absolute flex">
+                <div class="bg-[#77B550] py-1 text-white text-[12px] border-rounded-lg">
+                  {{
+                      "Initial " + InitialNumber
+                  }}
+                </div>
+                <div
+                  class="w-0 h-0 border-t-[14px] -ml-[1px] border-b-[14px] border-t-transparent border-b-transparent border-l-[14px] border-l-[#77B550]">
+                </div>
+              </div>
+              <tool-wrapper v-for="tool in fillteredTools(pI + 1)" :toolLength="fillteredTools(pI + 1).length"
                 :key="tool.id" :selectedToolType="selectedToolType" :dragHandler="handlePanning" :id="tool.id"
                 :tool="tool" :type="tool.type" :x1="tool.x1" :y1="tool.y1" :x2="tool.x2" :y2="tool.y2"
                 :points="tool.points" :deleteTool="deleteTool" :handleIncrease="handleIncrease" :mouseUp="mouseUp"
@@ -53,7 +76,7 @@
       <button class="w-full bg-paperdazgreen-400 py-2 text-white overflow-hidden duration-300"
         v-if="(isScrollBottom && $auth.loggedIn && isConfirm && !isCreator)" id="confirmButtton"
         @click="confirmDocument()">
-        Confirm
+        Click to Confirm
       </button>
     </main>
 
@@ -160,7 +183,8 @@ export default mixins(PdfAuth).extend({
     toolIdentifierPosition: { top: 0, left: 0 },
     showToolIdentifier: false,
     pdfLoading: true,
-
+    signNumber: 1,
+    InitialNumber: 1,
     propsNumPages: null,
     setInitialOrigin: 0,
     pageHeight: null,
@@ -215,6 +239,11 @@ export default mixins(PdfAuth).extend({
     toolId: 0,
     downloadingPdf: false,
     showSaveModal: false,
+    signAlaram: {
+      top: '0px',
+      left: '0px'
+    },
+    curSignInitialPage: 0
   }),
   created() {
     this.fetchPdf()
@@ -315,6 +344,9 @@ export default mixins(PdfAuth).extend({
         (this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE &&
           this.$auth?.user?.teamId == this.file.userId)
       )
+    },
+    isAgreedSign() {
+      return this.$store.state.agreeSign;
     },
     isConfirm() {
       return String(this.file.fileAction).toLowerCase() === FileAction.CONFIRM
@@ -423,7 +455,8 @@ export default mixins(PdfAuth).extend({
       this.lastPosX = 0
       this.lastPosY = 0
       setTimeout(() => { this.drawingStart = false; this.lineStart = false; }, 50);
-    }, scrollToSignInitial(type = "") {
+    },
+    scrollToSignInitial(type = "") {
       if (this.isCreator || !this.$auth.loggedIn) return
 
       setTimeout(() => {
@@ -437,9 +470,30 @@ export default mixins(PdfAuth).extend({
         // if (this.filteredAnnotationButton.length == 0 && this.isSign && type === "appendsigninitial") {
         //   this.showDoneModal = true;
         // }
+        if (type == 'mounted' && this.filteredAnnotationButton.length > 0) {
+          let signNum = 0, initialNum = 0;
+          this.filteredAnnotationButton.map((val, ind) => {
+            let twrap = val.parentElement.parentElement.parentElement;
+            if (twrap.id.indexOf('sign') > -1) {
+              signNum++;
+            }
+            if (twrap.id.indexOf('initial') > -1) {
+              initialNum++;
+            }
+          })
+          this.signNumber = signNum;
+          this.InitialNumber = initialNum;
+        }
         if (this.filteredAnnotationButton[0]) {
           this.filteredAnnotationButton[0].classList.add('pulse')
+          window.selem = this.filteredAnnotationButton[0];
           this.filteredAnnotationButton[0].scrollIntoView({ block: 'center', behavior: 'smooth' })
+          let toolwrapper = this.filteredAnnotationButton[0].parentElement.parentElement.parentElement;
+          this.signAlaram.top = toolwrapper.style.top;
+          this.curSignInitialPage = toolwrapper.id;
+          type === "appendsign" && this.signNumber--;
+          type === "appendinitial" && this.InitialNumber--;
+          // this.signAlaram.left = this.filteredAnnotationButton[0].parentElement.parentElement.parentElement.style.left
         }
       }, 100)
     },
@@ -572,7 +626,7 @@ export default mixins(PdfAuth).extend({
 
       //scroll to sign or initials button
       setTimeout(() => {
-        this.scrollToSignInitial()
+        this.scrollToSignInitial('mounted')
       }, 1000)
     },
     setPageHeight(val) {

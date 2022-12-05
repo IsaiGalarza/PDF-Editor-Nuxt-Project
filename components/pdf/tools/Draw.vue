@@ -30,12 +30,12 @@ export default {
     // },
     generatePDF: function () {
       if (this.generatePDF) {
-        this.converImage();
+        this.convertImage();
       }
     }
   },
   methods: {
-    converImage: function () {
+    convertImage: function () {
       const svgElem = this.$refs.drawBox
       let img = new Image(),
         serializer = new XMLSerializer(),

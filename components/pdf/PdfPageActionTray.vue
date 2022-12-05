@@ -118,11 +118,11 @@
     <div class="lg:flex items-center hidden">
 
       <button v-if="!isConfirm && $auth.loggedIn" @click="saveChanges"
-        class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-2 h-7">
-        Publish
+        class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7">
+        {{ isCreator ? ' Publish' : 'Done' }}
       </button>
       <button v-if="!isConfirm && $auth.loggedIn" @click="cancelPublish"
-        class="mr-2 text-xs text-white bg-zinc-400 border rounded px-2 h-7">
+        class="mr-2 text-xs text-white bg-zinc-400 border rounded px-3 h-7">
         Cancel
       </button>
     </div>

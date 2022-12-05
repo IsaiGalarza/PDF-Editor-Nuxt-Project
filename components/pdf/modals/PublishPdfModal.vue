@@ -338,8 +338,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       this.$axios
         .$post(`/request`, requestData)
         .then(response => {
-          this.successAction()
+          // this.successAction()
           this.$nuxt.refresh()
+          this.$nuxt.$router.push('/dashboard')
           this.$store.commit('SET_PDF_EXIT', true)
           // window.location.assign('/dashboard')
         })
@@ -419,8 +420,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
             message: 'File publish successfully'
           })
           this.$store.commit('SET_PDF_EXIT', true)
-          // window.location.assign('/dashboard')
-          this.$nuxt.$router.push('/dashboard')
+          window.location.assign('/dashboard')
+          // this.$nuxt.$router.push('/dashboard')
         })
         .catch(() => {
           this.$notify.error({

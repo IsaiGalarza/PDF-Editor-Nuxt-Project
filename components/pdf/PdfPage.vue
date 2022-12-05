@@ -42,10 +42,10 @@ export default {
     let pdfPage = document.getElementsByClassName('pdf-editor-view')[0]
     setTimeout(() => {
       pdfPage.scrollTo(0, 0)
-    }, 300)
+    }, 1000)
     setTimeout(() => {
       pdfPage.addEventListener('scroll', this.onScroll)
-    }, 500)
+    }, 1000)
   },
   computed: {
     isConfirm () {
@@ -100,7 +100,6 @@ export default {
       let annotations = await page.getAnnotations();
 
       var unscaledViewport = page.getViewport({ scale: 1 });
-      // console.log("here====>", this.$refs.PdfPage.clientWidth, unscaledViewport.width);
 
       let v = page.getViewport({ scale: this.$refs.PdfPage.clientWidth/unscaledViewport.width })
       await PDFJS.AnnotationLayer.render({

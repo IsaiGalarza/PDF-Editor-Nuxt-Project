@@ -9,8 +9,9 @@
       v-if="(isActive || justMounted) && !isCreator"
       :style="style"
       class="input-annotation"
+      placeholder="Type here..."
     />
-    <p v-else :style="style">{{ text || 'Click to type' }}</p>
+    <p v-else :style="style">{{ text || 'Type here...' }}</p>
   </div>
 </template>
 
@@ -49,7 +50,7 @@ export default {
     },
     style () {
       return {
-        fontSize: `${this.fontSize || 11}px`
+        fontSize: `${this.fontSize || 12}px`
       }
     }
   }
@@ -58,16 +59,16 @@ export default {
 
 <style lang="scss" scoped>
 input {
-  border: 0.5px solid rgb(15, 207, 15);
+  border-left: 1px solid #5FA348;
+  border-bottom: 1px solid #5FA348;
   background-color: transparent;
-  border-radius: 4px;
 }
 
 .input-annotation:focus {
-  border: 1px solid green;
+  border: 1px solid #5FA348;
 }
 
 .input-annotation:blur {
-  border: 1px solid transparent;
+  border: transparent;
 }
 </style>

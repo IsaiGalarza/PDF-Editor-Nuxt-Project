@@ -1,7 +1,7 @@
 <template>
   <main class="">
-    <top-details-card-container class="mb-5" v-model="activeTab" :tabs="tabs" />
-    <leaves-details-container class="mb-9" />
+    <top-details-card-container  v-model="activeTab" :tabs="tabs" />
+    <!-- <leaves-details-container class="mb-9" /> -->
     <company-file-ledger />
   </main>
 </template>
@@ -68,20 +68,20 @@ export default mixins(login).extend({
           action:'sign',
           icon: NoteAndPenIconVue,
         },
-        {
-          label: 'Saved',
-          key: 'saved',
-          count: 25,
-          action:'save',
-          icon: DisketIconVue,
-        },
-        {
-          label: 'Shared',
-          key: 'shared',
-          count: 25,
-          action:'share',
-          icon: ShareIconVue,
-        },
+        // {
+        //   label: 'Saved',
+        //   key: 'saved',
+        //   count: 25,
+        //   action:'save',
+        //   icon: DisketIconVue,
+        // },
+        // {
+        //   label: 'Shared',
+        //   key: 'shared',
+        //   count: 25,
+        //   action:'share',
+        //   icon: ShareIconVue,
+        // },
       ],
       showUploadDocumentModal: false,
       files:[],

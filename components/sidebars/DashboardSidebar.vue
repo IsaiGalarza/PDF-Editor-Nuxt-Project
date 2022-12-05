@@ -186,12 +186,12 @@ export default Vue.extend({
     },
     checkToRouteLinks() {
       if (this.$store.getters.userType === UserTypeEnum.PAID) {
-        this.links.splice(1, 0, {
-          label: 'Team',
-          icon: 'HoldingHandsIcon',
-          link: '/team',
-          exact: false,
-        })
+        // this.links.splice(1, 0, {
+        //   label: 'Team',
+        //   icon: 'HoldingHandsIcon',
+        //   link: '/team',
+        //   exact: false,
+        // })
         this.links.splice(1, 0, {
           label: 'Company Files',
           icon: 'DocumentIcon',

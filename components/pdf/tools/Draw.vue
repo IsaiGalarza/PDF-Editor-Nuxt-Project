@@ -56,11 +56,12 @@ export default {
       let l = this.points
         .map((p, i) => (i % 2 == 0 ? `L${p},` : `${p}`))
         .join(' ')
+      // console.log(`M${this.points[0]},${this.points[1]}${l}`);
       return `M${this.points[0]},${this.points[1]}${l}`
     },
     style() {
       return {
-        width: `${this.width}px`,
+        width: `${this.width + 2}px`,
         'stroke-linecap': 'round',
         'stroke-linejoin': 'round',
         'stroke-width': '2',
@@ -79,9 +80,11 @@ export default {
       return Math.max(...this.points.filter((v, i) => i % 2 == 1))
     },
     viewBox() {
-      let x1 = Math.min(this.x1, this.x2)
-      let y1 = Math.min(this.y1, this.y2) //Math.min(this.y1, this.y2) : Math.max(this.y1, this.y2)
-      return `${x1 - 1.5} ${y1 - 1.5} ${this.width + 2} ${this.height + 2}`
+      let x = Math.min(this.x1, this.x2)
+      let y = Math.min(this.y1, this.y2) //Math.min(this.y1, this.y2) : Math.max(this.y1, this.y2)
+      console.log("x y====>", x, y);
+      console.log("w h====>", this.width, this.height);
+      return `${x - 1.5} ${y - 1.5} ${this.width + 2} ${this.height + 2}`
     },
     width() {
       return Math.abs(this.x2 - this.x1)

@@ -1,28 +1,5 @@
 <template>
   <div class="tool-wrapper" :style="wrpStyle" ref="Wrp">
-    <!-- <div class="tool-menu flex" v-if="isActive">
-      <div class="drag" v-hammer:pan="handleDrag">DR</div>
-      -
-      <div class="delete" @click="deleteTool(index)">DeLeTe</div>
-      -
-      <div
-        class="increase"
-        @click="handleIncrease(index)"
-        v-if="isMenuVisible('increase')"
-      >
-        Increase
-      </div>
-      -
-      <div
-        class="decrease"
-        @click="handleDecrease(index)"
-        v-if="isMenuVisible('increase')"
-      >
-        Decrease
-      </div>
-      -
-      <div class="delete" @click="onOutSideClick">OK</div>
-    </div> -->
     <div
       class="h-8 rounded-full border border-black text-black inline-flex items-center px-4 gap-1.5 backdrop-blur-sm bg-white/30 absolute tool-menu"
       v-show="isActive" ref="toolMenu" v-if="isCreator">
@@ -71,17 +48,6 @@
         :scale="scale" :file="file" :value="value" :justMounted="justMounted" @input="onInp" :generatePDF="generatePDF"
         :showPublishModal="showPublishModal" :selectedToolType="selectedToolType" :mouseUp="mouseUp" :lineStart="lineStart"
         :toolLength="toolLength" :drawingStart="drawingStart" />
-      <!-- <div :class="[
-        'dr__right',
-        { line: type == TOOL_TYPE.line },
-        { 'line-alt': (x1 < x2 && y1 < y2) || (x1 > x2 && y1 > y2) },
-      ]" ref="drRight" v-hammer:pan="(ev) => handleToolDrag(ev, TOOL_DIRECTION.right)"
-        v-if="isAvailableDrRight && isCreator"></div>
-      <div :class="[
-        'dr__left',
-        { line: type == TOOL_TYPE.line },
-        { 'line-alt': (x1 < x2 && y1 < y2) || (x1 > x2 && y1 > y2) },
-      ]" v-hammer:pan="(ev) => handleToolDrag(ev, TOOL_DIRECTION.left)" v-if="isAvailableDrLeft && isCreator"></div> -->
     </div>
   </div>
 </template>

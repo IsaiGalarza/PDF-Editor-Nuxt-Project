@@ -364,8 +364,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     async publishAsGuest () {
       this.closeModal()
-      this.tools = this.tools.filter(e => e.isDeleted != true)
-      this.tools.map((val, ind) => {
+      let filteredTools = this.tools.filter(e => e.isDeleted != true)
+      filteredTools.map((val, ind) => {
         if (val.type == 'star') {
           val['completed'] = true
         }
@@ -379,7 +379,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       this.$axios
         .patch(`/files/${this.file.id}`, {
           fileAction: this.file.fileAction,
-          annotaions: JSON.stringify(this.tools)
+          annotaions: JSON.stringify(filteredTools)
         })
         .then(() => {})
         .catch(() => {
@@ -406,12 +406,12 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       }
     },
     publishAsCreator () {
-      this.tools = this.tools.filter(e => e.isDeleted != true)
+      let filteredTools = this.tools.filter(e => e.isDeleted != true)
 
       this.$axios
         .patch(`/files/${this.file.id}`, {
           fileAction: this.file.fileAction,
-          annotaions: JSON.stringify(this.tools)
+          annotaions: JSON.stringify(filteredTools)
         })
         .then(() => {
           this.closeModal()

@@ -197,7 +197,6 @@ export const ExtractFormPdf = ({
     }
 
     if (element.children.length > 1) {
-      console.clear();
       let count = 1; 
       //--< formed array from the children element of the main container of holding the paperlink annotations>--
       Array.from(element.children).forEach((item) => {

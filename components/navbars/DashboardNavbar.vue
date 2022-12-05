@@ -52,14 +52,16 @@
                   />
                   <div class="overflow-hidden">
                     <nuxt-link :to="`/pdf/${item.paperLink}`">
-                    <p class="text-sm text-black mb-1 truncate">
-                      {{ item.user.email }}
-                    </p>
-                    <p class="text-xs truncate">{{item.fileName}}</p>
-                    <p class="text-[11px] mt-0.5 truncate">{{item.user.firstName || item.user.companyName}}</p>
-                  </nuxt-link>
+                      <p class="text-sm text-black mb-1 truncate">
+                        {{ item.user.email }}
+                      </p>
+                      <p class="text-xs truncate">{{ item.fileName }}</p>
+                      <p class="text-[11px] mt-0.5 truncate">
+                        {{ item.user.firstName || item.user.companyName }}
+                      </p>
+                    </nuxt-link>
                   </div>
-                  <SearchShare :showShareIcon="true" :file="item"/>
+                  <SearchShare :showShareIcon="true" :file="item" />
                 </article>
               </div>
             </div>
@@ -111,43 +113,52 @@
                   :key="index.id"
                   class="notifyBox overflow-hidden relative items-center gap-3 min-w-[200px] py-4"
                 >
-                <div class="flex">
-                 <span class="w-[60px] mr-2"> <notification-dropdown-icon /></span>
-                  <p class="notificationText">
-                    <b
-                      v-html="
-                        index.message.substring(
-                          index.message.indexOf('{'),
-                          index.message.indexOf('}')
-                        )
-                      "
-                    ></b>
-                    <span
-                      v-html="
-                        index.message.substring(
-                          index.message.indexOf('}') + 1,
-                          index.message.length
-                        )
-                      "
-                    ></span>
-                  </p>
-                  <button
-                    @click="deleteNotification(index.id)"
-                    class="absolute -right-[40px] transition-transform trash-box p-2 bg-white"
-                  >
-                    <TrashCanIcon fill="red" width="16" height="16" />
-                  </button>
-                </div>
+                  <div class="flex">
+                    <span class="w-[60px] mr-2">
+                      <notification-dropdown-icon
+                    /></span>
+                    <p class="notificationText">
+                      <b
+                        v-html="
+                          index.message.substring(
+                            index.message.indexOf('{'),
+                            index.message.indexOf('}')
+                          )
+                        "
+                      ></b>
+                      <span
+                        v-html="
+                          index.message.substring(
+                            index.message.indexOf('}') + 1,
+                            index.message.length
+                          )
+                        "
+                      ></span>
+                    </p>
+                    <button
+                      @click="deleteNotification(index.id)"
+                      class="absolute -right-[40px] transition-transform trash-box p-2 bg-white"
+                    >
+                      <TrashCanIcon fill="red" width="16" height="16" />
+                    </button>
+                  </div>
                   <div class="w-full flex justify-end my-1">
-                    <button class="text-[10px] bg-paperdazgreen-500 py-1 w-[80px] text-white rounded-md">Accept</button>
+                    <button
+                      class="text-[10px] bg-paperdazgreen-500 py-1 w-[80px] text-white rounded-md"
+                    >
+                      Accept
+                    </button>
                   </div>
                 </div>
                 <!-- End:: single row -->
-                <button @click="_refetchNotification" 
-                v-if="loadMoreNotifications"
-                class="min-w-[250px] text-left w-full px-4 py-2">See more</button>
+                <button
+                  @click="_refetchNotification"
+                  v-if="loadMoreNotifications"
+                  class="min-w-[250px] text-left w-full px-4 py-2"
+                >
+                  See more
+                </button>
               </div>
-             
             </div>
           </el-dropdown-menu>
         </el-dropdown>
@@ -184,7 +195,7 @@
             :class="[
               isPaidUser
                 ? 'w-[45px] h-[45px] rounded-md'
-                : 'circle-20 rounded-full',
+                : 'circle-20 rounded-full'
             ]"
           >
             <img
@@ -226,27 +237,39 @@
               <span>
                 <img
                   :src="
-                  (account || {}).teampicture  ||
+                    (account || {}).teampicture ||
                     (account || {}).profilePicture ||
                     '/img/placeholder_picture.png'
                   "
                   class="w-8 h-8"
                   alt=""
-                 :class="[ isAccountPaid(account.role) ? 'rounded-full' : ' rounded-md']"
+                  :class="[
+                    isAccountPaid(account.role) ? 'rounded-full' : ' rounded-md'
+                  ]"
                 />
               </span>
-              <div class="w-[calc(100%-1.75rem)] pl-2 leading-[12px] relative flex flex-wrap items-center">
-              <span
-                class="text-[12px] truncate font-[500] capitalize inline-block my-0 w-full"
-                >{{(account.teamName || account.companyName || account.firstName || '')}}</span
+              <div
+                class="w-[calc(100%-1.75rem)] pl-2 leading-[12px] relative flex flex-wrap items-center"
               >
-              <span class="text-[9px] truncate font-[500] capitalize inline-block my-0 w-full">
-                {{account.status}}
-                <i class="absolute w-[3px] h-[3px] inline-block rounded-full left-[calc(100%-16px)] -bottom-[2px] p-[3px] border-[2px] border-white"
-                :class="[checkStatus(account.status)]"
-                ></i>
-              </span>
-            </div>
+                <span
+                  class="text-[12px] truncate font-[500] capitalize inline-block my-0 w-full"
+                  >{{
+                    account.teamName ||
+                    account.companyName ||
+                    account.firstName ||
+                    ''
+                  }}</span
+                >
+                <span
+                  class="text-[9px] truncate font-[500] capitalize inline-block my-0 w-full"
+                >
+                  {{ account.status }}
+                  <i
+                    class="absolute w-[3px] h-[3px] inline-block rounded-full left-[calc(100%-16px)] -bottom-[2px] p-[3px] border-[2px] border-white"
+                    :class="[checkStatus(account.status)]"
+                  ></i>
+                </span>
+              </div>
             </div>
           </div>
           <!-- END: user account -->
@@ -272,7 +295,7 @@
         <!-- <--- END: navbar dropdown --- -->
       </el-dropdown>
     </div>
-    
+
     <div v-else class="h-full self-stretch flex items-center">
       <button type="button" @click="showLandingPageSearchModal = true">
         <search-icon width="15" />
@@ -316,7 +339,6 @@ import StatusUser from '~/models/StatusUser'
 import LandingPageSearchModal from '../landing/LandingPageSearchModal.vue'
 import SearchShare from '../search-strips/component/SearchShare.vue'
 
-
 // email-acout emauil,password-referal-code
 export default mixins(GlobalMixin, login).extend({
   name: 'DashboardNavbar',
@@ -338,18 +360,18 @@ export default mixins(GlobalMixin, login).extend({
     SearchIcon,
     LandingPageSearchModal,
     SearchShare
-},
+  },
   props: {
     compact: {
       type: Boolean,
-      default: false,
+      default: false
     },
     title: {
       type: String,
-      default: '',
-    },
+      default: ''
+    }
   },
-  data() {
+  data () {
     return {
       searchString: '',
       profile: '',
@@ -359,15 +381,15 @@ export default mixins(GlobalMixin, login).extend({
       notificationPage: 0,
       totalNotification: null,
       topSearchContent: [],
-      notificationPerPage:10,
+      notificationPerPage: 10,
       isLoadedSuccess: false,
       isRead: true,
       showLandingPageSearchModal: false,
-      _cancleReloadUsers:false
+      _cancleReloadUsers: false
     }
   },
   computed: {
-    searchResult() {
+    searchResult () {
       if (!this.searchString) return []
       return [
         { id: 1 },
@@ -376,20 +398,23 @@ export default mixins(GlobalMixin, login).extend({
         { id: 4 },
         { id: 5 },
         { id: 6 },
-        { id: 7 },
+        { id: 7 }
       ]
     },
-    routeName() {
+    routeName () {
       return (this.$nuxt.$route.name || '').replace(/-/g, ' ')
     },
 
-    user() {
+    user () {
       return this.$auth?.user
     },
-    loadMoreNotifications(){
-     return (this.totalNotification > this.notificationPage)  && (this.totalNotification > this.notificationPerPage)
+    loadMoreNotifications () {
+      return (
+        this.totalNotification > this.notificationPage &&
+        this.totalNotification > this.notificationPerPage
+      )
     },
-    isPaidUser() {
+    isPaidUser () {
       switch (this.$auth?.user?.role) {
         case UserTypeEnum.PAID:
           return true
@@ -399,196 +424,226 @@ export default mixins(GlobalMixin, login).extend({
           return false
       }
     },
- 
-    userFullName() {
+
+    userFullName () {
       return this.isPaidUser
         ? (this.user || {}).firstName
         : (this.user || {}).email
     },
-    userCompanyName() {
+    userCompanyName () {
       return this.isPaidUser
         ? (this.user || {}).companyName
         : (this.user || {}).firstName
     },
-    login() {
+    login () {
       return this.$auth?.loggedIn
     },
-    profilePhoto() {
+    profilePhoto () {
       return this.$store.getters.profilePhoto
-    },
+    }
   },
   methods: {
-    isAccountPaid(val){
-        return val == UserTypeEnum.FREE
+    isAccountPaid (val) {
+      return val == UserTypeEnum.FREE
     },
-    checkStatus(val){
+    checkStatus (val) {
       switch (val) {
         case StatusUser.ACTIVE:
-         return 'activeIcon'
+          return 'activeIcon'
         case StatusUser.DISABLE:
-         return 'disableIcon'
+          return 'disableIcon'
         case StatusUser.PENDING:
-         return 'pendingIcon' 
+          return 'pendingIcon'
       }
     },
-    _refetchNotification(){
-      if( this.totalNotification >=  this.notificationPage)
-      this.notificationPage = this.notificationPage + this.notificationPerPage
+    _refetchNotification () {
+      if (this.totalNotification >= this.notificationPage)
+        this.notificationPage = this.notificationPage + this.notificationPerPage
     },
-    _isStatusActive(account) {
+    _isStatusActive (account) {
       return account.status == StatusUser.ACTIVE
     },
-    readNotification(){
-     if(this.notification[0]?.isRead == 1 || this.notification.length < 1) return
-        this.$axios.patch(`/notification/${(this.notification[0] || []).id}`, {isRead:1})
-        this.isRead = true
+    readNotification () {
+      if (this.notification[0]?.isRead == 1 || this.notification.length < 1)
+        return
+      this.$axios.patch(`/notification/${(this.notification[0] || []).id}`, {
+        isRead: 1
+      })
+      this.isRead = true
     },
-    async getGeneralSearch(topsearch) {
+    async getGeneralSearch (topsearch) {
       if (!topsearch.trim()) return
 
-       await this.$axios.get(`/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&fileName[$like]=${topsearch}%`)
-        .then((response) => {
+      await this.$axios
+        .get(
+          `/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&fileName[$like]=${topsearch}%`
+        )
+        .then(response => {
           const { data } = response.data
           this.topSearchContent = data
         })
       // &$or[1][uploadedBy]={ team member id }&$or[2][uploadedBy]={ team member id 2 }
     },
-    async deleteNotification(id) {
+    async deleteNotification (id) {
       this.notificationSpinner = true
       await this.$axios
         .$delete(`/notification/${id}`)
         .then(async () => {
-          this.notification = this.notification.filter((el)=> el.id != id)
+          this.notification = this.notification.filter(el => el.id != id)
         })
         .finally(() => {
-        this.notificationSpinner = false
+          this.notificationSpinner = false
         })
       // this.getUserNotification()
     },
-    async fetchMainTeam(val){
-      if(this._cancleReloadUsers) return;
-      let fetchUserArray = [];
-      
-       [...val].forEach(async (element)=>{
-        let fetAccounts = element.role == UserTypeEnum.TEAM ?  element.teamId : element.mainAccountId
-         await this.$axios.get(`users/${fetAccounts}`)
-         .then((response)=>{
-          if((element.role == UserTypeEnum.TEAM || element.role == UserTypeEnum.PAID) && element.id == this.$auth.user.id) return
+    async fetchMainTeam (val) {
+      if (this._cancleReloadUsers) return
+      let fetchUserArray = []
 
-          if((element.role == UserTypeEnum.PAID && this.$auth.user.role == UserTypeEnum.FREE)) return
+      ;[...val].forEach(async element => {
+        let fetAccounts =
+          element.role == UserTypeEnum.TEAM
+            ? element.teamId
+            : element.mainAccountId
+        await this.$axios.get(`users/${fetAccounts}`).then(response => {
+          if (
+            (element.role == UserTypeEnum.TEAM ||
+              element.role == UserTypeEnum.PAID) &&
+            element.id == this.$auth.user.id
+          )
+            return
 
-          if(element.role == UserTypeEnum.TEAM ){
-            element.teamName = response.data.companyName || response.data.firstName;
+          if (
+            element.role == UserTypeEnum.PAID &&
+            this.$auth.user.role == UserTypeEnum.FREE
+          )
+            return
+
+          if (element.role == UserTypeEnum.TEAM) {
+            element.teamName =
+              response.data.companyName || response.data.firstName
             element.teampicture = response.data.profilePicture
           }
-          
+
           fetchUserArray.push(element)
           this.account.push(element)
           this._cancleReloadUsers = true
-         })
-       });
+        })
+      })
 
-       this.account = [...this.account, ...fetchUserArray];
+      this.account = [...this.account, ...fetchUserArray]
     },
-    async fetchUsersInitialAccount(){
-      if(this._cancleReloadUsers) return;
+    async fetchUsersInitialAccount () {
+      if (this._cancleReloadUsers) return
       this.account = []
       let initialAccount = {}
-            switch (this.$auth?.user?.role) {
-              case UserTypeEnum.PAID:
-              let paidAcc = await this.$axios.$get(`users/${this.$auth?.user?.mainAccountId}&$sort[createdAt]=-1`)
-               initialAccount = [{...paidAcc}]
-               break;
+      switch (this.$auth?.user?.role) {
+        case UserTypeEnum.PAID:
+          let paidAcc = await this.$axios.$get(
+            `users/${this.$auth?.user?.mainAccountId}&$sort[createdAt]=-1`
+          )
+          initialAccount = [{ ...paidAcc }]
+          break
 
-               case UserTypeEnum.TEAM:
-               let teamAcc = await this.$axios.$get(`users/${this.$auth?.user?.mainAccountId}&$sort[createdAt]=-1`)
-               initialAccount = [{...teamAcc}]
-               break;
-            
-              case UserTypeEnum.FREE:
-              let freeAcct = await this.$axios.$get(`users/?mainAccountId=${this.$auth?.user?.id}&$sort[createdAt]=-1`)
-              initialAccount = freeAcct.data
-              break;
-            }
-      
-        this.account = initialAccount.filter((item)=> item.role !=  UserTypeEnum.TEAM)
+        case UserTypeEnum.TEAM:
+          let teamAcc = await this.$axios.$get(
+            `users/${this.$auth?.user?.mainAccountId}&$sort[createdAt]=-1`
+          )
+          initialAccount = [{ ...teamAcc }]
+          break
+
+        case UserTypeEnum.FREE:
+          let freeAcct = await this.$axios.$get(
+            `users/?mainAccountId=${this.$auth?.user?.id}&$sort[createdAt]=-1`
+          )
+          initialAccount = freeAcct.data
+          break
+      }
+
+      this.account = initialAccount.filter(
+        item => item.role != UserTypeEnum.TEAM
+      )
     },
-    async getUsersAccount() {
+    async getUsersAccount () {
       // return
-      let acccountId = this.$auth?.user?.role != UserTypeEnum.FREE ? this.$auth?.user?.mainAccountId : this.$auth?.user?.id;
-      let userAccount =  await this.$axios.$get(`users/?mainAccountId=${acccountId}&$sort[createdAt]=-1`)
-        let accounts = userAccount.data || [{ ...userAccount }]
-        await this.fetchMainTeam(accounts)
-        
+      let acccountId =
+        this.$auth?.user?.role != UserTypeEnum.FREE
+          ? this.$auth?.user?.mainAccountId
+          : this.$auth?.user?.id
+      let userAccount = await this.$axios.$get(
+        `users/?mainAccountId=${acccountId}&$sort[createdAt]=-1`
+      )
+      let accounts = userAccount.data || [{ ...userAccount }]
+      await this.fetchMainTeam(accounts)
     },
-    async getUserNotification(page) {
+    async getUserNotification (page) {
       await this.$axios
         .$get(
           `/notification?$sort[createdAt]=-1&userId=${this.$auth?.user?.id}&$skip=${page}`
         )
 
-        .then((response) => {
-        this.notification = [...this.notification, ...response.data]
-        this.isRead = (this.notification[0].isRead == 1)
-        this.totalNotification = response.total
-        this.isLoadedSuccess = true;
+        .then(response => {
+          this.notification = [...this.notification, ...response.data]
+          this.isRead = this.notification[0].isRead == 1
+          this.totalNotification = response.total
+          this.isLoadedSuccess = true
         })
     },
-    async switchAccount(val , status) {
-      if(this.$route.path.includes("pdf")){
+    async switchAccount (val, status) {
+      if (this.$route.path.includes('pdf')) {
         this.$notify.error({
-          title:'',
-          message:`Cannot switch account in file manager`
+          title: '',
+          message: `Cannot switch account in file manager`
         })
         return
-       }
-       if(StatusUser.ACTIVE != status){
+      }
+      if (StatusUser.ACTIVE != status) {
         this.$notify.error({
-          title:'',
-          message:`Oops cannot switch, account is ${status} contact team`
+          title: '',
+          message: `Oops cannot switch, account is ${status} contact team`
         })
         return
-       }
-     
+      }
 
-      let filteredAccount = this.account.filter(
-        (element) => element.id == val
-      )[0]
+      let filteredAccount = this.account.filter(element => element.id == val)[0]
 
-      if (this.$auth?.user?.role == UserTypeEnum.TEAM || this.$auth?.user?.role == UserTypeEnum.PAID) {
+      if (
+        this.$auth?.user?.role == UserTypeEnum.TEAM ||
+        this.$auth?.user?.role == UserTypeEnum.PAID
+      ) {
         this.$auth.strategy.token.set(
           localStorage.getItem('main_user_paperdaz_token')
         )
         localStorage.setItem('paperdaz_userID', filteredAccount.id)
-        window.location.assign("/dashboard")
+        window.location.assign('/dashboard')
         return
       }
       // get switching account user details
       let user = {
         email: filteredAccount.email,
         password: this.$auth?.user?.referralCode,
-        strategy: 'local',
+        strategy: 'local'
       }
       // making axios request to login
       await this.$axios
         .$post(`/authentication`, user)
-        .then(async (response) => {
+        .then(async response => {
           this.$auth.strategy.token.set(response.accessToken)
           localStorage.setItem('paperdaz_userID', response.user.id)
-          window.location.assign("/dashboard")
+          window.location.assign('/dashboard')
           // this.$auth.strategy.token.set('...')
           //@ts-ignore
           // await this.loginUser(response)
         })
-        .catch((error) => {})
+        .catch(error => {})
         .finally(() => {
           // this.isLoading = false
         })
     },
-    querySearch(_queryString, cb) {
+    querySearch (_queryString, cb) {
       cb(this.searchResult)
     },
-    handleCommand(command) {
+    handleCommand (command) {
       switch (command) {
         case 'logout':
           localStorage.removeItem('redirect_paperdaz_path')
@@ -605,12 +660,12 @@ export default mixins(GlobalMixin, login).extend({
           break
       }
     },
-    setProfileDisplay(data) {
+    setProfileDisplay (data) {
       this.profile = data
-    },
+    }
   },
   watch: {
-    $route(to, from) {
+    $route (to, from) {
       if (to.name.includes('profile')) {
         this.setProfileDisplay(true)
       } else {
@@ -627,14 +682,14 @@ export default mixins(GlobalMixin, login).extend({
     },
     searchString: function () {
       this.getGeneralSearch(this.searchString)
-    },
+    }
   },
-  mounted() {
+  mounted () {
     if (!this.user?.id) return
     this.fetchUsersInitialAccount()
     this.getUsersAccount()
     this.getUserNotification()
-  },
+  }
 })
 </script>
 
@@ -653,19 +708,19 @@ export default mixins(GlobalMixin, login).extend({
   transition: 0.3s;
   right: 0px;
 }
-.activeIcon{
+.activeIcon {
   @apply bg-green-400;
-  box-shadow: 0 0 0 1px  rgb(74 222 128);
+  box-shadow: 0 0 0 1px rgb(74 222 128);
 }
-.disableIcon{
+.disableIcon {
   @apply bg-[#909090];
-  box-shadow: 0 0 0 1px  #909090;
+  box-shadow: 0 0 0 1px #909090;
 }
-.pendingIcon{
+.pendingIcon {
   @apply bg-[#5078b5];
   box-shadow: 0 0 0 1px #5078b5;
 }
-.el-dropdown-indicator{
-  @apply absolute w-[10px] h-[10px] rounded-full bg-red-500 top-[2px] left-2 border-[2px] border-white
+.el-dropdown-indicator {
+  @apply absolute w-[10px] h-[10px] rounded-full bg-red-500 top-[2px] left-2 border-[2px] border-white;
 }
 </style>

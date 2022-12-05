@@ -82,8 +82,6 @@ export default {
     viewBox() {
       let x = Math.min(this.x1, this.x2)
       let y = Math.min(this.y1, this.y2) //Math.min(this.y1, this.y2) : Math.max(this.y1, this.y2)
-      console.log("x y====>", x, y);
-      console.log("w h====>", this.width, this.height);
       return `${x - 1.5} ${y - 1.5} ${this.width + 2} ${this.height + 2}`
     },
     width() {

@@ -1,5 +1,9 @@
 <template>
+<<<<<<< HEAD
   <div class="tool-wrapper" :style="wrpStyle" ref="Wrp" :id="getToolWrapperId">
+=======
+  <div class="tool-wrapper" :style="wrpStyle" ref="Wrp">
+>>>>>>> 79a4840b02239ff22580c240a1180363bb9f8627
     <div
       class="h-8 rounded-full border border-black text-black inline-flex items-center px-4 gap-1.5 backdrop-blur-sm bg-white/30 absolute tool-menu"
       v-show="isActive" ref="toolMenu" v-if="isCreator">
@@ -43,6 +47,7 @@
         <img :src="tool.completed" style="height:25px" />
       </div> -->
       <component v-else :is="`${type}-tool`" :x1="x1" :y1="y1" :x2="x2" :y2="y2" :id="id" :tool="tool"
+<<<<<<< HEAD
         :completed="tool.completed" :elemScale="elemScale" :incDecCount="incDecCount" :points="points"
         :isActive="isActive" :fontSize="fontSize" :scale="scale" :file="file" :value="value" :justMounted="justMounted"
         @input="onInp" :generatePDF="generatePDF" :showPublishModal="showPublishModal"
@@ -59,6 +64,12 @@
         { line: type == TOOL_TYPE.line },
         { 'line-alt': (x1 < x2 && y1 < y2) || (x1 > x2 && y1 > y2) },
       ]" v-hammer:pan="(ev) => handleToolDrag(ev, TOOL_DIRECTION.left)" v-if="isAvailableDrLeft && isCreator"></div> -->
+=======
+        :elemScale="elemScale" :incDecCount="incDecCount" :points="points" :isActive="isActive" :fontSize="fontSize"
+        :scale="scale" :file="file" :value="value" :justMounted="justMounted" @input="onInp" :generatePDF="generatePDF"
+        :showPublishModal="showPublishModal" :selectedToolType="selectedToolType" :mouseUp="mouseUp" :lineStart="lineStart"
+        :toolLength="toolLength" :drawingStart="drawingStart" />
+>>>>>>> 79a4840b02239ff22580c240a1180363bb9f8627
     </div>
   </div>
 </template>

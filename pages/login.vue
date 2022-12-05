@@ -85,9 +85,7 @@
                 >Remember me</label
               >
             </div>
-            <nuxt-link to="/forgot-password" class="text-paperdazgreen-300"
-              >Forgot Password</nuxt-link
-            >
+            <nuxt-link to="/forgot-password" class="text-paperdazgreen-300">Forgot Password</nuxt-link>
           </div>
           <div class="flex flex-col items-center">
             <button
@@ -107,10 +105,7 @@
 
             <span class="text-xs inline-block mt-6"
               >Not a member yet?
-              <nuxt-link to="/register" class="text-paperdazgreen-300"
-                >Join Now</nuxt-link
-              ></span
-            >
+              <nuxt-link to="/register" class="text-paperdazgreen-300">Join Now</nuxt-link></span>
           </div>
         </form>
       </div>
@@ -383,7 +378,7 @@ export default Vue.extend({
         .loginWith('local', { data: this.user })
         .then(async (response: any) => {
           let { user } = response.data
-          console.log(">>>>>>>>>>>>>>>>>", user)
+          // console.log(">>>>>>>>>>>>>>>>>", user)
           if(user.isEmailVerified == 0 || !user.isEmailVerified){
             await this.$auth.logout()
             this.isLoading = false

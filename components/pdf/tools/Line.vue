@@ -43,7 +43,9 @@ export default {
         svgStr = serializer.serializeToString(svgElem);
       let canvas = document.createElement("canvas");
       img.onload = () => {
-        canvas.getContext("2d").drawImage(img, 0, 0);
+        canvas.width = img.width;
+        canvas.height = img.height;
+        canvas.getContext("2d").drawImage(img, 0, 0, img.width, img.height);
         this.svgToImageData = canvas.toDataURL("image/png")
       }
       img.src = 'data:image/svg+xml;base64,' + window.btoa(svgStr);

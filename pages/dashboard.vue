@@ -1,6 +1,6 @@
 <template>
   <div class="lg:pt-4 min-h-full flex flex-col">
-    <top-details-card-container class="mb-5" v-model="activeTab" :tabs="tabs" />
+    <top-details-card-container v-model="activeTab" :tabs="tabs" />
     <!-- <leaves-details-container class="mb-9" /> -->
     <file-ledger @setUploadpaperlink="setUploadpaperlink" ref="fileLedger" class="flex-1" />
 
@@ -39,7 +39,7 @@ export default Vue.extend({
     TopDetailsCardContainer,
     LeavesDetailsContainer,
     FileLedger,
-    FloatingActionButton,
+    // FloatingActionButton,
     MoveIcon,
     TrashXIcon,
     CheckCircleIcon,

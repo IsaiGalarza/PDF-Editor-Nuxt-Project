@@ -1,55 +1,33 @@
 <template>
-  <nav
-    class="px-5 bg-white lg:rounded-lg w-full flex items-center justify-between shadow"
-    :class="[compact ? 'py-1 h-12' : 'min-h-[60px] sm:min-h-[70px] py-4 h-16']"
-  >
-    <p
-      class="capitalize inline-flex items-center gap-3"
-      :class="[compact ? 'text-sm sm:text-base' : 'text-base sm:text-xl']"
-    >
-      <span
-        class="inline-block lg:hidden mr-3 sm:mr-4 cursor-pointer"
-        @click="$emit('open-sidebar')"
-        ><hamburger-icon /></span
-      >{{ title || routeName }}
+  <nav class="px-5 bg-white lg:rounded-lg w-full flex items-center justify-between shadow"
+    :class="[compact ? 'py-1 h-12' : 'min-h-[60px] sm:min-h-[70px] py-4 h-16']">
+    <p class="capitalize inline-flex items-center gap-3"
+      :class="[compact ? 'text-sm sm:text-base' : 'text-base sm:text-xl']">
+      <span class="inline-block lg:hidden mr-3 sm:mr-4 cursor-pointer"
+        @click="$emit('open-sidebar')"><hamburger-icon /></span>{{ title || routeName }}
     </p>
     <div v-if="$auth.loggedIn" class="h-full self-stretch flex items-center">
       <!-- Start:: search -->
-      <div class="hidden lg:inline-block text-[#BBBBBB] mr-4">
+      <div class="hidden lg:inline-block text-[#BBBBBB] pr-4 border-r mr-2">
         <!-- <div class="text-[#BBBBBB] mr-4"> -->
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
-            <el-input
-              placeholder="search anything..."
-              v-model="searchString"
-              size="small"
-            >
+            <el-input placeholder="" v-model="searchString" size="small" class="search-box">
               <template #suffix>
-                <span class="grid place-items-center h-full w-full"
-                  ><search-icon width="14" height="14"
-                /></span>
+                <span class="grid place-items-center h-full w-full"><search-icon width="14" height="14" /></span>
               </template>
             </el-input>
           </span>
           <el-dropdown-menu slot="dropdown">
             <!-- Start:: dropdown -->
-            <div
-              class="bg-white rounded-lg whitespace-nowrap w-[600px] max-w-[80vw]"
-            >
+            <div class="bg-white rounded-lg whitespace-nowrap w-[600px] max-w-[80vw]">
               <div class="max-h-[60vh] custom-scrollbar overflow-y-auto p-4">
-                <article
-                  class="py-4 text-[#9F9F9F] grid grid-cols-[max-content,1fr,max-content] gap-4"
-                  v-for="item in topSearchContent"
-                  :key="item + 'topsearchContent'"
-                >
-                  <img
-                    :src="
-                      (item.user || {}).profile_picture ||
-                      '/img/placeholder_picture.png'
-                    "
-                    alt=""
-                    class="h-16 w-16 rounded-lg object-cover"
-                  />
+                <article class="py-4 text-[#9F9F9F] grid grid-cols-[max-content,1fr,max-content] gap-4"
+                  v-for="item in topSearchContent" :key="item + 'topsearchContent'">
+                  <img :src="
+                    (item.user || {}).profile_picture ||
+                    '/img/placeholder_picture.png'
+                  " alt="" class="h-16 w-16 rounded-lg object-cover" />
                   <div class="overflow-hidden">
                     <nuxt-link :to="`/pdf/${item.paperLink}`">
                     <p class="text-sm text-black mb-1 truncate">
@@ -78,31 +56,17 @@
           </span>
           <el-dropdown-menu slot="dropdown">
             <div class="max-w-[433px] text-xs text-[#676464]">
-              <div
-                class="flex justify-end mb-2 px-4"
-                v-if="notification.length > 0"
-              >
+              <div class="flex justify-end mb-2 px-4" v-if="notification.length > 0">
                 <button class="text-red-600 underline">Clear all</button>
               </div>
-              <div
-                class="max-h-[70vh] custom-scrollbar overflow-y-auto px-4 relative"
-                ref="notificationContainer"
-              >
-                <div
-                  v-if="notificationSpinner"
-                  class="min-w-[250px] z-10 w-full h-full top-0 left-0 flex justify-center"
-                >
-                  <SpinnerDottedIcon
-                    width="16"
-                    height="16"
-                    class="animate-spin text-grey/50"
-                  />
+              <div class="max-h-[70vh] custom-scrollbar overflow-y-auto px-4 relative" ref="notificationContainer">
+                <div v-if="notificationSpinner"
+                  class="min-w-[250px] z-10 w-full h-full top-0 left-0 flex justify-center">
+                  <SpinnerDottedIcon width="16" height="16" class="animate-spin text-grey/50" />
                 </div>
                 <!-- Start:: Single row -->
-                <div
-                  v-if="!isLoadedSuccess"
-                  class="bg-paperdazgray-200/10 font-normal gap-3 min-w-[250px] grid place-items-center py-4 h-[50px]"
-                >
+                <div v-if="!isLoadedSuccess"
+                  class="bg-paperdazgray-200/10 font-normal gap-3 min-w-[250px] grid place-items-center py-4 h-[50px]">
                   <span class="text-[14px]"> No notification yet</span>
                 </div>
                 <div
@@ -139,7 +103,11 @@
                   </button>
                 </div>
                   <div class="w-full flex justify-end my-1">
-                    <button class="text-[10px] bg-paperdazgreen-500 py-1 w-[80px] text-white rounded-md">Accept</button>
+                    <button
+                      class="text-[10px] bg-paperdazgreen-500 py-1 w-[80px] text-white rounded-md"
+                    >
+                      Accept
+                    </button>
                   </div>
                 </div>
                 <!-- End:: single row -->
@@ -154,18 +122,12 @@
       </div>
       <!-- -------------END: notification -->
 
-      <nuxt-link
-        to="/settings?tab=account"
-        class="hidden lg:inline-block text-[#909090] mr-4"
-      >
+      <nuxt-link to="/settings?tab=account" class="hidden lg:inline-block text-[#909090] mr-4">
         <gear-icon />
       </nuxt-link>
 
       <!-- container for user name -->
-      <div
-        v-if="login || false"
-        class="hidden lg:flex flex-col mr-3 text-sm leading-[15px] flex-wrap justify-end"
-      >
+      <div v-if="login || false" class="hidden lg:flex flex-col mr-3 text-sm leading-[15px] flex-wrap justify-end">
         <span class="text-black text-[13px] font-[600] capitalize text-right">
           {{ userCompanyName || '' }}
         </span>
@@ -194,35 +156,26 @@
               :class="[isPaidUser ? 'rounded-md' : 'rounded-full']"
             />
           </span>
-          <span class="text-black"
-            ><arrow-down-icon class="h-2 w-3 sm:h-2.5 sm:w-4"
-          /></span>
+          <span class="text-black"><arrow-down-icon class="h-2 w-3 sm:h-2.5 sm:w-4" /></span>
         </span>
 
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item class="hidden" command="dashboard" v-if="!profile">
             <span class="inline-flex gap-2 items-center">
               <!-- <dashboard-icon height="14" width="14" /> -->
-              Dashboard</span
-            >
+              Dashboard</span>
           </el-dropdown-item>
           <el-dropdown-item class="hidden" command="profile" v-if="!profile">
             <span class="inline-flex gap-2 items-center">
               <user-profile-solid-icon height="14" width="14" />
-              Profile</span
-            >
+              Profile</span>
           </el-dropdown-item>
 
           <!-- START: user accounts -->
-          <div
-            v-for="(account, index) in account"
-            :key="index + 'account'"
-            class="cursor-pointer"
-            @click="switchAccount(account.id, account.status)"
-          >
+          <div v-for="(account, index) in account" :key="index + 'account'" class="cursor-pointer"
+            @click="switchAccount(account.id, account.status)">
             <div
-              class="flex items-center justify-start hover:bg-paperdazgray-200/60 relative top-2 p-1 mb-1 w-[160px] border-t-[1px] border-paperdazgray-100"
-            >
+              class="flex items-center justify-start hover:bg-paperdazgray-200/60 relative top-2 p-1 mb-1 w-[160px] border-t-[1px] border-paperdazgray-100">
               <span>
                 <img
                   :src="
@@ -251,22 +204,15 @@
           </div>
           <!-- END: user account -->
 
-          <el-dropdown-item
-            class="lg:hidden"
-            command="settings"
-            divided
-            v-if="!profile"
-          >
+          <el-dropdown-item class="lg:hidden" command="settings" divided v-if="!profile">
             <span class="inline-flex gap-2 items-center">
               <gear-icon height="14" width="14" />
-              Settings</span
-            >
+              Settings</span>
           </el-dropdown-item>
           <el-dropdown-item divided command="logout">
             <span class="text-red-600 inline-flex gap-2 items-center">
               <sign-out-icon height="14" width="14" />
-              Logout</span
-            >
+              Logout</span>
           </el-dropdown-item>
         </el-dropdown-menu>
         <!-- <--- END: navbar dropdown --- -->
@@ -277,18 +223,10 @@
       <button type="button" @click="showLandingPageSearchModal = true">
         <search-icon width="15" />
       </button>
-      <nuxt-link
-        v-if="!$auth.loggedIn"
-        to="/login"
-        class="text-paperdazgreen-300 mx-2"
-        >Sign in</nuxt-link
-      >
-      <nuxt-link
-        v-if="!$auth.loggedIn"
-        to="/register"
-        class="bg-paperdazgreen-300 text-white h-7 xs:h-8 rounded shadow px-2 xs:px-3 flex items-center justify-center whitespace-nowrap mx-2"
-        >Get Started</nuxt-link
-      >
+      <nuxt-link v-if="!$auth.loggedIn" to="/login" class="text-paperdazgreen-300 mx-2">Sign in</nuxt-link>
+      <nuxt-link v-if="!$auth.loggedIn" to="/register"
+        class="bg-paperdazgreen-300 text-white h-7 xs:h-8 rounded shadow px-2 xs:px-3 flex items-center justify-center whitespace-nowrap mx-2">Get
+        Started</nuxt-link>
     </div>
     <landing-page-search-modal v-model="showLandingPageSearchModal" />
   </nav>
@@ -316,7 +254,6 @@ import StatusUser from '~/models/StatusUser'
 import LandingPageSearchModal from '../landing/LandingPageSearchModal.vue'
 import SearchShare from '../search-strips/component/SearchShare.vue'
 
-
 // email-acout emauil,password-referal-code
 export default mixins(GlobalMixin, login).extend({
   name: 'DashboardNavbar',
@@ -342,14 +279,14 @@ export default mixins(GlobalMixin, login).extend({
   props: {
     compact: {
       type: Boolean,
-      default: false,
+      default: false
     },
     title: {
       type: String,
-      default: '',
-    },
+      default: ''
+    }
   },
-  data() {
+  data () {
     return {
       searchString: '',
       profile: '',
@@ -367,7 +304,7 @@ export default mixins(GlobalMixin, login).extend({
     }
   },
   computed: {
-    searchResult() {
+    searchResult () {
       if (!this.searchString) return []
       return [
         { id: 1 },
@@ -376,20 +313,20 @@ export default mixins(GlobalMixin, login).extend({
         { id: 4 },
         { id: 5 },
         { id: 6 },
-        { id: 7 },
+        { id: 7 }
       ]
     },
-    routeName() {
+    routeName () {
       return (this.$nuxt.$route.name || '').replace(/-/g, ' ')
     },
 
-    user() {
+    user () {
       return this.$auth?.user
     },
     loadMoreNotifications(){
      return (this.totalNotification > this.notificationPage)  && (this.totalNotification > this.notificationPerPage)
     },
-    isPaidUser() {
+    isPaidUser () {
       switch (this.$auth?.user?.role) {
         case UserTypeEnum.PAID:
           return true
@@ -405,17 +342,17 @@ export default mixins(GlobalMixin, login).extend({
         ? (this.user || {}).firstName
         : (this.user || {}).email
     },
-    userCompanyName() {
+    userCompanyName () {
       return this.isPaidUser
         ? (this.user || {}).companyName
         : (this.user || {}).firstName
     },
-    login() {
+    login () {
       return this.$auth?.loggedIn
     },
-    profilePhoto() {
+    profilePhoto () {
       return this.$store.getters.profilePhoto
-    },
+    }
   },
   methods: {
     isAccountPaid(val){
@@ -435,7 +372,7 @@ export default mixins(GlobalMixin, login).extend({
       if( this.totalNotification >=  this.notificationPage)
       this.notificationPage = this.notificationPage + this.notificationPerPage
     },
-    _isStatusActive(account) {
+    _isStatusActive (account) {
       return account.status == StatusUser.ACTIVE
     },
     readNotification(){
@@ -443,7 +380,7 @@ export default mixins(GlobalMixin, login).extend({
         this.$axios.patch(`/notification/${(this.notification[0] || []).id}`, {isRead:1})
         this.isRead = true
     },
-    async getGeneralSearch(topsearch) {
+    async getGeneralSearch (topsearch) {
       if (!topsearch.trim()) return
 
        await this.$axios.get(`/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&fileName[$like]=${topsearch}%`)
@@ -453,7 +390,7 @@ export default mixins(GlobalMixin, login).extend({
         })
       // &$or[1][uploadedBy]={ team member id }&$or[2][uploadedBy]={ team member id 2 }
     },
-    async deleteNotification(id) {
+    async deleteNotification (id) {
       this.notificationSpinner = true
       await this.$axios
         .$delete(`/notification/${id}`)
@@ -513,7 +450,7 @@ export default mixins(GlobalMixin, login).extend({
       
         this.account = initialAccount.filter((item)=> item.role !=  UserTypeEnum.TEAM)
     },
-    async getUsersAccount() {
+    async getUsersAccount () {
       // return
       let acccountId = this.$auth?.user?.role != UserTypeEnum.FREE ? this.$auth?.user?.mainAccountId : this.$auth?.user?.id;
       let userAccount =  await this.$axios.$get(`users/?mainAccountId=${acccountId}&$sort[createdAt]=-1`)
@@ -521,7 +458,7 @@ export default mixins(GlobalMixin, login).extend({
         await this.fetchMainTeam(accounts)
         
     },
-    async getUserNotification(page) {
+    async getUserNotification (page) {
       await this.$axios
         .$get(
           `/notification?$sort[createdAt]=-1&userId=${this.$auth?.user?.id}&$skip=${page}`
@@ -551,31 +488,30 @@ export default mixins(GlobalMixin, login).extend({
        }
      
 
-      let filteredAccount = this.account.filter(
-        (element) => element.id == val
-      )[0]
-
-      if (this.$auth?.user?.role == UserTypeEnum.TEAM || this.$auth?.user?.role == UserTypeEnum.PAID) {
+      if (
+        this.$auth?.user?.role == UserTypeEnum.TEAM ||
+        this.$auth?.user?.role == UserTypeEnum.PAID
+      ) {
         this.$auth.strategy.token.set(
           localStorage.getItem('main_user_paperdaz_token')
         )
         localStorage.setItem('paperdaz_userID', filteredAccount.id)
-        window.location.assign("/dashboard")
+        window.location.assign('/dashboard')
         return
       }
       // get switching account user details
       let user = {
         email: filteredAccount.email,
         password: this.$auth?.user?.referralCode,
-        strategy: 'local',
+        strategy: 'local'
       }
       // making axios request to login
       await this.$axios
         .$post(`/authentication`, user)
-        .then(async (response) => {
+        .then(async response => {
           this.$auth.strategy.token.set(response.accessToken)
           localStorage.setItem('paperdaz_userID', response.user.id)
-          window.location.assign("/dashboard")
+          window.location.assign('/dashboard')
           // this.$auth.strategy.token.set('...')
           //@ts-ignore
           // await this.loginUser(response)
@@ -585,10 +521,10 @@ export default mixins(GlobalMixin, login).extend({
           // this.isLoading = false
         })
     },
-    querySearch(_queryString, cb) {
+    querySearch (_queryString, cb) {
       cb(this.searchResult)
     },
-    handleCommand(command) {
+    handleCommand (command) {
       switch (command) {
         case 'logout':
           localStorage.removeItem('redirect_paperdaz_path')
@@ -605,12 +541,12 @@ export default mixins(GlobalMixin, login).extend({
           break
       }
     },
-    setProfileDisplay(data) {
+    setProfileDisplay (data) {
       this.profile = data
-    },
+    }
   },
   watch: {
-    $route(to, from) {
+    $route (to, from) {
       if (to.name.includes('profile')) {
         this.setProfileDisplay(true)
       } else {
@@ -627,14 +563,14 @@ export default mixins(GlobalMixin, login).extend({
     },
     searchString: function () {
       this.getGeneralSearch(this.searchString)
-    },
+    }
   },
-  mounted() {
+  mounted () {
     if (!this.user?.id) return
     this.fetchUsersInitialAccount()
     this.getUsersAccount()
     this.getUserNotification()
-  },
+  }
 })
 </script>
 
@@ -645,10 +581,12 @@ export default mixins(GlobalMixin, login).extend({
   width: calc(2px * var(--circle-size));
   min-height: calc(2px * var(--circle-size));
   min-width: calc(2px * var(--circle-size));
+
   @media screen and (min-width: 640px) {
     --circle-size: 22;
   }
 }
+
 .notifyBox:hover .trash-box {
   transition: 0.3s;
   right: 0px;
@@ -668,4 +606,5 @@ export default mixins(GlobalMixin, login).extend({
 .el-dropdown-indicator{
   @apply absolute w-[10px] h-[10px] rounded-full bg-red-500 top-[2px] left-2 border-[2px] border-white
 }
+
 </style>

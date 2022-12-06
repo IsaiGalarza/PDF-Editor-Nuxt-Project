@@ -9,7 +9,7 @@
     >
       <!--Start:: Close Button -->
       <div class="absolute -top-3 -right-3" style="padding: inherit;">
-        <!-- <span
+        <span
           class="circle circle-12 bg-white cursor-pointer text-red-600"
           @click="closeModal()"
         >
@@ -27,32 +27,25 @@
               fill="#414042"
             />
           </svg>
-        </span> -->
+        </span>
       </div>
       <!--End:: Close Button -->
       <template #title>
-        <!-- <h1 class="text-center font-semibold text-xl">Alert?</h1> -->
+        <h1 class="text-center font-semibold text-xl">Alert?</h1>
       </template>
       <!-- Start:: Body -->
       
-       <p class="w-[90%] ml-[5%] text-center pb-8 break-normal font-bold">File marked private. You need to send request to the owner for approval.</p>
-       <p class="w-[90%] ml-[5%] text-center pb-8 break-normal font-bold" v-if="!$auth.loggedIn">File marked private. You must be logged in to ask file owner to aprrove.</p>
+       <p class="w-[90%] ml-[5%] text-center pb-8 break-normal">These is a private file requires permission to view, Ask for permission to be granted right to view</p>
+       <p class="w-[90%] ml-[5%] text-center pb-8 break-normal font-semibold" v-if="!$auth.loggedIn">Login or register to ask for permission</p>
       <div class="flex justify-around">
-        <!-- <button
-          class="disabled:bg-opacity-50 disabled:cursor-not-allowed h-10 text-xs w-[150px] max-w-[50%] text-red-600 border border-red-600 rounded-lg shadow bg-white"
+        <button
+          class="disabled:bg-opacity-50 disabled:cursor-not-allowed h-10 text-xs w-[150px] max-w-[50%] border border-red-600 rounded-lg shadow bg-white"
           type="button"
           :disabled="loading"
           @click="closeModal()"
         >
           Cancel
         </button>-->
-        <button
-          class="h-10 text-xs w-[150px] max-w-[50%] font-bold rounded-lg shadow bg-white border"
-          :disabled="isLoading"
-          @click="closeModal"
-        > 
-          Cancel
-        </button>
         <button
           class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400"
           :disabled="isLoading"
@@ -67,7 +60,22 @@
               class="animate-spin"
             />
           </span>
-        </button>
+        </button> -->
+        <!-- <button
+          class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400"
+        > 
+          <span class="inline-flex gap-1 items-center">
+            <nuxt-link to="/login"
+              >Sign in</nuxt-link
+            >
+          </span>
+        </button> -->
+
+        <nuxt-link
+          to="/login"
+          class="h-10 bg-paperdazgreen-300 hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150 text-white rounded-lg shadow bg-paperdazgreen-400 px-3 flex items-center justify-center whitespace-nowrap w-[150px] text-xs max-w-[50%]"
+          >Log in</nuxt-link
+        >
       </div>
       <!-- end :: body -->
     </el-dialog>
@@ -120,6 +128,11 @@
     },
     mounted() {
       this.showModal = this.visible
+      console.log(this.file.fileAction, this.file.user.companyName, this.file, "checking");
+      if (this.file.filePrivacy==="private") {
+        sessionStorage.setItem("fileActionWhenSearch", this.file.fileAction);
+        sessionStorage.setItem("companyNameWhenSearch", this.file.user.companyName);
+      }
     },
     methods: {
       checkParamsPermission(){

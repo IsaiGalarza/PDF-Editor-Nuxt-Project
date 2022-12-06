@@ -1,6 +1,6 @@
 <template>
   <section id="key-features-section">
-    <div class="container py-20 content-center md:max-w-[1200px]">
+    <div class="container py-20 content-center">
       <h1 class="font-bold text-4xl text-center mb-2">Key Features</h1>
       <p
         class="font-semibold text-center text-sm text-paperdazgray-300 mx-auto max-w-md mb-6"
@@ -9,7 +9,7 @@
       </p>
 
       <div
-        class="my-12 grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-x-2 sm:gap-x-6 gap-y-10"
+        class="my-12 grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] md:grid-cols-4 sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-x-2 sm:gap-x-[6.5rem] gap-y-10"
       >
         <div v-for="(block, i) in fets" :key="i">
           <img

@@ -7,11 +7,10 @@
           <!-- <company-icon /> -->
           <img src="../../assets/img/company-icon.png"/>
         </a>
-        <img src="../../assets/img/users-icon.png" class="-ml-8"/>
+        <img src="../../assets/img/users-icon.png" @click="showCreateTeamFunc" class="-ml-8 cursor-pointer"/>
       </h5>
       <div class="text-white flex items-center">
-        <div action="" class="w-full xs:max-w-[280px] text-xs font-medium flex items-center relative justify-end mr-2"
-          @submit.prevent="$event.preventDefault()">
+        <div action="" class="w-full xs:max-w-[280px] text-xs font-medium flex items-center relative justify-end mr-2" @submit.prevent="$event.preventDefault()">
           <span class="el-dropdown-link left-roll mr-2">
             <input type="text"
               class="search-input h-10 pl-4 mr-2 text-black bg-transparent flex-1 border-[1px] border-paperdazgreen-400 rounded-tl-lg rounded-bl-lg focus:border-paperdazgreen-700 outline-none"
@@ -56,9 +55,28 @@
               No Folders
             </span>
           </div>
+          <div class="my-12 grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] md:grid-cols-4 sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-x-2 sm:gap-x-[3.5rem] gap-y-6 px-[3rem]">
+              <div
+                class="items-center border-2 p-[15px] rounded-[16px] border-[#909090]"
+                v-for="(content, i) in folders" :key="i"
+              >
+                <div class="overflow-hidden px-[10px]">
+                    <span class="border-none inline-block	float-left pt-[4px]">
+                      <img
+                        class="w-[28px]"
+                        src="~/assets/img/Vector.png"
+                      />
+                    </span>
+                    <p @click="showFolderFilesFunc(content)" class="text-base font-medium text-center text-[#414142] truncate cursor-pointer inline-block ml-[27px]" >
+                    {{ content.name }} 
+                    </p>
+                    <span class="float-right">{{ content.files.length }}</span>
+                  </div>
+              </div>
+          </div>
           <!--END: No folder container-->
 
-          <table class="custom-table" v-else>
+          <!---- <table class="custom-table" v-else>
             <thead class="text-[#414142]">
               <tr>
                 <th class="w-12 text-left">Folder Name</th>
@@ -67,9 +85,9 @@
                 <th class="text-center fixed-col right"></th>
               </tr>
             </thead>
-            <!-- <tr
+             <tr
             class="py text-center w-100%"
-             v-if="folders.length < 1"> <td class="w-full my-4 font-semibold text-paperdazgray-300">No folder created</td></tr> -->
+             v-if="folders.length < 1"> <td class="w-full my-4 font-semibold text-paperdazgray-300">No folder created</td></tr>
             <tbody class="text-[#505050]">
               <tr v-for="(content, i) in folders" :key="i">
                 <td class="text-left">
@@ -116,7 +134,7 @@
                 </td>
               </tr>
             </tbody>
-          </table>
+          </table>   -->
         </div>
         <!-- End:: Folders -->
         <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
@@ -224,13 +242,20 @@
     <EditCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showEditCompanyFolder" />
     <DeleteCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showDeleteCompanyFolder" />
 
-    <AddCompanyfiles @refresh="setRefresh" :file="fileProps" :totalFile="totalFile"
-      @createFile="showUploadDocumentModal = true" v-model="showAddCompanyFiles" />
-    <RemoveCompanyFile @refresh="setRefresh" :userFile="userFile" v-model="showRemoveCompanyFiles" />
-    <MoveCompanyFiles @refresh="setRefresh" :userFile="userFile" @resetUserFile="resetUserFile"
-      @createFolderEmit="showCreateCompanyFolderFunc" v-model="showMoveCompanyFiles" />
-    <ShareFilesModal @refresh="setRefresh" :userFile="userFile" @qrLoad="showQrcodeFileFunc"
-      v-model="showShareCompanyFiles" />
+    <CreateTeam
+      @refresh="setRefresh"
+      v-model="showCreateTeam"
+    />
+    <EditCompanyFolder
+      @refresh="setRefresh"
+      :file="fileProps"
+      v-model="showEditCompanyFolder"
+    />
+    <DeleteCompanyFolder
+      @refresh="setRefresh"
+      :file="fileProps"
+      v-model="showDeleteCompanyFolder"
+    />
 
     <RequestModal @refresh="setRefresh" :userFile="userFile" @qrLoad="showQrcodeFileFunc" v-model="showRequestModal" />
 
@@ -252,6 +277,7 @@ import ShareOutlineIcon from '../svg-icons/ShareOutlineIcon.vue'
 import EmptyFileLedger from '../widgets/EmptyFileLedger.vue'
 import FloatingActionButton from '../widgets/FloatingActionButton.vue'
 import CreateCompanyFolder from './Tabs/CreateCompanyFolder.vue'
+import CreateTeam from './Tabs/CreateTeam.vue'
 import EditCompanyFolder from './Tabs/EditCompanyFolder.vue'
 import DeleteCompanyFolder from './Tabs/DeleteCompanyFolder.vue'
 import AddCompanyfiles from './Tabs/AddCompanyfiles.vue'
@@ -285,6 +311,7 @@ export default Vue.extend({
     HeartOutlineIcon,
     ShareOutlineIcon,
     CreateCompanyFolder,
+    CreateTeam,
     EditCompanyFolder,
     DeleteCompanyFolder,
     AddCompanyfiles,
@@ -307,6 +334,7 @@ export default Vue.extend({
       returnedDataPage: 0,
       totalFile: null,
       showCreateCompanyFolder: false,
+      showCreateTeam: false,
       showEditCompanyFolder: false,
       showDeleteCompanyFolder: false,
       folderProperty: '',
@@ -382,6 +410,9 @@ export default Vue.extend({
     },
     showCreateCompanyFolderFunc() {
       this.showCreateCompanyFolder = true
+    },
+    showCreateTeamFunc() {
+      this.showCreateTeam = true
     },
     showEditCompanyFolderFunc(file) {
       this.fileProps = file

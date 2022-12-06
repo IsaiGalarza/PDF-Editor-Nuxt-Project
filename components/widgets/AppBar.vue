@@ -40,16 +40,16 @@
           </nuxt-link>
         </div>
        
-	<nuxt-link to="/#key-features-section" class="">Features </nuxt-link>
-          <div class="h-px bg-paperdazgray-300 w-full lg:hidden"></div>
+	        <nuxt-link to="/#key-features-section" class="xs:ml-6">Features </nuxt-link>
+          <!-- <div class="h-px bg-paperdazgray-300 w-full lg:hidden"></div> -->
           <!-- <a href="/#upload-file-section" class="xs:ml-6">Upload File </a> -->
           <!-- <div class="h-px bg-paperdazgray-300 w-full lg:hidden"></div> -->
           <nuxt-link to="/packages/?type=default" class="xs:ml-6">Packages </nuxt-link>
-          <div class="h-px bg-paperdazgray-300 w-full lg:hidden"></div>
+          <!-- <div class="h-px bg-paperdazgray-300 w-full lg:hidden"></div> -->
           <nuxt-link to="/about" class="xs:ml-6">About </nuxt-link>
-          <div class="h-px bg-paperdazgray-300 w-full lg:hidden"></div>
+          <!-- <div class="h-px bg-paperdazgray-300 w-full lg:hidden"></div> -->
           <nuxt-link to="/faq" class="xs:ml-6">FAQ</nuxt-link>
-          <div class="h-px bg-paperdazgray-300 w-full lg:hidden"></div>
+          <!-- <div class="h-px bg-paperdazgray-300 w-full lg:hidden"></div> -->
           <nuxt-link to="/contact-us" class="xs:ml-6">Contact Us </nuxt-link>
 
         <div
@@ -134,7 +134,7 @@
           <nuxt-link
             v-if="!$auth.loggedIn"
             to="/register"
-            class="bg-paperdazgreen-300 hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 text-white h-9 w-28 xs:h-9 rounded shadow px-2 xs:px-3 flex items-center justify-center whitespace-nowrap"
+            class="bg-paperdazgreen-300 hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 text-white h-9 sm:w-24 md:w-28 xs:h-9 rounded shadow px-2 xs:px-3 flex items-center justify-center whitespace-nowrap"
             >Get Started</nuxt-link
           >
         </div>

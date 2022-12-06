@@ -7,7 +7,7 @@
         $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ', isAgreedSign !== 1 && isSign ? 'pointer-events-none' : ''
       ]" width="18" />
     <img v-else-if="uploaded" class="absolute-image" :src="initial" :style="style" />
-    <img v-else class="absolute-image" src="../../../assets/img/initials.png" />
+    <img v-else class="absolute-image" src="../../../assets/img/initials.png" style="height:32; width:auto" />
   </div>
 
 </template>
@@ -53,7 +53,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     style() {
       return {
         width: 'auto',
-        height: `${(this.scale || 1) * 24}px`,
+        height: `${(this.scale || 1) * 20}px`,
       }
     },
   },

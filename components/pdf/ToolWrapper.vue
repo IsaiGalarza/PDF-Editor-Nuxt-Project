@@ -112,8 +112,7 @@ export default {
     drawingStart: Boolean,
     value: undefined,
     lineStart: Boolean,
-    toolLength: Number,
-    pdf: Object,
+    toolLength: Number
   },
   components: {
     TextTool,
@@ -346,13 +345,12 @@ export default {
         this.isDragging = true
         this.lastPosX = elem.offsetLeft
         this.lastPosY = elem.offsetTop
-        let page = await this.pdf.getPage(this.pageNumber)
-        let unscaledViewport = page.getViewport({ scale: 1 });
-        this.pageScale = elem.parentElement.clientWidth / unscaledViewport.width
+        // console.log(elem.parentElement.getBoundingClientRect().width / elem.parentElement.clientWidth)
+        this.pageScale = elem.parentElement.getBoundingClientRect().width / elem.parentElement.clientWidth
       }
 
-      let posX = event.deltaX/(this.pageScale+0.1) + this.lastPosX
-      let posY = event.deltaY/(this.pageScale+0.1) + this.lastPosY
+      let posX = event.deltaX/this.pageScale + this.lastPosX
+      let posY = event.deltaY/this.pageScale + this.lastPosY
 
       // Set Boundary
       if (posX > 0 && posX + elem.clientWidth < elem.parentElement.clientWidth)

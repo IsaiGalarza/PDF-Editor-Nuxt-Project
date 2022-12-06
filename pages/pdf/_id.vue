@@ -59,7 +59,7 @@
                 :setActiveToolId="setActiveToolId" :pageNumber="pI + 1" :value="tool.value" :file="file"
                 :justMounted="tool.justMounted" :drawingStart="drawingStart" :showPublishModal="showPublishModal"
                 :generatePDF="generatePDF" @toolWrapperBeforeChecked="toolWrapperBeforeChecked"
-                @toolWrapperAfterChecked="toolWrapperAfterChecked" :pdf="pdf" v-model="tool.value" />
+                @toolWrapperAfterChecked="toolWrapperAfterChecked" v-model="tool.value" />
               <!-- </div> -->
               <pdf-page :handlePanning="handlePanning" :onCLickSinglePageOuter="onCLickSinglePageOuter" :file="file"
                 :onMouseLeaveFromPages="onMouseLeaveFromPages"

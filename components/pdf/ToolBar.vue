@@ -1,14 +1,15 @@
 <template>
   <section>
-    <div class="bg-[#7CCA65] text-white text-base px-6 py-2 flex items-center"
+    <div class="bg-[#F4F906] text-[#EE1B1B] text-base px-6 py-2 flex items-center"
       v-if="isConfirm && !isLoading && $auth.loggedIn && isCreator">
-      <exclamation-icon class="text-white mr-2" />
-      Frse user will be asked to scroll to the bottom of last page to click Confirm. A copy with free user signature
+      <!-- <exclamation-icon class="text-white mr-2" /> -->
+      Free user will be asked to scroll to the bottom of last page to click Confirm. A copy with free user signature
       will be sent to all users.
     </div>
     <div class="w-full py-1 pb-2" v-if="isConfirm && !isScrollBottom && !isCreator">
       <span class="float-left pt-2 px-2">Scroll to the bottom of file to confirm that you have read.</span>
-      <button class="text-white bg-zinc-500 rounded px-4 py-2 float-right mr-2">Cancel</button>
+      <button class="text-white bg-zinc-500 rounded px-4 py-2 float-right mr-2"
+        @click="cancelConfrim">Cancel</button>
     </div>
     <div class="flex justify-between h-full pt-2" v-if="userRole == 'free_user' && isSign && isAgreedSign === -1">
       <span class="float-left m-2 text-sm font-bold ">I agree to apply my electronic signature/initials.
@@ -81,7 +82,7 @@
           @click="() => { showSignTray = !showSignTray; showSignTray && (showInitialTray = false); }"></div>
         <div v-if="(showSignTray)" v-click-outside="handleSignFocusOut"
           class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-10 mt-1 tray-mode">
-          <img class="absolute-image border py-1 px-3 rounded h-[50px]" :src="signature || ' '" width="140" />
+          <img class="absolute-image border py-1 px-6 rounded h-[50px]" :src="signature || ' '" />
           <img src="../../assets/img/pencil.png" class="cursor-pointer w-[12px] h-[12px] ml-1 mt-3"
             @click="openSignModal" />
         </div>
@@ -97,9 +98,9 @@
           id="initialtraybtn"
           @click="() => { showInitialTray = !showInitialTray; showInitialTray && (showSignTray = false); }">
         </div>
-        <div v-if="showInitialTray" v-click-outside="handleInitialFocusOut" 
+        <div v-if="showInitialTray" v-click-outside="handleInitialFocusOut"
           class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-10 mt-1 tray-mode">
-          <img class="absolute-image border py-1 px-3 rounded h-[50px]" :src="initial || ' '" width="120" />
+          <img class="absolute-image border py-1 px-6 rounded h-[50px]" :src="initial || ' '"/>
           <img src="../../assets/img/pencil.png" class="cursor-pointer w-[12px] h-[12px] ml-1 mt-3"
             @click="openInitialModal" />
         </div>
@@ -367,6 +368,9 @@ export default {
       else {
         this.setSelectedType(this.TOOL_TYPE.appendInitial)
       }
+    },
+    cancelConfrim(){
+      window.location.assign('/dashboard')
     },
     changeInitialToBase64() {
       const toDataURL = (url) =>

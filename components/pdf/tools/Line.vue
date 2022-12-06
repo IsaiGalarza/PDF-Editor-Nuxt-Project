@@ -26,7 +26,7 @@ export default {
     // },
     generatePDF: function () {
       if (this.generatePDF) {
-        this.converImage();
+        this.convertImage();
       }
     }
   },
@@ -36,7 +36,7 @@ export default {
     }
   },
   methods: {
-    converImage: function () {
+    convertImage: function () {
       const svgElem = this.$refs.lineBox
       let img = new Image(),
         serializer = new XMLSerializer(),

@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-wrapper" :style="wrpStyle" ref="Wrp">
+  <div class="tool-wrapper" :style="wrpStyle" ref="Wrp" :id="getToolWrapperId">
     <div
       class="h-8 rounded-full border border-black text-black inline-flex items-center px-4 gap-1.5 backdrop-blur-sm bg-white/30 absolute tool-menu"
       v-show="isActive" ref="toolMenu" v-if="isCreator">
@@ -37,17 +37,19 @@
             fill="#84C870" />
         </svg>
       </div>
-      <div v-else-if="(type == 'appendSignature' && tool.completed && isCreator)">
-        <img :src="tool.completed" width="70" />
+      <!-- <div v-else-if="(type == 'appendSignature' && tool.completed)" ref="apinital">
+        <img :src="tool.completed" style="height:25px" />
       </div>
-      <div v-else-if="(type == 'appendInitial' && tool.completed && isCreator)">
-        <img :src="tool.completed" width="70" />
-      </div>
+      <div v-else-if="(type == 'appendInitial' && tool.completed)" ref="apsign">
+        <img :src="tool.completed" style="height:25px" />
+      </div> -->
       <component v-else :is="`${type}-tool`" :x1="x1" :y1="y1" :x2="x2" :y2="y2" :id="id" :tool="tool"
-        :elemScale="elemScale" :incDecCount="incDecCount" :points="points" :isActive="isActive" :fontSize="fontSize"
-        :scale="scale" :file="file" :value="value" :justMounted="justMounted" @input="onInp" :generatePDF="generatePDF"
-        :showPublishModal="showPublishModal" :selectedToolType="selectedToolType" :mouseUp="mouseUp" :lineStart="lineStart"
-        :toolLength="toolLength" :drawingStart="drawingStart" />
+        :completed="tool.completed" :elemScale="elemScale" :incDecCount="incDecCount" :points="points"
+        :isActive="isActive" :fontSize="fontSize" :scale="scale" :file="file" :value="value" :justMounted="justMounted"
+        @input="onInp" :generatePDF="generatePDF" :showPublishModal="showPublishModal"
+        :selectedToolType="selectedToolType" :mouseUp="mouseUp" :lineStart="lineStart" :toolLength="toolLength"
+        :drawingStart="drawingStart" />
+      
     </div>
   </div>
 </template>
@@ -77,6 +79,7 @@ import AppendInitialTool from './tools/AppendInitial'
 import moment from 'moment'
 import { mapState } from 'vuex'
 import TeamAccess from '~/models/TeamAccess'
+import { toDataURL } from 'qrcode'
 
 export default {
   props: {
@@ -106,10 +109,10 @@ export default {
     justMounted: Boolean,
     mouseUp: Boolean,
     selectedToolType: String,
-    drawingStart:Boolean,
+    drawingStart: Boolean,
     value: undefined,
-    lineStart:Boolean,
-    toolLength: Number
+    lineStart: Boolean,
+    toolLength: Number,
   },
   components: {
     TextTool,
@@ -143,6 +146,7 @@ export default {
     incDecCount: 7,
     incDecMax: 15,
     incDecMin: 7,
+    toolWrapperId: ''
   }),
   head() {
     return {
@@ -160,16 +164,6 @@ export default {
   created() {
     this.checkAndSetPosition()
     this.clcPos()
-    // this.$BUS.$on('tool-comp-click', v => {
-    //   console.log(v)
-    //   if(v != this.index) this.isActive = false
-    // })
-
-    // console.log(this.x2, this.x1)
-    // if(this.type == this.TOOL_TYPE.line || this.type == this.TOOL_TYPE.highlight){
-    //   if(this.x2 < this.x1) this.altDirection = true
-    //   else this.altDirection = false
-    // }
   },
   watch: {
     x1() {
@@ -196,6 +190,15 @@ export default {
   },
   computed: {
     ...mapState(['editAnnotation']),
+    getToolWrapperId() {
+      if (this.type == 'appendSignature') {
+        return 'sign' + this.pageNumber
+      } else if (this.type == 'appendInitial') {
+        return 'initial' + this.pageNumber
+      } else {
+        return ''
+      }
+    },
     isActive() {
       // console.log(this.tool)
       return this.id == this.activeToolId
@@ -239,6 +242,19 @@ export default {
     handleDelete() {
       this.setActiveToolId(null)
       this.deleteTool(this.id)
+    },
+    toDataURL(url) {
+      fetch(url)
+        .then((response) => response.blob())
+        .then(
+          (blob) =>
+            new Promise((resolve, reject) => {
+              const reader = new FileReader()
+              reader.onloadend = () => resolve(reader.result)
+              reader.onerror = reject
+              reader.readAsDataURL(blob)
+            })
+        )
     },
     inc() {
       if (this.incDecCount == this.incDecMax) return

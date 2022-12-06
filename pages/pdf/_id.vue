@@ -62,7 +62,7 @@
                 @toolWrapperAfterChecked="toolWrapperAfterChecked" v-model="tool.value" />
               <!-- </div> -->
               <pdf-page :handlePanning="handlePanning" :onCLickSinglePageOuter="onCLickSinglePageOuter" :file="file"
-                :onMouseMoveOnPages="onMouseMoveOnPages" :onMouseLeaveFromPages="onMouseLeaveFromPages"
+                :onMouseLeaveFromPages="onMouseLeaveFromPages"
                 :page-number="pI + 1" :pdf="pdf" :scale="scale" @setPageHeight="setPageHeight"
                 :initialOrigin="setInitialOrigin" @setPageWidth="onloadPdfquery" :confirmDone="confirmDone"
                 :isCreator="isCreator" />
@@ -486,7 +486,8 @@ export default mixins(PdfAuth).extend({
         if (this.filteredAnnotationButton[0]) {
           this.filteredAnnotationButton[0].classList.add('pulse')
           window.selem = this.filteredAnnotationButton[0];
-          this.filteredAnnotationButton[0].scrollIntoView({ block: 'center', behavior: 'smooth' })
+          // this.filteredAnnotationButton[0].scrollIntoView({ block: 'center', behavior: 'smooth' })
+          this.filteredAnnotationButton[0].scrollIntoView({ block: 'center'})
           let toolwrapper = this.filteredAnnotationButton[0].parentElement.parentElement.parentElement;
           this.signAlaram.top = toolwrapper.style.top;
           this.curSignInitialPage = toolwrapper.id;
@@ -609,7 +610,7 @@ export default mixins(PdfAuth).extend({
       this._setPdfToolBarCompanyName()
       // this.checkFilePrivacyOnload()
 
-      this._scrollToConfirm()
+      // this._scrollToConfirm()
 
       this._setToolsFromFileAnnotations()
 
@@ -932,14 +933,6 @@ export default mixins(PdfAuth).extend({
     onMouseLeaveFromPages() {
       if (window.innerWidth < 800) return
       this.showToolIdentifier = false
-    },
-    onMouseMoveOnPages(event) {
-      // if(window.innerWidth < 800) return
-      // if(!this.selectedToolType) return
-      // if(!this.showToolIdentifier) this.showToolIdentifier = true
-      // let { x, y } = this.pointerPos(event, this.$refs.PagesOuter)
-      // this.toolIdentifierPosition.top = y - this.TOOL_THRESHOLD[this.selectedToolType].identifier.top
-      // this.toolIdentifierPosition.left = x - this.TOOL_THRESHOLD[this.selectedToolType].identifier.left
     },
     onToolChange(type) {
       this.selectedToolType = type

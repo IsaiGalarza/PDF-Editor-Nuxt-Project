@@ -392,7 +392,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       if (!this.proceedToSendEmail) {
         switch (this.file.fileAction) {
           case FileAction.CONFIRM:
-            await this.confirmRequest()
+            // await this.confirmRequest()
+            await this.otherRequest()
             break
           case FileAction.SIGNED:
             await this.otherRequest()

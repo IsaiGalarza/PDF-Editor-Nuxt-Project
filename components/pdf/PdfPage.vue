@@ -2,13 +2,8 @@
   <div class="pdf-page" ref="PdfPage">
     <div class="annotationLayer" ref="annotationLayer"></div>
 
-    <canvas
-      @click="e => onCLickSinglePageOuter(e, pageNumber)"
-      @mousemove="onMouseMoveOnPages"
-      @mouseleave="onMouseLeaveFromPages"
-      ref="canvas"
-      class="pdf-canvas"
-    ></canvas>
+    <canvas @click="e => onCLickSinglePageOuter(e, pageNumber)"
+      @mouseleave="onMouseLeaveFromPages" ref="canvas" class="pdf-canvas"></canvas>
 
   </div>
 </template>
@@ -26,7 +21,6 @@ export default {
     handlePanning: Function,
     onCLickSinglePageOuter: Function,
     onMouseMoveOnPages: Function,
-    onMouseLeaveFromPages: Function,
     setPageHeight: Function,
     setPageWidth: Function,
     file: Object,
@@ -37,23 +31,18 @@ export default {
     scaleZ: 2,
     currentPage: 1
   }),
-  mounted () {
+  mounted() {
     this.getPage()
     let pdfPage = document.getElementsByClassName('pdf-editor-view')[0]
-    setTimeout(() => {
-      pdfPage.scrollTo(0, 0)
-    }, 1000)
-    setTimeout(() => {
-      pdfPage.addEventListener('scroll', this.onScroll)
-    }, 1000)
+    pdfPage.addEventListener('scroll', this.onScroll)
   },
   computed: {
-    isConfirm () {
+    isConfirm() {
       return String(this.file.fileAction).toLowerCase() === FileAction.CONFIRM
     }
   },
   methods: {
-    async getPage () {
+    async getPage() {
       this.pdf.getPage(this.pageNumber).then(page => {
         this.$store.commit('SET_PDF_OFFSET_Y', page.view[1])
         this.$store.commit('SET_PDF_OFFSET_X', page.view[0])
@@ -95,13 +84,13 @@ export default {
       this.renderAnnotation(page)
       this.$emit('setPageWidth', { width: canvas.width, height: canvas.height })
     },
-    async renderAnnotation (page) {
+    async renderAnnotation(page) {
       let annotationLayer = this.$refs.annotationLayer
       let annotations = await page.getAnnotations();
 
       var unscaledViewport = page.getViewport({ scale: 1 });
 
-      let v = page.getViewport({ scale: this.$refs.PdfPage.clientWidth/unscaledViewport.width })
+      let v = page.getViewport({ scale: this.$refs.PdfPage.clientWidth / unscaledViewport.width })
       await PDFJS.AnnotationLayer.render({
         viewport: v.clone({ dontFlip: true }),
         div: annotationLayer,
@@ -110,7 +99,7 @@ export default {
         renderInteractiveForms: true
       });
     },
-    onScroll () {
+    onScroll() {
       let pdfPage = document.getElementsByClassName('pdf-editor-view')[0]
       if (pdfPage.scrollTop + 640 > pdfPage.scrollHeight && this.isConfirm) {
         pdfPage.removeEventListener('scroll', this.onScroll)

@@ -44,7 +44,7 @@
         <img :src="tool.completed" style="height:25px" />
       </div> -->
       <component v-else :is="`${type}-tool`" :x1="x1" :y1="y1" :x2="x2" :y2="y2" :id="id" :tool="tool"
-        :completed="tool.completed" :elemScale="elemScale" :incDecCount="incDecCount" :points="points"
+       :elemScale="elemScale" :incDecCount="incDecCount" :points="points"
         :isActive="isActive" :fontSize="fontSize" :scale="scale" :file="file" :value="value" :justMounted="justMounted"
         @input="onInp" :generatePDF="generatePDF" :showPublishModal="showPublishModal"
         :selectedToolType="selectedToolType" :mouseUp="mouseUp" :lineStart="lineStart" :toolLength="toolLength"

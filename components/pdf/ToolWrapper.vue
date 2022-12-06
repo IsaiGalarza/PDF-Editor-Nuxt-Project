@@ -113,6 +113,7 @@ export default {
     value: undefined,
     lineStart: Boolean,
     toolLength: Number,
+    pdf: Object,
   },
   components: {
     TextTool,
@@ -146,7 +147,8 @@ export default {
     incDecCount: 7,
     incDecMax: 15,
     incDecMin: 7,
-    toolWrapperId: ''
+    toolWrapperId: '',
+    pageScale: 1
   }),
   head() {
     return {
@@ -211,7 +213,7 @@ export default {
     },
     wrpStyle() {
       let top = this.top
-      let left = this.left
+      let left = this.left 
       return {
         top: `${top}px`,
         left: `${left}px`,
@@ -337,32 +339,32 @@ export default {
       if (this.tool.top) this.top = this.tool.top
       if (this.tool.left) this.left = this.tool.left
     },
-    handleDrag(event) {
+    async handleDrag(event) {
       var elem = this.$refs.Wrp
 
       if (!this.isDragging) {
         this.isDragging = true
         this.lastPosX = elem.offsetLeft
         this.lastPosY = elem.offsetTop
+        let page = await this.pdf.getPage(this.pageNumber)
+        let unscaledViewport = page.getViewport({ scale: 1 });
+        this.pageScale = elem.parentElement.clientWidth / unscaledViewport.width
       }
 
-      var posX = event.deltaX + this.lastPosX
-      var posY = event.deltaY + this.lastPosY
+      let posX = event.deltaX/(this.pageScale+0.1) + this.lastPosX
+      let posY = event.deltaY/(this.pageScale+0.1) + this.lastPosY
 
       // Set Boundary
       if (posX > 0 && posX + elem.clientWidth < elem.parentElement.clientWidth)
         this.left = posX
-      if (
-        posY > 0 &&
-        posY + elem.clientHeight < elem.parentElement.clientHeight
-      )
+      if (posY > 0 && posY + elem.clientHeight < elem.parentElement.clientHeight)
         this.top = posY
 
       if (event.isFinal) {
         this.isDragging = false
 
-        let dx = this.lastPosX - this.left
-        let dy = this.lastPosY - this.top
+        let dx = (this.lastPosX - this.left)
+        let dy = (this.lastPosY - this.top)
 
         this.$emit('pos-change', {
           dx,

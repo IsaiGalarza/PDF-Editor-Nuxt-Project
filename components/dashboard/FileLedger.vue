@@ -219,7 +219,7 @@ export default Vue.extend({
     this.handleFileHighlight()
     this.handleShowingLedger()
     this.tableScrollObserver()
-    // this.fetchFiles(this.returnedDataPage, this.searchValue)
+    this.fetchFiles(this.returnedDataPage, this.searchValue)
   },
 
   methods: {

@@ -62,7 +62,6 @@
                 @toolWrapperAfterChecked="toolWrapperAfterChecked" v-model="tool.value" />
               <!-- </div> -->
               <pdf-page :handlePanning="handlePanning" :onCLickSinglePageOuter="onCLickSinglePageOuter" :file="file"
-                :onMouseLeaveFromPages="onMouseLeaveFromPages"
                 :page-number="pI + 1" :pdf="pdf" :scale="scale" @setPageHeight="setPageHeight"
                 :initialOrigin="setInitialOrigin" @setPageWidth="onloadPdfquery" :confirmDone="confirmDone"
                 :isCreator="isCreator" />

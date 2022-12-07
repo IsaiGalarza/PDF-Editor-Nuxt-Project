@@ -7,7 +7,7 @@
         $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ', isAgreedSign !== 1 && isSign ? 'pointer-events-none' : ''
       ]" width="18" />
     <img v-else-if="uploaded" class="absolute-image" :src="signature" :style="style" />
-    <img v-else class="absolute-image" src="../../../assets/img/sign.png" style="height:32; width:auto" />
+    <img v-else class="absolute-image" src="../../../assets/img/sign.png" />
 
   </div>
 

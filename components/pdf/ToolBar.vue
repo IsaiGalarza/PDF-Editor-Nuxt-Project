@@ -408,6 +408,9 @@ export default {
     '$auth.user.initialURL': async function () {
       this.changeInitialToBase64()
     },
+    '$auth.user.signatureURL': async function () {
+      this.changeInitialToBase64()
+    },
   },
   mounted: function () {
     this.changeInitialToBase64()

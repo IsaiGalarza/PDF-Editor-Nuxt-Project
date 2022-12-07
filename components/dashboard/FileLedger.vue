@@ -15,7 +15,7 @@
           <!-- <company-icon /> -->
           <img src="../../assets/img/company-icon.png" v-if="isPaidUser" />
         </a>
-        <img src="../../assets/img/users-icon.png" class="-ml-8" v-if="isPaidUser" />
+        <img src="../../assets/img/users-icon.png" class="-ml-8 cursor-pointer" @click="showCreateTeamFunc" v-if="isPaidUser" />
       </h5>
       <div class="w-full xs:max-w-[350px] text-xs font-medium flex items-center relative justify-end">
         <span class="el-dropdown-link left-roll mr-4">
@@ -123,7 +123,8 @@
             </td>
             <td class="fixed-col right">
               <button class="cursor-pointer" @click="showShareCompanyFilesFunc(file)">
-                <share-icon class="w-4 h-4" />
+                <share-outline-icon class="w-4 h-4" />
+
               </button>
             </td>
           </tr>
@@ -153,9 +154,12 @@
     <FilePagination :totalFile="totalFile" @setPage="setPage" />
 
     <ShareFilesModal :userFile="userFile" @qrLoad="showQrcodeFileFunc" v-model="showShareCompanyFiles" />
-
+    <CreateCompanyFolder @refresh="setRefresh" :userFile="userFile" @resetUserFile="resetUserFile"
+      v-model="showCreateCompanyFolder" />
+    <upload-document-modal @resetUserFolder="resetUserFolder" :folder="fileProps" v-model="showUploadDocumentModal" />
 
     <QrcodeShare :userFile="userFile" v-model="showQrcodeFiles" />
+    <CreateTeam @refresh="setRefresh" v-model="showCreateTeam" />
   </div>
 </template>
 
@@ -177,6 +181,9 @@ import UserTypeEnum from '~/models/UserTypeEnum'
 import FolderPlusIcon from '../svg-icons/FolderPlusIcon.vue'
 import PlusIcon from '../svg-icons/PlusIcon.vue'
 import AuthUser from '~/models/AuthUser'
+import CreateCompanyFolder from '../company-files/Tabs/CreateCompanyFolder.vue'
+import UploadDocumentModal from './UploadDocumentModal.vue'
+import CreateTeam from '../company-files/Tabs/CreateTeam.vue'
 
 export default Vue.extend({
   components: {
@@ -191,7 +198,10 @@ export default Vue.extend({
     ShareOutlineIcon,
     ShareFilesModal,
     QrcodeShare,
-    FilePagination
+    FilePagination,
+    UploadDocumentModal,
+    CreateCompanyFolder,
+    CreateTeam
   },
   props: ['searchContect'],
   async fetch() { },
@@ -210,9 +220,14 @@ export default Vue.extend({
       searchValue: '',
       showScribble: false,
       files: [],
+      fileProps: {},
       copyFiles: [],
+      refresh: false,
       highlightedFileId: undefined,
       scrollObserver: undefined,
+      showUploadDocumentModal: false,
+      showCreateCompanyFolder: false,
+      showCreateTeam: false
     }
   },
   mounted() {
@@ -223,13 +238,27 @@ export default Vue.extend({
   },
 
   methods: {
-    showCreateCompanyFolderFunc() { },
+    showCreateCompanyFolderFunc() {
+      this.showCreateCompanyFolder = true
+    },
     showUploadModalFunction() {
       // if (!this.showUploadIcon) return
       // if (this.totalFile >= this.totalRegisteredPaperlink)
       //   this.showMaxPaperlinkModal = true
       // else
-      //   this.showUploadDocumentModal = true
+      this.showUploadDocumentModal = true
+    },
+    setRefresh() {
+      this.refresh = !this.refresh
+    },
+    resetUserFolder() {
+      this.fileProps = {}
+    },
+    resetUserFile() {
+      this.userFile = {}
+    },
+    showCreateTeamFunc() {
+      this.showCreateTeam = true
     },
     searchFiles(event) {
       this.searchValue = event.target.value
@@ -426,7 +455,12 @@ export default Vue.extend({
     },
     pdfUser: function () {
       console.log('pdfuser>>', this.pdfUser);
-    }
+    },
+    refresh: function () {
+      this.$nuxt.refresh()
+      this.fetchFiles(this.returnedDataPage, this.folderSearch)
+      this.fetchFolder(this.returnedFolderPage, this.folderSearch)
+    },
   },
 })
 </script>

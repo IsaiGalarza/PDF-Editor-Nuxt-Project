@@ -24,8 +24,8 @@
             <div :class="[
               'pdf-single-page-outer w-full',
               { 'mt-6': pI > 0 && !downloadingPdf },
-            ]" :ref="`pdf-single-page-outer-${pI + 1}`" v-for="(page, pI) in pdf.numPages" :key="pI"
-              @mousemove="(ev) => handlePanning(ev, undefined, undefined, pI + 1)" @mouseup="onMouseUp"
+            ]" :ref="`pdf-single-page-outer-${pI + 1}`" v-for="(page, pI) in pdf.numPages" :key="pI" 
+              v-hammer:pan="(ev) => handlePanning(ev, undefined, undefined, pI + 1)" @mouseup="onMouseUp"
               @mousedown="onMouseDown" style="position: relative;">
 
               <div
@@ -860,7 +860,7 @@ export default mixins(PdfAuth).extend({
       direction = undefined,
       pageNumber
     ) {
-      if(!this.mouseDown) return;
+      // if(!this.mouseDown) return;
       
       var elem = this.$refs['pdf-single-pages-outer']
       if (!this.isPanning && id == undefined) {
@@ -869,14 +869,14 @@ export default mixins(PdfAuth).extend({
         this.lastPosY = elem.offsetTop
         if (this.selectedToolType == this.TOOL_TYPE.line) {
           this.lineStart = true;
-          await this.placeTool(event, pageNumber)
+          await this.placeTool(event.srcEvent, pageNumber)
           this.selectedToolId = this.tools[this.tools.length - 1].id
         } else if (this.selectedToolType == this.TOOL_TYPE.highlight) {
-          await this.placeTool(event, pageNumber)
+          await this.placeTool(event.srcEvent, pageNumber)
           this.selectedToolId = this.tools[this.tools.length - 1].id
         } else if (this.selectedToolType == this.TOOL_TYPE.draw) {
           this.drawingStart = true;
-          await this.placeTool(event, pageNumber)
+          await this.placeTool(event.srcEvent, pageNumber)
           this.selectedToolId = this.tools[this.tools.length - 1].id
         }
       } else if (id != undefined && this.selectedToolId != id) {
@@ -889,7 +889,7 @@ export default mixins(PdfAuth).extend({
         let parent = this.$refs[`pdf-single-page-outer-${pageNumber}`]
 
         if (Array.isArray(parent)) parent = parent[0]
-        let { x, y } = this.pointerPos(event, parent)
+        let { x, y } = this.pointerPos(event.srcEvent, parent)
 
         if (y < 0) y = 0
         if (y > elem.clientHeight) y = elem.clientHeight
@@ -923,6 +923,11 @@ export default mixins(PdfAuth).extend({
         let { x, y } = getPointPos()
         this.tools[index].points = this.tools[index].points.concat([x, y])
         this.$forceUpdate()
+      }
+      if (event.isFinal) {
+        this.isPanning = false
+        this.lastPosX = 0
+        this.lastPosY = 0
       }
     },
     onMouseEnterOnPages() {

@@ -37,12 +37,12 @@
             fill="#84C870" />
         </svg>
       </div>
-      <!-- <div v-else-if="(type == 'appendSignature' && tool.completed)" ref="apinital">
+      <div v-else-if="(type == 'appendSignature' && tool.completed && isCreator)" ref="apinital">
         <img :src="tool.completed" style="height:25px" />
       </div>
-      <div v-else-if="(type == 'appendInitial' && tool.completed)" ref="apsign">
+      <div v-else-if="(type == 'appendInitial' && tool.completed && isCreator)" ref="apsign">
         <img :src="tool.completed" style="height:25px" />
-      </div> -->
+      </div>
       <component v-else :is="`${type}-tool`" :x1="x1" :y1="y1" :x2="x2" :y2="y2" :id="id" :tool="tool"
        :elemScale="elemScale" :incDecCount="incDecCount" :points="points"
         :isActive="isActive" :fontSize="fontSize" :scale="scale" :file="file" :value="value" :justMounted="justMounted"

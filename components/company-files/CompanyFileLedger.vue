@@ -256,7 +256,24 @@
       :file="fileProps"
       v-model="showDeleteCompanyFolder"
     />
-
+    <RemoveCompanyFile
+      @refresh="setRefresh"
+      :userFile="userFile"
+      v-model="showRemoveCompanyFiles"
+    />
+    <MoveCompanyFiles
+      @refresh="setRefresh"
+      :userFile="userFile"
+      @resetUserFile="resetUserFile"
+      @createFolderEmit="showCreateCompanyFolderFunc"
+      v-model="showMoveCompanyFiles"
+    />
+    <ShareFilesModal
+      @refresh="setRefresh"
+      :userFile="userFile"
+      @qrLoad="showQrcodeFileFunc"
+      v-model="showShareCompanyFiles"
+    />
     <RequestModal @refresh="setRefresh" :userFile="userFile" @qrLoad="showQrcodeFileFunc" v-model="showRequestModal" />
 
     <FilesInFolder :folder="FilesInFolerContent" v-model="showFilesInFolder" />
@@ -427,6 +444,9 @@ export default Vue.extend({
       this.showAddCompanyFiles = true
     },
     showRemoveCompanyFileFunc(file) {
+      console.log(
+        'remove file'
+      );
       this.userFile = file
       this.showRemoveCompanyFiles = true
     },

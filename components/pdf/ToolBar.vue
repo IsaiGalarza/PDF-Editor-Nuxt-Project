@@ -8,8 +8,7 @@
     </div>
     <div class="w-full py-1 pb-2" v-if="isConfirm && !isScrollBottom && !isCreator">
       <span class="float-left pt-2 px-2">Scroll to the bottom of file to confirm that you have read.</span>
-      <button class="text-white bg-zinc-500 rounded px-4 py-2 float-right mr-2"
-        @click="cancelConfrim">Cancel</button>
+      <button class="text-white bg-zinc-500 rounded px-4 py-2 float-right mr-2" @click="cancelConfrim">Cancel</button>
     </div>
     <div class="flex justify-between h-full pt-2" v-if="userRole == 'free_user' && isSign && isAgreedSign === -1">
       <span class="float-left m-2 text-sm font-bold ">I agree to apply my electronic signature/initials.
@@ -82,7 +81,7 @@
           @click="() => { showSignTray = !showSignTray; showSignTray && (showInitialTray = false); }"></div>
         <div v-if="(showSignTray)" v-click-outside="handleSignFocusOut"
           class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-10 mt-1 tray-mode">
-          <img class="absolute-image border py-1 px-6 rounded h-[50px]" :src="signature || ' '" />
+          <img class="absolute-image border py-1 px-6 rounded h-[50px]" :src="signature" />
           <img src="../../assets/img/pencil.png" class="cursor-pointer w-[12px] h-[12px] ml-1 mt-3"
             @click="openSignModal" />
         </div>
@@ -100,7 +99,7 @@
         </div>
         <div v-if="showInitialTray" v-click-outside="handleInitialFocusOut"
           class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-10 mt-1 tray-mode">
-          <img class="absolute-image border py-1 px-6 rounded h-[50px]" :src="initial || ' '"/>
+          <img class="absolute-image border py-1 px-6 rounded h-[50px]" :src="initial" />
           <img src="../../assets/img/pencil.png" class="cursor-pointer w-[12px] h-[12px] ml-1 mt-3"
             @click="openInitialModal" />
         </div>
@@ -185,6 +184,8 @@ import UserProfileSolidIcon from '../svg-icons/UserProfileSolidIcon.vue'
 import TOOL_TYPE from './data/toolType'
 import PdfNotLoggedUser from './modals/PdfNotLoggedUser.vue'
 import AlertModal from './modals/AlertModal.vue'
+import initialURL from '~/assets/img/initials.png'
+import signatureURL from '~/assets/img/sign.png'
 
 export default {
   components: {
@@ -369,7 +370,7 @@ export default {
         this.setSelectedType(this.TOOL_TYPE.appendInitial)
       }
     },
-    cancelConfrim(){
+    cancelConfrim() {
       window.location.assign('/dashboard')
     },
     changeInitialToBase64() {
@@ -385,11 +386,14 @@ export default {
                 reader.readAsDataURL(blob)
               })
           )
-
-      toDataURL(this.$auth?.user?.initialURL).then((dataUrl) => {
+      this.$auth?.user?.initialURL ? toDataURL(this.$auth?.user?.initialURL).then((dataUrl) => {
         this.initial = dataUrl
-      })
-      toDataURL(this.$auth?.user?.signatureURL).then((dataUrl) => {
+      }) : toDataURL(initialURL).then((dataUrl) => {
+        this.initial = dataUrl
+      });
+      this.$auth?.user?.signatureURL ? toDataURL(this.$auth?.user?.signatureURL).then((dataUrl) => {
+        this.signature = dataUrl
+      }) : toDataURL(signatureURL).then((dataUrl) => {
         this.signature = dataUrl
       })
     },

@@ -88,9 +88,8 @@
             <th class="fixed-col right"></th>
           </tr>
         </thead>
-        <tbody v-if="(pdfUser.length > 0 && isPaidUser)">
-          <tr v-for="(file, i) in pdfUser" :key="file.id" :class="{ highlight: file.id == highlightedFileId }"
-            v-if="(file.annotaions != '[]')">
+        <tbody v-if="(pdfUser.length > 0)">
+          <tr v-for="(file, i) in pdfUser" :key="file.id" :class="{ highlight: file.id == highlightedFileId }">
             <td class="text-left fixed-col left">{{ i + 1 + returnedDataPage }}</td>
             <td>
               <div class="flex items-center gap-1.5">
@@ -130,49 +129,7 @@
             </td>
           </tr>
         </tbody>
-        <tbody v-if="(pdfUser.length > 0 && !isPaidUser)">
-          <tr v-for="(file, i) in pdfUser" :key="file.id" :class="{ highlight: file.id == highlightedFileId }">
-            <td class="text-left fixed-col left">{{ i + 1 + returnedDataPage }}</td>
-            <td>
-              <div class="flex items-center gap-1.5">
-                <div class="border border-paperdazgreen-300 p-0.5"
-                  :class="[file.role == userType.PAID ? 'rounded-md w-9 h-9' : 'circle circle-17']">
-                  <img :src="
-                    (file.user || {}).profile_picture ||
-                    '/img/placeholder_picture.png'
-                  " alt=""
-                    :class="[file.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
-                </div>
-                <div>
-                  <p class="text-sm font-medium">
-                    <nuxt-link :to="`/pdf/${file.paperLink}`">
-                      {{ file.fileName }}
-                    </nuxt-link>
-                  </p>
-                  <p class="text-xs">
-                    {{ (file || {}).userName }}
-                  </p>
-                </div>
-              </div>
-            </td>
-            <td class="text-center">
-              {{ file.fileAction || "-" }}
-            </td>
-            <!-- <td class="text-center">
-              {{ (file || {}).userName }}
-            </td> -->
-            <td>
-              {{ formatDateTime(file.updatedAt) }}
-            </td>
-            <td class="fixed-col right">
-              <button class="cursor-pointer" @click="showShareCompanyFilesFunc(file)">
-                <share-outline-icon class="w-4 h-4" />
-
-              </button>
-            </td>
-          </tr>
-        </tbody>
-        <tbody v-if="(pdfUser.length < 1)">
+        <tbody v-else>
           <tr v-for="i in 10" :key="i">
             <td class="text-left fixed-col left">{{ i }}</td>
             <td>
@@ -311,7 +268,8 @@ export default Vue.extend({
       // &fileName[$like]=${search}%&$skip=${page}
       let acct = this.$auth.user.role != UserTypeEnum.PAID ?
         `/ledger?userId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}` :
-        `/ledger?mainAccountId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}`
+        // `/ledger?mainAccountId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}`
+        `/ledger?fileOwner=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}`
 
       await this.$axios.get(acct)
         .then((response) => {

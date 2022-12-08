@@ -113,7 +113,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         userId: this.$auth?.user?.id,
         fileName: this.file.fileName,
         action: this.file.fileAction,
-        fileId: this.file.id
+        fileId: this.file.id,
+        fileOwner: this.file.userId
       }
     },
     isSign() {
@@ -271,8 +272,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
             pdfOffset_y: this.pdfOffsetY,
             pdfOffset_x: this.pdfOffsetX,
             signLabel: this.signLabel
-          })[0],
-          actionBy: `${this.$auth.user.firstName} ${this.$auth.user.lastName}`.toUpperCase()
+          })[0]
+          // actionBy: `${this.$auth.user.firstName} ${this.$auth.user.lastName}`.toUpperCase()
         })
         .then(response => {
           this.addToLedger()

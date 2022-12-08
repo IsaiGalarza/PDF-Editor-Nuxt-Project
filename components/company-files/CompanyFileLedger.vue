@@ -5,12 +5,13 @@
       <h5 class="text-lg font-semibold text-[#272727] inline-flex items-center gap-2">
         Company Files <a :href="`/public/profile/${mainUserLink}`" target="_blanck">
           <!-- <company-icon /> -->
-          <img src="../../assets/img/company-icon.png"/>
+          <img src="../../assets/img/company-icon.png" />
         </a>
-        <img src="../../assets/img/users-icon.png" @click="showCreateTeamFunc" class="-ml-8 cursor-pointer"/>
+        <img src="../../assets/img/users-icon.png" @click="showCreateTeamFunc" class="-ml-8 cursor-pointer" />
       </h5>
       <div class="text-white flex items-center">
-        <div action="" class="w-full xs:max-w-[280px] text-xs font-medium flex items-center relative justify-end mr-2" @submit.prevent="$event.preventDefault()">
+        <div action="" class="w-full xs:max-w-[280px] text-xs font-medium flex items-center relative justify-end mr-2"
+          @submit.prevent="$event.preventDefault()">
           <span class="el-dropdown-link left-roll mr-2">
             <input type="text"
               class="search-input h-10 pl-4 mr-2 text-black bg-transparent flex-1 border-[1px] border-paperdazgreen-400 rounded-tl-lg rounded-bl-lg focus:border-paperdazgreen-700 outline-none"
@@ -38,45 +39,70 @@
       <empty-file-ledger class="min-h-[55vh]" v-if="folders < 1 && pdfUser < 1" />
       <div v-else class="bg-white rounded-3xl pb-4 text-[#272727] min-h-[55vh] overflow-hidden">
         <!-- Start:: Folders -->
-        <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 flex items-center">
-          Folders
-        </h4>
-        <div class="overflow-x-auto custom-scrollbar relative">
-          <!-- START: spinner container -->
-          <div v-if="folderSpinner"
-            class="absolute z-10 w-full h-full bg-white top-0 left-0 rounded-lg flex justify-center items-center">
-            <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
-          </div>
-          <!-- END: spinner container -->
+        <div v-if="(folders.length > 0)">
+          <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 flex items-center">
+            Folders
+          </h4>
+          <div class="overflow-x-auto custom-scrollbar relative">
+            <!-- START: spinner container -->
+            <div v-if="folderSpinner"
+              class="absolute z-10 w-full h-full bg-white top-0 left-0 rounded-lg flex justify-center items-center">
+              <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
+            </div>
+            <!-- END: spinner container -->
 
-          <!--START: No folder container-->
-          <div v-if="folders < 1">
-            <span class="w-full text-[17px] justify-center font-normal flex h-20 items-center py-3">
-              No Folders
-            </span>
-          </div>
-          <div class="my-12 grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] md:grid-cols-4 sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-x-2 sm:gap-x-[3.5rem] gap-y-6 px-[3rem]">
-              <div
-                class="items-center border-2 p-[15px] rounded-[16px] border-[#909090]"
-                v-for="(content, i) in folders" :key="i"
-              >
-                <div class="overflow-hidden px-[10px]">
+            <!--START: No folder container-->
+            <!-- <div v-if="folders < 1">
+              <span class="w-full text-[17px] justify-center font-normal flex h-20 items-center py-3">
+                No Folders
+              </span>
+            </div> -->
+            <div
+              class="my-12 grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] md:grid-cols-4 sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-x-2 sm:gap-x-[3.5rem] gap-y-6 px-[3rem]">
+              <div class="items-center border-2 py-[15px] pl-[15px] rounded-[16px] border-[#909090]"
+                v-for="(content, i) in folders" :key="i">
+                <div class="overflow-hidden px-[10px] flex justify-between">
+                  <div class="float-left flex">
                     <span class="border-none inline-block	float-left pt-[4px]">
-                      <img
-                        class="w-[28px]"
-                        src="~/assets/img/Vector.png"
-                      />
+                      <img class="w-[28px]" src="~/assets/img/Vector.png" />
                     </span>
-                    <p @click="showFolderFilesFunc(content)" class="text-base font-medium text-center text-[#414142] truncate cursor-pointer inline-block ml-[27px]" >
-                    {{ content.name }} 
+                    <p @click="showFolderFilesFunc(content)"
+                      class="text-base font-medium text-center text-[#414142] truncate cursor-pointer inline-block ml-[27px]">
+                      {{ content.name }}
                     </p>
-                    <span class="float-right">{{ content.files.length }}</span>
                   </div>
-              </div>
-          </div>
-          <!--END: No folder container-->
+                  <div class="float-right flex">
+                    <span>{{ content.files.length }}</span>
+                    <div class="grid place-items-center -mt-1">
+                      <el-dropdown trigger="click">
+                        <button class="el-dropdown-link w-8 h-8 cursor-pointer grid place-items-center rounded-full"
+                          :class="[createdByTeamMember(content.createdBy) && isTeam ? 'bg-paperdazgreen-300/20' : '']">
+                          <ellipsis-icon-vertical-icon />
+                        </button>
+                        <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu">
+                          <div class="no-access" v-if="!createdByTeamMember(content.createdBy)">no access right</div>
+                          <ul v-else class="min-w-[150px]">
+                            <li class="dropdown-item" @click="showEditCompanyFolderFunc(content)">
+                              <span>Edit</span>
+                            </li>
+                            <li class="dropdown-item" @click="showDeleteCompanyFolderFunc(content)">
+                              <span>Remove</span>
+                            </li>
+                            <li class="dropdown-item" @click="showAddCompanyFolderFunc(content)">
+                              <span>Add Files</span>
+                            </li>
+                          </ul>
+                        </el-dropdown-menu>
+                      </el-dropdown>
+                    </div>
+                  </div>
 
-          <!---- <table class="custom-table" v-else>
+                </div>
+              </div>
+            </div>
+            <!--END: No folder container-->
+
+            <!---- <table class="custom-table" v-else>
             <thead class="text-[#414142]">
               <tr>
                 <th class="w-12 text-left">Folder Name</th>
@@ -135,6 +161,7 @@
               </tr>
             </tbody>
           </table>   -->
+          </div>
         </div>
         <!-- End:: Folders -->
         <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
@@ -242,38 +269,14 @@
     <EditCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showEditCompanyFolder" />
     <DeleteCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showDeleteCompanyFolder" />
 
-    <CreateTeam
-      @refresh="setRefresh"
-      v-model="showCreateTeam"
-    />
-    <EditCompanyFolder
-      @refresh="setRefresh"
-      :file="fileProps"
-      v-model="showEditCompanyFolder"
-    />
-    <DeleteCompanyFolder
-      @refresh="setRefresh"
-      :file="fileProps"
-      v-model="showDeleteCompanyFolder"
-    />
-    <RemoveCompanyFile
-      @refresh="setRefresh"
-      :userFile="userFile"
-      v-model="showRemoveCompanyFiles"
-    />
-    <MoveCompanyFiles
-      @refresh="setRefresh"
-      :userFile="userFile"
-      @resetUserFile="resetUserFile"
-      @createFolderEmit="showCreateCompanyFolderFunc"
-      v-model="showMoveCompanyFiles"
-    />
-    <ShareFilesModal
-      @refresh="setRefresh"
-      :userFile="userFile"
-      @qrLoad="showQrcodeFileFunc"
-      v-model="showShareCompanyFiles"
-    />
+    <CreateTeam @refresh="setRefresh" v-model="showCreateTeam" />
+    <EditCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showEditCompanyFolder" />
+    <DeleteCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showDeleteCompanyFolder" />
+    <RemoveCompanyFile @refresh="setRefresh" :userFile="userFile" v-model="showRemoveCompanyFiles" />
+    <MoveCompanyFiles @refresh="setRefresh" :userFile="userFile" @resetUserFile="resetUserFile"
+      @createFolderEmit="showCreateCompanyFolderFunc" v-model="showMoveCompanyFiles" />
+    <ShareFilesModal @refresh="setRefresh" :userFile="userFile" @qrLoad="showQrcodeFileFunc"
+      v-model="showShareCompanyFiles" />
     <RequestModal @refresh="setRefresh" :userFile="userFile" @qrLoad="showQrcodeFileFunc" v-model="showRequestModal" />
 
     <FilesInFolder :folder="FilesInFolerContent" v-model="showFilesInFolder" />

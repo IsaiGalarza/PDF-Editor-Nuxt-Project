@@ -19,7 +19,7 @@ export default {
     },
     style() {
       return {
-        fontSize: `${this.fontSize || 12}px`,
+        fontSize: `${this.fontSize || 11}px`,
       }
     },
   },

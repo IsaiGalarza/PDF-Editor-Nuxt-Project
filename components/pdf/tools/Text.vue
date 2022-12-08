@@ -10,6 +10,7 @@
       :style="style"
       class="input-annotation"
       placeholder="Type here..."
+      ref="text_box"
     />
     <p v-else :style="style">{{ text || 'Type here...' }}</p>
   </div>
@@ -30,7 +31,10 @@ export default {
     text: null
   }),
   created () {
-    this.text = this.value
+    this.text = this.value;
+  },
+  mounted(){
+    this.$refs.text_box && this.$refs.text_box.focus()
   },
   watch: {
     value (v) {
@@ -50,7 +54,7 @@ export default {
     },
     style () {
       return {
-        fontSize: `${this.fontSize || 12}px`
+        fontSize: `${this.fontSize || 11}px`
       }
     }
   }
@@ -58,14 +62,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-input {
+
+.input-annotation:focus {
+  border:none;
   border-left: 1px solid #5FA348;
   border-bottom: 1px solid #5FA348;
   background-color: transparent;
-}
-
-.input-annotation:focus {
-  border: 1px solid #5FA348;
 }
 
 .input-annotation:blur {

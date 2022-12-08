@@ -185,7 +185,6 @@ export default Vue.extend({
 
       await this.$axios.$post(`/users`, { ...this.teamData })
         .then((response) => {
-          console.log(response)
           localStorage.removeItem('team_member_object')
           window.location.reload()
         })

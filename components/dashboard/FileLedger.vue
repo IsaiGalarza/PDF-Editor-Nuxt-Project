@@ -15,7 +15,8 @@
           <!-- <company-icon /> -->
           <img src="../../assets/img/company-icon.png" v-if="isPaidUser" />
         </a>
-        <img src="../../assets/img/users-icon.png" class="-ml-8 cursor-pointer" @click="showCreateTeamFunc" v-if="isPaidUser" />
+        <img src="../../assets/img/users-icon.png" class="-ml-8 cursor-pointer" @click="showCreateTeamFunc"
+          v-if="isPaidUser" />
       </h5>
       <div class="w-full xs:max-w-[350px] text-xs font-medium flex items-center relative justify-end">
         <span class="el-dropdown-link left-roll mr-4">
@@ -67,7 +68,7 @@
 
       <!-- <transition name="fade" mode="out-in"> -->
       <img v-if="((pdfUser || []).length <= 0 && !spinner)" src="../../assets/img/dashboard-bg.png"
-        class="position-absolute mr-[15%] mt-4" />
+        class="position-absolute mt-4" />
 
       <div v-if="spinner" key="1" class="p-6 flex justify-center items-center">
         <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
@@ -82,7 +83,7 @@
             <th class="text-left fixed-col left">No</th>
             <th>File Name</th>
             <th class="text-center">Action</th>
-            <!-- <th class="text-center">Action By</th> -->
+            <th class="text-center" v-if="isPaidUser">Action By</th>
             <th>Date & time</th>
             <th class="fixed-col right"></th>
           </tr>
@@ -115,16 +116,15 @@
             <td class="text-center">
               {{ file.fileAction || "-" }}
             </td>
-            <!-- <td class="text-center">
+            <td class="text-center" v-if="isPaidUser">
               {{ (file || {}).userName }}
-            </td> -->
+            </td>
             <td>
               {{ formatDateTime(file.updatedAt) }}
             </td>
             <td class="fixed-col right">
               <button class="cursor-pointer" @click="showShareCompanyFilesFunc(file)">
                 <share-outline-icon class="w-4 h-4" />
-
               </button>
             </td>
           </tr>
@@ -137,9 +137,9 @@
             </td>
             <td class="text-center">
             </td>
-            <!-- <td class="text-center">
+            <td class="text-center">
               {{ (file || {}).userName }}
-            </td> -->
+            </td>
             <td>
             </td>
             <td class="fixed-col right">
@@ -151,7 +151,7 @@
       <!-- </transition> -->
     </div>
 
-    <FilePagination :totalFile="totalFile" @setPage="setPage" />
+    <FilePagination :totalFile="totalFile" @setPage="setPage" v-if="(pdfUser.length > 10)"/>
 
     <ShareFilesModal :userFile="userFile" @qrLoad="showQrcodeFileFunc" v-model="showShareCompanyFiles" />
     <CreateCompanyFolder @refresh="setRefresh" :userFile="userFile" @resetUserFile="resetUserFile"
@@ -184,6 +184,7 @@ import AuthUser from '~/models/AuthUser'
 import CreateCompanyFolder from '../company-files/Tabs/CreateCompanyFolder.vue'
 import UploadDocumentModal from './UploadDocumentModal.vue'
 import CreateTeam from '../company-files/Tabs/CreateTeam.vue'
+import paidUser from '~/middleware/paid-user'
 
 export default Vue.extend({
   components: {
@@ -267,21 +268,23 @@ export default Vue.extend({
       // &fileName[$like]=${search}%&$skip=${page}
       let acct = this.$auth.user.role != UserTypeEnum.PAID ?
         `/ledger?userId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}` :
-        `/ledger?mainAccountId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}`
+        // `/ledger?mainAccountId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}`
+        `/ledger?fileOwner=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}`
 
       await this.$axios.get(acct)
         .then((response) => {
-          const files = response.data.data.map((el) => {
-            return {
-              ...el,
-              favourites: [],
-              shared: null,
-              fileAction: el.action,
-              paperLink: (el.file || {}).paperLink,
-              userName: this.$auth.user.firstName + " " + this.$auth.user.lastName,
+          let files = [];
+          response.data.data.map((el) => {
+            if (el.file) {
+              el.favourites = [];
+              el.shared = null;
+              el.fileAction = el.action;
+              el.paperLink = (el.file || {}).paperLink;
+              el.userName = this.$auth.user.firstName + " " + this.$auth.user.lastName;
+              files.push(el);
             }
           })
-          this.files = files
+          this.files = files.length > 0 ? files : []
           this.$store.commit('ADD_USER', files)
           this.totalFile = response.data.total
         })

@@ -486,7 +486,7 @@ export default mixins(PdfAuth).extend({
           this.filteredAnnotationButton[0].classList.add('pulse')
           window.selem = this.filteredAnnotationButton[0];
           // this.filteredAnnotationButton[0].scrollIntoView({ block: 'center', behavior: 'smooth' })
-          this.filteredAnnotationButton[0].scrollIntoView({ block: 'center'})
+          type !== 'mounted' && this.filteredAnnotationButton[0].scrollIntoView({ block: 'center'})
           let toolwrapper = this.filteredAnnotationButton[0].parentElement.parentElement.parentElement;
           this.signAlaram.top = toolwrapper.style.top;
           this.curSignInitialPage = toolwrapper.id;

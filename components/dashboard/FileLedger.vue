@@ -41,16 +41,6 @@
         </div>
       </div>
     </h3>
-    <!-- <div  v-if="((pdfUser || []).length <= 0 && !spinner)"
-      class="position-absolute"> -->
-    <!-- <h4 class="text-paperdazgray-700 font-semibold text-base sm:text-lg lg:text-xl mb-10">
-          Complete file and upload files to earn leaves
-        </h4>
-        <tree-icon height="88" width="80" class="mb-7" />
-        <span class="text-paperdazgray-700 text-sm mb-10 inline-block">
-          We will plant a tree in your honor at 25,0000 leaves
-        </span> -->
-    <!-- </div> -->
 
     <div ref="ledgerContainer" class="bg-white rounded-2xl flex-1 min-h-[50vh] lg:min-h-[40vh] position-relative"
       :class="[
@@ -58,14 +48,6 @@
           ? 'p-5 flex items-center justify-center'
           : 'pb-4 overflow-x-auto custom-scrollbar',
       ]">
-      <!-- <scribble-icon v-if="(files || []).length <= 0" v-show="showScribble"
-        class="text-paperdazgreen-250 fixed bottom-9 right-20 sm:bottom-10 sm:right-44 h-40 w-40 sm:h-64 sm:w-64 transition ease-in-out duration-200 animate-pulse"
-        :class="[
-          showScribble
-            ? 'opacity-100 pointer-events-auto'
-            : 'opacity-0 pointer-events-none',
-        ]" /> -->
-
       <!-- <transition name="fade" mode="out-in"> -->
       <img v-if="((pdfUser || []).length <= 0 && !spinner)" src="../../assets/img/dashboard-bg.png"
         class="position-absolute mt-24 left-[30%]" />
@@ -81,22 +63,22 @@
         <thead>
           <tr class="text-left">
             <th class="text-left fixed-col left">No</th>
-            <th>File Name</th>
-            <th class="text-center">Action</th>
+            <th class="text-center">File Name</th>
+            <th class="text-center">{{ isPaidUser ? 'Action' : 'Actions' }}</th>
             <th class="text-center" v-if="isPaidUser">Action By</th>
-            <th>Date & time</th>
-            <th class="fixed-col right"></th>
+            <th class="text-center">Date & time</th>
+            <th class="fixed-col right text-right"></th>
           </tr>
         </thead>
         <tbody v-if="(pdfUser.length > 0)">
           <tr v-for="(file, i) in pdfUser" :key="file.id" :class="{ highlight: file.id == highlightedFileId }">
             <td class="text-left fixed-col left">{{ i + 1 + returnedDataPage }}</td>
-            <td>
+            <td class="text-center">
               <div class="flex items-center gap-1.5">
                 <div class="border border-paperdazgreen-300 p-0.5"
                   :class="[file.role == userType.PAID ? 'rounded-md w-9 h-9' : 'circle circle-17']">
                   <img :src="
-                    (file.user || {}).profile_picture ||
+                    (file.fileOwner || {}).profile_picture ||
                     '/img/placeholder_picture.png'
                   " alt=""
                     :class="[file.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
@@ -117,9 +99,9 @@
               {{ file.fileAction || "-" }}
             </td>
             <td class="text-center" v-if="isPaidUser">
-              {{ (file || {}).userName }}
+              {{ file.user.firstName + " " + file.user.lastName }}
             </td>
-            <td>
+            <td class="text-center">
               {{ formatDateTime(file.updatedAt) }}
             </td>
             <td class="fixed-col right">
@@ -132,18 +114,15 @@
         <tbody v-else>
           <tr v-for="i in 10" :key="i">
             <td class="text-left fixed-col left">{{ i }}</td>
-            <td>
-
+            <td class="text-center">
+            </td>
+            <td class="text-center">
             </td>
             <td class="text-center">
             </td>
             <td class="text-center">
-              {{ (file || {}).userName }}
-            </td>
-            <td>
             </td>
             <td class="fixed-col right">
-
             </td>
           </tr>
         </tbody>
@@ -151,7 +130,7 @@
       <!-- </transition> -->
     </div>
 
-    <FilePagination :totalFile="totalFile" @setPage="setPage" v-if="(pdfUser.length > 10)"/>
+    <FilePagination :totalFile="totalFile" @setPage="setPage" v-if="(pdfUser.length > 10)" />
 
     <ShareFilesModal :userFile="userFile" @qrLoad="showQrcodeFileFunc" v-model="showShareCompanyFiles" />
     <CreateCompanyFolder @refresh="setRefresh" :userFile="userFile" @resetUserFile="resetUserFile"
@@ -184,7 +163,8 @@ import AuthUser from '~/models/AuthUser'
 import CreateCompanyFolder from '../company-files/Tabs/CreateCompanyFolder.vue'
 import UploadDocumentModal from './UploadDocumentModal.vue'
 import CreateTeam from '../company-files/Tabs/CreateTeam.vue'
-import paidUser from '~/middleware/paid-user'
+import EmptyFileLedger from '../widgets/EmptyFileLedger.vue'
+
 
 export default Vue.extend({
   components: {
@@ -202,7 +182,8 @@ export default Vue.extend({
     FilePagination,
     UploadDocumentModal,
     CreateCompanyFolder,
-    CreateTeam
+    CreateTeam,
+    EmptyFileLedger
   },
   props: ['searchContect'],
   async fetch() { },
@@ -280,7 +261,7 @@ export default Vue.extend({
               el.shared = null;
               el.fileAction = el.action;
               el.paperLink = (el.file || {}).paperLink;
-              el.userName = this.$auth.user.firstName + " " + this.$auth.user.lastName;
+              el.userName = el.fileOwner.firstName + " " + el.fileOwner.lastName;
               files.push(el);
             }
           })

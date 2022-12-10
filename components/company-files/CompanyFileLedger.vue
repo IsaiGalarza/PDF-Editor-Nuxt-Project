@@ -36,8 +36,8 @@
     <!-- End:: header -->
 
     <transition name="fade" mode="out-in" :duration="100">
-      <empty-file-ledger class="min-h-[55vh]" v-if="folders < 1 && pdfUser < 1" />
-      <div v-else class="bg-white rounded-3xl pb-4 text-[#272727] min-h-[55vh] overflow-hidden">
+      <!-- <empty-file-ledger class="min-h-[55vh]" v-if="pdfUser < 1" :isPaidUser= "isPaidUser"/> -->
+      <div class="bg-white rounded-3xl pb-4 text-[#272727] min-h-[55vh] overflow-hidden">
         <!-- Start:: Folders -->
         <div v-if="(folders.length > 0)">
           <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 flex items-center">
@@ -49,14 +49,6 @@
               class="absolute z-10 w-full h-full bg-white top-0 left-0 rounded-lg flex justify-center items-center">
               <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
             </div>
-            <!-- END: spinner container -->
-
-            <!--START: No folder container-->
-            <!-- <div v-if="folders < 1">
-              <span class="w-full text-[17px] justify-center font-normal flex h-20 items-center py-3">
-                No Folders
-              </span>
-            </div> -->
             <div
               class="my-12 grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] md:grid-cols-4 sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-x-2 sm:gap-x-[3.5rem] gap-y-6 px-[3rem]">
               <div class="items-center border-2 py-[15px] pl-[15px] rounded-[16px] border-[#909090]"
@@ -100,75 +92,15 @@
                 </div>
               </div>
             </div>
-            <!--END: No folder container-->
 
-            <!---- <table class="custom-table" v-else>
-            <thead class="text-[#414142]">
-              <tr>
-                <th class="w-12 text-left">Folder Name</th>
-                <th class="text-center">Date &amp; Time</th>
-                <th class="text-center">Files</th>
-                <th class="text-center fixed-col right"></th>
-              </tr>
-            </thead>
-             <tr
-            class="py text-center w-100%"
-             v-if="folders.length < 1"> <td class="w-full my-4 font-semibold text-paperdazgray-300">No folder created</td></tr>
-            <tbody class="text-[#505050]">
-              <tr v-for="(content, i) in folders" :key="i">
-                <td class="text-left">
-                  <div class="flex items-center gap-3 whitespace-nowrap min-w-[150px] max-w-[600px]">
-                    <span class="border-none">
-                      <img class="w-6"
-                        :src="(content.profilePicture) || require(`/assets/recent-icons/OpenedFolder.svg`)" />
-                    </span>
-                    <div class="overflow-hidden">
-                      <p @click="showFolderFilesFunc(content)"
-                        class="text-base font-medium text-[#414142] truncate cursor-pointer">
-                        {{ content.name }}
-                      </p>
-                    </div>
-                  </div>
-                </td>
-                <td class="text-center">
-                  {{ formatDateTime(content.updatedAt) }}
-                </td>
-                <td class="text-sm text-center">{{ content.files.length }}</td>
-                <td class="fixed-col right w-[50px]">
-                  <div class="w-full h-full grid place-items-center">
-                    <el-dropdown trigger="click">
-                      <button class="el-dropdown-link w-8 h-8 cursor-pointer grid place-items-center rounded-full"
-                        :class="[createdByTeamMember(content.createdBy) && isTeam ? 'bg-paperdazgreen-300/20' : '']">
-                        <ellipsis-icon-vertical-icon />
-                      </button>
-                      <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu">
-                        <div class="no-access" v-if="!createdByTeamMember(content.createdBy)">no access right</div>
-                        <ul v-else class="min-w-[150px]">
-                          <li class="dropdown-item" @click="showEditCompanyFolderFunc(content)">
-                            <span>Edit</span>
-                          </li>
-                          <li class="dropdown-item" @click="showDeleteCompanyFolderFunc(content)">
-                            <span>Remove</span>
-                          </li>
-                          <li class="dropdown-item" @click="showAddCompanyFolderFunc(content)">
-                            <span>Add Files</span>
-                          </li>
-                        </ul>
-                      </el-dropdown-menu>
-                    </el-dropdown>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>   -->
           </div>
         </div>
         <!-- End:: Folders -->
         <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
 
-
         <!-- Start:: Files -->
-        <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 flex items-center">
+        <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 flex items-center"
+          v-if="folders.length > 0">
           Files
         </h4>
         <div class="overflow-x-auto custom-scrollbar relative">
@@ -178,14 +110,9 @@
             <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
           </div>
           <!-- END: spinner container -->
+          <empty-file-ledger class="min-h-[55vh]" v-if="pdfUser < 1" :isPaidUser="isPaidUser" />
 
           <!--START: No files container-->
-          <div v-if="pdfUser < 1">
-            <span class="w-full text-[17px] justify-center font-normal flex h-40 items-center py-3">
-              No Files
-            </span>
-          </div>
-          <!--END: No files container-->
           <table class="custom-table" v-else>
             <thead class="text-[#414142]">
               <tr>
@@ -540,6 +467,16 @@ export default Vue.extend({
     ...mapState(['filterUser', 'pdfUser']),
     userType() {
       return (UserTypeEnum)
+    },
+    isPaidUser() {
+      switch (this.$auth?.user?.role) {
+        case UserTypeEnum.PAID:
+          return true
+        case UserTypeEnum.TEAM:
+          return true
+        case UserTypeEnum.FREE:
+          return false
+      }
     },
     teamMemberCanAccess() {
       switch (this.$auth.user.role + this.$auth.user.teamAccess) {

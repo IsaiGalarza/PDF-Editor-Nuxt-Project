@@ -269,7 +269,7 @@ export default Vue.extend({
       let acct = this.$auth.user.role != UserTypeEnum.PAID ?
         `/ledger?userId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}` :
         // `/ledger?mainAccountId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}`
-        `/ledger?fileOwner=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}`
+        `/ledger?fileOwnerId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}`
 
       await this.$axios.get(acct)
         .then((response) => {

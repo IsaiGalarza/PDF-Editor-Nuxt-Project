@@ -68,7 +68,7 @@
 
       <!-- <transition name="fade" mode="out-in"> -->
       <img v-if="((pdfUser || []).length <= 0 && !spinner)" src="../../assets/img/dashboard-bg.png"
-        class="position-absolute mt-4" />
+        class="position-absolute mt-24 left-[30%]" />
 
       <div v-if="spinner" key="1" class="p-6 flex justify-center items-center">
         <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />

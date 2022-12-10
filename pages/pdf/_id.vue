@@ -24,7 +24,7 @@
             <div :class="[
               'pdf-single-page-outer w-full',
               { 'mt-6': pI > 0 && !downloadingPdf },
-            ]" :ref="`pdf-single-page-outer-${pI + 1}`" v-for="(page, pI) in pdf.numPages" :key="pI" 
+            ]" :ref="`pdf-single-page-outer-${pI + 1}`" v-for="(page, pI) in pdf.numPages" :key="pI"
               v-hammer:pan="(ev) => handlePanning(ev, undefined, undefined, pI + 1)" @mouseup="onMouseUp"
               @mousedown="onMouseDown" style="position: relative;">
 
@@ -255,10 +255,9 @@ export default mixins(PdfAuth).extend({
   mounted() {
     document.addEventListener('keyup', this.keyupHandler)
     window.onresize = () => {
-      // this.$refs.PagesOuter.style.width = this.setContainerPage + 'px'
+      this.handleScale()
     }
     this.checkFilePrivacyOnload();
-
   },
   destroyed() {
     document.removeEventListener('keyup', this.keyupHandler)
@@ -486,7 +485,7 @@ export default mixins(PdfAuth).extend({
           this.filteredAnnotationButton[0].classList.add('pulse')
           window.selem = this.filteredAnnotationButton[0];
           // this.filteredAnnotationButton[0].scrollIntoView({ block: 'center', behavior: 'smooth' })
-          type !== 'mounted' && this.filteredAnnotationButton[0].scrollIntoView({ block: 'center'})
+          type !== 'mounted' && this.filteredAnnotationButton[0].scrollIntoView({ block: 'center' })
           let toolwrapper = this.filteredAnnotationButton[0].parentElement.parentElement.parentElement;
           this.signAlaram.top = toolwrapper.style.top;
           this.curSignInitialPage = toolwrapper.id;
@@ -861,7 +860,7 @@ export default mixins(PdfAuth).extend({
       pageNumber
     ) {
       // if(!this.mouseDown) return;
-      
+
       var elem = this.$refs['pdf-single-pages-outer']
       if (!this.isPanning && id == undefined) {
         this.isPanning = true

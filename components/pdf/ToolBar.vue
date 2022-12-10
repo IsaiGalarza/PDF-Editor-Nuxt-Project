@@ -71,37 +71,40 @@
       isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.name)">
         <user-profile-solid-icon />
       </button>
-      <div>
-        <button
-          class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm">
-          Sign
-          <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
-        </button>
-        <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[47px] cursor-pointer" id="signtraybtn"
-          @click="() => { showSignTray = !showSignTray; showSignTray && (showInitialTray = false); }"></div>
-        <div v-if="(showSignTray)" v-click-outside="handleSignFocusOut"
-          class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-10 mt-1 tray-mode">
-          <img class="absolute-image border py-1 px-6 rounded h-[50px]" :src="signature" />
-          <img src="../../assets/img/pencil.png" class="cursor-pointer w-[12px] h-[12px] ml-1 mt-3"
-            @click="openSignModal" />
+      <div class="flex">
+        <div class="mx-1">
+          <button
+            class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm">
+            Sign
+            <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
+          </button>
+          <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[47px] cursor-pointer"
+            id="signtraybtn"
+            @click="() => { showSignTray = !showSignTray; showSignTray && (showInitialTray = false); }"></div>
+          <div v-if="(showSignTray)" v-click-outside="handleSignFocusOut"
+            class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-10 mt-1 tray-mode">
+            <img class="absolute-image border py-1 px-6 rounded h-[50px]" :src="signature" />
+            <img src="../../assets/img/pencil.png" class="cursor-pointer w-[12px] h-[12px] ml-1 mt-3"
+              @click="openSignModal" />
+          </div>
         </div>
-      </div>
 
-      <div>
-        <button
-          class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 tool-item text-white text-sm">
-          Initial
-          <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
-        </button>
-        <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[54px] cursor-pointer"
-          id="initialtraybtn"
-          @click="() => { showInitialTray = !showInitialTray; showInitialTray && (showSignTray = false); }">
-        </div>
-        <div v-if="showInitialTray" v-click-outside="handleInitialFocusOut"
-          class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-10 mt-1 tray-mode">
-          <img class="absolute-image border py-1 px-6 rounded h-[50px]" :src="initial" />
-          <img src="../../assets/img/pencil.png" class="cursor-pointer w-[12px] h-[12px] ml-1 mt-3"
-            @click="openInitialModal" />
+        <div class="mx-1">
+          <button
+            class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 tool-item text-white text-sm">
+            Initial
+            <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
+          </button>
+          <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[54px] cursor-pointer"
+            id="initialtraybtn"
+            @click="() => { showInitialTray = !showInitialTray; showInitialTray && (showSignTray = false); }">
+          </div>
+          <div v-if="showInitialTray" v-click-outside="handleInitialFocusOut"
+            class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-10 mt-1 tray-mode">
+            <img class="absolute-image border py-1 px-6 rounded h-[50px]" :src="initial" />
+            <img src="../../assets/img/pencil.png" class="cursor-pointer w-[12px] h-[12px] ml-1 mt-3"
+              @click="openInitialModal" />
+          </div>
         </div>
       </div>
 

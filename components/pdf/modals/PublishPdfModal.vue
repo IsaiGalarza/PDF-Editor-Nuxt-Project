@@ -114,7 +114,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         fileName: this.file.fileName,
         action: this.file.fileAction,
         fileId: this.file.id,
-        fileOwner: this.file.userId
+        fileOwnerId: this.file.userId
       }
     },
     isSign() {

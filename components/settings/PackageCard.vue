@@ -64,7 +64,7 @@
       </ul>
     </div>
 
-    <div class="grid place-items-center" v-if="showBottomButton">
+    <div class="grid place-items-center" v-if="!disableStart">
       <button
         @click="setPackageData"
         :disabled="disableStart"
@@ -86,10 +86,6 @@ export default Vue.extend({
   components: { TickIcon },
 
   props: {
-    showBottomButton: {
-      type: Boolean,
-      default: false,
-    },
     edited: {
       type: Boolean,
     },

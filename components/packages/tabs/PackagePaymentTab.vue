@@ -1,8 +1,7 @@
 <template>
   <div class="">
-    <div class="flex flex-wrap gap-3 md:grid md:grid-cols-8">
-      <div class="col-span-1"></div>
-      <div class="col-span-2">
+    <div class="flex flex-wrap w-full justify-center">
+      <div class="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 mb-3">
         <package-card
           :edited="false"
           :create="false"
@@ -14,39 +13,18 @@
           :disableStart = "true"
         />
       </div>
-      <div class="col-span-4">
-        <form class="bg-paperdazgreen-400" @submit="submit">
+      <div class="w-full sm:w-full md:w-2/3 lg:w-2/3">
+        <form class="" @submit="submit">
           <div class="form-group">
-            <div v-if="tooltip" class="absolute p-2 bg-white text-sm rounded-lg border -mt-16 w-[400px]">
-               Enter the name you want visitors to search for your business.
-               <div class="rotate-45 bg-white w-[20px] h-[20px]" data-popper-arrow="" style="position: absolute;top:41px; left: 180px;"></div>
-            </div>
             <label class="input-label font-bold" for=""
-              >Create business hook  &nbsp;&nbsp;&nbsp;
-              <svg
-                @mouseover="tooltip = true"
-                @mouseleave="tooltip = false"
-                class="inline"
-                width="25"
-                height="25"
-                viewBox="0 0 25 25"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                data-bs-toggle="tooltip" title="Hi! I'm tooltip"
-              >
-                <path
-                  d="M12.1094 0C5.42202 0 0 5.42397 0 12.1094C0 18.7987 5.42202 24.2188 12.1094 24.2188C18.7967 24.2188 24.2188 18.7987 24.2188 12.1094C24.2188 5.42397 18.7967 0 12.1094 0ZM12.1094 5.37109C13.242 5.37109 14.1602 6.28926 14.1602 7.42188C14.1602 8.55449 13.242 9.47266 12.1094 9.47266C10.9768 9.47266 10.0586 8.55449 10.0586 7.42188C10.0586 6.28926 10.9768 5.37109 12.1094 5.37109ZM14.8438 17.7734C14.8438 18.097 14.5814 18.3594 14.2578 18.3594H9.96094C9.63735 18.3594 9.375 18.097 9.375 17.7734V16.6016C9.375 16.278 9.63735 16.0156 9.96094 16.0156H10.5469V12.8906H9.96094C9.63735 12.8906 9.375 12.6283 9.375 12.3047V11.1328C9.375 10.8092 9.63735 10.5469 9.96094 10.5469H13.0859C13.4095 10.5469 13.6719 10.8092 13.6719 11.1328V16.0156H14.2578C14.5814 16.0156 14.8438 16.278 14.8438 16.6016V17.7734Z"
-                  fill="black"
-                />
-              </svg>
+              >Create business Name
             </label>
             <el-input
               :disabled="loading"
               placeholder="Name Surname"
               required
-              v-model="hook"
+              v-model="companyName"
             />
-            <div class="text-xs text-red-600 py-1">{{ hookMessage }}</div>
           </div>
           <div class="h-1 bg-black"></div>
           <div class="h-4"></div>
@@ -63,15 +41,6 @@
             :type="'error'"
           />
 
-          <!-- <div class="form-group">
-            <label class="input-label" for="">Company name</label>
-            <el-input
-              :disabled="loading"
-              placeholder="Name Surname"
-              required
-              v-model="companyName"
-            />
-          </div> -->
           <div class="form-group">
             <label class="input-label" for="">Name of card holder</label>
             <el-input
@@ -117,10 +86,10 @@
 
           <div class="grid place-items-center mt-6">
             <button
-              class="rounded-lg bg-white shadow text-sm h-10 px-6 disabled:bg-opacity-50 w-full"
+              class="rounded-lg bg-paperdazgreen-400 shadow text-sm h-10 px-6 disabled:bg-opacity-50 w-full"
               :disabled="loading"
             >
-              <span class="inline-flex items-center gap-3">
+              <span class="inline-flex items-center gap-3 ">
                 <span>Pay via Stripe</span>
                 <transition name="fade" :duration="100">
                   <span v-show="loading" class="animate-spin">
@@ -132,7 +101,6 @@
           </div>
         </form>
       </div>
-      <div class="col-span-1"></div>
     </div>
   </div>
 </template>
@@ -159,10 +127,8 @@ export default Vue.extend({
       cvv: '',
       cardId: undefined,
       expirationDateWithSlashes: '',
-      hook: '@',
-      hookMessage: '',
       companyName: '',
-      tooltip : false
+      createFlage: true
     }
   },
   props: {
@@ -177,8 +143,6 @@ export default Vue.extend({
   },
   async beforeMount() {
     !this.$auth.loggedIn ? this.notLoggedIn() : null
-    // if (Object.keys(this.stagingPackageInfo).length < 1)
-    // this.$nuxt.$router.go(-1)
   },
   computed: {
     ...mapState(['setPackage', 'createPackage']),
@@ -253,6 +217,7 @@ export default Vue.extend({
       this.$nuxt.$router.push('/register')
     },
     inputCardNumber(val) {
+      if(val.length > 19) return;
       let temp = val.replace(/(-+)|([^0-9]+)/g, '')
       this.cardNumberWithDashes = (temp.match(/.{1,4}/g) || []).join('-')
     },
@@ -294,21 +259,19 @@ export default Vue.extend({
     async submit(event) {
       event?.preventDefault()
 
-      if (this.hookMessage) return
-
       if (!this.expYear || !this.expMonth || isNaN(this.cvv)) {
         this.errorMessage = 'Please review the inputed information'
         return
       }
 
       //code to check if name contains special symbols
-      var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~0-9]/
-      this.errorMessage = 'Name not correct'
-      if (format.test(this.name.trim())) return
+      // var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~0-9]/
+      // this.errorMessage = 'Name not correct'
+      // if (format.test(this.name.trim())) return
 
-      var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~0-9]/
-      this.errorMessage = 'Company name not correct'
-      if (format.test(this.companyName.trim())) return
+      // var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~0-9]/
+      // this.errorMessage = 'Company name not correct'
+      // if (format.test(this.companyName.trim())) return
 
       if (this.loading) return
 
@@ -321,12 +284,12 @@ export default Vue.extend({
         exp_month: this.expMonth,
         cvv: this.cvv,
       }
-      console.log(data)
+      
       this.loading = true
       this.errorMessage = ''
 
       let proceedToPayment = false
-
+      
       await this.$axios
         .$post('/cards', data)
         .then((response) => {
@@ -348,6 +311,8 @@ export default Vue.extend({
       this.$axios
         .$post('/subscriptions', {
           ...this.packageData,
+          companyName: this.companyName,
+          createFlage: true,
         })
         .then(async () => {
           this.$notify.success({
@@ -368,32 +333,7 @@ export default Vue.extend({
     },
   },
   mounted() {
-    // console.log(this.packages[0].name, "packages");
-    console.log(this.$store.state.setPackage.name, 'packages')
-    console.log(this.stagingPackage.name, 'packages')
-
-    // if (this.$auth?.user?.role == UserTypeEnum.TEAM) {
-    //   this.errorMessage =
-    //     'Proceeding to payment as a team member, payment may not reflect on the account. create a free account to access payment'
-    // }
-  },
-  watch: {
-    hook: function () {
-      if (!this.hook.startsWith('@'))
-        this.hookMessage = 'hook must start with @'
-      this.$axios
-        .get(`/users?hook=${this.hook}`)
-        .then((response) => {
-          const { data } = response.data
-          if (Array.isArray(data) && data.length) {
-            console.log('not-empty', data)
-          }
-          this.hookMessage = ''
-        })
-        .catch((err) => {
-          this.hookMessage = err.message
-        })
-    },
+    // console.log(this.$store.state.setPackage, 'packages')
   },
 })
 </script>

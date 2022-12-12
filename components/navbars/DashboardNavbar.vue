@@ -6,45 +6,46 @@
       <span class="inline-block lg:hidden mr-3 sm:mr-4 cursor-pointer"
         @click="$emit('open-sidebar')"><hamburger-icon /></span>{{ title || routeName }}
     </p>
+    <div class="hidden lg:inline-block text-[#BBBBBB] pr-4 border-r mr-2 w-[50%]">
+      <!-- <div class="text-[#BBBBBB] mr-4"> -->
+      <el-dropdown trigger="click" class="w-full">
+        <span class="el-dropdown-link">
+          <el-input placeholder="" v-model="searchString" size="small" class="search-box">
+            <template #suffix>
+              <span class="grid place-items-center h-full w-full"><search-icon width="14" height="14" /></span>
+            </template>
+          </el-input>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <!-- Start:: dropdown -->
+          <div class="bg-white rounded-lg whitespace-nowrap w-[40vw]">
+            <div class="max-h-[60vh] custom-scrollbar overflow-y-auto p-2">
+              <article class="py-4 text-[#9F9F9F] grid grid-cols-[max-content,1fr,max-content] gap-4"
+                v-for="item in topSearchContent" :key="item + 'topsearchContent'">
+                <img :src="
+                  (item.user || {}).profile_picture ||
+                  '/img/placeholder_picture.png'
+                " alt="" class="h-16 w-16 rounded-lg object-cover" />
+                <div class="overflow-hidden">
+                  <nuxt-link :to="`/pdf/${item.paperLink}`">
+                    <p class="text-sm text-black mb-1 truncate">
+                      {{ item.user.email }}
+                    </p>
+                    <p class="text-xs truncate">{{ item.fileName }}</p>
+                    <p class="text-[11px] mt-0.5 truncate">{{ item.user.firstName || item.user.companyName }}</p>
+                  </nuxt-link>
+                </div>
+                <SearchShare :showShareIcon="true" :file="item" />
+              </article>
+            </div>
+          </div>
+          <!-- End:: dropdown -->
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
     <div v-if="$auth.loggedIn" class="h-full self-stretch flex items-center">
       <!-- Start:: search -->
-      <div class="hidden lg:inline-block text-[#BBBBBB] pr-4 border-r mr-2">
-        <!-- <div class="text-[#BBBBBB] mr-4"> -->
-        <el-dropdown trigger="click">
-          <span class="el-dropdown-link">
-            <el-input placeholder="" v-model="searchString" size="small" class="search-box">
-              <template #suffix>
-                <span class="grid place-items-center h-full w-full"><search-icon width="14" height="14" /></span>
-              </template>
-            </el-input>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-            <!-- Start:: dropdown -->
-            <div class="bg-white rounded-lg whitespace-nowrap w-[600px] max-w-[80vw]">
-              <div class="max-h-[60vh] custom-scrollbar overflow-y-auto p-4">
-                <article class="py-4 text-[#9F9F9F] grid grid-cols-[max-content,1fr,max-content] gap-4"
-                  v-for="item in topSearchContent" :key="item + 'topsearchContent'">
-                  <img :src="
-                    (item.user || {}).profile_picture ||
-                    '/img/placeholder_picture.png'
-                  " alt="" class="h-16 w-16 rounded-lg object-cover" />
-                  <div class="overflow-hidden">
-                    <nuxt-link :to="`/pdf/${item.paperLink}`">
-                      <p class="text-sm text-black mb-1 truncate">
-                        {{ item.user.email }}
-                      </p>
-                      <p class="text-xs truncate">{{ item.fileName }}</p>
-                      <p class="text-[11px] mt-0.5 truncate">{{ item.user.firstName || item.user.companyName }}</p>
-                    </nuxt-link>
-                  </div>
-                  <SearchShare :showShareIcon="true" :file="item" />
-                </article>
-              </div>
-            </div>
-            <!-- End:: dropdown -->
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
+
       <!-- End:: search -->
 
       <!-- -------------START: notification -->
@@ -164,7 +165,8 @@
                 " class="w-8 h-8" alt="" :class="[isAccountPaid(account.role) ? 'rounded-full' : ' rounded-md']" />
               </span>
               <div class="w-[calc(100%-1.75rem)] pl-2 leading-[12px] relative flex flex-wrap items-center">
-                <span class="text-[12px] truncate font-[500] capitalize inline-block my-0 w-full">{{ (account.teamName ||
+                <span class="text-[12px] truncate font-[500] capitalize inline-block my-0 w-full">{{ (account.teamName
+                    ||
                     account.companyName || account.firstName || '')
                 }}</span>
                 <span class="text-[9px] truncate font-[500] capitalize inline-block my-0 w-full">

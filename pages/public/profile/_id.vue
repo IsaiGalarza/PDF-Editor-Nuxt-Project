@@ -27,9 +27,9 @@
           <h4 class="text-xl font-medium">Folders</h4>
 
           <div @submit.prevent class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
-            <span class="el-dropdown-link" :class="[show ? 'left-roll' : 'no-roll']">
+            <span class="el-dropdown-link" >
               <input type="text" placeholder="Search any folder..."
-                class="rounded-lg border w-12 border-paperdazgreen-400 px-2 h-8 placeholder:italic"
+                class="rounded-lg border border-paperdazgreen-400 px-2 h-8 placeholder:italic"
                 v-model="searchFolderParam" />
             </span>
 
@@ -80,7 +80,7 @@
           class="p-4 border-b border-[#DCDCDC] text-paperdazgreen-400 flex flex-wrap items-center gap-2 justify-between">
           <h4 class="text-xl font-medium">Files</h4>
           <form @submit.prevent class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
-            <span class="el-dropdown-link" :class="[showFile ? 'left-roll' : 'no-roll']">
+            <span class="el-dropdown-link">
               <input type="text" placeholder="Search any file..."
                 class="rounded-lg border border-paperdazgreen-400 px-2 h-8 placeholder:italic"
                 v-model="searchFileParam" />

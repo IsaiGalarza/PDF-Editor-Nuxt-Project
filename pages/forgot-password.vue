@@ -1,9 +1,7 @@
 <template>
   <section class="bg-gradient-to-t from-white to-transparent">
     <div class="container py-20">
-      <div
-        class="w-full max-w-md mx-auto bg-white shadow-2xl rounded-xl px-6 py-10"
-      >
+      <div class="w-full max-w-md mx-auto bg-white shadow-2xl rounded-xl px-6 py-10">
         <h4 class="text-lg font-medium mb-2">Reset Your Password</h4>
 
         <p class="text-gray-500 text-xs mb-8">
@@ -11,23 +9,12 @@
         </p>
 
         <form action="" class="text-sm" @submit.prevent="onSubmit">
-          <message-alert-widget
-            :message="alertMessage.message"
-            v-show="alertMessage.message"
-            :type="alertMessage.isSuccess ? 'success' : 'error'"
-            class="mb-8"
-          />
+          <message-alert-widget :message="alertMessage.message" v-show="alertMessage.message"
+            :type="alertMessage.isSuccess ? 'success' : 'error'" class="mb-8" />
           <div class="mb-5">
-            <label for="" class="mb-2 block text-sm font-medium text-gray-500"
-              >EMAIL</label
-            >
-            <el-input
-              v-model="user.email"
-              :disabled="isLoading"
-              type="email"
-              placeholder="example@email.com"
-              required
-            />
+            <label for="" class="mb-2 block text-sm font-medium text-gray-500">EMAIL</label>
+            <el-input v-model="user.email" :disabled="isLoading" type="email" placeholder="example@email.com"
+              required />
           </div>
 
           <p class="text-xs text-paperdazgreen-400 mb-10">
@@ -36,11 +23,8 @@
           <!-- <recaptcha /> -->
 
           <div class="flex flex-col items-center">
-            <button
-              class="h-10 rounded-lg shadow px-5 text-white text-sm bg-paperdazgreen-300 disabled:bg-opacity-70"
-              :class="[isLoading ? 'cursor-progress' : '']"
-              :disabled="isLoading"
-            >
+            <button class="h-10 rounded-lg shadow px-5 text-white text-sm bg-paperdazgreen-300 disabled:bg-opacity-70"
+              :class="[isLoading ? 'cursor-progress' : '']" :disabled="isLoading">
               <span class="inline-flex items-center gap-3">
                 <span>Reset Password</span>
                 <transition name="fade" :duration="100">
@@ -86,7 +70,7 @@ export default Vue.extend({
     return {
       user: {
         email: undefined,
-        action:"forgot_password"
+        action: "forgot_password"
       },
       isLoading: false,
       alertMessage: {
@@ -125,10 +109,10 @@ export default Vue.extend({
           localStorage.removeItem('redirect_paperdaz_path')
           localStorage.removeItem('paperdaz_userID')
           localStorage.removeItem('main_user_paperdaz_token')
+          this.$nuxt.$router.push('/reset-sent-link');
         })
-        .catch(({response}) => {
+        .catch(({ response }) => {
           this.alertMessage.isSuccess = false
-          console.log(response)
           this.alertMessage.message = response.data.message || 'unable to reset password'
         })
         .finally(() => {
@@ -153,26 +137,30 @@ export default Vue.extend({
 
 <style lang="postcss" scoped>
 #remember-me-checkbox {
-  &:not(:checked) + label {
+  &:not(:checked)+label {
     @apply bg-paperdazgray-400;
+
     & .overlay {
       @apply bg-paperdazgray-400 bg-opacity-20;
     }
   }
-  &:checked + label {
+
+  &:checked+label {
     @apply bg-paperdazgreen-300;
+
     & .overlay {
       opacity: 1;
       @apply bg-paperdazgreen-300 bg-opacity-20;
     }
   }
 
-  & + label {
+  &+label {
     z-index: 2;
+
     & .overlay {
       z-index: -1;
       opacity: 0;
-      @apply transition ease-in-out  absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2;
+      @apply transition ease-in-out absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2;
     }
 
     &:hover .overlay {

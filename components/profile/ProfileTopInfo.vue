@@ -3,19 +3,9 @@
     <!-- logo container -->
     <div class="bg-white md:w-3/12 lg:w-[19%] w-full profile-image-container">
       <div class="icon-img relative" @click="changeProfileimage">
-        <input
-          type="file"
-          class="hidden"
-          v-show="false"
-          @change="uploadProfilePicture"
-          ref="referenceInput"
-        />
-        <img
-          v-if="profilePhoto != null"
-          :src="profilePhoto"
-          id="referenceImg"
-          class="top-profile-image cursor-pointer"
-        />
+        <input type="file" class="hidden" v-show="false" @change="uploadProfilePicture" ref="referenceInput" />
+        <img v-if="profilePhoto != null" :src="profilePhoto" id="referenceImg"
+          class="top-profile-image cursor-pointer" />
         <span v-else>
           {{ firstCompanyName }}
         </span>
@@ -25,70 +15,47 @@
     <!-- end of logo container -->
 
     <!-- dentals container -->
-    <div class="bg-white sm:w-12/12 md:w-5/12 lg:w-[60%] w-full profile-dental-container">
+    <div class="bg-white sm:w-12/12 md:w-9/12 lg:w-[80%] w-full profile-dental-container">
       <!-- <h1>{{user.companyName || ''}}</h1> -->
-      <div class="input-wrapper">
-        <input
-          type="text"
-          v-model="address"
-          placeholder="Company`s address"
-          :disabled="initialInput"
-          :class="[initialInput ? 'text-gray-400' : 'text-black']"
-        />
-        <button v-if="isUser" @click="toggleInput">
-          <Pencil v-if="initialInput" :width="18" />
-          <span class="text-[15px] font-[900] text-paperdazgreen-500" v-else
-            >&#x2715;</span
-          >
+      <div class="input-wrapper-title">
+        <input type="text" v-model="name" placeholder="Apple Dental" :disabled="editEnalble"
+          class="text-black text-2xl" />
+        <button @click="toggleInput">
+          <Pencil :width="18" />
         </button>
+      </div>
+      <div class="text-sm px-2 border-b w-full py-2 text-gray-400"><i>@hookname</i></div>
+      <div class="input-wrapper">
+        <input type="text" v-model="address" placeholder="Company`s address" :disabled="editEnalble"
+          :class="[editEnalble ? 'text-gray-400' : 'text-black']" />
+        <!-- <button v-if="isUser" @click="toggleInput">
+          <Pencil v-if="initialInput" :width="18" />
+          <span class="text-[15px] font-[900] text-paperdazgreen-500" v-else>&#x2715;</span>
+        </button> -->
       </div>
 
       <div class="input-wrapper">
-        <input
-          type="number"
-          v-model="phone"
-          placeholder="Company`s phone number"
-          :disabled="initialInput2"
-          :class="[initialInput2 ? 'text-gray-400' : 'text-black']"
-        />
-        <button v-if="isUser" @click="toggleInput2">
+        <input type="number" v-model="phone" placeholder="Company`s phone number" :disabled="editEnalble"
+          :class="[editEnalble ? 'text-gray-400' : 'text-black']" />
+        <!-- <button v-if="isUser" @click="toggleInput2">
           <Pencil v-if="initialInput2" :width="18" />
-          <span class="text-[15px] font-[900] text-paperdazgreen-500" v-else
-            >&#x2715;</span
-          >
-        </button>
+          <span class="text-[15px] font-[900] text-paperdazgreen-500" v-else>&#x2715;</span>
+        </button> -->
       </div>
 
       <div class="w-full grid place-items-center">
         <button
           class="w-[160px] flex justify-center items-center text-white py-2 mt-3 text-center border-none bg-paperdazgreen-400 rounded-md"
-          v-if="showUpdateButton"
-          :class="[isLoading ? 'opacity-50' : 'opacity-100']"
-          :disabled="isloading"
-          @click="patchUser"
-        >
+          v-if="showUpdateButton" :class="[isLoading ? 'opacity-50' : 'opacity-100']" :disabled="isloading"
+          @click="patchUser">
           Update
-          <SpinnerDottedIcon
-            v-if="isLoading"
-            height="20"
-            width="20"
-            class="animate-spin ml-2"
-          />
+          <SpinnerDottedIcon v-if="isLoading" height="20" width="20" class="animate-spin ml-2" />
         </button>
       </div>
     </div>
     <!-- end of dentals container -->
 
-    <!-- SCANNER CONTAINER -->
-    <div
-      class="scanner-container sm:w-12/12 md:w-3/12 lg:w-[18%] w-full flex items-center flex-wrap justify-center"
-    >
-      <b class="w-full block">Scan to show all files</b>
-      <div class="flex justify-center">
-        <canvas ref="qrcancas" width="200" height="200" class="object-contain"></canvas>
-      </div>
-    </div>
-    <!-- END OF SCANNER CONTAINER -->
+
   </section>
 </template>
 
@@ -107,8 +74,7 @@ export default mixins(login).extend({
   props: ["userInfo"],
   data() {
     return {
-      initialInput: true,
-      initialInput2: true,
+      editEnalble: true,
       showScanner: false,
       profilePicsSrc: "",
       qrCls: "qrcode",
@@ -117,6 +83,7 @@ export default mixins(login).extend({
       background: "transparent",
       phone: "",
       address: "",
+      name:"",
       isLoading: false,
     };
   },
@@ -158,17 +125,15 @@ export default mixins(login).extend({
         });
     },
     toggleInput() {
-      this.initialInput = !this.initialInput;
-    },
-    toggleInput2() {
-      this.initialInput2 = !this.initialInput2;
+      this.editEnalble = !this.editEnalble;
     },
     changeProfileimage() {
-      if (!this.isUser) return;
+      // console.log('change image');
+      // if (!this.isUser) return;
       this.$refs.referenceInput.click();
     },
     async uploadProfilePicture(event) {
-      if (!this.isUser) return;
+      // if (!this.isUser) return;
 
       let fileInput = event.target;
 
@@ -198,10 +163,10 @@ export default mixins(login).extend({
     },
   },
   mounted() {
-    console.log(">>>>>>>>>>>>???", this.userInfo);
+    // console.log(">>>>>>>>>>>>???", this.userInfo);
     this.phone = this.userInfo?.phone;
     this.address = this.userInfo?.address;
-    QRCode.toCanvas(this.$refs.qrcancas, this.qrCodeurl, function () {});
+    // QRCode.toCanvas(this.$refs.qrcancas, this.qrCodeurl, function () {});
     //  await this.$nextTick()
     // ;(this.$refs.qrcancas as HTMLElement).removeAttribute('style')
     // ;(this.$refs.qrcancas as HTMLElement).removeAttribute('height')
@@ -213,7 +178,7 @@ export default mixins(login).extend({
       return (this.userInfo?.companyName || "").charAt(0).toUpperCase();
     },
     showUpdateButton() {
-      return !this.initialInput || !this.initialInput2;
+      return !this.editEnalble || !this.editEnalble;
     },
     qrCodeurl() {
       return `${window.origin}/public/profile/${this.userInfo?.id}`;
@@ -235,7 +200,7 @@ export default mixins(login).extend({
     "$auth.user": function () {
       this.address = this.$auth.user?.address || "";
       this.phone = this.$auth.user?.phone || "";
-      QRCode.toCanvas(this.$refs.qrcancas, this.qrCodeurl, function () {});
+      // QRCode.toCanvas(this.$refs.qrcancas, this.qrCodeurl, function () {});
     },
   },
 });
@@ -245,13 +210,15 @@ export default mixins(login).extend({
 .font-family {
   font-family: inherit !important;
 }
+
 .profile-image-container {
   @apply bg-white flex justify-center flex-wrap items-center py-4 rounded-[10px];
+
   .icon-img {
-    @apply w-40 h-40 font-[900] text-[6em] text-paperdazgreen-500 cursor-pointer 
-              border-2 border-paperdazgreen-400/60 grid place-items-center rounded-[8px];
+    @apply w-40 h-40 font-[900] text-[6em] text-paperdazgreen-500 cursor-pointer border-2 border-paperdazgreen-400/60 grid place-items-center rounded-[8px];
     text-shadow: 1px 5px 7px rgb(148 148 148);
   }
+
   .text-wrapper {
     @apply block w-full text-center text-[0.8rem] text-paperdazgray-400 mt-1;
   }
@@ -259,28 +226,43 @@ export default mixins(login).extend({
 
 .profile-dental-container {
   @apply py-4 rounded-[10px];
+
   h1 {
-    @apply border-b-2 border-paperdazgray-200 py-4
-        text-[1.2rem] pl-4 font-medium;
+    @apply border-b-2 border-paperdazgray-200 py-4 text-[1.2rem] pl-4 font-medium;
   }
+
   .input-wrapper {
-    @apply border-b-2 border-paperdazgray-200 py-2;
+    @apply border-paperdazgray-200 py-2;
+
     input {
       @apply border-none bg-transparent px-3 text-[16px];
       width: calc(100% - 40px);
       outline: none !important;
     }
-    button {
+
+    button {}
+  }
+
+  .input-wrapper-title {
+    @apply py-2;
+
+    input {
+      @apply border-none bg-transparent px-3 text-[24px];
+      width: calc(100% - 40px);
+      outline: none !important;
     }
   }
 }
 
+
 .scanner-container {
   @apply bg-white rounded-[10px] py-4;
+
   b {
     @apply block text-center text-[0.8rem];
   }
 }
+
 .top-profile-image {
   @apply absolute w-[90%] h-[90%] mt-[5%] ml-[5%] object-cover rounded-lg m-2;
 }

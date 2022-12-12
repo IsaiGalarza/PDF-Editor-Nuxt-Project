@@ -112,7 +112,7 @@ export default Vue.extend({
           link: '/dashboard',
           exact: true,
         },
-        { label: 'Home', icon: 'HomeIcon', link: '/', exact: false },
+        // { label: 'Home', icon: 'HomeIcon', link: '/', exact: false },
         {
           label: 'Packages',
           icon: 'NewsPaperIcon',

@@ -136,7 +136,7 @@ export default Vue.extend({
       await this.$axios
         .$post('/files', formData)
         .then((response) => {
-          this.moveToFolder(response.id)
+          // this.moveToFolder(response.id)
           this.$notify.success({
             title: 'File Upload',
             message: 'File uploaded successfully',

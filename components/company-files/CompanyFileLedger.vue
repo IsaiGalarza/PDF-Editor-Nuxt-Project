@@ -39,7 +39,7 @@
       <!-- <empty-file-ledger class="min-h-[55vh]" v-if="pdfUser < 1" :isPaidUser= "isPaidUser"/> -->
       <div class="bg-white rounded-3xl pb-4 text-[#272727] min-h-[55vh] overflow-hidden">
         <!-- Start:: Folders -->
-        <div v-if="(folders.length > 0)">
+        <div v-if="(folders.length > 0 && !folderSelected)">
           <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 flex items-center">
             Folders
           </h4>
@@ -100,9 +100,14 @@
 
         <!-- Start:: Files -->
         <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 flex items-center"
-          v-if="folders.length > 0">
+          v-if="folders.length > 0 && !folderSelected">
           Files
         </h4>
+        <div v-if="folderSelected"
+          class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 flex items-center">
+          <button class="bg-paperdazgreen-400 p-2 text-white text-lg rounded-lg" @click="backFolder">Back</button>
+          <h2 class="text-paperdazgreen-400 font-bold w-5/6 text-center">{{ FilesInFolerContent.name }}</h2>
+        </div>
         <div class="overflow-x-auto custom-scrollbar relative">
           <!-- START: spinner container -->
           <div v-if="fileSpinner"
@@ -205,7 +210,8 @@
     <ShareFilesModal @refresh="setRefresh" :userFile="userFile" @qrLoad="showQrcodeFileFunc"
       v-model="showShareCompanyFiles" />
     <RequestModal @refresh="setRefresh" :userFile="userFile" @qrLoad="showQrcodeFileFunc" v-model="showRequestModal" />
-
+    <AddCompanyfiles @refresh="setRefresh" :file="fileProps" :totalFile="totalFile"
+      @createFile="showUploadDocumentModal = true" v-model="showAddCompanyFiles" />
     <FilesInFolder :folder="FilesInFolerContent" v-model="showFilesInFolder" />
     <QrcodeShare :userFile="userFile" v-model="showQrcodeFiles" />
     <MaxPaperlinkModal v-model="showMaxPaperlinkModal" :totalFile="totalFile" />
@@ -306,13 +312,13 @@ export default Vue.extend({
       showUploadIcon: false,
       totalRegisteredPaperlink: null,
       showMaxPaperlinkModal: false,
+      folderSelected: false
     }
   },
   methods: {
     async maxFileUpload() {
       await this.$axios.get(`/subscriptions/${this.$auth.user.subscriptionId}`)
         .then((response) => {
-          console.log(">>>>>>>>>> max file", response.data)
           this.totalRegisteredPaperlink = response?.data?.paperlink
         })
         .finally(() => { this.showUploadIcon = true })
@@ -336,9 +342,15 @@ export default Vue.extend({
       }
 
     },
+    backFolder() {
+      this.folderSelected = false;
+      this.setRefresh();
+    },
     showFolderFilesFunc(val) {
       this.FilesInFolerContent = val
-      this.showFilesInFolder = true
+      this.folderSelected = true;
+      // this.showFilesInFolder = true
+      this.$store.commit('ADD_USER', this.FilesInFolerContent.files || [])
     },
     resetUserFolder() {
       this.fileProps = {}
@@ -374,9 +386,6 @@ export default Vue.extend({
       this.showAddCompanyFiles = true
     },
     showRemoveCompanyFileFunc(file) {
-      console.log(
-        'remove file'
-      );
       this.userFile = file
       this.showRemoveCompanyFiles = true
     },
@@ -411,7 +420,6 @@ export default Vue.extend({
         }
       })
         .then((response) => {
-          console.log("file", response)
           const filesData = response.data.map((el) => {
             return el
           })
@@ -446,7 +454,6 @@ export default Vue.extend({
           this.totalFolder = response.total
           // set the data.file
           this.folders = filesData
-          console.log("folder", this.folders)
           // to stop spinner
           this.folderSpinner = false
         })

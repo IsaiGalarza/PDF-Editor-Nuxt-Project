@@ -10,6 +10,7 @@
 import Vue from 'vue'
 
 const getInitials = (username) => {
+  if(!username) return;
   let parts = username.split(/[ -]/)
   let initials = ''
   for (var i = 0; i < parts.length; i++) {
@@ -81,7 +82,7 @@ export default Vue.extend({
   computed: {
     background() {
       if (!this.isImage) {
-        return this.backgroundColor || this.randomBackgroundColor(this.username.length, this.backgroundColors)
+        return this.backgroundColor || this.randomBackgroundColor(this.username?this.username.length:0, this.backgroundColors)
       }
     },
     fontColor() {

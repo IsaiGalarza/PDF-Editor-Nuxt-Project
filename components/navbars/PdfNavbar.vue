@@ -394,9 +394,6 @@
             this.$auth.strategy.token.set(response.accessToken)
             localStorage.setItem('paperdaz_userID', response.user.id)
             window.location.assign("/dashboard")
-            // this.$auth.strategy.token.set('...')
-            //@ts-ignore
-            // await this.loginUser(response)
           })
           .catch((error) => {})
           .finally(() => {

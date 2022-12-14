@@ -26,8 +26,7 @@ export default Vue.extend({
   components: { SearchShare },
   name: 'UserSearchStrip',
   mounted(){
-    console.log(this.record)
-  },
+   },
   props: {
     record: {
       type: Object,

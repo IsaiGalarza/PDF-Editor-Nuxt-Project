@@ -123,7 +123,6 @@ export default Vue.extend({
             action:"resendToken",
             email: this.updateEmailInput }) 
           .then((response)=>{
-            console.log(response)
             this.$notify.success({
               message: 'Message sent to email successfully'
             })

@@ -108,7 +108,6 @@ export default Vue.extend({
     "file":function(){
         this.folder = this.file;
         this.folderInputData = (this.folder || {}).name;
-        console.log("folders",this.folder)
     }
   },
   mounted() {

@@ -279,7 +279,6 @@ export default Vue.extend({
         monthlyPrice: this.totalCost,
         yearlyPrice: this.totalCost * 10,
       })
-          console.log("create-package",stag)
       return stag
     },
   },

@@ -4,7 +4,6 @@
     <!-- <leaves-details-container class="mb-9" /> -->
     <file-ledger @setUploadpaperlink="setUploadpaperlink" ref="fileLedger" class="flex-1" />
 
-    <floating-action-button @click.native="showUploadModalFunction" />
     <upload-document-modal @showMaxPaperlinkModalFunc="showMaxPaperlinkModalFunc" v-model="showUploadDocumentModal" />
     <MaxPaperlinkModal :totalFile="totalRegisteredPaperlink" v-model="showMaxPaperlinkModal" />
     <RequestSentNotificationModal

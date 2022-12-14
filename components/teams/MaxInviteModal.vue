@@ -82,7 +82,6 @@ export default Vue.extend({
     },
     file: function () {
       ;(this.folder) = this.file
-      console.log('dekete-mount', this.folder)
     },
   },
   mounted() {

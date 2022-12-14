@@ -241,7 +241,6 @@ export default Vue.extend({
       this.$axios
         .post('/users', data)
         .then(async (response) => {
-          console.log(response)
           this.showEmailVerification = true
           this.verificationInfo = { 
             email : response.data.email, 

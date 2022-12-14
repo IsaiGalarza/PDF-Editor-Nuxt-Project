@@ -166,7 +166,6 @@ export default Vue.extend({
     },
     userFile() {
       this.fileInfo = this.userFile
-      console.log(this.fileInfo)
     },
     searchValue(){
       this.folderSpinner = true

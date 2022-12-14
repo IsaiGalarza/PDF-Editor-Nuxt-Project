@@ -98,7 +98,6 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         isSignature ? 'signature-update' : 'initials-update',
         image
       )
-      console.log(image)
       this.imageExported(image, isSignature)
       // this.uploaded = true
     },

@@ -159,7 +159,6 @@ export default Vue.extend({
       Promise.all([files, company, user])
       .then((response)=>{
           displayFormat.files = response[0]
-          console.log(response[0]);
           // displayFormat.companies = response[1]
           // displayFormat.users = response[2]
          this.searchResult = displayFormat;

@@ -293,7 +293,6 @@ export default Vue.extend({
       await this.$axios
         .$post('/cards', data)
         .then((response) => {
-          console.log(response)
           let { id } = response
           this.cardId = id
           proceedToPayment = true

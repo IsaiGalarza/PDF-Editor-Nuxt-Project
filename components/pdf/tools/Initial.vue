@@ -14,7 +14,6 @@ export default {
     value: String,
   },
   mounted() {
-    console.log(this.value)
   },
   methods: {
 

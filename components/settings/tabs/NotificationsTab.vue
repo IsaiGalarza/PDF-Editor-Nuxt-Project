@@ -339,7 +339,6 @@ export default Vue.extend({
            gottenNotificationApp[key]
         }); 
           this.app = gottenNotificationApp
-          console.log("app",this.app)
           })
         .catch((err) => {
             
@@ -360,7 +359,6 @@ export default Vue.extend({
            gottenNotificationEmail[key]
         }); 
           this.email = gottenNotificationEmail
-          console.log("email",this.email)
         })
         .catch((err) => {
             

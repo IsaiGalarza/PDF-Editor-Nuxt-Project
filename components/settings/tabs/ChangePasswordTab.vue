@@ -155,8 +155,7 @@ export default mixins(login).extend({
       this.$axios
         .$patch(`/users/${(this.$auth.user).id}`, cloneFormData)
         .then(async (response) => {
-          console.log("response",response)
-          await this.$notify.success({
+           await this.$notify.success({
             message: 'Password updated successfully',
             title: 'Password Update',
           })

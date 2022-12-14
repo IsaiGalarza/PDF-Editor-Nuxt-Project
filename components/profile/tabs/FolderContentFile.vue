@@ -61,8 +61,6 @@
       </div>
       <!-- end: of folder content -->
     </div>
-
-
   </section>
 </template>
 

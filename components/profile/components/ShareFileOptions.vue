@@ -77,7 +77,6 @@ export default {
           });
       } else {
         // Alerts user if API not available 
-        console.log("Browser doesn't support this API !");
       }
     },
     showRequestModalFunc() {
@@ -135,7 +134,6 @@ export default {
 
   mounted() {
     this.getFavouriteFile()
-    console.log("share user files", this.fileFavourite)
   }
 }
 </script>

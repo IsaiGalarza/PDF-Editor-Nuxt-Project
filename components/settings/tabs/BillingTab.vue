@@ -410,7 +410,6 @@ export default Vue.extend({
             this.isSubscribeActive = this.stagingPackage.isCancelled
             this.propsPackageName = this.stagingPackage
 
-            console.log('billing-package', this.stagingPackage)
         })
         .catch((err) => {})
 
@@ -458,7 +457,6 @@ export default Vue.extend({
       )
     },
     checkAddedFeatures() {
-      console.log('pack', this.stagingPackage.additional_amount === null)
       return this.stagingPackage.additional_amount > 0
     },
     checkCardInfo() {

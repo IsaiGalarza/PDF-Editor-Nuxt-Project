@@ -224,7 +224,6 @@ export default Vue.extend({
           const [responseData] = response.data
           this.card = responseData
           this.packageId = responseData.id
-          console.log('pop-card', responseData.card_number.toString())
         })
         .catch(() => { })
      },

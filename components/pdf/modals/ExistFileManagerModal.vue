@@ -97,8 +97,7 @@ import CheckedFillIcon from '../../svg-icons/CheckedFillIcon.vue'
     },
     watch: {
       visible(val) {
-        this.showModal = val,
-        console.log(this.tools)
+        this.showModal = val;
       },
       showModal(val) {
         this.$emit('updateVisibility', val)

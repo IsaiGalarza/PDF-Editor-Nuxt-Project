@@ -234,7 +234,6 @@ export default mixins(GlobalMixin).extend({
       if (formerVal.fullPath !== currentVal.fullPath) {
         this.collapsed = false
       }
-      console.log(sessionStorage.getItem("previousNav"), formerVal.name);
       if (formerVal.name=="index") {
         this.landingPage = true
       } else {

@@ -188,7 +188,6 @@ export default Vue.extend({
 
       //   await this.$axios.$post(`/pdf-generator`, { ...val })
       //   .then((response)=>{
-      //   console.log(response)
       //   this.generateFileProperty = response
       //   })
       //   .catch((err)=>{
@@ -197,7 +196,6 @@ export default Vue.extend({
     },
     async uploadGeneratedFile(val){
       if(Object.keys(this.generateFileProperty).length < 1 ) return
-      // console.log(this.packagename)
       // return
       const updateVal = {
         "isEditing":true,
@@ -209,7 +207,6 @@ export default Vue.extend({
       }
       await this.$axios.$post(`/files`, { ...updateVal })
         .then((response)=>{
-        console.log(response)
          this.generatedFile = response
         })
        .catch((err)=>{
@@ -231,7 +228,6 @@ export default Vue.extend({
     });
       
     //   let signAnnotationPos = { position : ExtractFormPdf(this.userFile.downloadLink)[1] }
-    //   console.log(signAnnotationPos)
     //   let ownerLink = signAnnotationPos?.position?.length > 0 ? 
     //   jwt.sign(signAnnotationPos, process.env.ENCRYPTION_KEY) : ''
 
@@ -250,7 +246,6 @@ export default Vue.extend({
       note: this.folderTextareaData
       }
 
-      console.log(this.generatedFile.paperLink, this.userFile.paperLink)
       // return
       this.$axios.$post(`/request`, requestData)
         .then((response) => {

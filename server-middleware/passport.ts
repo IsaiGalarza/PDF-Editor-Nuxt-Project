@@ -66,7 +66,6 @@ passport.deserializeUser(function (
 // });
 
 const appUrl = (env.APP_URL || '').replace(/\/+$/, '')
-    console.log(appUrl)
 
 passport.use(
   new FacebookStrategy(
@@ -91,7 +90,6 @@ passport.use(
       profile: any,
       done: (arg0: null, arg1: any) => any
     ) => {
-      console.log(profile);
       return done(null, profile)
     }
   )
@@ -112,7 +110,6 @@ passport.use(
       profile: any,
       cb: (arg0: null, arg1: any) => any
     ) => {
-      console.log(profile);
       return cb(null, profile)
     }
   )

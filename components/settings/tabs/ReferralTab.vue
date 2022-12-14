@@ -174,7 +174,6 @@ export default Vue.extend({
       .then((response) => {
       this.teamMembers = response.data
       this.totalreferee = response.total
-      console.log("referal-member", this.teamMembers)
       })
       .catch(() => {
        })

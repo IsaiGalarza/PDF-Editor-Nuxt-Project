@@ -133,7 +133,6 @@ export default Vue.extend({
         },
     },
     mounted() {
-        console.log("sub", this.subscriptions);
         this.showModal = this.visible;
     },
     methods: {
@@ -146,7 +145,6 @@ export default Vue.extend({
           { cc:this.emails.join(",") }
           )
           .then((response) => {
-            console.log(response)
            this.$notify.success({
             title:"file",
             message:'carbon copy successful'

@@ -59,7 +59,6 @@ export default Vue.extend({
     },
   },
   mounted(){
-    console.log("file",this.record)
   },
 })
 </script>

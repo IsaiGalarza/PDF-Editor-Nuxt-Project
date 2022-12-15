@@ -7,14 +7,14 @@
           <div class="row">
             <form @submit.prevent="submit" class="col-lg-6 md:order-2 order-1">
               <div class="left-form">
-                <div class="form form-outer">
+                <div class="form form-outer shadow-2xl">
                   <div class="heading">
                     <h1>Welcome Back!</h1>
                     <h3 class="capitalize">{{ username }}</h3>
                   </div>
                   <h6>Create a password</h6>
                   <div class="form-group">
-                    <label for="">New password</label>
+                    <label for="">Password</label>
                     <input
                       class="form-control"
                       v-model="user.password"
@@ -23,13 +23,13 @@
                       required
                       placeholder="Password"
                     />
-                    <span class="text-white text-[11px]"
+                    <span class="text-red text-[11px]"
                     v-if="ConfirmedPassword"
                     >
                       Password must contain alphabet, number, special character. length must be graeter than 8</span>
                   </div>
                   <div class="form-group">
-                    <label for="">Retype new password</label>
+                    <label for="">Retype password</label>
                     <input
                       class="form-control"
                       type="password"
@@ -37,13 +37,13 @@
                       :disabled="isLoading || isRedirecting"
                       placeholder="Password"
                     />
-                    <span class="text-white text-[11px]"
+                    <span class="text-red text-[11px]"
                     v-if="!isPasswordEqual"
                     >
                        Password does not match</span>
                   </div>
                   <button
-                  class="h-10 w-full mt-4 text-black rounded-lg shadow px-5 text-sm bg-white disabled:bg-opacity-70"
+                  class="register-btn h-10 w-full mt-6 text-white rounded-lg shadow px-5 text-sm disabled:bg-opacity-70"
                   :class="[isLoading ? 'cursor-progress' : '']"
                   :disabled="isLoading"
                 >
@@ -51,7 +51,7 @@
                     <span>Register</span>
                     <transition name="fade" :duration="100">
                       <span v-show="isLoading" class="animate-spin">
-                        <spinner-dotted-icon height="22" width="22" color="black"/>
+                        <spinner-dotted-icon height="22" width="22" color="white"/>
                       </span>
                     </transition>
                   </span>
@@ -60,8 +60,11 @@
               </div>
             </form>
             <div class="col-lg-6 md:order-1 order-2">
-              <div class="right-image">
-                <img src="../static/card2.png" alt="" />
+              <div class="flex flex-col w-full h-full items-center mt-[30px]">
+                <img src="../static/card2.png" class="w-[300px]" alt="" />
+                <div class="flex">
+                  <div class="text-2xl text-[#8E8989] font-bold px-3 text-center">Thank you for <br/>being <br/>Responsible!!</div>
+                </div>
               </div>
             </div>
           </div>
@@ -238,6 +241,12 @@ export default Vue.extend({
   margin-top: 5px;
   border-radius: 5px;
   box-shadow: 1px 3px 5px rgba(203, 206, 206, 0.692);
+}
+.form-outer {
+  background-color: white !important;
+}
+.register-btn {
+  background-color: #77B550 !important;
 }
 .dropdown::-webkit-scrollbar {
   width: 5px;

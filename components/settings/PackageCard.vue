@@ -1,6 +1,6 @@
 <template>
   <div
-    class="border-2 border-paperdazgreen-400 w-full rounded-2xl overflow-hidden relative pb-5 h-[100%]"
+    class="border-2 border-paperdazgreen-400 w-full rounded-2xl overflow-hidden relative pb-5 min-h-[547px] h-[100%]"
   >
     <!-- <div class="promoted-banner" v-if="tags">{{ stagingPackage.tag }}</div> -->
     <div class="promoted-banner">Popular</div>

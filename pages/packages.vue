@@ -182,7 +182,7 @@ export default mixins(GlobalMixin).extend({
   watch: {
     '$route.query'() {
       if(Object.keys(this.$route.query)[0] == 'type'){
-        window.location.reload()
+        // window.location.reload()
         this.getPackages()
       }
       else if(Object.keys(this.$route.query)[0] == 'promoCode'){

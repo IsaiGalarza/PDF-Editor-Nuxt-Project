@@ -90,7 +90,7 @@
               :disabled="loading"
             >
               <span class="inline-flex items-center gap-3 ">
-                <span>Pay via Stripe</span>
+                <span>Pay {{ this.packageData?.plan=="yearly"?(stagingPackage || {}).yearlyPrice:(stagingPackage || {}).monthlyPrice }}</span>
                 <transition name="fade" :duration="100">
                   <span v-show="loading" class="animate-spin">
                     <spinner-dotted-icon height="22" width="22" />

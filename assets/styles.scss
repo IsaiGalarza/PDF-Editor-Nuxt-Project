@@ -494,7 +494,7 @@ $screens: 'xxs', 'xs', 'sm', 'md', 'lg', 'xl';
 
     .form-outer {
       background-color: #75c55b;
-      padding: 70px 30px;
+      padding: 70px 70px;
       border-radius: 16px;
       width: 403px;
       margin: auto;
@@ -531,7 +531,7 @@ $screens: 'xxs', 'xs', 'sm', 'md', 'lg', 'xl';
         }
 
         input {
-          border: none;
+          // border: none;
           font-size: 14px;
           width: 100%;
           padding: 20px;

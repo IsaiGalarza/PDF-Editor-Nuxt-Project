@@ -1,120 +1,67 @@
 <template>
   <section class="bg-gradient-to-t from-white to-transparent">
     <div class="container py-20">
-      <div
-        class="w-full max-w-md mx-auto bg-white shadow-2xl rounded-xl px-6 py-10"
-      >
-        <h4 class="text-lg font-medium mb-8 text-center">
-          Create your new password
-        </h4>
-
-        <form action="" class="text-sm" @submit.prevent="resetPassword">
-          <message-alert-widget
-            :message="errorMessage"
-            v-show="errorMessage"
-            type="error"
-            class="mb-8"
-          />
-          <div class="mb-5">
-            <label for="" class="mb-2 block text-sm font-medium text-gray-500"
-              >New Password</label
-            >
-            <el-input
-              v-model="user.password"
-              :disabled="isLoading"
-              type="password"
-              show-password
-              placeholder="New password"
-              required
-            />
-            <transition name="fade">
-              <ul
-                class="password-confirmation-list mt-1"
-                v-show="user.password"
-              >
-                <li>
-                  <span class="circle circle-8 bg-white">
-                    <check-icon
-                      height="10"
-                      width="10"
-                      class="text-paperdazgreen-400"
-                      v-show="user.password && user.password.length >= 8"
+      <!-- show if verified -->
+      <div class="reset-pass-section">
+        <div class="container">
+          <div class="row">
+            <form @submit.prevent="resetPassword" class="col-lg-6 md:order-2 order-1">
+              <div class="left-form">
+                <div class="form form-outer shadow-2xl">
+                  <div class="heading">
+                    <h1>Welcome Back!</h1>
+                    <h3 class="capitalize">{{ username }}</h3>
+                  </div>
+                  <h6>Create a password</h6>
+                  <div class="form-group">
+                    <label for="">Password</label>
+                    <input
+                      class="form-control"
+                      v-model="user.password"
+                      type="password"
+                      :disabled="isLoading || isRedirecting"
+                      required
+                      placeholder="Password"
                     />
-                    <times-icon
-                      height="8"
-                      width="8"
-                      class="text-red-500"
-                      v-show="!(user.password && user.password.length >= 8)"
+                  </div>
+                  <div class="form-group">
+                    <label for="">Retype password</label>
+                    <input
+                      class="form-control"
+                      type="password"
+                      v-model="user.passwordConfirmation"
+                      :disabled="isLoading || isRedirecting"
+                      placeholder="Password"
                     />
+                    
+                  </div>
+                  <button
+                  class="register-btn h-10 w-full mt-6 text-white rounded-lg shadow px-5 text-sm disabled:bg-opacity-70"
+                  :class="[isLoading ? 'cursor-progress' : '']"
+                  :disabled="isLoading"
+                >
+                  <span class="inline-flex items-center gap-3">
+                    <span>Register</span>
+                    <transition name="fade" :duration="100">
+                      <span v-show="isLoading" class="animate-spin">
+                        <spinner-dotted-icon height="22" width="22" color="white"/>
+                      </span>
+                    </transition>
                   </span>
-                  <span>Password has to be at least 8 characters long.</span>
-                </li>
-                <li>
-                  <span class="circle circle-8 bg-white">
-                    <check-icon
-                      height="10"
-                      width="10"
-                      class="text-paperdazgreen-400"
-                      v-show="
-                        user.password &&
-                        containsCapital &&
-                        containsSmall &&
-                        containsSpecialCharacter
-                      "
-                    />
-                    <times-icon
-                      height="8"
-                      width="8"
-                      class="text-red-500"
-                      v-show="
-                        !(
-                          user.password &&
-                          containsCapital &&
-                          containsSmall &&
-                          containsSpecialCharacter
-                        )
-                      "
-                    />
-                  </span>
-                  <span
-                    >Password has to have symbols, capital and small
-                    letters.</span
-                  >
-                </li>
-              </ul>
-            </transition>
+                </button>
+                </div>
+              </div>
+            </form>
+            <div class="col-lg-6 md:order-1 order-2">
+              <div class="flex flex-col w-full h-full items-center mt-[30px]">
+                <img src="../static/card2.png" class="w-[300px]" alt="" />
+                <div class="flex">
+                  <div class="text-2xl text-[#8E8989] font-bold px-3 text-center">Thank you for <br/>being <br/>Responsible!!</div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="mb-10">
-            <label for="" class="mb-2 block text-sm font-medium text-gray-500"
-              >Confirm new password</label
-            >
-            <el-input
-              v-model="user.passwordConfirmation"
-              :disabled="isLoading"
-              type="password"
-              show-password
-              placeholder="Confirm new password"
-              required
-            />
-          </div>
-
-          <div class="flex flex-col items-center">
-            <button
-              class="h-10 rounded-lg shadow px-8 text-white text-sm bg-paperdazgreen-300 disabled:bg-opacity-70"
-              :class="[isLoading ? 'cursor-progress' : '']"
-              :disabled="isLoading"
-            >
-              <span class="inline-flex items-center gap-3">
-                <span>Save</span>
-                <transition name="fade" :duration="100">
-                  <span v-show="isLoading" class="animate-spin">
-                    <spinner-dotted-icon height="22" width="22" />
-                  </span>
-                </transition>
-              </span>
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   </section>
@@ -149,12 +96,14 @@ export default Vue.extend({
   layout: 'landing',
   data() {
     return {
+      decodedUserInfo: {},
       user: {
         password: undefined ,
         passwordConfirmation: undefined,
         action: "reset_password",
         token: this.$route.query.token,
       },
+      isRedirecting: false,
       isLoading: false,
       errorMessage: '',
     }
@@ -165,6 +114,11 @@ export default Vue.extend({
    }
   },
   computed: {
+    username() {
+      let userInfo = this.decodedUserInfo
+      return localStorage.reset_user_mail
+      // return (userInfo.firstName + ' ' + userInfo.lastName) || ""
+    },
     containsCapital() {
       return /[A-Z]+/g.test(this.user.password || '')
     },
@@ -207,41 +161,47 @@ export default Vue.extend({
   },
 })
 </script>
-
-<style lang="postcss" scoped>
-#remember-me-checkbox {
-  &:not(:checked) + label {
-    @apply bg-paperdazgray-400;
-    & .overlay {
-      @apply bg-paperdazgray-400 bg-opacity-20;
-    }
+<style lang="scss" scoped>
+  .dropdown {
+    @apply absolute top-[100%] left-0 w-full bg-white;
+    max-height: 150px;
+    overflow-y: scroll;
+    margin-top: 5px;
+    border-radius: 5px;
+    box-shadow: 1px 3px 5px rgba(203, 206, 206, 0.692);
   }
-  &:checked + label {
-    @apply bg-paperdazgreen-300;
-    & .overlay {
-      opacity: 1;
-      @apply bg-paperdazgreen-300 bg-opacity-20;
-    }
+  .form-outer {
+    background-color: white !important;
   }
-
-  & + label {
-    z-index: 2;
-    & .overlay {
-      z-index: -1;
-      opacity: 0;
-      @apply transition ease-in-out  absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2;
-    }
-
-    &:hover .overlay {
-      opacity: 1;
-    }
+  .register-btn {
+    background-color: #77B550 !important;
   }
-}
-
-.password-confirmation-list {
-  @apply bg-paperdazgreen-400 text-white text-xs;
-  & > li {
-    @apply flex  gap-2 px-4 py-2.5;
+  .dropdown::-webkit-scrollbar {
+    width: 5px;
+    height: 3px;
+    cursor: pointer;
   }
-}
-</style>
+  .dropdown::-webkit-scrollbar-thumb {
+    @apply bg-paperdazgreen-400;
+    width: 5px;
+    border-radius: 50px;
+    cursor: pointer;
+  }
+  
+  .dropdown::-webkit-scrollbar-track {
+    cursor: pointer;
+    @apply border-[1px] border-transparent;
+  }
+  .dropdown > li {
+    list-style-type: none;
+    @apply py-2 px-1;
+  }
+  .custom-input {
+    @apply w-12 text-center outline-none rounded-lg border-[1px] border-paperdazgray-200 mr-2;
+  }
+  .width-full {
+    width: 100%;
+    text-align: left;
+  }
+  </style>
+  

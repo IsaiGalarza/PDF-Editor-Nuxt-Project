@@ -1,23 +1,23 @@
 <template>
   <section class="bg-gradient-to-t from-white to-transparent">
     <div class="container py-20">
-      <div class="w-full max-w-md mx-auto bg-white shadow-2xl rounded-xl px-6 py-10">
-        <h4 class="text-lg font-medium mb-2">Reset Your Password</h4>
+      <div class="w-full max-w-lg mx-auto bg-white shadow-2xl rounded-xl px-6 py-10">
+        <h4 class="text-[24px] font-medium mb-2">Reset Your Password</h4>
 
-        <p class="text-gray-500 text-xs mb-8">
+        <p class="text-gray-500 text-[14px] mb-8">
           Fear not. We'll email you instructions to reset your password.
         </p>
 
         <form action="" class="text-sm" @submit.prevent="onSubmit">
           <message-alert-widget :message="alertMessage.message" v-show="alertMessage.message"
             :type="alertMessage.isSuccess ? 'success' : 'error'" class="mb-8" />
-          <div class="mb-5">
+          <div class="mb-2">
             <label for="" class="mb-2 block text-sm font-medium text-gray-500">EMAIL</label>
-            <el-input v-model="user.email" :disabled="isLoading" type="email" placeholder="example@email.com"
+            <el-input v-model="user.email" :disabled="isLoading" type="email" placeholder="Your email"
               required />
           </div>
 
-          <p class="text-xs text-paperdazgreen-400 mb-10">
+          <p class="text-gray-500 text-[14px] mb-10">
             Enter the email associated with your account
           </p>
           <!-- <recaptcha /> -->
@@ -105,10 +105,11 @@ export default Vue.extend({
           this.alertMessage.message =
             response.message.replace("token", 'link') ||
             'A password reset email has been sent to your mail check your mail to reset it'
-          this.user.email = ''
+          // this.user.email = ''
           localStorage.removeItem('redirect_paperdaz_path')
           localStorage.removeItem('paperdaz_userID')
           localStorage.removeItem('main_user_paperdaz_token')
+          localStorage.setItem("reset_user_mail", this.user.email)
           this.$nuxt.$router.push('/reset-sent-link');
         })
         .catch(({ response }) => {

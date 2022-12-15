@@ -45,7 +45,7 @@
         <p class="text-center text-[10px] font-medium">Share</p>
       </div>
       <nuxt-link
-        to="/public/profile"
+        :to="`/public/profile/${mainUserLink}`"
         class="block bg-white rounded-lg px-2 py-4"
       >
         <building-icon class="w-full h-8 text-paperdazgreen-300 mb-2" />
@@ -100,6 +100,16 @@ export default mixins(login).extend({
         case UserTypeEnum.TEAM:
           return 'TEAM ACCOUNT'
       }
+    },
+    mainUserLink() {
+      switch (this.$auth?.user?.role) {
+        case UserTypeEnum.PAID:
+          return (this.$auth.user || {}).id
+
+        case UserTypeEnum.TEAM:
+          return (this.$auth.user || {}).mainAccountId
+      }
+      (this.$auth.user || {}).id
     }
   },
   methods: {

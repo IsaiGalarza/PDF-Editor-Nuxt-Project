@@ -117,7 +117,7 @@
                 </nuxt-link>
               </p>
             </div>
-            <ShareFileOptions :file="item" />
+            <!-- <ShareFileOptions :file="item" /> -->
           </div>
           <!-- End:: Single row -->
         </div>

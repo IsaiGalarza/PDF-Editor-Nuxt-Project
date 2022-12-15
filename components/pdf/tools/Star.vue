@@ -57,7 +57,7 @@ export default {
     },
     confirmStarAction() {
       !this.isCreator && (this.confirmStar = true);
-      this.$BUS.$emit('scrollToSignInitial');
+      // this.$BUS.$emit('scrollToSignInitial');
       this.notClass = "";
     },
   },

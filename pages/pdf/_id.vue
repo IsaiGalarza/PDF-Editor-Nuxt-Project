@@ -16,7 +16,8 @@
         @publishFileFunction="publishFileFunction" />
 
       <tool-bar :file="file" @tool-change="onToolChange" :selectedToolType="selectedToolType" @undo="undo"
-        class="w-full" :isLoading="pdfLoading" />
+        :openTypeSignModal="openTypeSignModal" :openTypeInitialModal="openTypeInitialModal" class="w-full"
+        :isLoading="pdfLoading" />
       <div class="pdf-editor-view relative custom-scrollbar overflow-y-scroll w-full" @scroll="setScrollPage" v-if="pdf"
         ref="scrollingElement">
         <div class="pdf-pages-outer pb-6 relative" ref="PagesOuter" :style="pagesOuterStyle">
@@ -59,7 +60,8 @@
                 :setActiveToolId="setActiveToolId" :pageNumber="pI + 1" :value="tool.value" :file="file"
                 :justMounted="tool.justMounted" :drawingStart="drawingStart" :showPublishModal="showPublishModal"
                 :generatePDF="generatePDF" @toolWrapperBeforeChecked="toolWrapperBeforeChecked"
-                @toolWrapperAfterChecked="toolWrapperAfterChecked" v-model="tool.value" />
+                @toolWrapperAfterChecked="toolWrapperAfterChecked" v-model="tool.value"
+                :setInitialSignType="setInitialSignType" />
               <!-- </div> -->
               <pdf-page :handlePanning="handlePanning" :onCLickSinglePageOuter="onCLickSinglePageOuter" :file="file"
                 :page-number="pI + 1" :pdf="pdf" :scale="scale" @setPageHeight="setPageHeight"
@@ -241,7 +243,9 @@ export default mixins(PdfAuth).extend({
       top: '0px',
       left: '0px'
     },
-    curSignInitialPage: 0
+    curSignInitialPage: 0,
+    openTypeSignModal: false,
+    openTypeInitialModal: false
   }),
   created() {
     this.fetchPdf()
@@ -453,6 +457,17 @@ export default mixins(PdfAuth).extend({
       this.lastPosY = 0
       setTimeout(() => { this.drawingStart = false; this.lineStart = false; }, 50);
     },
+
+    setInitialSignType: function (type) {
+      if (type == "sign") {
+        this.openTypeSignModal = true
+      } else if (type == "initial") {
+        this.openTypeInitialModal = true;
+      } else {
+        return;
+      }
+    },
+
     scrollToSignInitial(type = "") {
       if (this.isCreator || !this.$auth.loggedIn) return
 
@@ -485,7 +500,7 @@ export default mixins(PdfAuth).extend({
           this.filteredAnnotationButton[0].classList.add('pulse')
           window.selem = this.filteredAnnotationButton[0];
           // this.filteredAnnotationButton[0].scrollIntoView({ block: 'center', behavior: 'smooth' })
-          type !== 'mounted' && this.filteredAnnotationButton[0].scrollIntoView({ block: 'center' })
+          type !== 'mounted' && !((type === "appendsign" || type === "appendinitial") && this.isComplete) && this.filteredAnnotationButton[0].scrollIntoView({ block: 'center' })
           let toolwrapper = this.filteredAnnotationButton[0].parentElement.parentElement.parentElement;
           this.signAlaram.top = toolwrapper.style.top;
           this.curSignInitialPage = toolwrapper.id;

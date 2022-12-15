@@ -48,7 +48,7 @@
         :isActive="isActive" :fontSize="fontSize" :scale="scale" :file="file" :value="value" :justMounted="justMounted"
         @input="onInp" :generatePDF="generatePDF" :showPublishModal="showPublishModal"
         :selectedToolType="selectedToolType" :mouseUp="mouseUp" :lineStart="lineStart" :toolLength="toolLength"
-        :drawingStart="drawingStart" />
+        :drawingStart="drawingStart" :setInitialSignType="setInitialSignType" />
       
     </div>
   </div>
@@ -95,6 +95,7 @@ export default {
     type: String,
     handleIncrease: Function,
     handleDecrease: Function,
+    setInitialSignType: Function,
     fontSize: Number,
     scale: Number,
     signature: String,

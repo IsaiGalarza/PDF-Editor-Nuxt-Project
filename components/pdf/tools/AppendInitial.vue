@@ -26,6 +26,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     scale: Number,
     file: Object,
     completed: String,
+    setInitialSignType:Function
   },
   computed: {
     ...mapState(['loadedPdfFile']),
@@ -41,6 +42,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     isAgreedSign() {
       return this.$store.state.agreeSign;
+    },
+    isComplete() {
+      return String(this.file.fileAction).toLowerCase() === FileAction.COMPLETE
     },
     uploaded() {
       switch (this.$auth.loggedIn) {
@@ -105,6 +109,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     setInitialImgDisplay() {
       !this.isCreator && (this.initialimgDisplay = true);
       this.$BUS.$emit('scrollToSignInitial', 'appendinitial')
+      !this.uploaded && this.setInitialSignType('initial');
     },
   },
   mounted() {

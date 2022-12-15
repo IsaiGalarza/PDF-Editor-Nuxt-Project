@@ -233,7 +233,9 @@ export default {
       type: Boolean,
       default: true
     },
-    selectedToolType: {}
+    selectedToolType: {},
+    openTypeSignModal: Boolean,
+    openTypeInitialModal: Boolean
   },
   computed: {
     TOOL_TYPE() {
@@ -414,8 +416,19 @@ export default {
     '$auth.user.signatureURL': async function () {
       this.changeInitialToBase64()
     },
+    openTypeSignModal: function () {
+      if (this.openTypeSignModal) {
+        this.showSignatureModal = true
+      }
+    },
+    openTypeInitialModal: function () {
+      if (this.openTypeInitialModal) {
+        this.showInitialsModal = true
+      }
+    }
   },
   mounted: function () {
+    console.log(this.openTypeInitialModal);
     this.changeInitialToBase64()
   }
 }

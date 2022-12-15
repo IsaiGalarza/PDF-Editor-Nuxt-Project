@@ -1,12 +1,12 @@
 <template>
   <div class="text-[#9D9D9D] flex items-right justify-end  gap-2">
-    <button v-if="isLoggedIn" @click="showRequestModalFunc">
+    <!--<button v-if="isLoggedIn" @click="showRequestModalFunc">
       <forward-outline-icon width="20" height="20" />
     </button>
     <button v-if="isLoggedIn" class="mx-1 relative heart-icon mr-0" ref="heart" @click="setFileFavourite">
       <heart-outline-icon :fillColor="fillHeartColor" width="22" height="22" />
     </button>
-
+  -->
     <button @click="showShareCompanyFilesFunc">
       <share-outline-icon width="20" height="20" />
     </button>

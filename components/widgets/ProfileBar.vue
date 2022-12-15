@@ -10,8 +10,6 @@
   >
     <nav class="container h-full flex items-center justify-between hidden">
       <div class="flex items-center gap-1">
-       
-
       </div>
       <div
         class="transition left-0 transform text-sm font-medium gap-4 fixed top-0 bottom-0 w-56 bg-white flex flex-col p-6 shadow-lg lg:shadow-none lg:items-center lg:gap-9 lg:p-0 lg:relative lg:bg-transparent lg:w-auto lg:flex-row lg:translate-x-0"

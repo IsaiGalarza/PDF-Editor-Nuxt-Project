@@ -128,7 +128,6 @@
     },
     mounted() {
       this.showModal = this.visible
-      console.log(this.file.fileAction, this.file.user.companyName, this.file, "checking");
       if (this.file.filePrivacy==="private") {
         sessionStorage.setItem("fileActionWhenSearch", this.file.fileAction);
         sessionStorage.setItem("companyNameWhenSearch", this.file.user.companyName);
@@ -165,7 +164,6 @@
             "fileId": this.file.id
         })
         .then((response)=>{
-          console.log(response, typeof(response.data))
           this.$notify.success({
             title:"Permission",
              message: typeof response.data == "string" ? response.data : "Request sent successful, you will recieve a notification if request granted"

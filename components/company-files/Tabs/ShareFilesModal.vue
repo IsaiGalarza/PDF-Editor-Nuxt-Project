@@ -194,7 +194,6 @@ export default Vue.extend({
       this.$emit('updateVisibility', val)
     },
     "userFile":function(){
-      console.log("share-file",this.userFile)
     },
   },
   mounted() {
@@ -220,12 +219,10 @@ export default Vue.extend({
     async  _generatePdf(val){
       val.pdf_url = `${window.location.origin}/pdf/${this.userFile.paperLink}`;
       val.pdf_url = this.userFile?.downloadLink;
-      console.log(val, "testing");
       if(val.data.length < 1 && !this.userFile) return
 
         await this.$axios.$post(`/pdf-generator`, { ...val })
         .then((response)=>{
-        console.log(response)
         this.generateFileProperty = response
         })
         .catch((err)=>{
@@ -297,7 +294,6 @@ export default Vue.extend({
     //<---------END: looping through the form data elements --------->>
     
     //<---------START: generating edited Pdf --------->>
-    console.log(ExtractFormPdf(this.userFile?.downloadLink), 123);
     await this._generatePdf(ExtractFormPdf(this.userFile?.downloadLink)[0])     //this issue
     
     // await this.uploadGeneratedFile(this.generateFileProperty)
@@ -316,7 +312,6 @@ export default Vue.extend({
     link: this.link,
     }
     //<---------END: setting request data payload --------->>
-     console.log(requestData)
       this.$axios.$post(`/request`, requestData)
         .then((response) => {
            this.$notify.success({

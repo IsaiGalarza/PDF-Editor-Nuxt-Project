@@ -1,5 +1,5 @@
 <template>
-  <div class="small-details-card-container">
+  <div class="small-details-card-container grid-cols-2 md:grid-cols-4">
     <top-details-card v-for="(tab, i) in tabs" :key="tab.key" :isActive="tab.key === activeTab"
       @click.native="searchFilter(tab.key, tab.action)">
       <template #icon>
@@ -112,10 +112,5 @@ export default Vue.extend({
 .small-details-card-container {
   @apply gap-3 lg:gap-4;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-
-  @media screen and (min-width: 425px) {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  }
 }
 </style>

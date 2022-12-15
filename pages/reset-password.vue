@@ -145,7 +145,6 @@ export default Vue.extend({
       delete cloneUserData.password
       delete cloneUserData.passwordConfirmation
 
-      // console.log(cloneUserData)
       // return
       this.$axios.$patch('/users',{
         ...cloneUserData

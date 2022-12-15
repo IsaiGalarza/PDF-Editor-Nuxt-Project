@@ -169,7 +169,6 @@ export default Vue.extend({
             return el
           })
           this.totalFile = response.total;
-          console.log('company-loade-file', response.data)
           this.files = filesData
           this.fileSpinner = false
         })

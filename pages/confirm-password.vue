@@ -164,7 +164,6 @@ export default Vue.extend({
       '+Erqnl5F0JnIsW++d9U0BfwpJ6w='
     )
     this.decodedUserInfo = {...encodedUser.data}
-    console.log("garry-passowrd", {...encodedUser})
     this.user.token = jwt.sign(
       { data: this.decodedUserInfo.user_id },
       '+Erqnl5F0JnIsW++d9U0BfwpJ6w=')

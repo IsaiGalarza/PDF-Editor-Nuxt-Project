@@ -120,7 +120,6 @@ export default Vue.extend({
         this.$store.commit('PACKAGE_INFO', stagingPackageNew)
         this.$store.commit('PACKAGE_CREATE', this.create)
       }
-      console.log(stagingPackageNew)
       // return
       this.$emit('bottom-button-clicked', { stagingPackageNew, isMonthly })
     },
@@ -138,7 +137,6 @@ export default Vue.extend({
     }, 
   },
   beforeMount() {
-    console.log('edited', this.edited)
     if (this.lockPrice) {
       this.isMonthly = String(this.lockPrice).toLowerCase() == 'monthly'
     }

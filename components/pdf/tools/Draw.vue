@@ -25,7 +25,6 @@ export default {
   },
   watch: {
     // mouseUp: function () {
-    //   // console.log(this.id, '===',this.toolLength , '===', this.drawingStart , '===', this.mouseUp);
     //   this.id === this.toolLength && this.drawingStart && this.mouseUp && this.converImage();
     // },
     generatePDF: function () {

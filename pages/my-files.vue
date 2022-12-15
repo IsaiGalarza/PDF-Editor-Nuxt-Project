@@ -137,7 +137,6 @@
       
       <FilePagination :totalFile="totalFile" @setPage="setPage"/>
 
-    <floating-action-button @click.native="showUploadDocumentModal = true" />
     <upload-document-modal v-model="showUploadDocumentModal" />
     <RemoveCompanyFile
       @refresh="setRefresh"
@@ -281,7 +280,6 @@ export default Vue.extend({
   },
   mounted() {
     this.fetchFiles(this.returnedDataPage, this.searchValue)
-    console.log("pdf-user-free-file",this.pdfUser)
   },
   asyncData({ store }) {
     store.commit('SET_PAGE_NAME', { name: 'My Files' })
@@ -343,7 +341,6 @@ export default Vue.extend({
           this.$store.commit('ADD_USER', this.files)
           // <<--to stop spinner-->>
           this.spinner = false
-          console.log(this.files)
           this.totalFile = response.total
         })
         .finally(() => {

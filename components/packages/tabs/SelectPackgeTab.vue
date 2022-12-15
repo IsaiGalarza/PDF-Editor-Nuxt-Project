@@ -195,7 +195,6 @@ export default Vue.extend({
         let children = document.querySelectorAll(child);
        let parentElem = document.querySelector(parent)
        children.forEach(element => {
-         console.log(element.getBoundingClientRect().right)
         });
      },
      syncAllElemHeight(child, parent){

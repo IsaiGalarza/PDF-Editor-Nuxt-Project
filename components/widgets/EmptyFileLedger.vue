@@ -9,7 +9,7 @@
       <p class="text-sm font-medium">Press + to Add</p>
     </div> -->
 
-    <img src="../../assets/img/dashboard-bg.png" class="position-absolute mt-24 left-[30%]" />
+    <img src="../../assets/img/dashboard-bg.png" class="position-absolute mt-24 md:left-[30%] md:w-auto sm:w-[200px]" />
     <table key="3" ref="fileLedgerTable" class="file-ledger-table">
       <thead>
         <tr class="text-left">
@@ -73,12 +73,12 @@ export default Vue.extend({
   }
 
   & th {
-    @apply pt-8 pb-3;
+    @apply pt-8 pb-3 sm:text-[12px] md:text-base;
     background: var(--background);
   }
 
   & td {
-    @apply py-3;
+    @apply py-3 sm:text-[12px] md:text-base;
   }
 
   & td,
@@ -103,17 +103,11 @@ export default Vue.extend({
       &.left {
         left: -0.1px;
 
-        &.scrolled {
-          box-shadow: 3px 0px 8px rgb(0 0 0 / 14%);
-        }
       }
 
       &.right {
         right: -0.1px;
 
-        &.scrolled {
-          box-shadow: 0px 3px 8px rgb(0 0 0 / 14%);
-        }
       }
     }
   }

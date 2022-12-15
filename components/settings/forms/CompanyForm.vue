@@ -192,7 +192,6 @@ export default mixins(login).extend({
     this.formData.state = this.$auth.user ? this.$auth.user.state : ''
   },
   mounted() {
-    console.log(countryList)
   },
   beforeMount() {
     for (const key of Object.keys(this.formData)) {
@@ -278,7 +277,6 @@ export default mixins(login).extend({
       country: this.country,
       state: this.state,
       }
-      console.log(newFormData)
 
       if (this.loading) return
       let userId = this.$auth.user?.id

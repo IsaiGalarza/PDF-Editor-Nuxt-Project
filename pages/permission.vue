@@ -13,10 +13,8 @@ import jwt, { decode, JsonWebTokenError } from 'jsonwebtoken'
 
     async created() {
         const { permission } = this.$route.query;
-        console.log(permission)
         // return
         let permissionOpt = jwt.verify(permission,"+Erqnl5F0JnIsW++d9U0BfwpJ6w=");
-        console.log(permissionOpt)
         // return
         this.$axios.post(`/permissions`, {
             fileId: permissionOpt.data.fileId,
@@ -28,7 +26,6 @@ import jwt, { decode, JsonWebTokenError } from 'jsonwebtoken'
             this.$notify.success({
                 message:"permisssion Granted"
             })
-            console.log(">>>>>>permission",response)
             this.$router.push("/dashboard")
         })
         .catch(()=>{

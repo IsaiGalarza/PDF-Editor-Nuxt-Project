@@ -536,12 +536,19 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .no-access {
   @apply p-2 text-[14px] capitalize;
 }
 
-.custom-table th {
-  padding-top: 20px;
+.custom-table {
+  & th {
+    @apply pt-8 pb-3 sm:text-[12px] md:text-base;
+    background: var(--background);
+    padding-top: 20px;
+  }
+  & td {
+    @apply py-3 sm:text-[12px] md:text-base;
+  }
 }
 </style>

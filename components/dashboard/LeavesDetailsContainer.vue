@@ -75,7 +75,6 @@ export default {
     async getStaticSetting(){
       this.$axios.$get(`/admin-settings`)
       .then((response)=>{
-        console.log(response)
       this.companyStaticData = response;
       })
       .catch((err)=>{})

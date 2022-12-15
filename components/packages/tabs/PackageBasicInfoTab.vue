@@ -375,10 +375,8 @@ export default mixins(login).extend({
   },
   methods: {
     async confirmCompanyEmailInDatabase(){
-      console.log(this.confirmFormData)
      await this.$axios.get(`/users/?email=${this.confirmFormData.companyEmail}`)
      .then((response)=>{
-      console.log(response.data)
        if(response.data.total == 0){
           this.$store.commit('PACKAGE_INFO', {
           ...this.setPackage,
@@ -508,7 +506,6 @@ export default mixins(login).extend({
         .then(async( response ) => {
           this.showEmailVerification = true,
           this.verificationEmail = response.data.email,
-          console.log("papapapapapapapa",response)
           this.loading = false
         })
         .catch(({response}) => {

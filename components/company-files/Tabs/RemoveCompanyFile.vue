@@ -108,7 +108,6 @@ export default Vue.extend({
     },
     "userFile" : function(){
         (this.fileInfo) = this.userFile
-        console.log(this.fileInfo)
     }
   },
   mounted() {

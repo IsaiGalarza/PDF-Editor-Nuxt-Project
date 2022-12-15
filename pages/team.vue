@@ -263,7 +263,6 @@ export default Vue.extend({
     async getUserSubscription() {
       this.$axios.$get(`/subscriptions/?userId=${(this.$auth.user).id}`)
         .then((response) => {
-          console.log("subscription", response.data[0])
           this.totalTeamMembers = response.data[0].teamMembers
         })
         .catch(() => {
@@ -280,7 +279,6 @@ export default Vue.extend({
     getTeamMember(val, search) {
       this.$axios.$get(`/users?teamId=${(this.$auth.user).id}&$sort[createdAt]=-1&$skip=${val}&firstName[$like]=${search || ''}%`)
         .then((response) => {
-          console.log(response)
           this.teamMembers = response.data
           this.totalMembers = response.total
         })

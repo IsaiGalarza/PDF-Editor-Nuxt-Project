@@ -10,7 +10,7 @@
           <img src="../../assets/img/users-icon.png" class="-ml-8" />
         </div>
       </div> -->
-      <h5 class="text-lg font-semibold text-[#272727] inline-flex items-center gap-2">
+      <h5 class="text-lg font-semibold text-[#272727] inline-flex items-center gap-2 mr-12 float-left">
         {{ isPaidUser ? "File Ledger" : "Ledger" }} <a :href="`/public/profile/${mainUserLink}`" target="_blanck">
           <!-- <company-icon /> -->
           <img src="../../assets/img/company-icon.png" v-if="isPaidUser" />
@@ -18,7 +18,7 @@
         <img src="../../assets/img/users-icon.png" class="-ml-8 cursor-pointer" @click="showCreateTeamFunc"
           v-if="isPaidUser" />
       </h5>
-      <div class="w-full xs:max-w-[350px] text-xs font-medium flex items-center relative justify-end">
+      <div class="w-full xs:max-w-[350px] text-xs font-medium flex items-center relative float-right ">
         <span class="el-dropdown-link left-roll mr-4">
           <input type="text"
             class="search-input h-10 transition pl-4 mr-2 bg-transparent flex-1 border-[1px] border-paperdazgreen-400 rounded-tl-lg rounded-bl-lg focus:border-paperdazgreen-700 outline-none"
@@ -50,7 +50,7 @@
       ]">
       <!-- <transition name="fade" mode="out-in"> -->
       <img v-if="((pdfUser || []).length <= 0 && !spinner)" src="../../assets/img/dashboard-bg.png"
-        class="position-absolute mt-24 left-[30%]" />
+        class="position-absolute mt-24 md:left-[30%] md:w-auto sm:w-[200px]" />
 
       <div v-if="spinner" key="1" class="p-6 flex justify-center items-center">
         <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
@@ -438,7 +438,6 @@ export default Vue.extend({
       this.fetchFiles(this.returnedDataPage, this.searchParam)
     },
     pdfUser: function () {
-      console.log('pdfuser>>', this.pdfUser);
     },
     refresh: function () {
       this.$nuxt.refresh()
@@ -466,12 +465,13 @@ export default Vue.extend({
   }
 
   & th {
-    @apply pt-8 pb-3;
+    @apply pt-8 pb-3 sm:text-[12px] md:text-base;
     background: var(--background);
+    
   }
 
   & td {
-    @apply py-3;
+    @apply py-3 sm:text-[12px] md:text-base;
   }
 
   & td,
@@ -495,18 +495,12 @@ export default Vue.extend({
 
       &.left {
         left: -0.1px;
-
-        &.scrolled {
-          box-shadow: 3px 0px 8px rgb(0 0 0 / 14%);
-        }
       }
 
       &.right {
         right: -0.1px;
 
-        &.scrolled {
-          box-shadow: 0px 3px 8px rgb(0 0 0 / 14%);
-        }
+
       }
     }
   }

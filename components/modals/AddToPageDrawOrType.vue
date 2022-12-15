@@ -160,7 +160,6 @@
       async useDefaultImage() {
         if (!this.displayDefault) return
   
-        console.log('using the default image')
         ;(async () => {
           const response = await fetch(this.src)
           const imageBlob = await response.blob()

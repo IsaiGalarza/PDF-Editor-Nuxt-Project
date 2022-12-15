@@ -83,7 +83,6 @@ export default Vue.extend({
     },
   },
   mounted() {
-    console.log("pdf-files", this.file)
     this.showModal = this.visible;
   },
   methods: {

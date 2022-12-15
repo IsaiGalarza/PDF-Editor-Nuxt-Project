@@ -49,7 +49,6 @@ export default Vue.extend({
       const user = response.data.data
        let userInfo = user[0];
        this.isInfoReady = true
-       console.log("UUUUUUUUUUUU",user)
 
       this.$auth.user.role == UserTypeEnum.TEAM ? this.getMainPaidUser(userInfo.id) :
       this.userInfo = user[0]
@@ -67,10 +66,8 @@ export default Vue.extend({
       .$get(`/folders/?id=${this.$route.params.form}&$skip=${page}`)
       .then(async (response) => {
         this.files = response.data[0].files
-        console.log("HHHHHHHHHHHHHHHH",response.data[0])
         await this.getTeamPublicInfo(response.data[0].userId)
         this.folderName = response.data[0].name
-        console.log(response,this.files )
         })
       .catch((err) => {
         this.$notify.error({

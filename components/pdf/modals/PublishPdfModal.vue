@@ -380,7 +380,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
             message: 'File publish successfully'
           })
           this.$store.commit('SET_PDF_EXIT', true)
-          window.location.assign('/dashboard')
+          window.location.assign('/company-files')
           // this.$nuxt.$router.push('/dashboard')
         })
         .catch(() => {

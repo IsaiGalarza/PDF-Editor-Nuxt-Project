@@ -26,12 +26,12 @@
       <p class="text-lg font-semibold mb-2 capitalize">
         {{ `${user.firstName} ${user.lastName}` }}
       </p>
-      <div
+      <!-- <div
         class="border border-paperdazgray-100 inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-full"
       >
         <p class="mr-2">{{ `${(user || {}).totalLeavesEarned}` }}</p>
         <single-leaf-no-stalk />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

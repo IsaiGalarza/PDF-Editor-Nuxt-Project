@@ -32,8 +32,9 @@ export default Vue.extend({
   name: 'CompanySearchStrip',
   data() {
     return {
-      
     }
+  },
+  mounted(){
   },
   computed:{
     link(){

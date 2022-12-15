@@ -29,7 +29,7 @@
                 <div class="overflow-hidden">
                   <nuxt-link :to="`/pdf/${item.paperLink}`">
                     <p class="text-sm text-black mb-1 truncate">
-                      {{ item.user.email }}
+                      {{ item.user.company_name }}
                     </p>
                     <p class="text-xs truncate">{{ item.fileName }}</p>
                     <p class="text-[11px] mt-0.5 truncate">{{ item.user.firstName || item.user.companyName }}</p>
@@ -360,6 +360,7 @@ export default mixins(GlobalMixin, login).extend({
 
       await this.$axios.get(`/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&fileName[$like]=${topsearch}%`)
         .then((response) => {
+          console.log('resp', response);
           const { data } = response.data
           this.topSearchContent = data
         })

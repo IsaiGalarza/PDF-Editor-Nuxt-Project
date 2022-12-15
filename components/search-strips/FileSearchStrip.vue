@@ -19,12 +19,12 @@
     />
     <nuxt-link  class="overflow-hidden w-[100%]" :to="`/pdf/${record.paperLink}`">
     <div class="overflow-hidden w-[80%]">
-      <p class="text-sm text-black mb-1 truncate w-[100%]">{{ fileName }}</p>
-      <p class="text-xs truncate">{{(record.user || {}).companyName || (record.user || {}).firstName}}</p>
-      <p class="text-[11px] mt-0.5 truncate">{{(record.user || {}).lastName}}</p>
+      <p class="text-sm text-black mb-1 truncate w-[100%]">{{ (record.user || {}).company_name }}</p>
+      <p class="text-xs truncate">{{record.fileName}}</p>
+      <p class="text-[11px] mt-0.5 truncate">{{(record.user || {}).firstName + " " + (record.user || {}).lastName}}</p>
     </div>
     </nuxt-link>
-    <SearchShare :showShareIcon="true" :file="record" :link="link"/>
+    <!-- <SearchShare :showShareIcon="true" :file="record" :link="link"/> -->
   </article>
 </template>
 
@@ -39,9 +39,6 @@ import LetterAvatar from '../widgets/LetterAvatar.vue'
 export default Vue.extend({
   components: { SearchShare, LockFillIcon, EyeSlashedIcon, LetterAvatar },
   name: 'FileSearchStrip',
-  mounted(){
-    // console.log("file",this.record)
-  },
   computed:{
     isPrivate(){
       return (this.record || {}).filePrivacy == FilePrivacy.PRIVATE
@@ -60,6 +57,9 @@ export default Vue.extend({
       type: Object,
       required: true,
     },
+  },
+  mounted(){
+    console.log("file",this.record)
   },
 })
 </script>

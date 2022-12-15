@@ -163,7 +163,7 @@ export default Vue.extend({
           : this.$auth.user.id
 
       this.$axios
-        .$get(`/files?userId=${paramsId}&fileName[$like]=${search || ''}%&$sort[updatedAt]=-1&isEditing=0&folderId[$ne]=${this.file.id}`)
+        .$get(`/files?userId=${paramsId}&fileName[$like]=${search || ''}%&$sort[updatedAt]=-1&isEditing=0`)
         .then((response) => {
           const filesData = response.data.map((el) => {
             return el
@@ -189,7 +189,6 @@ export default Vue.extend({
 
       // loop through all files and insert to Folder
       let storeArray = []
-
       for (const element of initialArray) {
         await this.$axios
           .$patch(`/files/${element.id}`, {

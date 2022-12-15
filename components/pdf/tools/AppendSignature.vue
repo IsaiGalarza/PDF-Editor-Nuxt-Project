@@ -26,6 +26,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     scale: Number,
     file: Object,
     completed: String,
+    setInitialSignType:Function
   },
   data() {
     return {
@@ -52,6 +53,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     isSign() {
       return String(this.file.fileAction).toLowerCase() === FileAction.SIGNED
+    },
+    isComplete() {
+      return String(this.file.fileAction).toLowerCase() === FileAction.COMPLETE
     },
     isAgreedSign() {
       return this.$store.state.agreeSign;
@@ -110,6 +114,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     setInitialImgDisplay() {
       !this.isCreator && (this.initialimgDisplay = true);
       this.$BUS.$emit('scrollToSignInitial', 'appendsign')
+      !this.uploaded && this.setInitialSignType('sign');
     },
   },
   components: { DrawOrTypeModal },

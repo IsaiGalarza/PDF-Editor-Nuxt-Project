@@ -6,9 +6,8 @@
 
     <upload-document-modal @showMaxPaperlinkModalFunc="showMaxPaperlinkModalFunc" v-model="showUploadDocumentModal" />
     <MaxPaperlinkModal :totalFile="totalRegisteredPaperlink" v-model="showMaxPaperlinkModal" />
-    <RequestSentNotificationModal
-      v-model="showRequestSentModal"
-      />
+    <RequestSentNotificationModal v-model="showRequestSentModal" />
+    <CongratulationsModal v-model="showCongratulationsModal" />
   </div>
 </template>
 
@@ -35,6 +34,7 @@ import { ErrorHandler } from '~/types/ErrorFunction'
 import jwt from 'jsonwebtoken'
 import UserTypeEnum from '~/models/UserTypeEnum'
 import MaxPaperlinkModal from '~/components/company-files/Tabs/MaxPaperlinkModal.vue'
+import CongratulationsModal from '~/components/modals/CongratulationsModal.vue'
 import RequestSentNotificationModal from '~/components/company-files/Tabs/RequestSentNotificationModal.vue'
 
 export default Vue.extend({
@@ -43,6 +43,7 @@ export default Vue.extend({
     LeavesDetailsContainer,
     FileLedger,
     // FloatingActionButton,
+    CongratulationsModal,
     MoveIcon,
     TrashXIcon,
     CheckCircleIcon,
@@ -120,6 +121,9 @@ export default Vue.extend({
     ...mapState(['beTeamMember']),
     isPaid() {
       return this.$auth.user.role == UserTypeEnum.PAID || this.$auth.user.role == UserTypeEnum.TEAM
+    },
+    showCongratulationsModal(){
+      return this.$store.state.showCongratulationsModal;
     }
   },
   mounted() {

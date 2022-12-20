@@ -20,6 +20,7 @@ export const state = () => ({
   pdfOffset_y: 0,
   pdfOffset_x: 0,
   scrollPosition: false,
+  showCongratulationsModal: false,
   agreeSign: -1
 })
 
@@ -63,6 +64,9 @@ export const mutations: MutationTree<RootState> = {
   // -- Setting the user --
   SET_PAGE_USER(state, user) {
     state.initialUser = user
+  },
+  SET_CONGRAT_SUCCESS(state) {
+    state.showCongratulationsModal = true
   },
   SET_AGREE_SIGN(state) {
     state.agreeSign = 1;

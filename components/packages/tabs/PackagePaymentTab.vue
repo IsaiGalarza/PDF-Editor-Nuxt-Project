@@ -319,7 +319,8 @@ export default Vue.extend({
             message: 'You have successfully subscribed for this package',
           })
           setTimeout(() => {
-            this.$nuxt.$router.push('/dashboard')
+            this.$nuxt.$router.push('/dashboard');
+            this.$store.commit('SET_CONGRAT_SUCCESS');
           }, 1000)
         })
         .catch(async ({ response }) => {

@@ -129,13 +129,15 @@
       <!-- <--- START: navbar dropdown --- -->
       <el-dropdown trigger="click" @command="handleCommand">
         <span class="flex items-center el-dropdown-link">
-          <span class="border border-paperdazgreen-300 mr-2 p-0.5 overflow-hidden relative" :class="[
+          <span class="border border-paperdazgreen-300 mr-2 p-0.5 overflow-hidden relative text-center" :class="[
             isPaidUser
-              ? 'w-[45px] h-[45px] rounded-md'
+              ? 'w-[45px] h-[45px] rounded-md pt-1'
               : 'circle-20 rounded-full',
           ]">
-            <img :src="profilePhoto" class="w-full h-full profilePhoto" alt=""
-              :class="[isPaidUser ? 'rounded-md' : 'rounded-full']" />
+            <!-- <img :src="profilePhoto" class="w-full h-full profilePhoto" alt=""
+              :class="[isPaidUser ? 'rounded-md' : 'rounded-full']" /> -->
+              <span v-if="isPaidUser" class="text-3xl font-bold w-full h-full text-center text-paperdazgreen-300" style="text-shadow: 1px 2px 3px grey;">{{ (userCompanyName || '').charAt(0).toUpperCase() }}</span>
+              <img v-else :src="profilePhoto" :class="[isPaidUser ? 'rounded-md' : 'rounded-full']"/>
           </span>
           <span class="text-black"><arrow-down-icon class="h-2 w-3 sm:h-2.5 sm:w-4" /></span>
         </span>
@@ -165,9 +167,7 @@
                 " class="w-8 h-8" alt="" :class="[isAccountPaid(account.role) ? 'rounded-full' : ' rounded-md']" />
               </span>
               <div class="w-[calc(100%-1.75rem)] pl-2 leading-[12px] relative flex flex-wrap items-center">
-                <span class="text-[12px] truncate font-[500] capitalize inline-block my-0 w-full">{{ (account.teamName
-                    ||
-                    account.companyName || account.firstName || '')
+                <span class="text-[12px] truncate font-[500] capitalize inline-block my-0 w-full">{{ (account.teamName || account.companyName || account.firstName || '')
                 }}</span>
                 <span class="text-[9px] truncate font-[500] capitalize inline-block my-0 w-full">
                   {{ account.status }}

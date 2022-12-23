@@ -1,65 +1,41 @@
 <template>
   <div>
-    <div
-      class="rounded-2xl bg-white py-6 px-6 flex items-center justify-center"
-    >
+    <div class="rounded-2xl bg-white py-6 px-6 flex items-center justify-center">
       <div class="flex flex-col items-center">
-        <h3
-          class="uppercase text-paperdazgray-500 font-semibold text-center mb-4 text-xl"
-        >
-          {{userAccount}}
+        <h3 class="uppercase text-paperdazgray-500 font-semibold text-center mb-4 text-xl">
+          {{ userAccount }}
         </h3>
-         <div
-        class="w-40 h-40 mx-auto p-0.5 mb-2"
-      >
-        <div
-          @click="PopUpFileInput"
-          class="w-full h-full border-2 border-[#B7EF94] p-2 cursor-pointer rounded-lg"
-        >
-          <img :src="profilePhoto" class="w-full h-full profilePhoto rounded-lg" alt="" />
-          <input
-            ref="profileInput"
-            @input="uploadProfilePicture"
-            type="file"
-            class="hidden"
-            accept="image/x-png,image/jiff,image/jpeg,image/jpg"
-          />
+        <div class="w-40 h-40 mx-auto p-0.5 mb-2">
+          <div @click="PopUpFileInput" class="w-full h-full border-2 border-[#B7EF94] p-2 cursor-pointer rounded-lg">
+            <img :src="profilePhoto" class="w-full h-full profilePhoto rounded-lg" alt="" />
+            <input ref="profileInput" @input="uploadProfilePicture" type="file" class="hidden"
+              accept="image/x-png,image/jiff,image/jpeg,image/jpg" />
+          </div>
         </div>
-      </div>
         <p class="text-lg font-semibold mb-2 capitalize">
           {{ `${user.firstName} ${user.lastName}` }}
         </p>
       </div>
     </div>
     <div class="grid grid-cols-3 gap-2 mt-4 text-[#6C6777]">
-      <div class="bg-white rounded-lg px-2 py-4"
-      @click="showQrcodeFunc"
-      >
+      <div class="bg-white rounded-lg px-2 py-4" @click="showQrcodeFunc">
         <barcode-icon class="w-full h-8 text-paperdazgreen-300 mb-2 cursor-pointer" />
         <p class="text-center text-[10px] font-medium">Download</p>
       </div>
-      <div class="bg-white rounded-lg px-2 py-4"
-      @click="showShareCompanyFunc"
-      >
+      <div class="bg-white rounded-lg px-2 py-4" @click="showShareCompanyFunc">
         <share-icon class="w-full h-8 text-paperdazgreen-300 mb-2 cursor-pointer" />
         <p class="text-center text-[10px] font-medium">Share</p>
       </div>
-      <nuxt-link
-        :to="`/public/profile/${mainUserLink}`"
-        class="block bg-white rounded-lg px-2 py-4"
-      >
+      <a :href="`/public/profile/${mainUserLink}`" target="_blanck" class="block bg-white rounded-lg px-2 py-4">
         <building-icon class="w-full h-8 text-paperdazgreen-300 mb-2" />
         <p class="text-center text-[10px] font-medium">View Profile</p>
-      </nuxt-link>
+      </a>
     </div>
 
-    
+
     <QrcodeShare :link="link" v-model="showQrcode" />
 
-    <ShareFilesModal
-    :link="link"
-    v-model="showShareCompany"
-  />
+    <ShareFilesModal :link="link" v-model="showShareCompany" />
   </div>
 </template>
 
@@ -78,11 +54,11 @@ export default mixins(login).extend({
   name: 'PaidProfileCard',
   components: { BarcodeIcon, ShareIcon, BuildingIcon, QrcodeShare, ShareFilesModal },
   data() {
-      return {
-        showQrcode: false,
-        showShareCompany: false
-      }
-    },
+    return {
+      showQrcode: false,
+      showShareCompany: false
+    }
+  },
   computed: {
     profilePhoto() {
       return this.$store.getters.profilePhoto
@@ -90,10 +66,10 @@ export default mixins(login).extend({
     user() {
       return this.$auth.user
     },
-    link(){
+    link() {
       return (`${window.origin}/public-profile/${this.$auth.user.id}`)
     },
-    userAccount(){
+    userAccount() {
       switch ((this.$auth.user).role) {
         case UserTypeEnum.PAID:
           return 'PAID ACCOUNT'
@@ -113,10 +89,10 @@ export default mixins(login).extend({
     }
   },
   methods: {
-    showQrcodeFunc(){
+    showQrcodeFunc() {
       this.showQrcode = true
     },
-    showShareCompanyFunc(){
+    showShareCompanyFunc() {
       this.showShareCompany = true
     },
     PopUpFileInput() {
@@ -130,12 +106,12 @@ export default mixins(login).extend({
     async uploadProfilePicture(eventy) {
       let fileInput = event.target
 
-      if(fileInput.files.length < 1 || (fileInput.files[0].size / 1024 / 1024) > 2){
-       this.$notify.error({
-       message: 'File size must be less than 2MB',
-       } )
-       return
-       }
+      if (fileInput.files.length < 1 || (fileInput.files[0].size / 1024 / 1024) > 2) {
+        this.$notify.error({
+          message: 'File size must be less than 2MB',
+        })
+        return
+      }
 
       let formdata = new FormData()
       formdata.append('upload', fileInput.files[0], 'user-profile-picture.jpg')
@@ -145,7 +121,7 @@ export default mixins(login).extend({
       this.$axios
         .$patch(`/files`, formdata)
         .then(() => {
-            //@ts-ignore
+          //@ts-ignore
           this.filterUsers()
         })
         .catch(() => {

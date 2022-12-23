@@ -32,7 +32,7 @@
       <div class="input-wrapper-title">
         <!-- <input type="text" v-model="name" placeholder="Apple Dental" :disabled="true"
           class="text-black text-2xl" /> -->
-        <span class="text-2xl text-grey"> {{userInfo.companyName}}</span>
+        <span class="text-2xl text-grey pl-3"> {{userInfo.companyName}}</span>
         <button @click="toggleInput" class="float-right">
           <Pencil :width="18" />
         </button>

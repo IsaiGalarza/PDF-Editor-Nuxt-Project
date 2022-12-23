@@ -169,7 +169,7 @@
                       <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu">
                         <div class="no-access" v-if="!createdByTeamMember(file.uploadedBy)">no access right</div>
                         <ul class="min-w-[150px]" v-else>
-                          <li class="dropdown-item" @click="showShareCompanyFileFunc(file)">
+                          <!-- <li class="dropdown-item" @click="showShareCompanyFileFunc(file)">
                             <span>Share</span>
                           </li>
                           <li @click="showRequestModalFunc(file)" class="dropdown-item"><span>Request</span></li>
@@ -178,6 +178,24 @@
                           </li>
                           <li class="dropdown-item" @click="showMoveCompanyFileFunc(file)">
                             <span>Move</span>
+                          </li> -->
+                          <li class="dropdown-item" @click="showShareCompanyFileFunc(file)">
+                            <span>Share</span>
+                          </li>
+                          <li @click="showRequestModalFunc(file)" class="dropdown-item">
+                            <span>Request</span>
+                          </li>
+                          <li class="dropdown-item">
+                            <span>Paper Tag</span>
+                          </li>
+                          <li class="dropdown-item">
+                            <span>Carbon Copy</span>
+                          </li>
+                          <li class="dropdown-item">
+                            <span>QR Code</span>
+                          </li>
+                          <li class="dropdown-item" @click="showRemoveCompanyFileFunc(file)">
+                            <span>Remove</span>
                           </li>
                         </ul>
                       </el-dropdown-menu>

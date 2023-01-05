@@ -47,7 +47,7 @@
             <td class="w-[150px]">
               <el-input-number
               v-model.number="updatePackage.additional_paperlink"
-               size="small" 
+               size="small"
                :min="0"  />
             </td>
           </tr>
@@ -64,7 +64,7 @@
             <td>CC Flow</td>
             <td class="">${{cc_calculate}}.00</td>
             <td class="w-[150px]">
-              <el-input-number 
+              <el-input-number
                v-model.number="updatePackage.additional_cc"
               size="small" :min="0" />
             </td>
@@ -80,13 +80,15 @@
       :class="[isLoading == true ? 'opacity-50' : 'opacity-100']"
         class="text-white bg-paperdazgreen-400 px-2 h-10 text-lg rounded shadow w-[120px] flex justify-center items-center"
       >
-          Save
+        <span class="flex justify-center items-center">
+          <span>Save</span>
           <spinner-dotted-icon
             v-show="isLoading == true"
             height="25"
             width="25"
             class="animate-spin ml-2"
           />
+        </span>
       </button>
     </div>
     <!-- end :: body -->
@@ -161,7 +163,7 @@ export default Vue.extend({
          })
          return
        }
-      
+
       this.isLoading = true
       // return
       this.$axios

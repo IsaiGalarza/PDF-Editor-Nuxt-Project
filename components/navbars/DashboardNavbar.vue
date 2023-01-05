@@ -21,7 +21,7 @@
           <div class="bg-white rounded-lg whitespace-nowrap w-[40vw]">
             <div class="max-h-[60vh] custom-scrollbar overflow-y-auto p-2">
               <article class="py-4 text-[#9F9F9F] grid grid-cols-[max-content,1fr,max-content] gap-4"
-                v-for="item in topSearchContent" :key="item + 'topsearchContent'">
+                v-for="item in topSearchContent" :key="item.id">
                 <img :src="
                   (item.user || {}).profile_picture ||
                   '/img/placeholder_picture.png'
@@ -29,10 +29,10 @@
                 <div class="overflow-hidden">
                   <nuxt-link :to="`/pdf/${item.paperLink}`">
                     <p class="text-sm text-black mb-1 truncate">
-                      {{ item.user.company_name }}
+                      {{ (item.user || {}).company_name }}
                     </p>
                     <p class="text-xs truncate">{{ item.fileName }}</p>
-                    <p class="text-[11px] mt-0.5 truncate">{{ item.user.firstName || item.user.companyName }}</p>
+                    <p class="text-[11px] mt-0.5 truncate">{{  (item.user || {}).firstName ||  (item.user || {}).companyName }}</p>
                   </nuxt-link>
                 </div>
                 <SearchShare :showShareIcon="true" :file="item" />
@@ -363,6 +363,7 @@ export default mixins(GlobalMixin, login).extend({
           console.log('resp', response);
           const { data } = response.data
           this.topSearchContent = data
+          console.log(this.topSearchContent)
         })
       // &$or[1][uploadedBy]={ team member id }&$or[2][uploadedBy]={ team member id 2 }
     },

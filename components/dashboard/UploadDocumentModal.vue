@@ -132,7 +132,6 @@ export default Vue.extend({
         message: 'File uploading ...',
         duration: 1000 * 60,
       })
-
       await this.$axios
         .$post('/files', formData)
         .then((response) => {

@@ -42,7 +42,7 @@
       <table class="custom-table w-full">
         <tbody>
           <tr>
-            <td>Paperlink</td>
+            <td>Paperdaz</td>
             <td class="">${{paperlink_calculate}}.00</td>
             <td class="w-[150px]">
               <el-input-number
@@ -78,7 +78,7 @@
       :disabled="isLoading == true"
       @click.prevent="updateData"
       :class="[isLoading == true ? 'opacity-50' : 'opacity-100']"
-        class="text-white bg-paperdazgreen-400 px-5 h-10 text-lg rounded shadow w-[120px] flex justify-center items-center"
+        class="text-white bg-paperdazgreen-400 px-2 h-10 text-lg rounded shadow w-[120px] flex justify-center items-center"
       >
           Save
           <spinner-dotted-icon

@@ -6,7 +6,7 @@
           file.fileAction
       }}</span>
       <!-- else -->
-      <el-dropdown v-else trigger="click" class="font-medium" @command="handleActionChange">
+      <el-dropdown v-else trigger="click" class="font-medium flex" @command="handleActionChange">
         <span class="el-dropdown-link capitalize">
           {{ file.fileAction }}
           <i class="el-icon-arrow-down el-icon--right"></i>
@@ -24,7 +24,7 @@
       <span v-if="!isCreator" class="capitalize font-medium">{{ access }}</span>
 
       <!-- -- the content below is v-else if previous is v-if - -->
-      <el-dropdown v-else trigger="click" class="font-medium" @command="handleAccessChange">
+      <el-dropdown v-else trigger="click" class="font-medium flex" @command="handleAccessChange">
         <span class="el-dropdown-link">
           {{ access }} <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
@@ -57,7 +57,7 @@
       }}
       </span>
 
-      <el-dropdown trigger="click" class="font-medium" v-if="$auth.loggedIn && !isConfirm"
+      <el-dropdown trigger="click" class="font-medium" v-if="$auth.loggedIn && !isConfirm && 0"
         @command="handleCommand($event)">
         <span class="el-dropdown-link text-[#555454] px-1 flex items-center">
           <ellipsis-icon-vertical-icon />

@@ -19,9 +19,10 @@
     />
     <nuxt-link  class="overflow-hidden w-[100%]" :to="`/pdf/${record.paperLink}`">
     <div class="overflow-hidden w-[80%]">
-      <p class="text-sm text-black mb-1 truncate w-[100%]">{{ (record.user || {}).company_name }}</p>
-      <p class="text-xs truncate">{{record.fileName}}</p>
-      <p class="text-[11px] mt-0.5 truncate">{{(record.user || {}).firstName + " " + (record.user || {}).lastName}}</p>
+      <p class="text-sm text-black mb-1 truncate w-[100%]">{{record.fileName.replace(/.pdf/g, '') }}</p>
+      <p class="text-sm text-[#222] truncate">{{(record.user || {}).company_name}}</p>
+      <!-- <p class="text-[11px] mt-0.5 truncate">{{(record.user || {}).firstName + " " + (record.user || {}).lastName}}</p> -->
+      <p class="text-[11px] mt-0.5 truncate">{{record.paperLink}}</p>
     </div>
     </nuxt-link>
     <!-- <SearchShare :showShareIcon="true" :file="record" :link="link"/> -->

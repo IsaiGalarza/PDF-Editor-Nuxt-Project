@@ -1,40 +1,25 @@
 <template>
   <section>
     <transition name="fade" mode="out-in">
-      <div
-        v-if="$fetchState.pending"
-        class="w-full min-h-[600px] bg-white rounded-lg grid place-items-center"
-      >
+      <div v-if="$fetchState.pending" class="w-full min-h-[600px] bg-white rounded-lg grid place-items-center">
         <spinner-dotted-icon class="text-paperdazgreen-400/30 animate-spin" />
       </div>
       <div class="flex gap-4 flex-col lg:flex-row" v-else>
-        <div
-          class="lg:max-w-[300px] rounded-3xl bg-white py-6 px-8 lg:self-start grid place-items-center"
-        >
-          <package-card
-            v-if="stagingPackage && Object.keys(stagingPackage).length > 0"
-            :lockPrice="$auth.user.package_type"
-            :stagingPackage="stagingPackage"
-          />
+        <div class="lg:max-w-[300px] rounded-3xl bg-white py-6 px-8 lg:self-start grid place-items-center">
+          <package-card v-if="stagingPackage && Object.keys(stagingPackage).length > 0"
+            :lockPrice="$auth.user.package_type" :stagingPackage="stagingPackage" />
         </div>
         <div class="flex-1 rounded-3xl bg-white py-6 px-8 overflow-hidden">
           <h3
-            class="text-center text-paperdazgreen-300 border-b-2 border-paperdazgreen-300 font-semibold text-2xl gap-2 pb-1 relative mb-4"
-          >
+            class="text-center text-paperdazgreen-300 border-b-2 border-paperdazgreen-300 font-semibold text-2xl gap-2 pb-1 relative mb-4">
             Billing
           </h3>
 
           <div class="w-full overflow-x-auto custom-scrollbar">
-            <table
-              id="billing-table"
-              class="w-full table-auto text-[#909090] text-sm"
-            >
+            <table id="billing-table" class="w-full table-auto text-[#909090] text-sm">
               <tbody>
                 <tr style="border-bottom: none;">
-                  <td
-                    class="text-base font-bold"
-                    style="padding-top: 2px; padding-bottom: 2px;"
-                  >
+                  <td class="text-base font-bold" style="padding-top: 2px; padding-bottom: 2px;">
                     PLAN
                   </td>
                   <td style="padding-top: 2px; padding-bottom: 2px;">
@@ -43,27 +28,13 @@
                   <td rowspan="4">
                     <div class="grid place-items-center h-full w-full">
                       <p class="mb-2">
-                        <button
-                        @click="showSubscriptionFunction"
-                         class="billing-action-button">Upgrade</button>
-                      </p>
-                      <p>
-                        <button
-                          class="billing-action-button"
-                          :class="[ !isSubscription ? 'cancel' : '']"
-                          @click="showCancelSubscriptionModal = true"
-                        >
-                          {{ isSubscription ? 'Activate' : "Cancle" }}
-                        </button>
+                        <button @click="showSubscriptionFunction" class="billing-action-button">Upgrade</button>
                       </p>
                     </div>
                   </td>
                 </tr>
                 <tr style="border-bottom: none;">
-                  <td
-                    class="text-sm"
-                    style="padding-top: 2px; padding-bottom: 2px;"
-                  >
+                  <td class="text-sm" style="padding-top: 2px; padding-bottom: 2px;">
                     Subscription
                   </td>
                   <td style="padding-top: 2px; padding-bottom: 2px;">
@@ -79,10 +50,7 @@
                   </td>
                 </tr>
                 <tr style="border-bottom: none;">
-                  <td
-                    class="text-sm"
-                    style="padding-top: 2px; padding-bottom: 2px;"
-                  >
+                  <td class="text-sm" style="padding-top: 2px; padding-bottom: 2px;">
                     Billing cycle
                   </td>
                   <td style="padding-top: 2px; padding-bottom: 2px;">
@@ -91,10 +59,7 @@
                   </td>
                 </tr>
                 <tr style="border-bottom: none;">
-                  <td
-                    class="text-sm"
-                    style="padding-top: 2px; padding-bottom: 2px;"
-                  >
+                  <td class="text-sm" style="padding-top: 2px; padding-bottom: 2px;">
                     CHARGE
                   </td>
                   <td style="padding-top: 2px; padding-bottom: 2px;">
@@ -102,10 +67,7 @@
                   </td>
                 </tr>
                 <tr style="border-bottom: none;">
-                  <td
-                    class="text-sm"
-                    style="padding-top: 2px; padding-bottom: 2px;"
-                  >
+                  <td class="text-sm" style="padding-top: 2px; padding-bottom: 2px;">
                     Auto Subscribe
                   </td>
                   <td style="padding-top: 2px; padding-bottom: 2px;">
@@ -113,17 +75,19 @@
                   </td>
                 </tr>
                 <tr style="border-bottom: none;">
-                  <td
-                    class="text-sm"
-                    style="padding-top: 2px; padding-bottom: 2px;"
-                  >
+                  <td class="text-sm" style="padding-top: 2px; padding-bottom: 2px;">
                     Payment Type
                   </td>
-                  <td
-                    style="padding-top: 2px; padding-bottom: 2px;"
-                    class="capitalize"
-                  >
+                  <td style="padding-top: 2px; padding-bottom: 2px;" class="capitalize">
                     {{ stagingPackage.paymentType }}
+                  </td>
+                  <td>
+                    <p>
+                      <button class="billing-action-button" :class="[!isSubscription ? 'cancel' : '']"
+                        @click="showCancelSubscriptionModal = true">
+                        {{ isSubscription? 'Activate': "Cancel" }}
+                      </button>
+                    </p>
                   </td>
                 </tr>
                 <tr>
@@ -134,28 +98,20 @@
                     {{ (stagingPackage.endDate || '').substring(0, 10) }}
                   </td>
                 </tr>
-                <tr
-                  :style="[
-                    hasAdditionalFeatures ? { borderBottom: 'none' } : {},
-                  ]"
-                >
+                <tr :style="[
+                  hasAdditionalFeatures ? { borderBottom: 'none' } : {},
+                ]">
                   <td class="text-base font-bold">ADDITIONAL FEATURES</td>
                   <td></td>
                   <td :rowspan="checkAddedFeatures ? 5 : 1">
                     <div class="grid place-items-center h-full w-full">
                       <p :class="[checkAddedFeatures ? 'mb-2' : '']">
-                        <button
-                          class="billing-action-button"
-                          @click="showAdditionalFeatureModal = true"
-                        >
-                          {{ checkAddedFeatures ? 'Update' : 'Add' }}
+                        <button class="billing-action-button" @click="showAdditionalFeatureModal = true">
+                          {{ checkAddedFeatures? 'Update': 'Add' }}
                         </button>
                       </p>
                       <p v-if="checkAddedFeatures">
-                        <button
-                          class="billing-action-button cancel"
-                          @click="showDeleteFeatureModal = true"
-                        >
+                        <button class="billing-action-button cancel" @click="showDeleteFeatureModal = true">
                           Delete
                         </button>
                       </p>
@@ -163,53 +119,34 @@
                   </td>
                 </tr>
                 <tr style="border-bottom: none;" v-if="checkAddedFeatures">
-                  <td
-                    class="text-sm"
-                    style="padding-top: 2px; padding-bottom: 2px;"
-                  >
+                  <td class="text-sm" style="padding-top: 2px; padding-bottom: 2px;">
                     Paperlinks
                   </td>
                   <td style="padding-top: 2px; padding-bottom: 2px;">
                     <div class="grid grid-cols-[min-content,1fr] gap-1">
-                      <span class="inline-block w-[4ch]"
-                        >+{{ stagingPackage.additional_paperlink }}</span
-                      >
-                      <span
-                        >${{ stagingPackage.additional_paperlink }} USD</span
-                      >
+                      <span class="inline-block w-[4ch]">+{{ stagingPackage.additional_paperlink }}</span>
+                      <span>${{ stagingPackage.additional_paperlink }} USD</span>
                     </div>
                   </td>
                 </tr>
                 <tr style="border-bottom: none;" v-if="checkAddedFeatures">
-                  <td
-                    class="text-sm"
-                    style="padding-top: 2px; padding-bottom: 2px;"
-                  >
+                  <td class="text-sm" style="padding-top: 2px; padding-bottom: 2px;">
                     Team Members
                   </td>
                   <td style="padding-top: 2px; padding-bottom: 2px;">
                     <div class="grid grid-cols-[min-content,1fr] gap-1">
-                      <span class="inline-block w-[4ch]"
-                        >+{{ stagingPackage.additional_teamMembers }}</span
-                      >
-                      <span
-                        >${{ stagingPackage.additional_teamMembers }} USD</span
-                      >
+                      <span class="inline-block w-[4ch]">+{{ stagingPackage.additional_teamMembers }}</span>
+                      <span>${{ stagingPackage.additional_teamMembers }} USD</span>
                     </div>
                   </td>
                 </tr>
                 <tr style="border-bottom: none;" v-if="checkAddedFeatures">
-                  <td
-                    class="text-sm"
-                    style="padding-top: 2px; padding-bottom: 2px;"
-                  >
+                  <td class="text-sm" style="padding-top: 2px; padding-bottom: 2px;">
                     Carbon Copy (CC) Flow
                   </td>
                   <td style="padding-top: 2px; padding-bottom: 2px;">
                     <div class="grid grid-cols-[min-content,1fr] gap-1">
-                      <span class="inline-block w-[4ch]"
-                        >+{{ stagingPackage.additional_cc }}</span
-                      >
+                      <span class="inline-block w-[4ch]">+{{ stagingPackage.additional_cc }}</span>
                       <span>${{ stagingPackage.additional_cc }} USD</span>
                     </div>
                   </td>
@@ -219,9 +156,7 @@
                   <td>
                     <div class="grid grid-cols-[min-content,1fr] gap-1">
                       <span class="inline-block w-[4ch]"></span>
-                      <span class="text-lg font-medium"
-                        >${{ stagingPackage.additional_amount }} USD</span
-                      >
+                      <span class="text-lg font-medium">${{ stagingPackage.additional_amount }} USD</span>
                     </div>
                   </td>
                 </tr>
@@ -236,18 +171,12 @@
                   <td rowspan="2">
                     <div class="grid place-items-center h-full w-full">
                       <p class="mb-2">
-                        <button
-                          class="billing-action-button"
-                          @click="showEditCardModal"
-                        >
-                          {{ checkCardInfo ? 'Update' : 'Add' }}
+                        <button class="billing-action-button" @click="showEditCardModal">
+                          {{ checkCardInfo? 'Update': 'Add' }}
                         </button>
                       </p>
                       <p v-if="checkCardInfo">
-                        <button
-                          class="billing-action-button cancel"
-                          @click="showDeleteCardModal"
-                        >
+                        <button class="billing-action-button cancel" @click="showDeleteCardModal">
                           Delete
                         </button>
                       </p>
@@ -257,18 +186,14 @@
                 <tr>
                   <td class="text-base font-bold">
                     <div class="inline-grid grid-cols-2 text-xs">
-                      <button
-                        type="button"
+                      <button type="button"
                         class="payment-method-button active w-16 h-9 text-white bg-paperdazgreen-400 m-0 rounded-l-full"
-                        @click="showBillingChangeModalAction('credit', 'card')"
-                      >
+                        @click="showBillingChangeModalAction('credit', 'card')">
                         Card
                       </button>
-                      <button
-                        type="button"
+                      <button type="button"
                         class="payment-method-button w-16 h-9 text-white bg-[#FFC003] m-0 rounded-r-full"
-                        @click="showBillingChangeModalAction('card', 'credit')"
-                      >
+                        @click="showBillingChangeModalAction('card', 'credit')">
                         Credit
                       </button>
                     </div>
@@ -277,17 +202,13 @@
                     <div v-if="stagingPackage.paymentType == 'card'">
                       <p class="" v-if="checkCardInfo">
                         Credit card number
-                        <span class="text-paperdazgreen-300"
-                          >**** **** ****
+                        <span class="text-paperdazgreen-300">**** **** ****
                           {{
-                        (splitCard || '')
-                          }}</span
-                        >
+                          (splitCard || '')
+                          }}</span>
                         <br />Expiration date:
-                        <span class="text-paperdazgreen-300"
-                          >{{ (card_month || '')
-                          }}/{{ (card_year || '') }}</span
-                        >
+                        <span class="text-paperdazgreen-300">{{ (card_month || '')
+                        }}/{{ (card_year || '') }}</span>
                       </p>
                       <p class="text-md" v-if="!checkCardInfo">
                         No Card Available
@@ -307,29 +228,15 @@
     </transition>
 
     <additional-feature-modal :isSubscribeActive="isSubscribeActive" v-model="showAdditionalFeatureModal" />
-    <delete-additional-features-modal
-      :packagename="propsPackageName"
-      v-model="showDeleteFeatureModal"
-    />
-    <cancel-package-subscription-modal
-      :packagename="propsPackageName"
-      v-model="showCancelSubscriptionModal"
-    />
+    <delete-additional-features-modal :packagename="propsPackageName" v-model="showDeleteFeatureModal" />
+    <cancel-package-subscription-modal :packagename="propsPackageName" v-model="showCancelSubscriptionModal" />
     <delete-billing-information-modal v-model="showDeleteBillingInfoModal" />
-    <update-billing-information-modal
-      @success="$fetch"
-      v-model="showUpdateBillingInfoModal"
-    />
-    <change-payment-method-modal
-      v-model="showBillingChangeModal"
-      :from="billingFrom"
-      :to="billingTo"
-      @popCredit="notEnoughCredit"
-      :subscriptionPlan="subscriptionPlan"
-    />
+    <update-billing-information-modal @success="$fetch" v-model="showUpdateBillingInfoModal" />
+    <change-payment-method-modal v-model="showBillingChangeModal" :from="billingFrom" :to="billingTo"
+      @popCredit="notEnoughCredit" :subscriptionPlan="subscriptionPlan" />
     <insufficient-credit-modal v-model="showInsufficientCreditModal" />
 
-    <UpdateSubscriptionModal  v-model="showSubscriptionModal"/>
+    <UpdateSubscriptionModal v-model="showSubscriptionModal" />
   </section>
 </template>
 
@@ -361,7 +268,7 @@ export default Vue.extend({
     ChangePaymentMethodModal,
     InsufficientCreditModal,
     UpdateSubscriptionModal
-},
+  },
   async fetch() {
     const fetchCard = () =>
       this.$axios
@@ -372,11 +279,11 @@ export default Vue.extend({
 
           this.card = cardResponse
           this.splitCard = cardResponse?.card_number
-          .toString()
-          .substring(
-          cardResponse.card_number.toString().length - 4,
-          cardResponse.card_number.toString().length
-          )
+            .toString()
+            .substring(
+              cardResponse.card_number.toString().length - 4,
+              cardResponse.card_number.toString().length
+            )
 
           this.card_month = cardResponse?.exp_month
           this.card_year = cardResponse?.exp_year
@@ -393,9 +300,9 @@ export default Vue.extend({
           const [subscribeResponseData] = response.data
 
           this.stagingPackage = {
-          ...subscribeResponseData,
-          name: subscribeResponseData.packageName,
-          monthlyPrice: subscribeResponseData.amount
+            ...subscribeResponseData,
+            name: subscribeResponseData.packageName,
+            monthlyPrice: subscribeResponseData.amount
           }
           //  --setting the scbscription plan props
           this.subscriptionPlan = {
@@ -403,15 +310,15 @@ export default Vue.extend({
             id: this.stagingPackage.id,
             price:
               this.stagingPackage.plan == 'monthly'
-              ? this.stagingPackage.monthlyPrice
-              : this.stagingPackage.yearlyPrice,
-              }
+                ? this.stagingPackage.monthlyPrice
+                : this.stagingPackage.yearlyPrice,
+          }
 
-            this.isSubscribeActive = this.stagingPackage.isCancelled
-            this.propsPackageName = this.stagingPackage
+          this.isSubscribeActive = this.stagingPackage.isCancelled
+          this.propsPackageName = this.stagingPackage
 
         })
-        .catch((err) => {})
+        .catch((err) => { })
 
     await Promise.allSettled([fetchCard(), fetchSubscription()])
   },
@@ -431,10 +338,10 @@ export default Vue.extend({
       showCancelSubscriptionModal: false,
       showDeleteBillingInfoModal: false,
       showUpdateBillingInfoModal: false,
-      showSubscriptionModal:false,
+      showSubscriptionModal: false,
       subscriptionPlan: {},
       card: {},
-      isSubscribeActive:undefined,
+      isSubscribeActive: undefined,
       additionalFeature: {
         paperlinks: 0,
         team_members: 0,
@@ -445,8 +352,8 @@ export default Vue.extend({
     }
   },
   computed: {
-    isSubscription(){
-      return this.stagingPackage.isCancelled 
+    isSubscription() {
+      return this.stagingPackage.isCancelled
     },
     user() {
       return this.$auth.user
@@ -464,7 +371,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    showSubscriptionFunction(){
+    showSubscriptionFunction() {
       this.showSubscriptionModal = true
     },
     notEnoughCredit() {
@@ -495,13 +402,16 @@ export default Vue.extend({
   & tr {
     @apply border-b border-paperdazgreen-300;
   }
+
   & td {
     @apply py-4 px-3;
     width: auto;
+
     &:first-child {
       @apply text-paperdazgreen-300 font-medium whitespace-nowrap;
       // min-width: ;
     }
+
     &:last-child {
       width: 1%;
       white-space: nowrap;
@@ -515,13 +425,7 @@ export default Vue.extend({
 }
 
 .billing-action-button {
-  @apply rounded-full
-                h-8
-                text-white
-                bg-paperdazgreen-300
-                font-medium
-                px-1
-                text-xs w-28 whitespace-nowrap;
+  @apply rounded-full h-8 text-white bg-paperdazgreen-300 font-medium px-1 text-xs w-28 whitespace-nowrap;
 
   &.cancel {
     @apply bg-transparent border border-red-600 text-red-600;

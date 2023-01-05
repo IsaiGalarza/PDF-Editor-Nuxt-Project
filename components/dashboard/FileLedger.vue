@@ -18,7 +18,7 @@
         <img src="../../assets/img/users-icon.png" class="-ml-8 cursor-pointer" @click="showCreateTeamFunc"
           v-if="isPaidUser" />
       </h5>
-      <div class="w-full xs:max-w-[350px] text-xs font-medium flex justify-end items-center relative float-right ">
+      <div class="w-full xs:max-w-[250px] text-xs font-medium flex justify-end  items-center relative float-right ">
         <span class="el-dropdown-link left-roll mr-4">
           <input type="text"
             class="search-input h-10 transition pl-4 mr-2 bg-transparent flex-1 border-[1px] border-paperdazgreen-400 rounded-tl-lg rounded-bl-lg focus:border-paperdazgreen-700 outline-none"
@@ -29,7 +29,7 @@
           class="circle circle-18 bg-paperdazgreen-400 text-white mr-2 hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
           <search-icon width="16" height="16" currentcolor="white" />
         </button>
-        <div class="flex" v-if="isPaidUser">
+        <!-- <div class="flex" v-if="isPaidUser">
           <button @click="showCreateCompanyFolderFunc"
             class="circle circle-18 bg-paperdazgreen-400 text-xl text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
             <folder-plus-icon />
@@ -38,7 +38,7 @@
             class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-white text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
             <plus-icon />
           </button>
-        </div>
+        </div> -->
       </div>
     </h3>
 

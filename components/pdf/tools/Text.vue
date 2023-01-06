@@ -13,6 +13,7 @@
       ref="text_box"
     />
     <p v-else :style="style">{{ text || 'Type here...' }}</p>
+    <span :style="hideStyle" ref="text_hidden">{{ text || 'Type here...' }}</span>
   </div>
 </template>
 
@@ -42,6 +43,30 @@ export default {
     },
     text (v) {
       if (this.value != v) this.$emit('input', v)
+      if (this.$refs.text_box && this.$refs.text_hidden) {
+        if (!v || v.length === 1) {
+          setTimeout(() => {
+            const inputWidth = this.$refs.text_hidden.clientWidth
+            this.$refs.text_box.style.width = `${inputWidth}px`
+          }, 200)
+        } else {
+          const extra = this.fontSize || 11
+          if (v.length < this.value.length) {
+            const inputWidth = this.$refs.text_hidden.clientWidth
+            this.$refs.text_box.style.width = `${inputWidth}px`
+          } else {
+            const inputWidth = this.$refs.text_hidden.clientWidth + extra
+            this.$refs.text_box.style.width = `${inputWidth}px`
+          }
+        }
+      }
+    },
+    fontSize() {
+      if (this.$refs.text_box && this.$refs.text_hidden) {
+        const extra = this.fontSize || 11
+        const inputWidth = this.$refs.text_hidden.clientWidth + extra
+        this.$refs.text_box.style.width = `${inputWidth}px`
+      }
     }
   },
   computed: {
@@ -54,7 +79,13 @@ export default {
     },
     style () {
       return {
-        fontSize: `${this.fontSize || 11}px`
+        fontSize: `${this.fontSize || 11}px`,
+      }
+    },
+    hideStyle () {
+      return {
+        fontSize: `${this.fontSize || 11}px`,
+        visibility: 'hidden',
       }
     }
   }

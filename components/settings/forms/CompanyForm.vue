@@ -231,7 +231,6 @@ export default mixins(login).extend({
     },
   },
   mounted: function () {
-    console.log('userinfo>>>', this.$auth.user);
   }
 })
 </script>

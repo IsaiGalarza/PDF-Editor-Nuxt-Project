@@ -96,7 +96,6 @@ export default mixins(GlobalMixin).extend({
   // },
 
   mounted() {
-    console.log('package-query', this.$route.query)
     this.popModal()
     this.getPackages()
   },

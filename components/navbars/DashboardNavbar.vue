@@ -32,7 +32,8 @@
                       {{ (item.user || {}).company_name }}
                     </p>
                     <p class="text-xs truncate">{{ item.fileName }}</p>
-                    <p class="text-[11px] mt-0.5 truncate">{{  (item.user || {}).firstName ||  (item.user || {}).companyName }}</p>
+                    <p class="text-[11px] mt-0.5 truncate">{{ (item.user || {}).firstName || (item.user ||
+                    {}).companyName }}</p>
                   </nuxt-link>
                 </div>
                 <SearchShare :showShareIcon="true" :file="item" />
@@ -136,8 +137,9 @@
           ]">
             <!-- <img :src="profilePhoto" class="w-full h-full profilePhoto" alt=""
               :class="[isPaidUser ? 'rounded-md' : 'rounded-full']" /> -->
-              <span v-if="isPaidUser" class="text-3xl font-bold w-full h-full text-center text-paperdazgreen-300" style="text-shadow: 1px 2px 3px grey;">{{ (userCompanyName || '').charAt(0).toUpperCase() }}</span>
-              <img v-else :src="profilePhoto" :class="[isPaidUser ? 'rounded-md' : 'rounded-full']"/>
+            <span v-if="isPaidUser" class="text-3xl font-bold w-full h-full text-center text-paperdazgreen-300"
+              style="text-shadow: 1px 2px 3px grey;">{{ (userCompanyName || '').charAt(0).toUpperCase() }}</span>
+            <img v-else :src="profilePhoto" :class="[isPaidUser ? 'rounded-md' : 'rounded-full']" />
           </span>
           <span class="text-black"><arrow-down-icon class="h-2 w-3 sm:h-2.5 sm:w-4" /></span>
         </span>
@@ -159,15 +161,23 @@
             @click="switchAccount(account.id, account.status)">
             <div
               class="flex items-center justify-start hover:bg-paperdazgray-200/60 relative top-2 p-1 mb-1 w-[160px] border-t-[1px] border-paperdazgray-100">
-              <span>
+              <span class="border border-paperdazgreen-300 mr-2 p-0.5 overflow-hidden relative text-center" :class="[
+                !isAccountPaid(account.role)
+                  ? 'w-[45px] h-[45px] rounded-full pt-1'
+                  : 'circle-20 rounded-full',
+              ]">
                 <img :src="
                   (account || {}).teampicture ||
                   (account || {}).profilePicture ||
                   '/img/placeholder_picture.png'
-                " class="w-8 h-8" alt="" :class="[isAccountPaid(account.role) ? 'rounded-full' : ' rounded-md']" />
+                " class="w-full h-full rounded-full" alt="" v-if="isAccountPaid(account.role)" />
+                <span v-else class="text-3xl font-bold w-full rounded-full h-full text-center text-paperdazgreen-300"
+                  style="text-shadow: 1px 2px 3px grey;">{{ (account.companyName || '').charAt(0).toUpperCase()
+                  }}</span>
               </span>
               <div class="w-[calc(100%-1.75rem)] pl-2 leading-[12px] relative flex flex-wrap items-center">
-                <span class="text-[12px] truncate font-[500] capitalize inline-block my-0 w-full">{{ (account.teamName || account.companyName || account.firstName || '')
+                <span class="text-[12px] truncate font-[500] capitalize inline-block my-0 w-full">{{ (account.teamName
+                  || account.companyName || account.firstName || '')
                 }}</span>
                 <span class="text-[9px] truncate font-[500] capitalize inline-block my-0 w-full">
                   {{ account.status }}
@@ -360,10 +370,8 @@ export default mixins(GlobalMixin, login).extend({
 
       await this.$axios.get(`/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&fileName[$like]=${topsearch}%`)
         .then((response) => {
-          console.log('resp', response);
           const { data } = response.data
           this.topSearchContent = data
-          console.log(this.topSearchContent)
         })
       // &$or[1][uploadedBy]={ team member id }&$or[2][uploadedBy]={ team member id 2 }
     },
@@ -395,14 +403,20 @@ export default mixins(GlobalMixin, login).extend({
               element.teamName = response.data.companyName || response.data.firstName;
               element.teampicture = response.data.profilePicture
             }
-
-            fetchUserArray.push(element)
-            this.account.push(element)
+            // fetchUserArray.push(element)
+            let duplicated = false
+            this.account.map((val) => {
+              if (val.id === element.id) {
+                duplicated = true;
+                return;
+              }
+            })
+            !duplicated && this.account.push(element);
             this._cancleReloadUsers = true
           })
       });
 
-      this.account = [...this.account, ...fetchUserArray];
+      // this.account = [...this.account, ...fetchUserArray];
     },
     async fetchUsersInitialAccount() {
       if (this._cancleReloadUsers) return;
@@ -433,7 +447,6 @@ export default mixins(GlobalMixin, login).extend({
       let userAccount = await this.$axios.$get(`users/?mainAccountId=${acccountId}&$sort[createdAt]=-1`)
       let accounts = userAccount.data || [{ ...userAccount }]
       await this.fetchMainTeam(accounts)
-
     },
     async getUserNotification(page) {
       await this.$axios

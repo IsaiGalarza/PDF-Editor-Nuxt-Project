@@ -341,7 +341,6 @@ export default mixins(login).extend({
           this.$emit('stop-editing')
         })
         .catch(({response}) => {
-          console.log(response)
           let message = ErrorHandler(response)
           this.errorMessage = message
         })

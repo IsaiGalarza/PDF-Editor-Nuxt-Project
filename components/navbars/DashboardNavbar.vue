@@ -368,7 +368,8 @@ export default mixins(GlobalMixin, login).extend({
     async getGeneralSearch(topsearch) {
       if (!topsearch.trim()) return
 
-      await this.$axios.get(`/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&fileName[$like]=${topsearch}%`)
+      // await this.$axios.get(`/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&fileName[$like]=${topsearch}%`)
+      await this.$axios.get(`/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&$or[0][fileName][$like]=${topsearch}%&$or[1][companyName][$like]=${topsearch}%`)
         .then((response) => {
           const { data } = response.data
           this.topSearchContent = data

@@ -7,26 +7,26 @@
         <move-icon />
       </button> -->
 
-      <button class="text-sm px-0.5 h-full" @click="dec" v-show="isMenuVisible('increase')" v-on:mouseover="draggingMouseover">
+      <button class="text-sm px-0.5 h-full" @click="dec" v-show="isMenuVisible('increase')" @mouseover="draggingMouseover">
         A
       </button>
-      <button class="text-lg px-0.5 h-full" @click="inc" v-show="isMenuVisible('increase')" v-on:mouseover="draggingMouseover">
+      <button class="text-lg px-0.5 h-full" @click="inc" v-show="isMenuVisible('increase')" @mouseover="draggingMouseover">
         A
       </button>
       <button class="px-0.5 h-full flex items-center relative text-[15px]" @click="openCalendar"
-        v-if="type == TOOL_TYPE.date" v-on:mouseover="draggingMouseover">
+        v-if="type == TOOL_TYPE.date" @mouseover="draggingMouseover">
         <calendar-icon />
         <el-date-picker ref="datePicker" type="date" placeholder="Pick a day" v-model="calendarValue"
           :default-value="new Date()" id="sdfadf" hidden
           style="height: 0; width: 0; max-width: 0; margin-0; padding:0; overflow:hidden; position:absolute; top: 100%; right: 50%; transform: translateX(-50%)">
         </el-date-picker>
       </button>
-      <button class="px-0.5 h-full" @click="handleDelete" v-on:mouseover="draggingMouseover">
+      <button class="px-0.5 h-full" @click="handleDelete" @mouseover="draggingMouseover">
         <trash-x-icon />
       </button>
-      <button class="px-0.5 h-full" @click="onOutSideClick" v-on:mouseover="draggingMouseover">
+      <!-- <button class="px-0.5 h-full" @click="onOutSideClick" @mouseover="draggingMouseover">
         <check-circle-icon />
-      </button>
+      </button> -->
     </div>
 
     <div @click="onClick" class="tool-holder">

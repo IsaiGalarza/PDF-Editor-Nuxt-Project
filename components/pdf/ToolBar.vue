@@ -72,9 +72,17 @@
         <user-profile-solid-icon />
       </button>
       <div class="flex">
+        <div v-if="isComplete && isCreator" class="mx-1">
+          <button
+            class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm" @click="onImageClick">
+            Require
+            <img src="../../assets/img/require-icon.png" width="18" class="bg-slate-200 p-[2px]" />
+          </button>
+        </div>
+
         <div class="mx-1">
           <button
-            class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm">
+            class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm" @click="onSignClick">
             Sign
             <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
           </button>
@@ -91,7 +99,7 @@
 
         <div class="mx-1">
           <button
-            class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 tool-item text-white text-sm">
+            class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 tool-item text-white text-sm" @click="onInitialsClick">
             Initial
             <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
           </button>
@@ -111,12 +119,14 @@
       <button @click="undoFunction" class="text-sm">UNDO</button>
     </div>
 
-    <div v-if="isComplete && isCreator" class="flex items-center py-1">
+    <!-- <div v-if="isComplete && isCreator" class="flex items-center py-1">
       <div class="w-1/3 text-center">
         <button class="inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm"
           @click="onImageClick">
-          <!-- <input type="file" ref="image" class="hidden" />
-          <star-icon /> -->
+          
+          <input type="file" ref="image" class="hidden" />
+          <star-icon />
+          
           Require
           <img src="../../assets/img/require-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         </button>
@@ -154,7 +164,7 @@
         </button>
       </div>
 
-    </div>
+    </div> -->
 
     <draw-or-type-modal v-model="showSignatureModal" :src="`${$auth?.user?.signatureURL}`"
       @image-exported="imageExportedLocal($event, true)" use-default-button />
@@ -346,12 +356,13 @@ export default {
         !this.$auth.loggedIn ? this.showPdfNotLoggedInUser = true : null
         return
       }
-      if (!this.isCreator) {
-        this.setSelectedType(this.TOOL_TYPE.signature)
-      }
-      else {
-        this.setSelectedType(this.TOOL_TYPE.appendSignature)
-      }
+      // if (!this.isCreator) {
+      //   this.setSelectedType(this.TOOL_TYPE.signature)
+      // }
+      // else {
+      //   this.setSelectedType(this.TOOL_TYPE.appendSignature)
+      // }
+      this.setSelectedType(this.TOOL_TYPE.appendSignature)
     },
     openSignModal() {
       if (!this.isCreator) {
@@ -368,12 +379,13 @@ export default {
         !this.$auth.loggedIn ? this.showPdfNotLoggedInUser = true : null
         return
       }
-      if (!this.isCreator) {
-        this.setSelectedType(this.TOOL_TYPE.initial)
-      }
-      else {
-        this.setSelectedType(this.TOOL_TYPE.appendInitial)
-      }
+      // if (!this.isCreator) {
+      //   this.setSelectedType(this.TOOL_TYPE.initial)
+      // }
+      // else {
+      //   this.setSelectedType(this.TOOL_TYPE.appendInitial)
+      // }
+      this.setSelectedType(this.TOOL_TYPE.appendInitial)
     },
     cancelConfrim() {
       window.location.assign('/dashboard')

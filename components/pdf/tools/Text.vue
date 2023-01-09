@@ -29,7 +29,8 @@ export default {
     justMounted: Boolean
   },
   data: () => ({
-    text: null
+    text: null,
+    inputWidth: 0,
   }),
   created () {
     this.text = this.value;
@@ -48,15 +49,18 @@ export default {
           setTimeout(() => {
             const inputWidth = this.$refs.text_hidden.clientWidth
             this.$refs.text_box.style.width = `${inputWidth}px`
+            this.inputWidth = inputWidth
           }, 200)
         } else {
           const extra = this.fontSize || 11
           if (v.length < this.value.length) {
             const inputWidth = this.$refs.text_hidden.clientWidth
             this.$refs.text_box.style.width = `${inputWidth}px`
+            this.inputWidth = inputWidth
           } else {
             const inputWidth = this.$refs.text_hidden.clientWidth + extra
             this.$refs.text_box.style.width = `${inputWidth}px`
+            this.inputWidth = inputWidth
           }
         }
       }
@@ -66,6 +70,7 @@ export default {
         const extra = this.fontSize || 11
         const inputWidth = this.$refs.text_hidden.clientWidth + extra
         this.$refs.text_box.style.width = `${inputWidth}px`
+        this.inputWidth = inputWidth
       }
     }
   },
@@ -80,6 +85,7 @@ export default {
     style () {
       return {
         fontSize: `${this.fontSize || 11}px`,
+        // width: `${this.inputWidth}px`
       }
     },
     hideStyle () {

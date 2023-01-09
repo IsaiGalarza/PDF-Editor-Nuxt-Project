@@ -1,5 +1,5 @@
 <template>
-  <div class="py-2 flex items-center text-black gap-4 bg-white flex justify-between">
+  <div class="py-2 flex items-center text-black gap-2 bg-white flex justify-left">
     <div class="flex items-center gap-4 flex-1 justify-between max-w-4xl px-4">
       <!-- If authenticated user is created -->
       <span v-if="!isCreator" class="capitalize font-medium">{{
@@ -115,7 +115,7 @@
       <!-- </div> -->
     </div>
 
-    <div class="lg:flex items-center hidden">
+    <div class="lg:flex items-center hidden pr-4">
 
       <button v-if="!isConfirm && $auth.loggedIn" @click="saveChanges"
         class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7">

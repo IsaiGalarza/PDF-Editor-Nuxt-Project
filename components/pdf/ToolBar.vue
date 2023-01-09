@@ -116,7 +116,7 @@
         </div>
       </div>
 
-      <button @click="undoFunction" class="text-sm">UNDO</button>
+      <button @click="undoFunction" class="text-sm mr-4">UNDO</button>
     </div>
 
     <!-- <div v-if="isComplete && isCreator" class="flex items-center py-1">

@@ -86,6 +86,7 @@ export default {
       return {
         fontSize: `${this.fontSize || 11}px`,
         visibility: 'hidden',
+        position: 'absolute'
       }
     }
   }

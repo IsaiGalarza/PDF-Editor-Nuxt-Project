@@ -37,12 +37,12 @@
     <p
       class="text-center font-medium w-[250px] mx-auto mb-6"
     >
-      Do you want to {{ (packagename || {}).isCancelled ? 'activate' : 'cancle' }} your 
+      Do you want to {{ (packagename || {}).isCancelled ? 'activate' : 'cancel' }} your 
       <span class="font-semibold uppercase text-paperdazgreen-500">'{{(packagename || {}).packageName}}'</span>
       subscription?
     </p>
     <P v-if="!isActiveASub" class="text-center font-medium mx-auto mb-6 mt-3 text-red-600">
-      Note that these process is irreversible
+      Note that this process is irreversible
     </P>
     <div class="flex justify-around">
       <button

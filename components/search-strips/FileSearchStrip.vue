@@ -14,7 +14,7 @@
     />
     <letter-avatar
       v-else
-      class="h-16 w-16 rounded-lg object-cover"
+      class="h-16 w-16 rounded-1 object-cover"
       :username="(record.user || {}).companyName || (record.user || {}).firstName"
     />
     <nuxt-link  class="overflow-hidden w-[100%]" :to="`/pdf/${record.paperLink}`">
@@ -25,7 +25,7 @@
       <p class="text-[11px] mt-0.5 truncate">{{record.paperLink}}</p>
     </div>
     </nuxt-link>
-    <!-- <SearchShare :showShareIcon="true" :file="record" :link="link"/> -->
+    <SearchShare :showShareIcon="true" :file="record" :link="link"/>
   </article>
 </template>
 

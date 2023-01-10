@@ -347,7 +347,7 @@ export default {
       }
       if (!this.allowAnnotationsSign_Initial(type)) return
 
-      if (this.selectedType == type) this.selectedType = this.selectedType
+      if (this.selectedType == type) this.selectedType = null
       else this.selectedType = type
       this.$emit('tool-change', this.selectedType)
       this.activeTool = this.selectedType || ''

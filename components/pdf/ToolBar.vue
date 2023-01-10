@@ -71,6 +71,7 @@
       isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.name)">
         <user-profile-solid-icon />
       </button>
+      <zoom-in-out @zoomIn="$emit('zoomIn')" @zoomOut="$emit('zoomOut')" />
       <div class="flex">
         <div v-if="isComplete && isCreator" class="mx-1">
           <button
@@ -199,6 +200,7 @@ import PdfNotLoggedUser from './modals/PdfNotLoggedUser.vue'
 import AlertModal from './modals/AlertModal.vue'
 import initialURL from '~/assets/img/initials.png'
 import signatureURL from '~/assets/img/sign.png'
+import ZoomInOut from '@/components/pdf/ZoomInOut'
 
 export default {
   components: {
@@ -216,7 +218,8 @@ export default {
     StarIcon,
     ExclamationIcon,
     PdfNotLoggedUser,
-    AlertModal
+    AlertModal,
+    ZoomInOut
   },
   mixins: [SaveSignatureInitialsMixin],
   data: () => ({
@@ -247,6 +250,7 @@ export default {
     openTypeSignModal: Boolean,
     openTypeInitialModal: Boolean
   },
+  emits: ['zoomOut', 'zoomIn'],
   computed: {
     TOOL_TYPE() {
       return TOOL_TYPE

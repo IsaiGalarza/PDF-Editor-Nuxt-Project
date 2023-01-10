@@ -17,8 +17,8 @@
 
       <tool-bar :file="file" @tool-change="onToolChange" :selectedToolType="selectedToolType" @undo="undo"
         :openTypeSignModal="openTypeSignModal" :openTypeInitialModal="openTypeInitialModal" class="w-full"
-        :isLoading="pdfLoading" />
-      <div class="pdf-editor-view relative custom-scrollbar overflow-y-scroll w-full" @scroll="setScrollPage" v-if="pdf"
+        :isLoading="pdfLoading" @zoomIn="zoom *= 1.1" @zoomOut="zoom /= 1.1" />
+      <div class="pdf-editor-view relative custom-scrollbar overflow-scroll w-full" @scroll="setScrollPage" v-if="pdf"
         ref="scrollingElement">
         <div class="pdf-pages-outer pb-6 relative" ref="PagesOuter" :style="pagesOuterStyle">
           <div class="pdf-single-pages-outer w-full" ref="pdf-single-pages-outer" v-if="pdf">
@@ -231,6 +231,7 @@ export default mixins(PdfAuth).extend({
     file: {},
 
     scale: 1,
+    zoom: 1,
     stack: [],
     undoStack: [],
 
@@ -360,7 +361,7 @@ export default mixins(PdfAuth).extend({
     },
 
     pagesOuterStyle() {
-      let scale = `scale(${this.scale})`
+      let scale = `scale(${this.scale * this.zoom})`
       return {
         transform: scale,
         '-webkit-transform': scale,

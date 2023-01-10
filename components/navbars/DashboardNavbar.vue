@@ -16,7 +16,7 @@
             </template>
           </el-input>
         </span>
-        <el-dropdown-menu slot="dropdown">
+        <el-dropdown-menu slot="dropdown" :class="topSearchContent.length > 0 ? '' : 'hidden'">
           <!-- Start:: dropdown -->
           <div class="bg-white rounded-lg whitespace-nowrap w-[40vw]">
             <div class="max-h-[60vh] custom-scrollbar overflow-y-auto p-2">

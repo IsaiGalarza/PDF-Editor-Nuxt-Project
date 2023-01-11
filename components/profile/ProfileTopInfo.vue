@@ -1,51 +1,43 @@
 <template>
   <section class="flex flex-wrap w-full md:justify-between font-family">
+    <my-upload field="upload" @croper-close="croperClose" @crop-success="cropSuccess" @crop-upload-success="cropUploadSuccess"
+          @crop-upload-fail="cropUploadFail" @src-file-set="srcFileSet" :modelValue="show" :width="140" :height="140" :maxSize="2000" langType="en" :url="$axios.defaults.baseURL+'/files'"
+          :noCircle="noCircle"
+          method="PATCH"
+          :params="params" :headers="headers" img-format="png"></my-upload>
     <!-- logo container -->
     <div class="bg-white md:w-3/12 lg:w-[19%] w-full profile-image-container">
+      
       <div class="icon-img relative" @click="changeProfileimage">
-        <input
-          type="file"
-          class="hidden"
-          v-show="false"
-          @change="uploadProfilePicture"
-          ref="referenceInput"
-        />
-        <img
-          v-if="profilePhoto != null"
-          :src="profilePhoto"
-          id="referenceImg"
-          class="top-profile-image cursor-pointer"
-        />
+        <input type="file" class="hidden" v-show="false" @change="uploadProfilePicture" ref="referenceInput" />
+        
+
+        <img v-if="profilePhoto != null" :src="profilePhoto" id="referenceImg"
+          class="top-profile-image cursor-pointer" />
         <span v-else>
           {{ firstCompanyName }}
         </span>
+
       </div>
-      <div v-if="isUser" class="text-wrapper">Click to upload an image</div>
+      <div v-if="isUser" class="text-wrapper" @click="toggleShow">Click to upload an image</div>
     </div>
     <!-- end of logo container -->
 
     <!-- dentals container -->
-    <div
-      class="bg-white sm:w-12/12 md:w-9/12 lg:w-[80%] w-full profile-dental-container"
-    >
+    <div class="bg-white sm:w-12/12 md:w-9/12 lg:w-[80%] w-full profile-dental-container">
       <!-- <h1>{{user.companyName || ''}}</h1> -->
       <div class="input-wrapper-title">
         <!-- <input type="text" v-model="name" placeholder="Apple Dental" :disabled="true"
           class="text-black text-2xl" /> -->
-        <span class="text-2xl text-grey pl-3"> {{userInfo.companyName}}</span>
+        <span class="text-2xl text-grey pl-3"> {{ userInfo.companyName }}</span>
         <button @click="toggleInput" class="float-right">
           <Pencil :width="18" />
         </button>
       </div>
       <!--<div class="text-sm px-2 border-b w-full py-2 text-gray-400"><i>@hookname</i></div>-->
       <div class="input-wrapper">
-        <input
-          type="text"
-          v-model="address"
-          placeholder="Company`s address"
-          :disabled="editEnalble"
-          :class="[editEnalble ? 'text-gray-400' : 'text-black']"
-        />
+        <input type="text" v-model="address" placeholder="Company`s address" :disabled="editEnalble"
+          :class="[editEnalble ? 'text-gray-400' : 'text-black']" />
         <!-- <button v-if="isUser" @click="toggleInput">
           <Pencil v-if="initialInput" :width="18" />
           <span class="text-[15px] font-[900] text-paperdazgreen-500" v-else>&#x2715;</span>
@@ -53,13 +45,8 @@
       </div>
 
       <div class="input-wrapper">
-        <input
-          type="number"
-          v-model="phone"
-          placeholder="Company`s phone number"
-          :disabled="editEnalble"
-          :class="[editEnalble ? 'text-gray-400' : 'text-black']"
-        />
+        <input type="number" v-model="phone" placeholder="Company`s phone number" :disabled="editEnalble"
+          :class="[editEnalble ? 'text-gray-400' : 'text-black']" />
         <!-- <button v-if="isUser" @click="toggleInput2">
           <Pencil v-if="initialInput2" :width="18" />
           <span class="text-[15px] font-[900] text-paperdazgreen-500" v-else>&#x2715;</span>
@@ -69,18 +56,10 @@
       <div class="w-full grid place-items-center">
         <button
           class="w-[160px] flex justify-center items-center text-white py-2 mt-3 text-center border-none bg-paperdazgreen-400 rounded-md"
-          v-if="showUpdateButton"
-          :class="[isLoading ? 'opacity-50' : 'opacity-100']"
-          :disabled="isloading"
-          @click="patchUser"
-        >
+          v-if="showUpdateButton" :class="[isLoading ? 'opacity-50' : 'opacity-100']" :disabled="isloading"
+          @click="patchUser">
           Update
-          <SpinnerDottedIcon
-            v-if="isLoading"
-            height="20"
-            width="20"
-            class="animate-spin ml-2"
-          />
+          <SpinnerDottedIcon v-if="isLoading" height="20" width="20" class="animate-spin ml-2" />
         </button>
       </div>
     </div>
@@ -97,11 +76,11 @@ import login from '~/mixins/login'
 import mixins from 'vue-typed-mixins'
 import SpinnerDottedIcon from '../svg-icons/SpinnerDottedIcon.vue'
 import { ErrorHandler } from '~/types/ErrorFunction'
-
+import myUpload from 'vue-image-crop-upload';
 export default mixins(login).extend({
   name: 'profile-top-info',
   props: ['userInfo'],
-  data () {
+  data() {
     return {
       editEnalble: true,
       showScanner: false,
@@ -113,18 +92,62 @@ export default mixins(login).extend({
       phone: '',
       address: '',
       name: '',
-      isLoading: false
+      profilePhoto: null,
+      isLoading: false,
+      show: false,
+      noCircle:true,
+      params: {
+        type: 'profilePicture',
+        userId: 0
+      },
+      headers: {
+        smail: '*_~'
+      },
     }
   },
   // async asyncData({ params, query, $axios}) {
   //    let companyUser = $axios.get(`/users/${}`)
   // },
-  components: { Pencil, SpinnerDottedIcon },
+  components: { Pencil, SpinnerDottedIcon, 'my-upload': myUpload },
   methods: {
-    getTeamPublicFolder () {
+    toggleShow() {
+				this.show = !this.show;
+			},
+    cropSuccess(imgDataUrl, field) {
+      console.log('-------- crop success --------');
+      this.imgDataUrl = imgDataUrl;
+    },
+    cropUploadSuccess(jsonData, field) {
+      console.log('-------- upload success --------');
+      this.profilePhoto = jsonData.profilePicture;
+      this.show = false;
+      console.log(jsonData);
+      console.log('field: ' + field);
+    },
+    cropUploadFail(status, field) {
+      console.log('-------- upload fail --------');
+      console.log(status);
+      console.log('field: ' + field);
+    },
+    croperClose(status){
+      this.show = status;
+    },
+    srcFileSet( fileName, fileType, fileSize){
+      console.log((fileSize / 1024 / 1024))
+      if (
+        (fileSize / 1024 / 1024) > 2
+      ) {
+        this.$notify.error({
+          message: 'File size must be less than 2MB'
+        })
+        return
+      }
+      return false;
+    },
+    getTeamPublicFolder() {
       this.$axios.get()
     },
-    patchUser () {
+    patchUser() {
       if (
         (this.address.trim() == '' && this.phone.trim() == '') ||
         this.isLoading
@@ -156,15 +179,15 @@ export default mixins(login).extend({
             })
         })
     },
-    toggleInput () {
+    toggleInput() {
       this.editEnalble = !this.editEnalble
     },
-    changeProfileimage () {
+    changeProfileimage() {
       // console.log('change image');
       // if (!this.isUser) return;
-      this.$refs.referenceInput.click()
+      //this.$refs.referenceInput.click()
     },
-    async uploadProfilePicture (event) {
+    async uploadProfilePicture(event) {
       // if (!this.isUser) return;
 
       let fileInput = event.target
@@ -186,8 +209,10 @@ export default mixins(login).extend({
 
       await this.$axios
         .$patch(`/files`, formdata)
-        .then(() => {
+        .then((response) => {
           //@ts-ignore
+          //console.log("response",response.profilePicture)
+          this.profilePhoto = response.profilePicture;
           this.filterUsers()
         })
         .catch(() => {
@@ -197,11 +222,12 @@ export default mixins(login).extend({
         })
     }
   },
-  mounted () {
+  mounted() {
     console.log('>>>>>>>>>>>>???', this.userInfo)
     this.phone = this.userInfo?.phone
     this.address = this.userInfo?.address
     this.name = this.userInfo?.companyName
+    //this.profilePhoto = this.userInfo?.profilePhoto
     // QRCode.toCanvas(this.$refs.qrcancas, this.qrCodeurl, function () {});
     //  await this.$nextTick()
     // ;(this.$refs.qrcancas as HTMLElement).removeAttribute('style')
@@ -210,33 +236,38 @@ export default mixins(login).extend({
     //     },
   },
   computed: {
-    firstCompanyName () {
+    firstCompanyName() {
       return (this.userInfo?.companyName || '').charAt(0).toUpperCase()
     },
-    showUpdateButton () {
+    showUpdateButton() {
       return !this.editEnalble || !this.editEnalble
     },
-    qrCodeurl () {
+    qrCodeurl() {
       return `${window.origin}/public/profile/${this.userInfo?.id}`
     },
-    login () {
+    login() {
       return this.$auth.loggedIn
     },
-    user () {
+    user() {
       return this.$auth?.user
     },
-    isUser () {
+    isUser() {
       return this.user?.id == this.userInfo?.id
     },
-    profilePhoto () {
+    /*profilePhoto () {
       return this.userInfo?.profilePicture
-    }
+    }*/
   },
   watch: {
     '$auth.user': function () {
       this.address = this.$auth.user?.address || ''
       this.phone = this.$auth.user?.phone || ''
       // QRCode.toCanvas(this.$refs.qrcancas, this.qrCodeurl, function () {});
+    },
+    userInfo(newValue, oldValue) {
+      this.profilePhoto = newValue.profilePicture;
+      this.params.userId = newValue.id;
+      //console.log("newValue", newValue.profilePicture, oldValue)
     }
   }
 })
@@ -246,7 +277,6 @@ export default mixins(login).extend({
 .font-family {
   font-family: inherit !important;
 }
-
 .profile-image-container {
   @apply bg-white flex justify-center flex-wrap items-center py-4 rounded-[10px];
 
@@ -276,8 +306,7 @@ export default mixins(login).extend({
       outline: none !important;
     }
 
-    button {
-    }
+    button {}
   }
 
   .input-wrapper-title {

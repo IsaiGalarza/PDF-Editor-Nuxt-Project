@@ -289,6 +289,8 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss" scoped>
-
+<style>
+.el-notification{
+    z-index: 999999 !important;
+}
 </style>

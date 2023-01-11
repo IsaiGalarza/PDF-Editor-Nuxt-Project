@@ -48,7 +48,7 @@
         :isActive="isActive" :fontSize="fontSize" :scale="scale" :file="file" :value="value" :justMounted="justMounted"
         @input="onInp" :generatePDF="generatePDF" :showPublishModal="showPublishModal"
         :selectedToolType="selectedToolType" :mouseUp="mouseUp" :lineStart="lineStart" :toolLength="toolLength"
-        :drawingStart="drawingStart" :setInitialSignType="setInitialSignType" />
+        :drawingStart="drawingStart" :setInitialSignType="setInitialSignType" @onBlur="onBlur" />
       
     </div>
   </div>
@@ -435,6 +435,9 @@ export default {
     },
     onInp(...v) {
       this.$emit('input', ...v)
+    },
+    onBlur() {
+      this.onOutSideClick()
     },
   },
   mounted: function () {

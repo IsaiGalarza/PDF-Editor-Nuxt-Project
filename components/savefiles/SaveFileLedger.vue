@@ -27,7 +27,7 @@
           : 'pb-4 overflow-x-auto custom-scrollbar',
       ]">
       <!-- <transition name="fade" mode="out-in"> -->
-      <img v-if="((pdfUser || []).length <= 0 && !spinner)" src="../../assets/img/dashboard-bg.png"
+      <img v-if="((savedFiles || []).length <= 0 && !spinner)" src="../../assets/img/dashboard-bg.png"
         class="position-absolute mt-24 md:left-[30%] md:w-auto sm:w-[200px]" />
 
       <div v-if="spinner" key="1" class="p-6 flex justify-center items-center">
@@ -44,42 +44,49 @@
             <th class="text-center">File Name</th>
             <th class="text-center">Actions</th>
             <th class="text-center">Date & time</th>
+            <th class="fixed-col text-right"></th>
             <th class="fixed-col right text-right"></th>
           </tr>
         </thead>
-        <tbody v-if="(pdfUser.length > 0)">
-          <tr v-for="(file, i) in pdfUser" :key="file.id" :class="{ highlight: file.id == highlightedFileId }">
+        <tbody v-if="(savedFiles.length > 0)">
+          <tr v-for="(file, i) in savedFiles" :key="file.file.id"
+            :class="{ highlight: file.file.id == highlightedFileId }">
             <td class="text-left fixed-col left">{{ i + 1 + returnedDataPage }}</td>
             <td class="text-center">
               <div class="flex items-center gap-1.5">
                 <div class="border border-paperdazgreen-300 p-0.5"
-                  :class="[file.role == userType.PAID ? 'rounded-md w-9 h-9' : 'circle circle-17']">
+                  :class="[file.file.role == userType.PAID ? 'rounded-md w-9 h-9' : 'circle circle-17']">
                   <img :src="
-                    (file.fileOwner || {}).profile_picture ||
+                    (file.file.fileOwner || {}).profile_picture ||
                     '/img/placeholder_picture.png'
                   " alt=""
-                    :class="[file.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
+                    :class="[file.file.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
                 </div>
                 <div>
                   <p class="text-sm font-medium">
                     <nuxt-link :to="`/pdf/${file.paperLink}`">
-                      {{ file.fileName }}
+                      {{ file.file.fileName }}
                     </nuxt-link>
                   </p>
                   <p class="text-xs">
-                    {{ (file || {}).userName }}
+                    {{ (file.file || {}).userName }}
                   </p>
                 </div>
               </div>
             </td>
             <td class="text-center">
-              {{ file.fileAction || "-" }}
+              {{ file.file.fileAction || "-" }}
             </td>
             <td class="text-center">
-              {{ formatDateTime(file.updatedAt) }}
+              {{ formatDateTime(file.file.updatedAt) }}
+            </td>
+            <td class="fixed-col">
+              <button class="cursor-pointer" @click="(event) => setFileFavourite(file, i)">
+                <HeartOutlineIcon class="w-4 h-4" :fillColor="file.favourite == true ? '#77C360' : 'none'" />
+              </button>
             </td>
             <td class="fixed-col right">
-              <button class="cursor-pointer" @click="showShareCompanyFilesFunc(file)">
+              <button class="cursor-pointer" @click="showShareCompanyFilesFunc(file.file)">
                 <share-outline-icon class="w-4 h-4" />
               </button>
             </td>
@@ -96,6 +103,8 @@
             </td>
             <td class="text-center">
             </td>
+            <td class="fixed-col">
+            </td>
             <td class="fixed-col right">
             </td>
           </tr>
@@ -104,7 +113,7 @@
       <!-- </transition> -->
     </div>
 
-    <FilePagination :totalFile="totalFile" @setPage="setPage" v-if="(pdfUser.length > 10)" />
+    <FilePagination :totalFile="totalFile" @setPage="setPage" v-if="(savedFiles.length > 10)" />
 
     <ShareFilesModal :userFile="userFile" @qrLoad="showQrcodeFileFunc" v-model="showShareCompanyFiles" />
     <CreateCompanyFolder @refresh="setRefresh" :userFile="userFile" @resetUserFile="resetUserFile"
@@ -174,6 +183,7 @@ export default Vue.extend({
       userId: (this.$auth.user).id,
       filterTitle: '',
       searchValue: '',
+      ledgerFiles: [],
       showScribble: false,
       files: [],
       fileProps: {},
@@ -190,7 +200,8 @@ export default Vue.extend({
     this.handleFileHighlight()
     this.handleShowingLedger()
     this.tableScrollObserver()
-    this.fetchFiles(this.returnedDataPage, this.searchValue)
+    // this.fetchFiles(this.returnedDataPage, this.searchValue)
+    this.getSavedFiles()
   },
 
   methods: {
@@ -203,6 +214,37 @@ export default Vue.extend({
       //   this.showMaxPaperlinkModal = true
       // else
       this.showUploadDocumentModal = true
+    },
+    getSavedFiles() {
+      if (!this.$auth.loggedIn) return
+      this.$axios
+        .$get(`/favourites/?userId=${this.$auth?.user?.id}`)
+        .then((response) => {
+          if (response.total > 0) {
+            this.ledgerFiles = response.data
+            this.ledgerFiles.map((val) => val.favourite = true)
+          }
+          this.totalFile = response.total
+        })
+        .finally(() => {
+          this.spinner = false
+        })
+    },
+    setFileFavourite(file, no) {
+      if (!this.$auth.loggedIn) return
+      let ary = this.ledgerFiles;
+      if (file.favourite) {
+        ary[no].favourite = false;
+        this.$axios.$delete(`/favourites/${file.id}`)
+          .then(() => {
+          })
+      } else {
+        ary[no].favourite = true
+        this.$axios.$post('/favourites', { fileId: file.file.id })
+          .then(() => {
+          })
+      }
+      this.ledgerFiles = [...ary]
     },
     setRefresh() {
       this.refresh = !this.refresh
@@ -219,57 +261,6 @@ export default Vue.extend({
     searchFiles(event) {
       this.searchValue = event.target.value
     },
-    async ledgerFiles(page, search) {
-      // &fileName[$like]=${search}%&$skip=${page}
-      let acct = this.$auth.user.role != UserTypeEnum.PAID ?
-        `/ledger?userId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}` :
-        // `/ledger?mainAccountId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}`
-        `/ledger?fileOwnerId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}`
-
-      await this.$axios.get(acct)
-        .then((response) => {
-          let files = [];
-          response.data.data.map((el) => {
-            if (el.file) {
-              el.favourites = [];
-              el.shared = null;
-              el.fileAction = el.action;
-              el.paperLink = (el.file || {}).paperLink;
-              el.userName = el.fileOwner.firstName + " " + el.fileOwner.lastName;
-              files.push(el);
-            }
-          })
-          this.files = files.length > 0 ? files : []
-          this.$store.commit('ADD_USER', files)
-          this.totalFile = response.data.total
-        })
-        .finally(() => {
-          this.spinner = false
-        })
-    },
-    async fetchUserFiles(page, search) {
-      let paramsId = this.$auth.user?.role == UserTypeEnum.TEAM ? this.$auth.user.teamId : this.$auth.user?.id
-      //<<---------------- START: fetching the user files --- ------>>
-      await this.$axios
-        .$get(`/files?userId=${paramsId}&fileName[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`, {
-          params: {
-            isEditing: 0
-          }
-        })
-        .then((response) => {
-          this.$emit('setUploadpaperlink', response.total)
-          const files = (response.data).map((el) => {
-            return el
-          })
-          this.files = files
-          this.$store.commit('ADD_USER', files)
-          this.totalFile = response.total
-        })
-        .finally(() => {
-          this.spinner = false
-        })
-      //<<----------------END: fetching the user files --- ------>>
-    },
     setPage(page) {
       this.returnedDataPage = page
     },
@@ -281,7 +272,7 @@ export default Vue.extend({
       this.showQrcodeFiles = true;
     },
     async fetchFiles(page, search) {
-      this.isPaidUser ? this.ledgerFiles(page, search) : this.ledgerFiles(page, search)
+      // this.isPaidUser ? this.ledgerFiles(page, search) : this.ledgerFiles(page, search)
     },
     handleFileHighlight() {
       this.highlightedFileId = this.$nuxt.$route.query.highlight_file
@@ -372,8 +363,9 @@ export default Vue.extend({
     this.tableScrollObserver()
   },
   computed: {
-    // getting state from the store
-    ...mapState(['filterUser', 'pdfUser']),
+    savedFiles() {
+      return this.ledgerFiles;
+    },
     userType() {
       return (UserTypeEnum)
     },
@@ -400,22 +392,23 @@ export default Vue.extend({
   },
   watch: {
     '$auth.user': function () {
-      this.fetchFiles(this.returnedDataPage, this.searchParam)
+      // this.fetchFiles(this.returnedDataPage, this.searchParam)
+      this.getSavedFiles()
     },
     'returnedDataPage': function () {
       this.spinner = true;
-      this.fetchFiles(this.returnedDataPage, this.searchParam)
+      // this.fetchFiles(this.returnedDataPage, this.searchParam)
     },
     'searchParam': function () {
       this.spinner = true;
-      this.fetchFiles(this.returnedDataPage, this.searchParam)
+      // this.fetchFiles(this.returnedDataPage, this.searchParam)
     },
-    pdfUser: function () {
+    savedFiles: function () {
     },
     refresh: function () {
       this.$nuxt.refresh()
-      this.fetchFiles(this.returnedDataPage, this.folderSearch)
-      this.fetchFolder(this.returnedFolderPage, this.folderSearch)
+      // this.fetchFiles(this.returnedDataPage, this.folderSearch)
+      // this.fetchFolder(this.returnedFolderPage, this.folderSearch)
     },
   },
 })
@@ -438,13 +431,13 @@ export default Vue.extend({
   }
 
   & th {
-    @apply pt-8 pb-3 sm:text-[12px] md:text-base;
+    @apply pt-8 pb-3 text-base;
     background: var(--background);
 
   }
 
   & td {
-    @apply py-3 sm:text-[12px] md:text-base;
+    @apply py-3 text-base;
   }
 
   & td,

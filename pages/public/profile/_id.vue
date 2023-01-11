@@ -118,6 +118,7 @@
               </p>
             </div>
             <!-- <ShareFileOptions :file="item" /> -->
+            <SearchShare :file="item" :showShareIcon="true" />
           </div>
           <!-- End:: Single row -->
         </div>
@@ -146,7 +147,7 @@ import Paid_User from '~/mixins/Paid_User'
 import ArrowDownIcon from '~/components/svg-icons/ArrowDownIcon.vue'
 import FilePagination from '~/components/pagination/FilePagination.vue'
 import ShareFileOptions from '~/components/profile/components/ShareFileOptions.vue'
-
+import SearchShare from '~/components/search-strips/component/SearchShare.vue'
 
 export default Vue.extend({
   components: {

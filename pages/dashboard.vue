@@ -154,7 +154,7 @@ export default Vue.extend({
       this.totalUploadPaperlink = val
     },
     async maxFileUpload() {
-      await this.$axios.get(`/subscriptions/${this.$auth.user.subscriptionId}`)
+      this.$auth.user.subscriptionId && await this.$axios.get(`/subscriptions/${this.$auth.user.subscriptionId}`)
         .then((response) => {
           this.totalRegisteredPaperlink = response?.data?.paperlink
         })

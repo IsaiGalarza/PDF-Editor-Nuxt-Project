@@ -64,7 +64,7 @@
                 </div>
                 <div>
                   <p class="text-sm font-medium">
-                    <nuxt-link :to="`/pdf/${file.paperLink}`">
+                    <nuxt-link :to="`/pdf/${file.file.paperLink}`">
                       {{ file.file.fileName }}
                     </nuxt-link>
                   </p>

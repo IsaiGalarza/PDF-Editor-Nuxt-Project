@@ -1,10 +1,5 @@
 <template>
   <section class="flex flex-wrap w-full md:justify-between font-family">
-    <my-upload field="upload" @croper-close="croperClose" @crop-success="cropSuccess" @crop-upload-success="cropUploadSuccess"
-          @crop-upload-fail="cropUploadFail" @src-file-set="srcFileSet" :modelValue="show" :width="140" :height="140" :maxSize="2000" langType="en" :url="$axios.defaults.baseURL+'/files'"
-          :noCircle="noCircle"
-          method="PATCH"
-          :params="params" :headers="headers" img-format="png"></my-upload>
     <!-- logo container -->
     <div class="bg-white md:w-[24%] w-full profile-image-container">
       <div class="icon-img md:mx-7 my-6 relative" @click="changeProfileimage">
@@ -19,7 +14,6 @@
         <div
           v-if="isUser"
           class="w-auto absolute bottom-3 right-3"
-          @click="toggleShow"
         >
           <upload-file-icon />
         </div>
@@ -76,10 +70,18 @@
       <div class="w-full grid place-items-center">
         <button
           class="w-[160px] flex justify-center items-center text-white py-2 mt-3 text-center border-none bg-paperdazgreen-400 rounded-md"
-          v-if="showUpdateButton" :class="[isLoading ? 'opacity-50' : 'opacity-100']" :disabled="isloading"
-          @click="patchUser">
+          v-if="showUpdateButton"
+          :class="[isLoading ? 'opacity-50' : 'opacity-100']"
+          :disabled="isloading"
+          @click="patchUser"
+        >
           Update
-          <SpinnerDottedIcon v-if="isLoading" height="20" width="20" class="animate-spin ml-2" />
+          <SpinnerDottedIcon
+            v-if="isLoading"
+            height="20"
+            width="20"
+            class="animate-spin ml-2"
+          />
         </button>
       </div>
       </div>
@@ -97,14 +99,13 @@ import login from '~/mixins/login'
 import mixins from 'vue-typed-mixins'
 import SpinnerDottedIcon from '../svg-icons/SpinnerDottedIcon.vue'
 import { ErrorHandler } from '~/types/ErrorFunction'
-import myUpload from 'vue-image-crop-upload';
 import ShareOutlineIcon from '~/components/svg-icons/ShareOutlineIcon.vue'
 import UploadFileIcon from '~/components/svg-icons/UploadFileIcon.vue'
 
 export default mixins(login).extend({
   name: 'profile-top-info',
   props: ['userInfo'],
-  data() {
+  data () {
     return {
       editEnalble: true,
       showScanner: false,
@@ -116,17 +117,7 @@ export default mixins(login).extend({
       phone: '',
       address: '',
       name: '',
-      profilePhoto: null,
-      isLoading: false,
-      show: false,
-      noCircle:true,
-      params: {
-        type: 'profilePicture',
-        userId: 0
-      },
-      headers: {
-        smail: '*_~'
-      },
+      isLoading: false
     }
   },
   // async asyncData({ params, query, $axios}) {
@@ -135,49 +126,14 @@ export default mixins(login).extend({
   components: {
     Pencil,
     SpinnerDottedIcon,
-    'my-upload': myUpload,
     UploadFileIcon,
     ShareOutlineIcon
   },
   methods: {
-    toggleShow() {
-				this.show = !this.show;
-			},
-    cropSuccess(imgDataUrl, field) {
-      console.log('-------- crop success --------');
-      this.imgDataUrl = imgDataUrl;
-    },
-    cropUploadSuccess(jsonData, field) {
-      console.log('-------- upload success --------');
-      this.profilePhoto = jsonData.profilePicture;
-      this.show = false;
-      console.log(jsonData);
-      console.log('field: ' + field);
-    },
-    cropUploadFail(status, field) {
-      console.log('-------- upload fail --------');
-      console.log(status);
-      console.log('field: ' + field);
-    },
-    croperClose(status){
-      this.show = status;
-    },
-    srcFileSet( fileName, fileType, fileSize){
-      console.log((fileSize / 1024 / 1024))
-      if (
-        (fileSize / 1024 / 1024) > 2
-      ) {
-        this.$notify.error({
-          message: 'File size must be less than 2MB'
-        })
-        return
-      }
-      return false;
-    },
-    getTeamPublicFolder() {
+    getTeamPublicFolder () {
       this.$axios.get()
     },
-    patchUser() {
+    patchUser () {
       if (
         (this.address.trim() == '' && this.phone.trim() == '') ||
         this.isLoading
@@ -209,15 +165,15 @@ export default mixins(login).extend({
             })
         })
     },
-    toggleInput() {
+    toggleInput () {
       this.editEnalble = !this.editEnalble
     },
-    changeProfileimage() {
+    changeProfileimage () {
       // console.log('change image');
       // if (!this.isUser) return;
-      //this.$refs.referenceInput.click()
+      this.$refs.referenceInput.click()
     },
-    async uploadProfilePicture(event) {
+    async uploadProfilePicture (event) {
       // if (!this.isUser) return;
 
       let fileInput = event.target
@@ -239,10 +195,8 @@ export default mixins(login).extend({
 
       await this.$axios
         .$patch(`/files`, formdata)
-        .then((response) => {
+        .then(() => {
           //@ts-ignore
-          //console.log("response",response.profilePicture)
-          this.profilePhoto = response.profilePicture;
           this.filterUsers()
         })
         .catch(() => {
@@ -252,12 +206,11 @@ export default mixins(login).extend({
         })
     }
   },
-  mounted() {
+  mounted () {
     console.log('>>>>>>>>>>>>???', this.userInfo)
     this.phone = this.userInfo?.phone
     this.address = this.userInfo?.address
     this.name = this.userInfo?.companyName
-    //this.profilePhoto = this.userInfo?.profilePhoto
     // QRCode.toCanvas(this.$refs.qrcancas, this.qrCodeurl, function () {});
     //  await this.$nextTick()
     // ;(this.$refs.qrcancas as HTMLElement).removeAttribute('style')
@@ -266,38 +219,33 @@ export default mixins(login).extend({
     //     },
   },
   computed: {
-    firstCompanyName() {
+    firstCompanyName () {
       return (this.userInfo?.companyName || '').charAt(0).toUpperCase()
     },
-    showUpdateButton() {
+    showUpdateButton () {
       return !this.editEnalble || !this.editEnalble
     },
-    qrCodeurl() {
+    qrCodeurl () {
       return `${window.origin}/public/profile/${this.userInfo?.id}`
     },
-    login() {
+    login () {
       return this.$auth.loggedIn
     },
-    user() {
+    user () {
       return this.$auth?.user
     },
-    isUser() {
+    isUser () {
       return this.user?.id == this.userInfo?.id
     },
-    /*profilePhoto () {
+    profilePhoto () {
       return this.userInfo?.profilePicture
-    }*/
+    }
   },
   watch: {
     '$auth.user': function () {
       this.address = this.$auth.user?.address || ''
       this.phone = this.$auth.user?.phone || ''
       // QRCode.toCanvas(this.$refs.qrcancas, this.qrCodeurl, function () {});
-    },
-    userInfo(newValue, oldValue) {
-      this.profilePhoto = newValue.profilePicture;
-      this.params.userId = newValue.id;
-      //console.log("newValue", newValue.profilePicture, oldValue)
     }
   }
 })
@@ -307,6 +255,7 @@ export default mixins(login).extend({
 .font-family {
   font-family: inherit !important;
 }
+
 .profile-image-container {
   @apply bg-white flex justify-center flex-wrap items-center py-4 rounded-[10px];
 
@@ -336,7 +285,8 @@ export default mixins(login).extend({
       outline: none !important;
     }
 
-    button {}
+    button {
+    }
   }
 
   .input-wrapper-title {

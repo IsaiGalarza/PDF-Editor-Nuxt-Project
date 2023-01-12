@@ -6,7 +6,7 @@
         <component :is="tab.icon" />
       </template>
       <template #count>{{
-          isTabAction(tab.action)
+        isTabAction(tab.action)
       }}</template>
       <!-- <template #count v-else>{{ originalPdfFiles.length }}</template> -->
       <template #name>{{ tab.label }}</template>
@@ -47,7 +47,7 @@ export default Vue.extend({
   watch: {
     "$auth.user": function () {
       this.fetchFiles()
-    }
+    },
   },
   methods: {
     async fetchFiles() {
@@ -55,16 +55,13 @@ export default Vue.extend({
       let paramsId = (this.$auth.user.role == UserTypeEnum.TEAM ? this.$auth.user.teamId : this.$auth.user.id)
 
       //<------------------- START: fetching of folder ------------>>
-      await this.$axios.$get(`/files/?userId=${paramsId}&$sort[updatedAt]=-1`, {
-        params: {
-          isEditing: 0
-        }
-      })
+      await this.$axios.$get(`/favourites/?userId=${paramsId}`)
         .then((response) => {
-          const filesData = response.data.map((el) => {
-            return el
+          const filesData = []
+          filesData = response.total > 0 && response.data.map((el) => {
+            return el.file
           })
-          this.$store.commit('ADD_USER', filesData)
+          this.$store.commit('ADD_SAVE_USER', filesData)
         })
         .finally(() => {
           this.fileSpinner = false
@@ -103,7 +100,7 @@ export default Vue.extend({
     },
     searchFilter(tab, label) {
       this.$emit('updateActiveTab', tab)
-      this.$store.commit('FILTER_USERs', label)
+      this.$store.commit('FILTER_SAVED_USERs', label)
     },
   },
 })
@@ -111,6 +108,6 @@ export default Vue.extend({
 <style lang="postcss" scoped>
 .small-details-card-container {
   @apply gap-3 lg:gap-4;
-  display: grid;
+  display:grid;
 }
 </style>

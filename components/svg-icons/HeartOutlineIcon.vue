@@ -36,7 +36,6 @@ export default Vue.extend({
   },
   watch: {
     fillColor: function () {
-      console.log(this.fillColor);
       this.currentfillColor = this.fillColor
     },
   },

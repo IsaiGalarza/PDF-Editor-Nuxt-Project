@@ -49,44 +49,43 @@
           </tr>
         </thead>
         <tbody v-if="(savedFiles.length > 0)">
-          <tr v-for="(file, i) in savedFiles" :key="file.file.id"
-            :class="{ highlight: file.file.id == highlightedFileId }">
+          <tr v-for="(file, i) in savedFiles" :key="file.favouriteId" :class="{ highlight: file.favouriteId == highlightedFileId }">
             <td class="text-left fixed-col left">{{ i + 1 + returnedDataPage }}</td>
             <td class="text-center">
               <div class="flex items-center gap-1.5">
                 <div class="border border-paperdazgreen-300 p-0.5"
-                  :class="[file.file.role == userType.PAID ? 'rounded-md w-9 h-9' : 'circle circle-17']">
+                  :class="[file.role == userType.PAID ? 'rounded-md w-9 h-9' : 'circle circle-17']">
                   <img :src="
-                    (file.file.fileOwner || {}).profile_picture ||
+                    (file.fileOwner || {}).profile_picture ||
                     '/img/placeholder_picture.png'
                   " alt=""
-                    :class="[file.file.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
+                    :class="[file.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
                 </div>
                 <div>
                   <p class="text-sm font-medium">
-                    <nuxt-link :to="`/pdf/${file.file.paperLink}`">
-                      {{ file.file.fileName }}
+                    <nuxt-link :to="`/pdf/${file.paperLink}`">
+                      {{ file.fileName }}
                     </nuxt-link>
                   </p>
                   <p class="text-xs">
-                    {{ (file.file || {}).userName }}
+                    {{ (file || {}).userName }}
                   </p>
                 </div>
               </div>
             </td>
             <td class="text-center">
-              {{ file.file.fileAction || "-" }}
+              {{ file.fileAction || "-" }}
             </td>
             <td class="text-center">
-              {{ formatDateTime(file.file.updatedAt) }}
+              {{ formatDateTime(file.updatedAt) }}
             </td>
             <td class="fixed-col">
               <button class="cursor-pointer" @click="(event) => setFileFavourite(file, i)">
-                <HeartOutlineIcon class="w-4 h-4" :fillColor="file.favourite == true ? '#77C360' : 'none'" />
+                <HeartOutlineIcon class="w-4 h-4" :fillColor="file.favourite == 1 ? '#77C360' : 'none'" />
               </button>
             </td>
             <td class="fixed-col right">
-              <button class="cursor-pointer" @click="showShareCompanyFilesFunc(file.file)">
+              <button class="cursor-pointer" @click="showShareCompanyFilesFunc(file)">
                 <share-outline-icon class="w-4 h-4" />
               </button>
             </td>
@@ -209,10 +208,6 @@ export default Vue.extend({
       this.showCreateCompanyFolder = true
     },
     showUploadModalFunction() {
-      // if (!this.showUploadIcon) return
-      // if (this.totalFile >= this.totalRegisteredPaperlink)
-      //   this.showMaxPaperlinkModal = true
-      // else
       this.showUploadDocumentModal = true
     },
     getSavedFiles() {
@@ -220,10 +215,15 @@ export default Vue.extend({
       this.$axios
         .$get(`/favourites/?userId=${this.$auth?.user?.id}`)
         .then((response) => {
-          if (response.total > 0) {
-            this.ledgerFiles = response.data
-            this.ledgerFiles.map((val) => val.favourite = true)
-          }
+          // this.ledgerFiles = response.data
+          // this.ledgerFiles.map((val) => val.favourite = true)
+          var ary = []
+          response.data.map((val) => {
+            val.file.favourite = 1
+            val.file.favouriteId = val.id
+          })
+          ary = response.data.map((val) => val.file)
+          this.$store.commit('ADD_SAVE_USER', ary)
           this.totalFile = response.total
         })
         .finally(() => {
@@ -232,19 +232,16 @@ export default Vue.extend({
     },
     setFileFavourite(file, no) {
       if (!this.$auth.loggedIn) return
-      let ary = this.ledgerFiles;
-      if (file.favourite) {
-        ary[no].favourite = false;
-        this.$axios.$delete(`/favourites/${file.id}`)
+      this.$store.commit('SET_FAVOURITE', no)
+      if (file.favourite == 0) {
+        this.$axios.$delete(`/favourites/${file.favouriteId}`)
           .then(() => {
           })
       } else {
-        ary[no].favourite = true
-        this.$axios.$post('/favourites', { fileId: file.file.id })
+        this.$axios.$post('/favourites', { fileId: file.id })
           .then(() => {
           })
       }
-      this.ledgerFiles = [...ary]
     },
     setRefresh() {
       this.refresh = !this.refresh
@@ -285,7 +282,7 @@ export default Vue.extend({
       const url = location.origin.replace(/\/+$/, '') + `/pdf/${file.id}`
       navigator.share({
         url,
-        title: file.file_name,
+        title: file_name,
       })
     },
     async tableScrollObserver() {
@@ -363,9 +360,7 @@ export default Vue.extend({
     this.tableScrollObserver()
   },
   computed: {
-    savedFiles() {
-      return this.ledgerFiles;
-    },
+    ...mapState(['filterUser', 'savedFiles']),
     userType() {
       return (UserTypeEnum)
     },

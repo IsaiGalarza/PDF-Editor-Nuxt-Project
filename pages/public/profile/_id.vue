@@ -2,11 +2,11 @@
   <div class="">
     <ProfileTopInfo :userInfo="userInfo" />
     <div class="mt-4 bg-white rounded-xl" v-if="checkWEmptyFileFolder">
-      <header class="text-paperdazgreen-400 font-semibold p-4 border-b border-[#DCDCDC]">
+      <!-- <header class="text-paperdazgreen-400 font-semibold p-4 border-b border-[#DCDCDC]">
         <h4 class="text-[19px]">Folders \ Files</h4>
-      </header>
+      </header> -->
       <div class="min-h-[50vh] grid place-items-center p-4">
-        <div>
+        <!-- <div>
           <p class="text-center text-[#434242] text-md font-medium">
             Your Public Profile is empty!
           </p>
@@ -15,6 +15,14 @@
               Turn files into Paperlink
             </button>
           </div>
+        </div> -->
+        <div>
+          <img src="../../../assets/img/dashboard-bg.png"
+              class=" mt-4 md:w-auto sm:w-[200px]" />
+          <p class="text-center text-[22px] text-[#434242] text-md font-medium mt-4 mb-16">
+            <span v-if="isAuthor">Upload files and create folders!</span>
+            <span v-else="isAuthor">Come back to see our files!</span>
+          </p>
         </div>
       </div>
     </div>
@@ -23,13 +31,13 @@
       <!-- Start:: Folders -->
       <div class="bg-white rounded-xl mb-4">
         <header
-          class="p-4 border-b border-[#DCDCDC] text-paperdazgreen-400 flex flex-wrap items-center gap-2 justify-between">
+          class="py-3 px-2 mx-4 border-b border-[#DCDCDC] text-paperdazgreen-400 flex flex-wrap items-center gap-2 justify-between">
           <h4 class="text-xl font-medium">Folders</h4>
 
           <div @submit.prevent class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
             <span class="el-dropdown-link" >
               <input type="text" placeholder="Search any folder..."
-                class="rounded-lg border border-paperdazgreen-400 px-2 h-8 placeholder:italic"
+                class="rounded-lg border !border-paperdazgreen-400 px-2 h-8 w-48 placeholder:italic"
                 v-model="searchFolderParam" />
             </span>
 
@@ -56,12 +64,15 @@
 
           <!-- Start:: Single row -->
           <div v-for="(item, i) in folders" :key="i + 'folder'"
-            class="grid grid-cols-[max-content,1fr] gap-2 items-center px-4 border-b border-[#DCDCDC] py-2">
+            class="grid grid-cols-[max-content,1fr] gap-2 items-center mx-4 border-b border-[#DCDCDC] py-2">
             <img class="w-7" src="@/assets/recent-icons/OpenedFolder.svg" />
-            <div class="overflow-hidden">
-              <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
-                <nuxt-link :to="`/public-profile/${item.id}`" class="cursor-pointer">{{ (item || {}).name }}</nuxt-link>
-              </p>
+            <div class="flex justify-between">
+              <div class="overflow-hidden">
+                <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
+                  <nuxt-link :to="`/public-profile/${item.id}`" class="cursor-pointer">{{ (item || {}).name }}</nuxt-link>
+                </p>
+              </div>
+              <SearchShare :file="item" :showShareIcon="true" />
             </div>
           </div>
           <!-- End:: Single row -->
@@ -77,12 +88,12 @@
       <!-- Start:: Files -->
       <div class="bg-white rounded-xl pb-4">
         <header
-          class="p-4 border-b border-[#DCDCDC] text-paperdazgreen-400 flex flex-wrap items-center gap-2 justify-between">
+          class="py-3 px-2 mx-4 border-b border-[#DCDCDC] text-paperdazgreen-400 flex flex-wrap items-center gap-2 justify-between">
           <h4 class="text-xl font-medium">Files</h4>
           <form @submit.prevent class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
             <span class="el-dropdown-link">
               <input type="text" placeholder="Search any file..."
-                class="rounded-lg border border-paperdazgreen-400 px-2 h-8 placeholder:italic"
+                class="rounded-lg border !border-paperdazgreen-400 px-2 h-8 w-48 placeholder:italic"
                 v-model="searchFileParam" />
             </span>
             <button @click="showFile = !showFile" type="button"
@@ -107,18 +118,19 @@
 
           <!-- Start:: Single row -->
           <div v-else v-for="(item, i) in files" :key="i + 'file'"
-            class="grid grid-cols-[max-content,1fr,max-content] gap-2 items-center px-4 border-b border-[#DCDCDC] py-3">
+            class="grid grid-cols-[max-content,1fr,max-content] gap-2 items-center mx-4 border-b border-[#DCDCDC] py-3">
             <img src="/icon.png" width="23" height="23" />
-
-            <div class="overflow-hidden">
-              <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
-                <nuxt-link :to="`/pdf/${item.paperLink}`" class="cursor-pointer">
-                  {{ (item || {}).fileName || ' ' }}
-                </nuxt-link>
-              </p>
+            <div class="flex justify-between">
+              <div class="overflow-hidden">
+                <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
+                  <nuxt-link :to="`/pdf/${item.paperLink}`" class="cursor-pointer">
+                    {{ (item || {}).fileName || ' ' }}
+                  </nuxt-link>
+                </p>
+              </div>
+              <SearchShare :file="item" :showShareIcon="true" />
             </div>
             <!-- <ShareFileOptions :file="item" /> -->
-            <SearchShare :file="item" :showShareIcon="true" />
           </div>
           <!-- End:: Single row -->
         </div>
@@ -178,7 +190,11 @@ export default Vue.extend({
     this.generateQR()
     // this.totalFileFolder()
   },
-  computed: {},
+  computed: {
+    isAuthor() {
+      return this.$auth?.user.id == this.userInfo?.id
+    }
+  },
   // middleware:['paid_user'],
   data() {
     return {
@@ -237,7 +253,7 @@ export default Vue.extend({
             return el
           })
           this.folders = filesData
-          this.checkWEmptyFileFolder = filesData > 0
+          this.checkWEmptyFileFolder = filesData <= 0
           this.totalFolder = response.total
           this.folderSpinner = false
         })
@@ -254,7 +270,7 @@ export default Vue.extend({
             return el
           })
           this.files = filesData
-          this.checkWEmptyFileFolder = filesData > 0
+          this.checkWEmptyFileFolder = filesData <= 0
           this.fileSpinner = false
           this.totalFile = response.total
         })

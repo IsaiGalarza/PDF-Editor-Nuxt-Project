@@ -1,6 +1,6 @@
 <template>
   <div class="self-center flex items-center">
-    <button @click="setFileFavourite" class="mr-1.5 pr-1.5 border-[#EBEBEB] border-r "
+    <button @click="setFileFavourite" class="mr-1.5 pr-1.5 border-[#EBEBEB] border-r flex "
       v-if="$auth.loggedIn && showShareIcon && favouriteFileLoaded">
       <span class="inline-block heart-icon" ref="heart">
         <heart-outline-icon :fillColor="toggleHeartColor ? fillHeartColor : 'rgb(119,181,80)'" width="22" height="22" />

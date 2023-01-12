@@ -71,10 +71,19 @@
       isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.name)">
         <user-profile-solid-icon />
       </button>
+      <zoom-in-out @zoomIn="$emit('zoomIn')" @zoomOut="$emit('zoomOut')" />
       <div class="flex">
+        <!-- <div v-if="isComplete && isCreator" class="mx-1">
+          <button
+            class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm" @click="onImageClick">
+            Require
+            <img src="../../assets/img/require-icon.png" width="18" class="bg-slate-200 p-[2px]" />
+          </button>
+        </div> -->
+
         <div class="mx-1">
           <button
-            class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm">
+            class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm" @click="onSignClick">
             Sign
             <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
           </button>
@@ -91,7 +100,7 @@
 
         <div class="mx-1">
           <button
-            class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 tool-item text-white text-sm">
+            class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 tool-item text-white text-sm" @click="onInitialsClick">
             Initial
             <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
           </button>
@@ -108,15 +117,17 @@
         </div>
       </div>
 
-      <button @click="undoFunction" class="text-sm">UNDO</button>
+      <button @click="undoFunction" class="text-sm mr-4">UNDO</button>
     </div>
 
     <div v-if="isComplete && isCreator" class="flex items-center py-1">
       <div class="w-1/3 text-center">
         <button class="inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm"
           @click="onImageClick">
+          
           <!-- <input type="file" ref="image" class="hidden" />
           <star-icon /> -->
+          
           Require
           <img src="../../assets/img/require-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         </button>
@@ -189,6 +200,7 @@ import PdfNotLoggedUser from './modals/PdfNotLoggedUser.vue'
 import AlertModal from './modals/AlertModal.vue'
 import initialURL from '~/assets/img/initials.png'
 import signatureURL from '~/assets/img/sign.png'
+import ZoomInOut from '@/components/pdf/ZoomInOut'
 
 export default {
   components: {
@@ -206,7 +218,8 @@ export default {
     StarIcon,
     ExclamationIcon,
     PdfNotLoggedUser,
-    AlertModal
+    AlertModal,
+    ZoomInOut
   },
   mixins: [SaveSignatureInitialsMixin],
   data: () => ({
@@ -237,6 +250,7 @@ export default {
     openTypeSignModal: Boolean,
     openTypeInitialModal: Boolean
   },
+  emits: ['zoomOut', 'zoomIn'],
   computed: {
     TOOL_TYPE() {
       return TOOL_TYPE
@@ -333,7 +347,7 @@ export default {
       }
       if (!this.allowAnnotationsSign_Initial(type)) return
 
-      if (this.selectedType == type) this.selectedType = this.selectedType
+      if (this.selectedType == type) this.selectedType = null
       else this.selectedType = type
       this.$emit('tool-change', this.selectedType)
       this.activeTool = this.selectedType || ''
@@ -346,12 +360,13 @@ export default {
         !this.$auth.loggedIn ? this.showPdfNotLoggedInUser = true : null
         return
       }
-      if (!this.isCreator) {
-        this.setSelectedType(this.TOOL_TYPE.signature)
-      }
-      else {
-        this.setSelectedType(this.TOOL_TYPE.appendSignature)
-      }
+      // if (!this.isCreator) {
+      //   this.setSelectedType(this.TOOL_TYPE.signature)
+      // }
+      // else {
+      //   this.setSelectedType(this.TOOL_TYPE.appendSignature)
+      // }
+      this.setSelectedType(this.TOOL_TYPE.appendSignature)
     },
     openSignModal() {
       if (!this.isCreator) {
@@ -368,12 +383,13 @@ export default {
         !this.$auth.loggedIn ? this.showPdfNotLoggedInUser = true : null
         return
       }
-      if (!this.isCreator) {
-        this.setSelectedType(this.TOOL_TYPE.initial)
-      }
-      else {
-        this.setSelectedType(this.TOOL_TYPE.appendInitial)
-      }
+      // if (!this.isCreator) {
+      //   this.setSelectedType(this.TOOL_TYPE.initial)
+      // }
+      // else {
+      //   this.setSelectedType(this.TOOL_TYPE.appendInitial)
+      // }
+      this.setSelectedType(this.TOOL_TYPE.appendInitial)
     },
     cancelConfrim() {
       window.location.assign('/dashboard')

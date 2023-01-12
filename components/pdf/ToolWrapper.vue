@@ -1,32 +1,32 @@
 <template>
   <div class="tool-wrapper" :style="wrpStyle" ref="Wrp" :id="getToolWrapperId">
     <div
-      class="h-8 rounded-full border border-black text-black inline-flex items-center px-4 gap-1.5 backdrop-blur-sm bg-white/30 absolute tool-menu"
-      v-show="isActive" ref="toolMenu" v-if="isCreator">
-      <button class="h-full cursor-move" v-hammer:pan="handleDrag">
+      class="h-8 border text-black inline-flex items-center gap-1.5 px-1 backdrop-blur-sm bg-white/30 absolute tool-menu"
+      v-show="isActive" ref="toolMenu" v-if="isCreator" v-hammer:pan="handleDrag">
+      <!-- <button class="h-full cursor-move" v-hammer:pan="handleDrag">
         <move-icon />
-      </button>
+      </button> -->
 
-      <button class="text-sm px-0.5 h-full" @click="dec" v-show="isMenuVisible('increase')">
+      <button class="text-sm px-0.5 h-full" @click="dec" v-show="isMenuVisible('increase')" @mouseover="draggingMouseover">
         A
       </button>
-      <button class="text-lg px-0.5 h-full" @click="inc" v-show="isMenuVisible('increase')">
+      <button class="text-lg px-0.5 h-full" @click="inc" v-show="isMenuVisible('increase')" @mouseover="draggingMouseover">
         A
       </button>
       <button class="px-0.5 h-full flex items-center relative text-[15px]" @click="openCalendar"
-        v-if="type == TOOL_TYPE.date">
+        v-if="type == TOOL_TYPE.date" @mouseover="draggingMouseover">
         <calendar-icon />
         <el-date-picker ref="datePicker" type="date" placeholder="Pick a day" v-model="calendarValue"
           :default-value="new Date()" id="sdfadf" hidden
           style="height: 0; width: 0; max-width: 0; margin-0; padding:0; overflow:hidden; position:absolute; top: 100%; right: 50%; transform: translateX(-50%)">
         </el-date-picker>
       </button>
-      <button class="px-0.5 h-full" @click="handleDelete">
+      <button class="px-0.5 h-full" @click="handleDelete" @mouseover="draggingMouseover">
         <trash-x-icon />
       </button>
-      <button class="px-0.5 h-full" @click="onOutSideClick">
+      <!-- <button class="px-0.5 h-full" @click="onOutSideClick" @mouseover="draggingMouseover">
         <check-circle-icon />
-      </button>
+      </button> -->
     </div>
 
     <div @click="onClick" class="tool-holder">
@@ -48,7 +48,7 @@
         :isActive="isActive" :fontSize="fontSize" :scale="scale" :file="file" :value="value" :justMounted="justMounted"
         @input="onInp" :generatePDF="generatePDF" :showPublishModal="showPublishModal"
         :selectedToolType="selectedToolType" :mouseUp="mouseUp" :lineStart="lineStart" :toolLength="toolLength"
-        :drawingStart="drawingStart" :setInitialSignType="setInitialSignType" />
+        :drawingStart="drawingStart" :setInitialSignType="setInitialSignType" @onBlur="onBlur" />
       
     </div>
   </div>
@@ -140,6 +140,7 @@ export default {
     lastPosX: 0,
     lastPosY: 0,
     isDragging: false,
+    isDragFinal: false,
     top: 100,
     left: 0,
     calendarValue: undefined,
@@ -189,6 +190,9 @@ export default {
     calendarValue(v) {
       this.$emit('input', moment(new Date(v).getTime()).format('YYYY-MM-DD'))
     },
+    fontSize() {
+      this.toolMenuPosCalculation()
+    }
   },
   computed: {
     ...mapState(['editAnnotation']),
@@ -242,6 +246,10 @@ export default {
   },
   methods: {
     handleDelete() {
+      if (this.isDragFinal) {
+        this.isDragFinal = !this.isDragFinal
+        return
+      }
       this.setActiveToolId(null)
       this.deleteTool(this.id)
     },
@@ -258,17 +266,29 @@ export default {
             })
         )
     },
-    inc() {
+    inc(event) {
+      if (this.isDragFinal) {
+        this.isDragFinal = !this.isDragFinal
+        return
+      }
       if (this.incDecCount == this.incDecMax) return
       ++this.incDecCount
       this.handleIncrease(this.id)
     },
     dec() {
+      if (this.isDragFinal) {
+        this.isDragFinal = !this.isDragFinal
+        return
+      }
       if (this.incDecCount == this.incDecMin) return
       --this.incDecCount
       this.handleDecrease(this.id)
     },
     openCalendar() {
+      if (this.isDragFinal) {
+        this.isDragFinal = !this.isDragFinal
+        return
+      }
       this.$refs.datePicker.focus()
     },
     isMenuVisible(type) {
@@ -312,6 +332,10 @@ export default {
       // this.$BUS.$emit('tool-comp-click', this.id)
     },
     onOutSideClick() {
+      if (this.isDragFinal) {
+        this.isDragFinal = !this.isDragFinal
+        return
+      }
       if (!this.isCreator) return
       this.$emit('toolWrapperAfterChecked', this.id)
       this.setActiveToolId(null)
@@ -339,6 +363,13 @@ export default {
       if (this.tool.top) this.top = this.tool.top
       if (this.tool.left) this.left = this.tool.left
     },
+    draggingMouseover(event) {
+      if (this.isDragging) {
+        event.target.style.cursor = 'move'
+      } else {
+        event.target.style.cursor = 'pointer'
+      }
+    },
     async handleDrag(event) {
       var elem = this.$refs.Wrp
 
@@ -348,6 +379,8 @@ export default {
         this.lastPosY = elem.offsetTop
         // console.log(elem.parentElement.getBoundingClientRect().width / elem.parentElement.clientWidth)
         this.pageScale = elem.parentElement.getBoundingClientRect().width / elem.parentElement.clientWidth
+      } else {
+        elem.style.cursor = 'move'
       }
 
       let posX = event.deltaX/this.pageScale + this.lastPosX
@@ -374,19 +407,22 @@ export default {
         // Tool Menu Position Calculation
         this.toolMenuPosCalculation()
       }
+      this.isDragFinal = event.isFinal
     },
     async toolMenuPosCalculation() {
       await this.$nextTick()
       var elem = this.$refs.Wrp
       // console.log(elem)
 
-      let toolMenuHeight = this.$refs.toolMenu.clientHeight + 7
+      let toolMenuHeight = this.$refs.toolMenu.clientHeight +2
       let toolMenuWidth = this.$refs.toolMenu.clientWidth
+      const initFontSize = 12
+      const fontSize = this.fontSize || initFontSize
       if (this.top < toolMenuHeight) {
         this.$refs.toolMenu.style.top = 'unset'
-        this.$refs.toolMenu.style.bottom = `-${toolMenuHeight}px`
+        this.$refs.toolMenu.style.bottom = `-${toolMenuHeight + fontSize - initFontSize}px`
       } else {
-        this.$refs.toolMenu.style.top = `-${toolMenuHeight}px`
+        this.$refs.toolMenu.style.top = `-${toolMenuHeight + fontSize - initFontSize}px`
         this.$refs.toolMenu.style.bottom = 'unset'
       }
       if (
@@ -400,6 +436,9 @@ export default {
     onInp(...v) {
       this.$emit('input', ...v)
     },
+    onBlur() {
+      this.onOutSideClick()
+    },
   },
   mounted: function () {
   }
@@ -410,9 +449,9 @@ export default {
 @import './scss/tools.scss';
 
 .tool-menu {
-  height: 32px;
+  height: 27px;
   position: absolute;
-  top: -37px;
+  top: -27px;
   z-index: 30;
 }
 

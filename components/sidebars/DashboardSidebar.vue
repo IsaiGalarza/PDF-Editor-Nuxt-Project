@@ -112,7 +112,7 @@ export default Vue.extend({
           link: '/dashboard',
           exact: true,
         },
-        // { label: 'Home', icon: 'HomeIcon', link: '/', exact: false },
+        { label: 'Save Files', icon: 'SolidHeartIcon', link: '/savefiles', exact: false },
         {
           label: 'Packages',
           icon: 'NewsPaperIcon',
@@ -192,14 +192,17 @@ export default Vue.extend({
         //   link: '/team',
         //   exact: false,
         // })
+        this.links.splice(1, 1);
         this.links.splice(1, 0, {
           label: 'Company Files',
           icon: 'DocumentIcon',
           link: '/company-files',
           exact: false,
         })
+        
       }
        if (this.$store.getters.userType === UserTypeEnum.TEAM) {
+        this.links.splice(1, 1);
         this.links.splice(1, 0, {
           label: 'Company Files',
           icon: 'DocumentIcon',

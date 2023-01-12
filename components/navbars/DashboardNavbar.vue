@@ -16,7 +16,7 @@
             </template>
           </el-input>
         </span>
-        <el-dropdown-menu slot="dropdown">
+        <el-dropdown-menu slot="dropdown" :class="topSearchContent.length > 0 ? '' : 'hidden'">
           <!-- Start:: dropdown -->
           <div class="bg-white rounded-lg whitespace-nowrap w-[40vw]">
             <div class="max-h-[60vh] custom-scrollbar overflow-y-auto p-2">
@@ -25,15 +25,14 @@
                 <img :src="
                   (item.user || {}).profile_picture ||
                   '/img/placeholder_picture.png'
-                " alt="" class="h-16 w-16 rounded-lg object-cover" />
+                " alt="" class="h-16 w-16 rounded-2 object-cover" />
                 <div class="overflow-hidden">
                   <nuxt-link :to="`/pdf/${item.paperLink}`">
-                    <p class="text-sm text-black mb-1 truncate">
+                    <p class="text-sm text-black truncate font-semibold">{{ item.fileName }}</p>
+                    <p class="text-sm text-black mb-1 truncate font-semibold">
                       {{ (item.user || {}).company_name }}
                     </p>
-                    <p class="text-xs truncate">{{ item.fileName }}</p>
-                    <p class="text-[11px] mt-0.5 truncate">{{ (item.user || {}).firstName || (item.user ||
-                    {}).companyName }}</p>
+                    <p class="text-[11px] mt-0.5 truncate">{{item.paperLink}}</p>
                   </nuxt-link>
                 </div>
                 <SearchShare :showShareIcon="true" :file="item" />

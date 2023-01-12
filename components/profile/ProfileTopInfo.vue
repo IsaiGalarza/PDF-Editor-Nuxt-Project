@@ -1,16 +1,74 @@
 <template>
   <section class="flex flex-wrap w-full md:justify-between font-family">
-    <my-upload field="upload" @croper-close="croperClose" @crop-success="cropSuccess" @crop-upload-success="cropUploadSuccess"
-          @crop-upload-fail="cropUploadFail" @src-file-set="srcFileSet" :modelValue="show" :width="140" :height="140" :maxSize="2000" langType="en" :url="$axios.defaults.baseURL+'/files'"
-          :noCircle="noCircle"
-          method="PATCH"
-          :params="params" :headers="headers" img-format="png"></my-upload>
+    <el-dialog :visible.sync="dialogVisible" id="profile-image-cropper" title="Profile Image" width="50%">
+      <div>
+        <div class="upload-example__cropper-wrapper">
+          <cropper ref="cropper" class="upload-example__cropper" :stencil-size="{
+            width: 140,
+            height: 140
+          }" 
+          :stencil-props="{
+              handlers: {},
+              movable: false,
+              resizable: false,
+              aspectRatio: 1,
+          }" 
+          :transitions="true"
+          image-restriction="stencil" 
+          :src="image.src" />
+		<vertical-buttons>
+			<square-button title="Zoom In" @click="zoom(2)">
+				<img :src="require('~/assets/icons/zoom-in.svg')" />
+			</square-button>
+			<square-button title="Zoom Out" @click="zoom(0.5)">
+				<img :src="require('~/assets/icons/zoom-out.svg')" />
+			</square-button>
+			<square-button title="Move Top" @click="move('top')">
+				<img :src="require('~/assets/icons/arrow-top.svg')" />
+			</square-button>
+			<square-button title="Move Left" @click="move('left')">
+				<img :src="require('~/assets/icons/arrow-left.svg')" />
+			</square-button>
+			<square-button title="Move Right" @click="move('right')">
+				<img :src="require('~/assets/icons/arrow-right.svg')" />
+			</square-button>
+			<square-button title="Move Bottom" @click="move('bottom')">
+				<img :src="require('~/assets/icons/arrow-bottom.svg')" />
+			</square-button>
+		</vertical-buttons>
+          <div class="upload-example__reset-button" title="Reset Image" @click="reset()">
+            <img :src="require('~/assets/img/reset.svg')" />
+          </div>
+          <div class="upload-example__file-type" v-if="image.type">
+            {{ image.type }}
+          </div>
+        </div>
+        <div class="upload-example__buttons-wrapper">
+          <button class="upload-example__button" @click="$refs.file2.click()">
+            <input ref="file2" type="file" accept="image/*" @change="loadImage($event)" />
+            Browse image
+          </button>
+          
+        </div>
+      </div>
+
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible = false">Cancel</el-button>
+          <el-button type="primary" @click="saveImage">
+            Upload
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
+
+
     <!-- logo container -->
     <div class="bg-white md:w-3/12 lg:w-[19%] w-full profile-image-container">
-      
-      <div class="icon-img relative" @click="changeProfileimage">
+
+      <div class="icon-img relative" @click="toggleShow">
         <input type="file" class="hidden" v-show="false" @change="uploadProfilePicture" ref="referenceInput" />
-        
+
 
         <img v-if="profilePhoto != null" :src="profilePhoto" id="referenceImg"
           class="top-profile-image cursor-pointer" />
@@ -66,7 +124,7 @@
     <!-- end of dentals container -->
   </section>
 </template>
-
+<style src="~/assets/cropper.css"></style>
 <script>
 import Pencil from '~/assets/recent-icons/pencil.vue'
 import Vue from 'vue'
@@ -76,7 +134,35 @@ import login from '~/mixins/login'
 import mixins from 'vue-typed-mixins'
 import SpinnerDottedIcon from '../svg-icons/SpinnerDottedIcon.vue'
 import { ErrorHandler } from '~/types/ErrorFunction'
-import myUpload from 'vue-image-crop-upload';
+
+
+import { Cropper } from 'vue-advanced-cropper';
+import VerticalButtons from './cropper/VerticalButtons';
+import SquareButton from './cropper/SquareButton';
+//import 'vue-advanced-cropper/dist/style.css';
+// This function is used to detect the actual image type,
+function getMimeType(file, fallback = null) {
+  const byteArray = new Uint8Array(file).subarray(0, 4);
+  let header = '';
+  for (let i = 0; i < byteArray.length; i++) {
+    header += byteArray[i].toString(16);
+  }
+  switch (header) {
+    case '89504e47':
+      return 'image/png';
+    case '47494638':
+      return 'image/gif';
+    case 'ffd8ffe0':
+    case 'ffd8ffe1':
+    case 'ffd8ffe2':
+    case 'ffd8ffe3':
+    case 'ffd8ffe8':
+      return 'image/jpeg';
+    default:
+      return fallback;
+  }
+}
+
 export default mixins(login).extend({
   name: 'profile-top-info',
   props: ['userInfo'],
@@ -94,55 +180,25 @@ export default mixins(login).extend({
       name: '',
       profilePhoto: null,
       isLoading: false,
-      show: false,
-      noCircle:true,
-      params: {
-        type: 'profilePicture',
-        userId: 0
+      dialogVisible: false,
+      image: {
+        src: null,
+        type: null,
       },
-      headers: {
-        smail: '*_~'
-      },
+			size: {
+				width: null,
+				height: null,
+			},
     }
   },
   // async asyncData({ params, query, $axios}) {
   //    let companyUser = $axios.get(`/users/${}`)
   // },
-  components: { Pencil, SpinnerDottedIcon, 'my-upload': myUpload },
+  components: { Pencil, SpinnerDottedIcon, Cropper,VerticalButtons,SquareButton },
   methods: {
     toggleShow() {
-				this.show = !this.show;
-			},
-    cropSuccess(imgDataUrl, field) {
-      console.log('-------- crop success --------');
-      this.imgDataUrl = imgDataUrl;
-    },
-    cropUploadSuccess(jsonData, field) {
-      console.log('-------- upload success --------');
-      this.profilePhoto = jsonData.profilePicture;
-      this.show = false;
-      console.log(jsonData);
-      console.log('field: ' + field);
-    },
-    cropUploadFail(status, field) {
-      console.log('-------- upload fail --------');
-      console.log(status);
-      console.log('field: ' + field);
-    },
-    croperClose(status){
-      this.show = status;
-    },
-    srcFileSet( fileName, fileType, fileSize){
-      console.log((fileSize / 1024 / 1024))
-      if (
-        (fileSize / 1024 / 1024) > 2
-      ) {
-        this.$notify.error({
-          message: 'File size must be less than 2MB'
-        })
-        return
-      }
-      return false;
+      //this.show = !this.show;
+      this.dialogVisible = !this.dialogVisible
     },
     getTeamPublicFolder() {
       this.$axios.get()
@@ -220,6 +276,107 @@ export default mixins(login).extend({
             message: 'Unable to upload profile picture'
           })
         })
+    },
+    async uploadProfilePicture2(image) {
+
+      let formdata = new FormData()
+      formdata.append('upload', image, 'user-profile-picture.jpg')
+      formdata.append('type', 'profilePicture')
+      formdata.append('userId', this.user.id)
+
+      await this.$axios
+        .$patch(`/files`, formdata)
+        .then((response) => {
+          //@ts-ignore
+          //console.log("response",response.profilePicture)
+          this.profilePhoto = response.profilePicture;
+          this.dialogVisible = false;
+          this.reset();
+          this.filterUsers()
+        })
+        .catch(() => {
+          this.$notify.error({
+            message: 'Unable to upload profile picture'
+          })
+        })
+    },
+    saveImage() {
+      const { canvas } = this.$refs.cropper.getResult();
+      canvas.toBlob((blob) => {
+        //saveAs(blob);
+        this.uploadProfilePicture2(blob);
+      }, this.image.type);
+    },
+    reset() {
+      this.image = {
+        src: null,
+        type: null,
+      };
+    },
+    loadImage(event) {
+      // Reference to the DOM input element
+      const { files } = event.target;
+      // Ensure that you have a file before attempting to read it
+      if (files && files[0]) {
+        // 1. Revoke the object URL, to allow the garbage collector to destroy the uploaded before file
+        if (this.image.src) {
+          URL.revokeObjectURL(this.image.src);
+        }
+        // 2. Create the blob link to the file to optimize performance:
+        const blob = URL.createObjectURL(files[0]);
+        // 3. The steps below are designated to determine a file mime type to use it during the
+        // getting of a cropped image from the canvas. You can replace it them by the following string,
+        // but the type will be derived from the extension and it can lead to an incorrect result:
+        //
+        // this.image = {
+        //    src: blob;
+        //    type: files[0].type
+        // }
+        // Create a new FileReader to read this image binary data
+        const reader = new FileReader();
+        // Define a callback function to run, when FileReader finishes its job
+        reader.onload = (e) => {
+          // Note: arrow function used here, so that "this.image" refers to the image of Vue component
+          this.image = {
+            // Read image as base64 and set it as src:
+            src: blob,
+            // Determine the image type to preserve it during the extracting the image from canvas:
+            type: getMimeType(e.target.result, files[0].type),
+          };
+        };
+        // Start the reader job - read file as a data url (base64 format)
+        reader.readAsArrayBuffer(files[0]);
+      }
+    },
+		zoom(factor) {
+			this.$refs.cropper.zoom(factor);
+		},
+		move(direction) {
+			if (direction === 'left') {
+				this.$refs.cropper.move(-this.size.width / 4);
+			} else if (direction === 'right') {
+				this.$refs.cropper.move(this.size.width / 4);
+			} else if (direction === 'top') {
+				this.$refs.cropper.move(0, -this.size.height / 4);
+			} else if (direction === 'bottom') {
+				this.$refs.cropper.move(0, this.size.height / 4);
+			}
+		},
+		updateSize({ coordinates }) {
+			this.size.width = Math.round(coordinates.width);
+			this.size.height = Math.round(coordinates.height);
+		},
+		boundaries({ cropper, imageSize }) {
+			return {
+				width: cropper.clientWidth,
+				height: cropper.clientHeight,
+			};
+		},
+  },
+  destroyed() {
+    // Revoke the object URL, to allow the garbage collector to destroy the uploaded before file
+    if (this.image.src) {
+      URL.revokeObjectURL(this.image.src);
     }
   },
   mounted() {
@@ -266,7 +423,7 @@ export default mixins(login).extend({
     },
     userInfo(newValue, oldValue) {
       this.profilePhoto = newValue.profilePicture;
-      this.params.userId = newValue.id;
+      //this.params.userId = newValue.id;
       //console.log("newValue", newValue.profilePicture, oldValue)
     }
   }
@@ -277,6 +434,7 @@ export default mixins(login).extend({
 .font-family {
   font-family: inherit !important;
 }
+
 .profile-image-container {
   @apply bg-white flex justify-center flex-wrap items-center py-4 rounded-[10px];
 
@@ -331,4 +489,5 @@ export default mixins(login).extend({
 .top-profile-image {
   @apply absolute w-[90%] h-[90%] mt-[5%] ml-[5%] object-cover rounded-lg m-2;
 }
+
 </style>

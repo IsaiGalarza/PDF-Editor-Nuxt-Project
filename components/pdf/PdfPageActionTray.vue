@@ -3,10 +3,10 @@
     <div class="flex items-center gap-4 flex-1 justify-between max-w-4xl px-4">
       <!-- If authenticated user is created -->
       <span v-if="!isCreator" class="capitalize font-medium">{{
-          file.fileAction
+        file.fileAction
       }}</span>
       <!-- else -->
-      <el-dropdown v-else trigger="click" class="font-medium" @command="handleActionChange">
+      <el-dropdown v-else trigger="click" class="font-medium flex" @command="handleActionChange">
         <span class="el-dropdown-link capitalize">
           {{ file.fileAction }}
           <i class="el-icon-arrow-down el-icon--right"></i>
@@ -24,7 +24,7 @@
       <span v-if="!isCreator" class="capitalize font-medium">{{ access }}</span>
 
       <!-- -- the content below is v-else if previous is v-if - -->
-      <el-dropdown v-else trigger="click" class="font-medium" @command="handleAccessChange">
+      <el-dropdown v-else trigger="click" class="font-medium flex" @command="handleAccessChange">
         <span class="el-dropdown-link">
           {{ access }} <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
@@ -37,7 +37,7 @@
       <!-- <div
         class="flex-1 flex items-center gap-5 justify-end text-xs font-medium"
       > -->
-      <span class="hidden md:inline">{{ file.fileName }}</span>
+      <span class="hidden md:inline">{{ file.fileName.length > 12 ? `${file.fileName.substr(0, 8)}....pdf` : file.fileName }}</span>
 
       <span class="hidden md:inline">
         <span class="circle circle-2 bg-[#757575]"></span>
@@ -50,14 +50,14 @@
       </span>
 
       <span class="hidden md:inline">{{
-          `${(file.updatedAt || "").substring(0, 10)} - ${(file.updatedAt || "").substring(
-            11,
-            16
-          )}`
+      `${(file.updatedAt || "").substring(0, 10)} - ${(file.updatedAt || "").substring(
+        11,
+        16
+      )}`
       }}
       </span>
 
-      <el-dropdown trigger="click" class="font-medium" v-if="$auth.loggedIn && !isConfirm"
+      <el-dropdown trigger="click" class="font-medium" v-if="$auth.loggedIn && !isConfirm && 0"
         @command="handleCommand($event)">
         <span class="el-dropdown-link text-[#555454] px-1 flex items-center">
           <ellipsis-icon-vertical-icon />
@@ -119,7 +119,7 @@
 
       <button v-if="!isConfirm && $auth.loggedIn" @click="saveChanges"
         class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7">
-        {{ isCreator ? ' Publish' : 'Done' }}
+        {{ isCreator? ' Publish': 'Done' }}
       </button>
       <button v-if="!isConfirm && $auth.loggedIn" @click="cancelPublish"
         class="mr-2 text-xs text-white bg-zinc-400 border rounded px-3 h-7">

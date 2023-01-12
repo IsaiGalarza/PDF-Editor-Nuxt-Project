@@ -2,9 +2,7 @@
   <div class="lg:pt-4 min-h-full flex flex-col">
     <top-details-card-container v-model="activeTab" :tabs="tabs" />
     <!-- <leaves-details-container class="mb-9" /> -->
-    <file-ledger @setUploadpaperlink="setUploadpaperlink" ref="fileLedger" class="flex-1" />
-
-    <upload-document-modal @showMaxPaperlinkModalFunc="showMaxPaperlinkModalFunc" v-model="showUploadDocumentModal" />
+    <save-file-ledger @setUploadpaperlink="setUploadpaperlink" ref="savefileLedger" class="flex-1" />
     <MaxPaperlinkModal :totalFile="totalRegisteredPaperlink" v-model="showMaxPaperlinkModal" />
     <RequestSentNotificationModal v-model="showRequestSentModal" />
     <CongratulationsModal v-model="showCongratulationsModal" />
@@ -14,24 +12,18 @@
 <script>
 import Vue from 'vue'
 
-import FileLedger from '~/components/dashboard/FileLedger.vue'
+import SaveFileLedger from '~/components/savefiles/SaveFileLedger.vue'
 import LedgerIcon from "~/components/svg-icons/LedgerIcon.vue"
-import LeavesDetailsContainer from '~/components/dashboard/LeavesDetailsContainer.vue'
-import TopDetailsCardContainer from '~/components/dashboard/TopDetailsCardContainer.vue'
-import UploadDocumentModal from '~/components/dashboard/UploadDocumentModal.vue'
+import TopDetailsCardContainer from '~/components/savefiles/TopDetailsCardContainer.vue'
 import CalendarIcon from '~/components/svg-icons/CalendarIcon.vue'
 import CheckCircleIcon from '~/components/svg-icons/CheckCircleIcon.vue'
-import DisketIconVue from '~/components/svg-icons/DisketIcon.vue'
 import MoveIcon from '~/components/svg-icons/MoveIcon.vue'
 import NoteAndPenIconVue from '~/components/svg-icons/NoteAndPenIcon.vue'
 import PageIconVue from '~/components/svg-icons/PageIcon.vue'
-import ShareIconVue from '~/components/svg-icons/ShareIcon.vue'
 import TickCircleIconVue from '~/components/svg-icons/TickCircleIcon.vue'
 import TrashXIcon from '~/components/svg-icons/TrashXIcon.vue'
-import FloatingActionButton from '~/components/widgets/FloatingActionButton.vue'
 import { mapState } from 'vuex'
 import { ErrorHandler } from '~/types/ErrorFunction'
-import jwt from 'jsonwebtoken'
 import UserTypeEnum from '~/models/UserTypeEnum'
 import MaxPaperlinkModal from '~/components/company-files/Tabs/MaxPaperlinkModal.vue'
 import CongratulationsModal from '~/components/modals/CongratulationsModal.vue'
@@ -40,15 +32,12 @@ import RequestSentNotificationModal from '~/components/company-files/Tabs/Reques
 export default Vue.extend({
   components: {
     TopDetailsCardContainer,
-    LeavesDetailsContainer,
-    FileLedger,
-    // FloatingActionButton,
+    SaveFileLedger,
     CongratulationsModal,
     MoveIcon,
     TrashXIcon,
     CheckCircleIcon,
     CalendarIcon,
-    UploadDocumentModal,
     LedgerIcon,
     MaxPaperlinkModal,
     RequestSentNotificationModal

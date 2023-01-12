@@ -7,6 +7,7 @@ export const state = () => ({
   pageName: '',
   pdfPageName: {},
   pdfUser: [],
+  savedFiles: [{ favourite: 0 }],
   originalPdfFiles: [],
   filterUser: '',
   setPackage: {},
@@ -128,23 +129,39 @@ export const mutations: MutationTree<RootState> = {
         (state.pdfUser as any) = (state.pdfUser as any).filter((e: any) => e.fileAction == filter.toLowerCase())
         break
     }
-    // //filter the initial state and set all if ledger
-    // if (filter != 'ledger') {
-    //   state.pdfUser = filter != 'shared' ? state.pdfUser.filter(
-    //     (item: any) => item.fileAction == filter.toLowerCase()
-    //     ) : state.pdfUser.filter(
-    //       (item: any) => item.shared != null
-    //       )
-
-    // } else {
-    //   state.pdfUser = state.pdfUser
-    // }
+  },
+  FILTER_SAVED_USERs(state, filter) {
+    // set the initial state
+    state.savedFiles = state.originalPdfFiles
+    switch (filter.toLowerCase()) {
+      case FileAction.LEDGER:
+        (state.savedFiles as any) = state.savedFiles
+        break;
+      case FileAction.SHARED:
+        (state.savedFiles as any) = (state.savedFiles as any).filter((e: any) => e.shared != null)
+        break;
+      case FileAction.SAVED:
+        (state.savedFiles as any) = (state.savedFiles as any).filter((e: any) => e.favourites.length > 0)
+        break;
+      default:
+        (state.savedFiles as any) = (state.savedFiles as any).filter((e: any) => e.fileAction == filter.toLowerCase())
+        break
+    }
   },
 
   // -- Resetting the state of the total user-files --
   ADD_USER(state, pdfFiles) {
     state.pdfUser = pdfFiles
     state.originalPdfFiles = pdfFiles
+  },
+  ADD_SAVE_USER(state, pdfFiles) {
+    state.savedFiles = pdfFiles
+    state.originalPdfFiles = pdfFiles
+  },
+  SET_FAVOURITE(state, no) {
+    let ary = state.savedFiles
+    ary[no]['favourite'] = ary[no]['favourite'] == 1 ? 0 : 1;
+    state.savedFiles = [...ary]
   },
   SET_EDIT_ANNOTATION(state, condition) {
     state.editAnnotation = condition

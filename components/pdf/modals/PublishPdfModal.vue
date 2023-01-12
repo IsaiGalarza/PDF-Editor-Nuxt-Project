@@ -324,30 +324,30 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     async publishAsGuest() {
       this.closeModal()
-      let filteredTools = this.tools.filter(e => e.isDeleted != true)
-      filteredTools.map((val, ind) => {
-        if (val.type == 'star') {
-          val['completed'] = true
-        }
-        if (val.type == 'appendSignature') {
-          val['completed'] = this.signature
-        }
-        if (val.type == 'appendInitial') {
-          val['completed'] = this.initial
-        }
-      })
-      this.$axios
-        .patch(`/files/${this.file.id}`, {
-          fileAction: this.file.fileAction,
-          annotaions: JSON.stringify(filteredTools)
-        })
-        .then(() => { })
-        .catch(() => {
-          this.$notify.error({
-            message: 'Error occcured, could not save file'
-          })
-        })
-        .finally(() => { })
+      // let filteredTools = this.tools.filter(e => e.isDeleted != true)
+      // filteredTools.map((val, ind) => {
+      //   if (val.type == 'star') {
+      //     val['completed'] = true
+      //   }
+      //   if (val.type == 'appendSignature') {
+      //     val['completed'] = this.signature
+      //   }
+      //   if (val.type == 'appendInitial') {
+      //     val['completed'] = this.initial
+      //   }
+      // })
+      // this.$axios
+      //   .patch(`/files/${this.file.id}`, {
+      //     fileAction: this.file.fileAction,
+      //     annotaions: JSON.stringify(filteredTools)
+      //   })
+      //   .then(() => { })
+      //   .catch(() => {
+      //     this.$notify.error({
+      //       message: 'Error occcured, could not save file'
+      //     })
+      //   })
+      //   .finally(() => { })
 
       if (!this.proceedToSendEmail) {
         switch (this.file.fileAction) {

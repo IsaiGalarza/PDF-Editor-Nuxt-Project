@@ -11,7 +11,9 @@
           class="inline-block lg:hidden mr-3 sm:mr-4 cursor-pointer"
           @click="$emit('open-sidebar')"
           ><hamburger-icon /></span
-        ><a :href="`/public/profile/${title.route}`"  target="_blanck">{{ title.name || routeName }}</a>
+        >
+        <!-- <a :href="`/public/profile/${title.route}`"  target="_blanck">{{ title.name || routeName }}</a> -->
+        File Manager
       </p>
       <div v-if="$auth.loggedIn" class="h-full self-stretch flex items-center">
   

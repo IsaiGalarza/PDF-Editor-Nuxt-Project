@@ -23,7 +23,7 @@
           @click="closeModal()"
         >
           <span class="inline-flex gap-1 items-center">
-            Cancle
+            Cancel
           </span>
         </button>
         <button

@@ -136,7 +136,7 @@ export default Vue.extend({
             this.packageId = packageData.id
           })
           .catch((error)=>{
-            console.log('')
+            console.log(error)
           })
           
          if(!this.proceedToNextFunction) return

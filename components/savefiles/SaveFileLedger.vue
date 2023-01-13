@@ -49,7 +49,8 @@
           </tr>
         </thead>
         <tbody v-if="(savedFiles.length > 0)">
-          <tr v-for="(file, i) in savedFiles" :key="file.favouriteId" :class="{ highlight: file.favouriteId == highlightedFileId }">
+          <tr v-for="(file, i) in savedFiles" :key="file.favouriteId"
+            :class="{ highlight: file.favouriteId == highlightedFileId }">
             <td class="text-left fixed-col left">{{ i + 1 + returnedDataPage }}</td>
             <td class="text-center">
               <div class="flex items-center gap-1.5">
@@ -62,9 +63,9 @@
                     :class="[file.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
                 </div>
                 <div>
-                  <p class="text-sm font-medium">
+                  <p class="text-sm font-medium text-center">
                     <nuxt-link :to="`/pdf/${file.paperLink}`">
-                      {{ file.fileName }}
+                      {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName }}
                     </nuxt-link>
                   </p>
                   <p class="text-xs">
@@ -397,6 +398,8 @@ export default Vue.extend({
     'searchParam': function () {
       this.spinner = true;
       // this.fetchFiles(this.returnedDataPage, this.searchParam)
+      this.$store.commit('SEARCH_SAVED_FILES', this.searchParam)
+      setTimeout(() => { this.spinner = false }, 1000)
     },
     savedFiles: function () {
     },

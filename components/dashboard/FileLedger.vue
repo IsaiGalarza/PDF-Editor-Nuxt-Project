@@ -84,9 +84,9 @@
                     :class="[file.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
                 </div>
                 <div>
-                  <p class="text-sm font-medium">
+                  <p class="text-sm font-medium text-center">
                     <nuxt-link :to="`/pdf/${file.paperLink}`">
-                      {{ file.fileName }}
+                      {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName  }}
                     </nuxt-link>
                   </p>
                   <p class="text-xs">

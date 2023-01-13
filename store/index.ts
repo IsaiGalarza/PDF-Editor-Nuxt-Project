@@ -158,6 +158,19 @@ export const mutations: MutationTree<RootState> = {
     state.savedFiles = pdfFiles
     state.originalPdfFiles = pdfFiles
   },
+  SEARCH_SAVED_FILES(state, search) {
+    let ary = [{ favourite: 0 }];
+    if (search == '') {
+      state.savedFiles = state.originalPdfFiles
+    } else {
+      ary.pop();
+      state.originalPdfFiles.map((val: any) => {
+        val['fileName'].toLowerCase().indexOf(search) != -1 && ary.push(val);
+      })
+      console.log(ary, 'orogin');
+      state.savedFiles = [...ary]
+    }
+  },
   SET_FAVOURITE(state, no) {
     let ary = state.savedFiles
     ary[no]['favourite'] = ary[no]['favourite'] == 1 ? 0 : 1;

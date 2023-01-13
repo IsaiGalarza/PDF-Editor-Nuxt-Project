@@ -79,7 +79,7 @@ export default {
       if (!this.file) return;
 
       if (this.fillHeartColor == "none") {
-        this.$axios.$post('/favourites', { fileId: this.file.id })
+        this.$axios.$post('/favourites', { fileId: this.file.id, fileName: this.file.fileName })
           .then((response) => {
             this.fillHeartColor = '#77C360';
             this.favouriteFileId = response.id;

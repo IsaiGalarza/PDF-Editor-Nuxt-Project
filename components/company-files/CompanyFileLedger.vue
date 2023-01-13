@@ -161,7 +161,7 @@
                 </td>
                 <td class="fixed-col right w-[50px]">
                   <div class="w-full h-full grid place-items-center">
-                    <el-dropdown>
+                    <el-dropdown trigger="click">
                       <button class="el-dropdown-link w-8 h-8 cursor-pointer grid place-items-center rounded-full"
                         :class="[createdByTeamMember(file.uploadedBy) && isTeam ? 'bg-paperdazgreen-300/20' : '']">
                         <ellipsis-icon-vertical-icon />
@@ -169,33 +169,54 @@
                       <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu">
                         <div class="no-access" v-if="!createdByTeamMember(file.uploadedBy)">no access right</div>
                         <ul class="min-w-[150px]" v-else>
-                          <!-- <li class="dropdown-item" @click="showShareCompanyFileFunc(file)">
-                            <span>Share</span>
-                          </li>
-                          <li @click="showRequestModalFunc(file)" class="dropdown-item"><span>Request</span></li>
-                          <li class="dropdown-item" @click="showRemoveCompanyFileFunc(file)">
-                            <span>Remove</span>
-                          </li>
-                          <li class="dropdown-item" @click="showMoveCompanyFileFunc(file)">
-                            <span>Move</span>
-                          </li> -->
-                          <li class="dropdown-item" @click="showShareCompanyFileFunc(file)">
-                            <span>Share</span>
+                          <li class="dropdown-item" @click="showShareCompanyFileFunc(file)" divided>
+                            <div class="flex justify-between w-full">
+                              <share-icon width="16" height="16" class="inline-block float-left" />
+                              <span>Share</span>
+                            </div>
                           </li>
                           <li @click="showRequestModalFunc(file)" class="dropdown-item">
-                            <span>Request</span>
+                            <div class="flex justify-between w-full border-t border-gray-200">
+                              <request-icon width="20" height="20" class="inline-block float-left" />
+                              <span>Request</span>
+                            </div>
+                          </li>
+                          <li class="dropdown-item" @click="showPapertagsModalFunc(file)">
+                            <div class="flex justify-between w-full border-t border-gray-200" >
+                              <span width="20" height="20" class="inline-block float-left">#</span>
+                              <span>Paper Tag</span>
+                            </div>
+                          </li>
+                          <li class="dropdown-item" @click="showCCFlowModalFunc(file)">
+                            <div class="flex justify-between w-full border-t border-gray-200">
+                              <copy-icon width="16" height="16" class="inline-block float-left" />
+                              <span class="ml-1">Carbon Copy</span>
+                            </div>
                           </li>
                           <li class="dropdown-item">
-                            <span>Paper Tag</span>
+                            <div class="flex justify-between w-full border-t border-gray-200">
+                              <PenIcon width="16" height="16" class="inline-block float-left" />
+                              <span class="ml-1">Edit</span>
+                            </div>
                           </li>
-                          <li class="dropdown-item">
-                            <span>Carbon Copy</span>
+                          <li class="dropdown-item" @click="showMoveCompanyFileFunc(file)">
+                            <div class="flex justify-between w-full border-t border-gray-200">
+                              <MoveIcon width="16" height="16" class="inline-block float-left" />
+                              <span class="ml-1">Move</span>
+                            </div>
                           </li>
+
                           <li class="dropdown-item">
-                            <span>QR Code</span>
+                            <div class="flex justify-between w-full border-t border-gray-200">
+                              <QrcodeIcon width="16" height="16" class="inline-block float-left" />
+                              <span class="ml-1">QR Code</span>
+                            </div>
                           </li>
                           <li class="dropdown-item" @click="showRemoveCompanyFileFunc(file)">
-                            <span>Remove</span>
+                            <div class="flex justify-between w-full border-t border-gray-200">
+                              <trash-can-icon width="16" height="16" class="inline-block float-left" />
+                              <span>Remove</span>
+                            </div>
                           </li>
                         </ul>
                       </el-dropdown-menu>
@@ -223,6 +244,7 @@
     <EditCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showEditCompanyFolder" />
     <DeleteCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showDeleteCompanyFolder" />
     <RemoveCompanyFile @refresh="setRefresh" :userFile="userFile" v-model="showRemoveCompanyFiles" />
+    <PdfPapertagsModal @refresh="setRefresh" :file="userFile" v-model="showPapertagsModal" />
     <MoveCompanyFiles @refresh="setRefresh" :userFile="userFile" @resetUserFile="resetUserFile"
       @createFolderEmit="showCreateCompanyFolderFunc" v-model="showMoveCompanyFiles" />
     <ShareFilesModal @refresh="setRefresh" :userFile="userFile" @qrLoad="showQrcodeFileFunc"
@@ -233,6 +255,7 @@
     <FilesInFolder :folder="FilesInFolerContent" v-model="showFilesInFolder" />
     <QrcodeShare :userFile="userFile" v-model="showQrcodeFiles" />
     <MaxPaperlinkModal v-model="showMaxPaperlinkModal" :totalFile="totalFile" />
+    <PdfCCFlowModal :file="userFile" v-model="showCCFlowModal" />
 
   </div>
 </template>
@@ -244,7 +267,17 @@ import CompanyIcon from '../svg-icons/CompanyIcon.vue'
 import EllipsisIconVerticalIcon from '../svg-icons/EllipsisIconVerticalIcon.vue'
 import HeartOutlineIcon from '../svg-icons/HeartOutlineIcon.vue'
 import SearchIcon from '../svg-icons/SearchIcon.vue'
+import QrcodeIcon from '../svg-icons/QrcodeIcon.vue'
+import PenIcon from '../svg-icons/PenIcon.vue'
 import ShareOutlineIcon from '../svg-icons/ShareOutlineIcon.vue'
+import ExportIcon from '../svg-icons/ExportIcon.vue'
+import MoveIcon from '../svg-icons/MoveIcon.vue'
+import ShareIcon from '../svg-icons/ShareIcon.vue'
+import RequestIcon from '../svg-icons/RequestIcon.vue'
+import CopyIcon from '../svg-icons/CopyIcon.vue'
+import TrashCanIcon from '../svg-icons/TrashCanIcon.vue'
+import PdfPapertagsModal from '../pdf/modals/PdfPapertagsModal.vue'
+import PdfCCFlowModal from '../pdf/modals/PdfCCFlowModal.vue'
 import EmptyFileLedger from '../widgets/EmptyFileLedger.vue'
 import FloatingActionButton from '../widgets/FloatingActionButton.vue'
 import CreateCompanyFolder from './Tabs/CreateCompanyFolder.vue'
@@ -268,20 +301,28 @@ import TeamAccess from '~/models/TeamAccess'
 import FilesInFolder from './Tabs/FilesInFolder.vue'
 import MaxPaperlinkModal from './Tabs/MaxPaperlinkModal.vue'
 
-
 export default Vue.extend({
   components: {
     EmptyFileLedger,
     FloatingActionButton,
     UploadDocumentModal,
     SearchIcon,
+    ExportIcon,
+    ShareIcon,
+    PdfCCFlowModal,
+    CopyIcon,
+    TrashCanIcon,
     CompanyIcon,
+    RequestIcon,
     PlusIcon,
+    MoveIcon,
+    PenIcon,
     FolderPlusIcon,
     EllipsisIconVerticalIcon,
     HeartOutlineIcon,
     ShareOutlineIcon,
     CreateCompanyFolder,
+    PdfPapertagsModal,
     CreateTeam,
     EditCompanyFolder,
     DeleteCompanyFolder,
@@ -295,7 +336,8 @@ export default Vue.extend({
     FilePagination,
     RequestModal,
     FilesInFolder,
-    MaxPaperlinkModal
+    MaxPaperlinkModal,
+    QrcodeIcon
   },
   name: 'CompanyFileLedger',
   data() {
@@ -314,9 +356,11 @@ export default Vue.extend({
       showMoveCompanyFiles: false,
       showShareCompanyFiles: false,
       showQrcodeFiles: false,
+      showCCFlowModal: false,
       showRequestModal: false,
       fileSpinner: true,
       folderSpinner: true,
+      showPapertagsModal: false,
       folders: [],
       fileProps: {},
       userFile: {},
@@ -335,7 +379,7 @@ export default Vue.extend({
   },
   methods: {
     async maxFileUpload() {
-      await this.$axios.get(`/subscriptions/${this.$auth.user.subscriptionId}`)
+      this.$auth.user.subscriptionId && await this.$axios.get(`/subscriptions/${this.$auth.user.subscriptionId}`)
         .then((response) => {
           this.totalRegisteredPaperlink = response?.data?.paperlink
         })
@@ -414,6 +458,14 @@ export default Vue.extend({
     showShareCompanyFileFunc(file) {
       this.userFile = file
       this.showShareCompanyFiles = true
+    },
+    showPapertagsModalFunc(file) {
+      this.userFile = file
+      this.showPapertagsModal = true
+    },
+    showCCFlowModalFunc(file) {
+      this.userFile = file
+      this.showCCFlowModal = true
     },
     showRequestModalFunc(file) {
       this.userFile = file
@@ -559,12 +611,17 @@ export default Vue.extend({
   @apply p-2 text-[14px] capitalize;
 }
 
+.dropdown-item {
+  border-top: 1px
+}
+
 .custom-table {
   & th {
     @apply pt-8 pb-3 sm:text-[12px] md:text-base;
     background: var(--background);
     padding-top: 20px;
   }
+
   & td {
     @apply py-3 sm:text-[12px] md:text-base;
   }

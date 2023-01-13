@@ -48,7 +48,7 @@
         :isActive="isActive" :fontSize="fontSize" :scale="scale" :file="file" :value="value" :justMounted="justMounted"
         @input="onInp" :generatePDF="generatePDF" :showPublishModal="showPublishModal"
         :selectedToolType="selectedToolType" :mouseUp="mouseUp" :lineStart="lineStart" :toolLength="toolLength"
-        :drawingStart="drawingStart" :setInitialSignType="setInitialSignType" />
+        :drawingStart="drawingStart" :setInitialSignType="setInitialSignType" @onBlur="onBlur" />
       
     </div>
   </div>
@@ -79,7 +79,6 @@ import AppendInitialTool from './tools/AppendInitial'
 import moment from 'moment'
 import { mapState } from 'vuex'
 import TeamAccess from '~/models/TeamAccess'
-import { toDataURL } from 'qrcode'
 
 export default {
   props: {
@@ -253,19 +252,15 @@ export default {
       this.setActiveToolId(null)
       this.deleteTool(this.id)
     },
-    toDataURL(url) {
-      fetch(url)
-        .then((response) => response.blob())
-        .then(
-          (blob) =>
-            new Promise((resolve, reject) => {
-              const reader = new FileReader()
-              reader.onloadend = () => resolve(reader.result)
-              reader.onerror = reject
-              reader.readAsDataURL(blob)
-            })
-        )
-    },
+    async toDataURL(url) {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      return await new Promise((resolve, _) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+      });
+   },
     inc(event) {
       if (this.isDragFinal) {
         this.isDragFinal = !this.isDragFinal
@@ -435,6 +430,9 @@ export default {
     },
     onInp(...v) {
       this.$emit('input', ...v)
+    },
+    onBlur() {
+      this.onOutSideClick()
     },
   },
   mounted: function () {

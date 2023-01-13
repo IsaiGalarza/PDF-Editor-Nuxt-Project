@@ -11,6 +11,7 @@
       class="input-annotation"
       placeholder="Type here..."
       ref="text_box"
+      @blur="$emit('onBlur')"
     />
     <p v-else :style="style">{{ text || 'Type here...' }}</p>
     <span :style="hideStyle" ref="text_hidden">{{ text || 'Type here...' }}</span>
@@ -37,6 +38,11 @@ export default {
   },
   mounted(){
     this.$refs.text_box && this.$refs.text_box.focus()
+  },
+  methods: {
+    onBlur: () => {
+      console.log("onBlur")
+    }
   },
   watch: {
     value (v) {

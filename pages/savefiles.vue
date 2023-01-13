@@ -3,8 +3,6 @@
     <top-details-card-container v-model="activeTab" :tabs="tabs" />
     <!-- <leaves-details-container class="mb-9" /> -->
     <save-file-ledger @setUploadpaperlink="setUploadpaperlink" ref="savefileLedger" class="flex-1" />
-
-    <upload-document-modal @showMaxPaperlinkModalFunc="showMaxPaperlinkModalFunc" v-model="showUploadDocumentModal" />
     <MaxPaperlinkModal :totalFile="totalRegisteredPaperlink" v-model="showMaxPaperlinkModal" />
     <RequestSentNotificationModal v-model="showRequestSentModal" />
     <CongratulationsModal v-model="showCongratulationsModal" />
@@ -16,9 +14,7 @@ import Vue from 'vue'
 
 import SaveFileLedger from '~/components/savefiles/SaveFileLedger.vue'
 import LedgerIcon from "~/components/svg-icons/LedgerIcon.vue"
-import LeavesDetailsContainer from '~/components/dashboard/LeavesDetailsContainer.vue'
-import TopDetailsCardContainer from '~/components/dashboard/TopDetailsCardContainer.vue'
-import UploadDocumentModal from '~/components/dashboard/UploadDocumentModal.vue'
+import TopDetailsCardContainer from '~/components/savefiles/TopDetailsCardContainer.vue'
 import CalendarIcon from '~/components/svg-icons/CalendarIcon.vue'
 import CheckCircleIcon from '~/components/svg-icons/CheckCircleIcon.vue'
 import MoveIcon from '~/components/svg-icons/MoveIcon.vue'
@@ -36,15 +32,12 @@ import RequestSentNotificationModal from '~/components/company-files/Tabs/Reques
 export default Vue.extend({
   components: {
     TopDetailsCardContainer,
-    LeavesDetailsContainer,
     SaveFileLedger,
-    // FloatingActionButton,
     CongratulationsModal,
     MoveIcon,
     TrashXIcon,
     CheckCircleIcon,
     CalendarIcon,
-    UploadDocumentModal,
     LedgerIcon,
     MaxPaperlinkModal,
     RequestSentNotificationModal
@@ -150,7 +143,7 @@ export default Vue.extend({
       this.totalUploadPaperlink = val
     },
     async maxFileUpload() {
-      await this.$axios.get(`/subscriptions/${this.$auth.user.subscriptionId}`)
+      this.$auth.user.subscriptionId && await this.$axios.get(`/subscriptions/${this.$auth.user.subscriptionId}`)
         .then((response) => {
           this.totalRegisteredPaperlink = response?.data?.paperlink
         })

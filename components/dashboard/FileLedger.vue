@@ -307,7 +307,6 @@ export default Vue.extend({
       this.showQrcodeFiles = true;
     },
     async fetchFiles(page, search) {
-      // this.isPaidUser ? this.fetchUserFiles(page, search) : this.ledgerFiles(page, search)
       this.isPaidUser ? this.ledgerFiles(page, search) : this.ledgerFiles(page, search)
     },
     handleFileHighlight() {
@@ -438,6 +437,7 @@ export default Vue.extend({
       this.fetchFiles(this.returnedDataPage, this.searchParam)
     },
     pdfUser: function () {
+      console.log('ppp', this.pdfUser);
     },
     refresh: function () {
       this.$nuxt.refresh()

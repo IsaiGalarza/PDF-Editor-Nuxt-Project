@@ -672,16 +672,28 @@ export default mixins(PdfAuth).extend({
         [this.currentPage].scrollIntoView(true)
       } catch (err) { }
     },
-    _setToolsFromFileAnnotations() {
+    async _setToolsFromFileAnnotations() {
       this.tools = JSON.parse(this.file.annotaions || `[]`)
-      this.tools = this.tools.map((_el, index) => {
-        return { ..._el, id: index + 1 }
-      })
+      this.tools = await Promise.all(this.tools.map(async (_el, index) => {
+        if (_el.type === 'appendSignature' || _el.type === 'appendInitial')
+          return { ..._el, id: index + 1, completed: await this.toDataURL(_el.completed) }
+        else return { ..._el, id: index + 1 }
+      }))
+      console.log({tools:this.tools})
       this.initialFileAnnotation = JSON.parse(this.file.annotaions || `[]`).map(
         (_el, index) => {
           return { ..._el, id: index + 1 }
         }
       )
+    },
+    async toDataURL(url) {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      return await new Promise((resolve, _) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+      });
     },
     setScrollPage() {
       let current =

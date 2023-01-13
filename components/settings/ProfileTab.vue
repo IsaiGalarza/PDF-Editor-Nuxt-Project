@@ -11,6 +11,7 @@
           ? 'border-paperdazgreen-300 text-paperdazgreen-300'
           : 'border-transparent',
         i !== tabs.length - 1 ? 'mr-6 sm:mr-8' : '',
+        tab.hidden ? 'hidden' : ''
       ]"
       @click="setSettingTab(tab.value)"
     >

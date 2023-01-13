@@ -61,7 +61,7 @@ export default Vue.extend({
         //check if is a social user to remove settings tabs
         if (this.$auth.user.id && this.$auth.user.socialLogin !== null){
           this.tabs.splice(1, 1)
-        } 
+        }
   },
   beforeMount() {
     if (this.$store.getters.userType === UserTypeEnum.PAID) {
@@ -69,6 +69,7 @@ export default Vue.extend({
         label: 'Billing',
         value: 'billing',
         component: BillingTab,
+        hidden: true
       })
     } else if (this.$store.getters.userType === UserTypeEnum.FREE) {
       this.tabs.splice(3, 0, {
@@ -102,6 +103,7 @@ export default Vue.extend({
         label: 'Billing',
         value: 'billing',
         component: BillingTab,
+        hidden: true
 
       })
     } else if (this.$store.getters.userType === UserTypeEnum.FREE) {

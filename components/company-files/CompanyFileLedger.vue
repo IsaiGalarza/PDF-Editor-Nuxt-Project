@@ -135,7 +135,7 @@
                 <td class="text-left">
                   <div class="flex items-center gap-3 whitespace-nowrap min-w-[150px] max-w-[400px]">
                     <span class="p-0.5 border border-paperdazgreen-400"
-                      :class="[file.role == userType.PAID ? 'rounded-md w-9 h-9' : 'circle circle-17']">
+                      :class="[file.role == userType.PAID ? 'rounded-md w-9 h-9 min-w-[36px] min-h-[36px]' : 'circle circle-17']">
                       <img :src="
                         (file.user || {}).profile_picture ||
                         '/img/placeholder_picture.png'
@@ -428,7 +428,7 @@ export default Vue.extend({
       )}  ${DateFormatter.getFormattedTime(dateVal)}`
     },
     async fetchFiles(page, search) {
-      //---- checking the user role --- 
+      //---- checking the user role ---
       let paramsId = (this.$auth.user.role == UserTypeEnum.TEAM ? this.$auth.user.teamId : this.$auth.user.id)
 
       //<------------------- START: fetching of folder ------------>>
@@ -459,7 +459,7 @@ export default Vue.extend({
     },
 
     async fetchFolder(page, search) {
-      //---- checking the user role --- 
+      //---- checking the user role ---
       let paramsId = this.$auth.user.role == UserTypeEnum.TEAM ? this.$auth.user.teamId : this.$auth.user.id
 
       //<------------------- START: fetching of folder ------------>>

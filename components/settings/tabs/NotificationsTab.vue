@@ -53,12 +53,12 @@
                   </div>
                 </td>
                 <td class="w-4 fixed-col right">
-                  <input 
+                  <input
                    @input="getCheckValue"
                    data_patch="accessRequest"
-                   :checked="app.accessRequest" 
-                   data_family="app" 
-                   type="checkbox" 
+                   :checked="app.accessRequest"
+                   data_family="app"
+                   type="checkbox"
                    class="checkbox"/>
                 </td>
               </tr>
@@ -70,11 +70,11 @@
                   </div>
                 </td>
                 <td class="w-4 fixed-col right">
-                 <input 
+                 <input
                   @input="getCheckValue"
                    data_patch="inviteRequest"
                   data_family="app"
-                  type="checkbox" 
+                  type="checkbox"
                   :checked="app.inviteRequest"
                   class="checkbox"/>
                 </td>
@@ -87,7 +87,7 @@
                   </div>
                 </td>
                 <td class="w-4 fixed-col right">
-                  <input 
+                  <input
                   @input="getCheckValue"
                    data_patch="fileAction"
                   data_family="app"
@@ -107,13 +107,13 @@
                   <input
                   @input="getCheckValue"
                    data_patch="referalCredit"
-                   data_family="app" 
+                   data_family="app"
                   :checked="app.referalCredit"
-                  type="checkbox" 
+                  type="checkbox"
                   class="checkbox"/>
                 </td>
               </tr>
-              <tr v-if="isTeamMember">
+              <!-- <tr v-if="isTeamMember">
                 <td>
                   <div class="text-sm">
                     <p class="mb-1 font-semibold">Payments</p>
@@ -124,12 +124,12 @@
                   <input
                   @input="getCheckValue"
                    data_patch="payment"
-                   data_family="app" 
+                   data_family="app"
                   type="checkbox"
-                  :checked="app.payment" 
+                  :checked="app.payment"
                   class="checkbox"/>
                 </td>
-              </tr>
+              </tr> -->
             </tbody>
           </table>
         </form>
@@ -161,8 +161,8 @@
                   <input
                    @input="getCheckValue"
                    data_patch="accessRequest"
-                   data_family="email" 
-                  type="checkbox" 
+                   data_family="email"
+                  type="checkbox"
                   :checked="email.accessRequest"
                   class="checkbox"/>
                 </td>
@@ -175,10 +175,10 @@
                   </div>
                 </td>
                 <td class="w-4 fixed-col right">
-                  <input 
+                  <input
                   @input="getCheckValue"
                   data_patch="inviteRequest"
-                  data_family="email" 
+                  data_family="email"
                   type="checkbox"
                   :checked="email.inviteRequest"
                   class="checkbox"/>
@@ -192,11 +192,11 @@
                   </div>
                 </td>
                 <td class="w-4 fixed-col right">
-                  <input 
+                  <input
                   @input="getCheckValue"
                   data_patch="fileAction"
-                  data_family="email" 
-                  type="checkbox" 
+                  data_family="email"
+                  type="checkbox"
                   :checked="email.fileAction"
                   class="checkbox"/>
                 </td>
@@ -209,15 +209,15 @@
                   </div>
                 </td>
                 <td class="w-4 fixed-col right">
-                  <input data_family="email" 
-                  type="checkbox" 
+                  <input data_family="email"
+                  type="checkbox"
                   @input="getCheckValue"
                   data_patch="referalCredit"
                   :checked="email.referalCredit"
                   class="checkbox"/>
                 </td>
               </tr>
-              <tr v-if="isTeamMember">
+              <!-- <tr v-if="isTeamMember">
                 <td>
                   <div class="text-sm">
                     <p class="mb-1 font-semibold">Payments</p>
@@ -225,15 +225,15 @@
                   </div>
                 </td>
                 <td class="w-4 fixed-col right">
-                  <input 
+                  <input
                   @input="getCheckValue"
                   data_patch="payment"
-                  data_family="email" 
-                  type="checkbox" 
+                  data_family="email"
+                  type="checkbox"
                   :checked="email.payment"
                   class="checkbox"/>
                 </td>
-              </tr>
+              </tr> -->
             </tbody>
           </table>
         </div>
@@ -288,7 +288,7 @@ export default Vue.extend({
         switch (getFamilyAttr) {
           case 'app':
             this.patchNotification({...dataApp})
-            return    
+            return
           case 'email':
             this.patchNotification({...dataEmail})
             return;
@@ -322,13 +322,13 @@ export default Vue.extend({
           message:"Could not make the change"
           })
         })
-        
+
     },
     async queryNotificationApp(){
        await this.$axios
         .$get(`/notification-settings/?userId=${(this.$auth.user).id}&type=app`)
-        .then((response) => { 
-        let [gottenNotificationApp] = response; 
+        .then((response) => {
+        let [gottenNotificationApp] = response;
 
         this.app = Object.keys(gottenNotificationApp).map(function(key, index) {
           if(gottenNotificationApp[key] == '1')
@@ -337,18 +337,18 @@ export default Vue.extend({
            gottenNotificationApp[key] = false
           else
            gottenNotificationApp[key]
-        }); 
+        });
           this.app = gottenNotificationApp
           })
         .catch((err) => {
-            
+
         })
     },
      async queryNotificationEmail(){
        await this.$axios
         .$get(`/notification-settings/?userId=${(this.$auth.user).id}&type=email`)
-        .then((response) => { 
-         let [gottenNotificationEmail] = response; 
+        .then((response) => {
+         let [gottenNotificationEmail] = response;
 
         this.email = Object.keys(gottenNotificationEmail).map(function(key, index) {
           if(gottenNotificationEmail[key] == '1')
@@ -357,11 +357,11 @@ export default Vue.extend({
            gottenNotificationEmail[key] = false
           else
            gottenNotificationEmail[key]
-        }); 
+        });
           this.email = gottenNotificationEmail
         })
         .catch((err) => {
-            
+
         })
     },
 

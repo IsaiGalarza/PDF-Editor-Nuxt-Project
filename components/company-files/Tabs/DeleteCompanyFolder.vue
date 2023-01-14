@@ -37,7 +37,7 @@
     <p
       class="text-center block font-medium max-w-[290px] mx-auto mb-6 whitespace-none"
     >
-     You want to remove 
+     You want to remove <br />
       <span class="font-semibold text-paperdazgreen-500 uppercase">'{{folder.name}}'</span>
     </p>
     <div class="flex justify-around">

@@ -44,7 +44,7 @@ export default {
     }
   },
   watch: {
-    'file': function () {
+    'folder': function () {
       this.getFavouriteFile()
     }
   },
@@ -101,7 +101,7 @@ export default {
         .$get(`/favourites/?folderId=${this.folder.id}&userId=${this.$auth?.user?.id}`)
         .then((response) => {
           if (response.data.length > 0) this.fillHeartColor = '#77C360'
-          // this.favouriteFileId = response.data[0]?.id;
+          this.favouriteFileId = response.data[0]?.id;
         })
     },
 

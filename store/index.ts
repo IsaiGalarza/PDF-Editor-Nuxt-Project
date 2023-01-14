@@ -175,11 +175,6 @@ export const mutations: MutationTree<RootState> = {
       state.savedFiles = [...ary]
     }
   },
-  SET_FAVOURITE(state, no) {
-    let ary = state.savedFiles
-    ary[no]['favourite'] = ary[no]['favourite'] == 1 ? 0 : 1;
-    state.savedFiles = [...ary]
-  },
   SET_EDIT_ANNOTATION(state, condition) {
     state.editAnnotation = condition
   },

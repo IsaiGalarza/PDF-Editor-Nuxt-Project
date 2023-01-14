@@ -44,7 +44,7 @@
             <th class="text-left !pl-16">File Name</th>
             <th class="text-center">Actions</th>
             <th class="text-center">Date & time</th>
-            <th class="fixed-col text-right"></th>
+            <!-- <th class="fixed-col text-right"></th> -->
             <th class="fixed-col right text-right"></th>
           </tr>
         </thead>
@@ -65,8 +65,8 @@
                 <div>
                   <p class="text-sm font-medium text-center">
                     <nuxt-link :to="`/pdf/${file.paperLink}`">
-                      <!-- {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName }} -->
-                      {{ file.fileName | removeExtension }}
+                      {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 24)} ...` : file.fileName }}
+                      <!-- {{ file.fileName | removeExtension }} -->
                     </nuxt-link>
                   </p>
                   <p class="text-xs">
@@ -81,15 +81,8 @@
             <td class="text-center">
               {{ formatDateTime(file.updatedAt) }}
             </td>
-            <td class="fixed-col">
-              <button class="cursor-pointer" @click="(event) => setFileFavourite(file, i)">
-                <HeartOutlineIcon class="w-4 h-4" :fillColor="file.favourite == 1 ? '#77C360' : 'none'" />
-              </button>
-            </td>
             <td class="fixed-col right">
-              <button class="cursor-pointer" @click="showShareCompanyFilesFunc(file)">
-                <share-outline-icon class="w-4 h-4" />
-              </button>
+              <SearchShare :file="file" :showShareIcon="true" />
             </td>
           </tr>
         </tbody>
@@ -143,7 +136,7 @@ import FilePagination from '../pagination/FilePagination.vue'
 import UserTypeEnum from '~/models/UserTypeEnum'
 import FolderPlusIcon from '../svg-icons/FolderPlusIcon.vue'
 import PlusIcon from '../svg-icons/PlusIcon.vue'
-import AuthUser from '~/models/AuthUser'
+import SearchShare from '../search-strips/component/SearchShare.vue'
 import CreateCompanyFolder from '../company-files/Tabs/CreateCompanyFolder.vue'
 import UploadDocumentModal from './UploadDocumentModal.vue'
 import CreateTeam from '../company-files/Tabs/CreateTeam.vue'
@@ -156,6 +149,7 @@ export default Vue.extend({
     FolderPlusIcon,
     PlusIcon,
     ScribbleIcon,
+    SearchShare,
     SearchIcon,
     ShareIcon,
     SpinnerDottedIcon,
@@ -170,11 +164,11 @@ export default Vue.extend({
     EmptyFileLedger
   },
   props: ['searchContect'],
-  filters: {
-    removeExtension(filename) {
-      return filename.replace(/\.[^\/.]+$/, '');
-    }
-  },
+  // filters: {
+  //   removeExtension(filename) {
+  //     return filename.replace(/\.[^\/.]+$/, '');
+  //   }
+  // },
   async fetch() { },
   data() {
     return {
@@ -222,33 +216,19 @@ export default Vue.extend({
       this.$axios
         .$get(`/favourites/?userId=${this.$auth?.user?.id}`)
         .then((response) => {
-          // this.ledgerFiles = response.data
-          // this.ledgerFiles.map((val) => val.favourite = true)
-          var ary = []
-          response.data.map((val) => {
-            val.file.favourite = 1
-            val.file.favouriteId = val.id
+          if(response.total > 0){
+            response.data.map((val) => {
+            val.file['favourite'] = 1
+            val.file['favouriteId'] = val.id
           })
-          ary = response.data.map((val) => val.file)
-          this.$store.commit('ADD_SAVE_USER', ary)
+          response.data = response.data.map((val) => val.file)
+          }
+          this.$store.commit('ADD_SAVE_USER', response.data)
           this.totalFile = response.total
         })
         .finally(() => {
           this.spinner = false
         })
-    },
-    setFileFavourite(file, no) {
-      if (!this.$auth.loggedIn) return
-      this.$store.commit('SET_FAVOURITE', no)
-      if (file.favourite == 0) {
-        this.$axios.$delete(`/favourites/${file.favouriteId}`)
-          .then(() => {
-          })
-      } else {
-        this.$axios.$post('/favourites', { fileId: file.id })
-          .then(() => {
-          })
-      }
     },
     setRefresh() {
       this.refresh = !this.refresh

@@ -22,6 +22,7 @@ export const state = () => ({
   pdfOffset_x: 0,
   scrollPosition: false,
   showCongratulationsModal: false,
+  upload_state: false,
   agreeSign: -1
 })
 
@@ -158,10 +159,21 @@ export const mutations: MutationTree<RootState> = {
     state.savedFiles = pdfFiles
     state.originalPdfFiles = pdfFiles
   },
-  SET_FAVOURITE(state, no) {
-    let ary = state.savedFiles
-    ary[no]['favourite'] = ary[no]['favourite'] == 1 ? 0 : 1;
-    state.savedFiles = [...ary]
+  SET_UPLOAD_STATE(state, val) {
+    state.upload_state = val
+  },
+  SEARCH_SAVED_FILES(state, search) {
+    let ary = [{ favourite: 0 }];
+    if (search == '') {
+      state.savedFiles = state.originalPdfFiles
+    } else {
+      ary.pop();
+      state.originalPdfFiles.map((val: any) => {
+        val['fileName'].toLowerCase().indexOf(search) != -1 && ary.push(val);
+      })
+      console.log(ary, 'orogin');
+      state.savedFiles = [...ary]
+    }
   },
   SET_EDIT_ANNOTATION(state, condition) {
     state.editAnnotation = condition

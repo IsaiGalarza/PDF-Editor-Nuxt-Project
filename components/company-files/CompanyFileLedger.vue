@@ -122,7 +122,7 @@
             <thead class="text-[#414142]">
               <tr>
                 <th class="w-12 text-left fixed-col left">No</th>
-                <th class="text-center">File name</th>
+                <th class="text-left !pl-16">File name</th>
                 <th class="text-center">Action required</th>
                 <th class="text-center">Privacy</th>
                 <th class="text-center">Date &amp; Time</th>
@@ -145,7 +145,7 @@
                     <div class="overflow-hidden">
                       <p class="text-base font-medium text-[#414142] truncate">
                         <nuxt-link :to="`/pdf/${file.paperLink}`">
-                          {{ file.fileName }}
+                          {{ file.fileName | removeExtension }}
                         </nuxt-link>
                       </p>
                       <p class="text-xs text-[#878686] truncate">
@@ -377,6 +377,11 @@ export default Vue.extend({
       totalRegisteredPaperlink: null,
       showMaxPaperlinkModal: false,
       folderSelected: false
+    }
+  },
+  filters: {
+    removeExtension(filename) {
+      return filename.replace(/\.[^\/.]+$/, '');
     }
   },
   methods: {

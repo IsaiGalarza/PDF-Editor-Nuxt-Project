@@ -1,41 +1,39 @@
 <template>
   <section class="flex flex-wrap w-full md:justify-between font-family">
+    <ballloader v-if="imageUpload" />
     <el-dialog :visible.sync="dialogVisible" id="profile-image-cropper" title="Profile Image" width="50%">
       <div>
         <div class="upload-example__cropper-wrapper">
           <cropper ref="cropper" class="upload-example__cropper" :stencil-size="{
             width: 140,
             height: 140
-          }" 
-          :stencil-props="{
-              handlers: {},
-              movable: false,
-              resizable: false,
-              aspectRatio: 1,
-          }" 
-          :transitions="true"
-          image-restriction="stencil" 
-          :src="image.src" />
-		<vertical-buttons>
-			<square-button title="Zoom In" @click="zoom(2)">
-				<img :src="require('~/assets/icons/zoom-in.svg')" />
-			</square-button>
-			<square-button title="Zoom Out" @click="zoom(0.5)">
-				<img :src="require('~/assets/icons/zoom-out.svg')" />
-			</square-button>
-			<square-button title="Move Top" @click="move('top')">
-				<img :src="require('~/assets/icons/arrow-top.svg')" />
-			</square-button>
-			<square-button title="Move Left" @click="move('left')">
-				<img :src="require('~/assets/icons/arrow-left.svg')" />
-			</square-button>
-			<square-button title="Move Right" @click="move('right')">
-				<img :src="require('~/assets/icons/arrow-right.svg')" />
-			</square-button>
-			<square-button title="Move Bottom" @click="move('bottom')">
-				<img :src="require('~/assets/icons/arrow-bottom.svg')" />
-			</square-button>
-		</vertical-buttons>
+          }" :stencil-props="{
+  handlers: {},
+  movable: false,
+  resizable: false,
+  aspectRatio: 1,
+}" :transitions="true" image-restriction="stencil" @change="updateSize" :default-boundaries="boundaries"
+            :src="image.src" />
+          <vertical-buttons>
+            <square-button title="Zoom In" @click="zoom(2)">
+              <img :src="require('~/assets/icons/zoom-in.svg')" />
+            </square-button>
+            <square-button title="Zoom Out" @click="zoom(0.5)">
+              <img :src="require('~/assets/icons/zoom-out.svg')" />
+            </square-button>
+            <square-button title="Move Top" @click="move('top')">
+              <img :src="require('~/assets/icons/arrow-top.svg')" />
+            </square-button>
+            <square-button title="Move Left" @click="move('left')">
+              <img :src="require('~/assets/icons/arrow-left.svg')" />
+            </square-button>
+            <square-button title="Move Right" @click="move('right')">
+              <img :src="require('~/assets/icons/arrow-right.svg')" />
+            </square-button>
+            <square-button title="Move Bottom" @click="move('bottom')">
+              <img :src="require('~/assets/icons/arrow-bottom.svg')" />
+            </square-button>
+          </vertical-buttons>
           <div class="upload-example__reset-button" title="Reset Image" @click="reset()">
             <img :src="require('~/assets/img/reset.svg')" />
           </div>
@@ -48,7 +46,7 @@
             <input ref="file2" type="file" accept="image/*" @change="loadImage($event)" />
             Browse image
           </button>
-          
+
         </div>
       </div>
 
@@ -124,7 +122,9 @@
     <!-- end of dentals container -->
   </section>
 </template>
-<style src="~/assets/cropper.css"></style>
+<style src="~/assets/cropper.css">
+
+</style>
 <script>
 import Pencil from '~/assets/recent-icons/pencil.vue'
 import Vue from 'vue'
@@ -133,6 +133,7 @@ import QRCode from 'qrcode'
 import login from '~/mixins/login'
 import mixins from 'vue-typed-mixins'
 import SpinnerDottedIcon from '../svg-icons/SpinnerDottedIcon.vue'
+import ballloader from '../loader/ballloader.vue'
 import { ErrorHandler } from '~/types/ErrorFunction'
 
 
@@ -180,24 +181,26 @@ export default mixins(login).extend({
       name: '',
       profilePhoto: null,
       isLoading: false,
+      imageUpload:false,
       dialogVisible: false,
       image: {
         src: null,
         type: null,
       },
-			size: {
-				width: null,
-				height: null,
-			},
+      size: {
+        width: null,
+        height: null,
+      },
     }
   },
   // async asyncData({ params, query, $axios}) {
   //    let companyUser = $axios.get(`/users/${}`)
   // },
-  components: { Pencil, SpinnerDottedIcon, Cropper,VerticalButtons,SquareButton },
+  components: { Pencil, SpinnerDottedIcon, Cropper, VerticalButtons, SquareButton,ballloader },
   methods: {
     toggleShow() {
       //this.show = !this.show;
+      //this.imageUpload = true;
       this.dialogVisible = !this.dialogVisible
     },
     getTeamPublicFolder() {
@@ -278,12 +281,11 @@ export default mixins(login).extend({
         })
     },
     async uploadProfilePicture2(image) {
-
+      this.imageUpload = true;
       let formdata = new FormData()
       formdata.append('upload', image, 'user-profile-picture.jpg')
       formdata.append('type', 'profilePicture')
       formdata.append('userId', this.user.id)
-
       await this.$axios
         .$patch(`/files`, formdata)
         .then((response) => {
@@ -291,10 +293,12 @@ export default mixins(login).extend({
           //console.log("response",response.profilePicture)
           this.profilePhoto = response.profilePicture;
           this.dialogVisible = false;
+          this.imageUpload = false;
           this.reset();
           this.filterUsers()
         })
         .catch(() => {
+          this.imageUpload = false;
           this.$notify.error({
             message: 'Unable to upload profile picture'
           })
@@ -312,6 +316,9 @@ export default mixins(login).extend({
         src: null,
         type: null,
       };
+      const input = this.$refs.file2
+      input.type = 'text'
+      input.type = 'file'
     },
     loadImage(event) {
       // Reference to the DOM input element
@@ -348,30 +355,30 @@ export default mixins(login).extend({
         reader.readAsArrayBuffer(files[0]);
       }
     },
-		zoom(factor) {
-			this.$refs.cropper.zoom(factor);
-		},
-		move(direction) {
-			if (direction === 'left') {
-				this.$refs.cropper.move(-this.size.width / 4);
-			} else if (direction === 'right') {
-				this.$refs.cropper.move(this.size.width / 4);
-			} else if (direction === 'top') {
-				this.$refs.cropper.move(0, -this.size.height / 4);
-			} else if (direction === 'bottom') {
-				this.$refs.cropper.move(0, this.size.height / 4);
-			}
-		},
-		updateSize({ coordinates }) {
-			this.size.width = Math.round(coordinates.width);
-			this.size.height = Math.round(coordinates.height);
-		},
-		boundaries({ cropper, imageSize }) {
-			return {
-				width: cropper.clientWidth,
-				height: cropper.clientHeight,
-			};
-		},
+    zoom(factor) {
+      this.$refs.cropper.zoom(factor);
+    },
+    move(direction) {
+      if (direction === 'left') {
+        this.$refs.cropper.move(-this.size.width / 4);
+      } else if (direction === 'right') {
+        this.$refs.cropper.move(this.size.width / 4);
+      } else if (direction === 'top') {
+        this.$refs.cropper.move(0, -this.size.height / 4);
+      } else if (direction === 'bottom') {
+        this.$refs.cropper.move(0, this.size.height / 4);
+      }
+    },
+    updateSize({ coordinates }) {
+      this.size.width = Math.round(coordinates.width);
+      this.size.height = Math.round(coordinates.height);
+    },
+    boundaries({ cropper, imageSize }) {
+      return {
+        width: cropper.clientWidth,
+        height: cropper.clientHeight,
+      };
+    },
   },
   destroyed() {
     // Revoke the object URL, to allow the garbage collector to destroy the uploaded before file
@@ -380,6 +387,7 @@ export default mixins(login).extend({
     }
   },
   mounted() {
+    
     console.log('>>>>>>>>>>>>???', this.userInfo)
     this.phone = this.userInfo?.phone
     this.address = this.userInfo?.address
@@ -489,5 +497,7 @@ export default mixins(login).extend({
 .top-profile-image {
   @apply absolute w-[90%] h-[90%] mt-[5%] ml-[5%] object-cover rounded-lg m-2;
 }
-
+.spinner-container{
+  z-index: 9999;
+}
 </style>

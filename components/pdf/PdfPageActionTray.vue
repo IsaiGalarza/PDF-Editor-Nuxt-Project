@@ -37,7 +37,10 @@
       <!-- <div
         class="flex-1 flex items-center gap-5 justify-end text-xs font-medium"
       > -->
-      <span class="hidden md:inline">{{ file.fileName.length > 12 ? `${file.fileName.substr(0, 8)}....pdf` : file.fileName }}</span>
+      <span class="hidden md:inline">{{
+        file.fileName.length > 12 ? `${file.fileName.substr(0, 8)}....pdf` :
+          file.fileName
+      }}</span>
 
       <span class="hidden md:inline">
         <span class="circle circle-2 bg-[#757575]"></span>
@@ -170,7 +173,7 @@ import FilePrivacy from "~/models/FilePrivacy"
 import FileAction from '~/models/FileAction'
 import RemoveFileModal from './modals/RemoveFileModal.vue'
 import AddToPageDrawOrType from '../modals/AddToPageDrawOrType.vue'
-import DoneModal from '../../components/pdf/modals/DoneModal.vue'
+import { mapState, mapActions } from 'vuex'
 
 export default Vue.extend({
   components: {
@@ -219,6 +222,7 @@ export default Vue.extend({
     }
   },
   computed: {
+    ...mapState(['upload_state']),
     isFree() {
       return ((this.$auth?.user)?.role == UserTypeEnum.FREE)
     },
@@ -246,7 +250,16 @@ export default Vue.extend({
   },
   methods: {
     cancelPublish() {
-      window.location.assign('/dashboard')
+      if (this.upload_state) {
+        this.$axios.delete(`/files/${this.file?.id}`)
+          .then(() => {
+            this.$store.commit('SET_UPLOAD_STATE', false);
+            window.location.assign('/dashboard')
+          })
+      } else {
+        this.$store.commit('SET_UPLOAD_STATE', false);
+        window.location.assign('/dashboard')
+      }
       // this.$nuxt.$router.push('/dashboard');
     },
     showQrcodeFileFunc() {
@@ -255,7 +268,6 @@ export default Vue.extend({
     handleActionChange(command) {
       const fileTemp = { ...this.file }
       fileTemp.fileAction = command.toLowerCase()
-      console.log(fileTemp.fileAction)
       this.$emit('update-file', fileTemp)
 
       // this.$axios.patch(`/files/${fileTemp.id}`, {
@@ -303,6 +315,7 @@ export default Vue.extend({
       }
     },
     saveChanges() {
+      this.$store.commit('SET_UPLOAD_STATE', false);
       this.saveFunction = 'saved'
       this.$emit('publishFileFunction')
     },
@@ -317,6 +330,9 @@ export default Vue.extend({
         ' ' +
         (this.$auth?.user)?.lastName
     },
+    '$store.state.upload_state': function () {
+      this.upload_state = this.$store.state.upload_state
+    }
   },
 })
 </script>

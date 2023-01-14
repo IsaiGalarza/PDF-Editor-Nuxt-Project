@@ -22,6 +22,7 @@ export const state = () => ({
   pdfOffset_x: 0,
   scrollPosition: false,
   showCongratulationsModal: false,
+  upload_state: false,
   agreeSign: -1
 })
 
@@ -157,6 +158,9 @@ export const mutations: MutationTree<RootState> = {
   ADD_SAVE_USER(state, pdfFiles) {
     state.savedFiles = pdfFiles
     state.originalPdfFiles = pdfFiles
+  },
+  SET_UPLOAD_STATE(state, val) {
+    state.upload_state = val
   },
   SEARCH_SAVED_FILES(state, search) {
     let ary = [{ favourite: 0 }];

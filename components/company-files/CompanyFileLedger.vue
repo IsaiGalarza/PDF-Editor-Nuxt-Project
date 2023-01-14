@@ -154,7 +154,7 @@
                     </div>
                   </div>
                 </td>
-                <td class="text-sm text-center">{{ (file || {}).fileAction }}</td>
+                <td class="text-sm text-center">{{ file.fileAction && file.fileAction !== 'share' ? file.fileAction : "-" }}</td>
                 <td class="text-sm text-center capitalize">{{ (file || {}).filePrivacy }}</td>
                 <td class="text-center">
                   {{ formatDateTime(file.updatedAt) }}
@@ -189,7 +189,7 @@
                           </li>
                           <li class="dropdown-item" @click="showCCFlowModalFunc(file)">
                             <div class="flex justify-between w-full border-t border-gray-200">
-                              <copy-icon width="16" height="16" class="inline-block float-left" />
+                              <FileSolidIcon width="16" height="16" class="inline-block float-left" />
                               <span class="ml-1">Carbon Copy</span>
                             </div>
                           </li>
@@ -273,6 +273,7 @@ import ShareOutlineIcon from '../svg-icons/ShareOutlineIcon.vue'
 import ExportIcon from '../svg-icons/ExportIcon.vue'
 import MoveIcon from '../svg-icons/MoveIcon.vue'
 import ShareIcon from '../svg-icons/ShareIcon.vue'
+import FileSolidIcon from '../svg-icons/FileSolidIcon.vue'
 import RequestIcon from '../svg-icons/RequestIcon.vue'
 import CopyIcon from '../svg-icons/CopyIcon.vue'
 import TrashCanIcon from '../svg-icons/TrashCanIcon.vue'
@@ -311,6 +312,7 @@ export default Vue.extend({
     ShareIcon,
     PdfCCFlowModal,
     CopyIcon,
+    FileSolidIcon,
     TrashCanIcon,
     CompanyIcon,
     RequestIcon,

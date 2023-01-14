@@ -1,44 +1,20 @@
 <template>
-  <el-dialog
-    :visible.sync="showModal"
-    :append-to-body="true"
-    style=""
-    :show-close="false"
-    center
-    class="relative"
-  >
+  <el-dialog :visible.sync="showModal" :append-to-body="true" style="" :show-close="false" center class="relative">
     <!--Start:: Close Button -->
     <div class="absolute -top-3 -right-3" style="padding: inherit">
-      <span
-        class="circle circle-12 cursor-pointer text-red-600"
-        @click="closeModal()"
-      >
-        <svg
-          width="12"
-          height="12"
-          viewBox="0 0 8 8"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+      <span class="circle circle-12 cursor-pointer text-red-600" @click="closeModal()">
+        <svg width="12" height="12" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd"
             d="M4 3.19188L7.02451 0.167368C7.24767 -0.0557892 7.60948 -0.0557892 7.83263 0.167368C8.05579 0.390524 8.05579 0.752333 7.83263 0.975489L4.80812 4L7.83263 7.02451C8.05579 7.24767 8.05579 7.60948 7.83263 7.83263C7.60948 8.05579 7.24767 8.05579 7.02451 7.83263L4 4.80812L0.975489 7.83263C0.752333 8.05579 0.390524 8.05579 0.167368 7.83263C-0.0557892 7.60948 -0.0557892 7.24767 0.167368 7.02451L3.19188 4L0.167368 0.975489C-0.0557892 0.752333 -0.0557892 0.390524 0.167368 0.167368C0.390524 -0.0557892 0.752333 -0.0557892 0.975489 0.167368L4 3.19188Z"
-            fill="#414042"
-          />
+            fill="#414042" />
         </svg>
       </span>
     </div>
 
-    <div
-      @click="$refs.uploadFileInput.click()"
-      ref="dropArea"
-      @dragover.prevent="dragover"
-      @dragleave="dragleave"
+    <div @click="$refs.uploadFileInput.click()" ref="dropArea" @dragover.prevent="dragover" @dragleave="dragleave"
       @drop.prevent="drop"
       class="cursor-pointer mt-2 mx-auto px-4 py-8 flex flex-col items-center border-2 border-paperdazgreen-300 bg-white rounded-2xl max-w-3xl"
-      :class="[isDraggedOver ? 'border-solid' : 'border-dashed']"
-    >
+      :class="[isDraggedOver ? 'border-solid' : 'border-dashed']">
       <span class="circle circle-46 bg-paperdazgreen-300 text-white">
         <cloud-icon width="47" height="47" />
       </span>
@@ -53,13 +29,8 @@
       </p>
     </div>
 
-    <input
-      type="file"
-      accept="application/pdf,application/vnd.ms-excel"
-      ref="uploadFileInput"
-      hidden
-      @change="uploadDocumentFromInput"
-    />
+    <input type="file" accept="application/pdf,application/vnd.ms-excel" ref="uploadFileInput" hidden
+      @change="uploadDocumentFromInput" />
     <!-- end :: body -->
   </el-dialog>
 </template>
@@ -80,8 +51,8 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
-    folder:{
-      type:Object
+    folder: {
+      type: Object
     }
   },
   data() {
@@ -103,20 +74,21 @@ export default Vue.extend({
   },
   mounted() {
     this.showModal = this.visible;
-   
+
   },
-  methods: {  
-    async moveToFolder(id){
-      
-      if(Object.keys(this.folder).length < 1) return
+  methods: {
+    async moveToFolder(id) {
+
+      if (Object.keys(this.folder).length < 1) return
 
       await this.$axios
         .$patch(`/files/${id}`, {
-          folderId: this.folder.id,})
+          folderId: this.folder.id,
+        })
         .then(() => {
           this.$notify.success({
-          title: '',
-          message: 'File moved successful',
+            title: '',
+            message: 'File moved successful',
           })
         })
       this.$emit('resetUserFolder')
@@ -125,7 +97,7 @@ export default Vue.extend({
       const formData = new FormData()
       formData.append('upload', file, file.name);
       formData.append("type", "file");
-      formData.append("userId",(this.$auth.user).id)
+      formData.append("userId", (this.$auth.user).id)
 
       const loadingNotification = this.$notify.info({
         title: 'File Upload',
@@ -136,6 +108,7 @@ export default Vue.extend({
         .$post('/files', formData)
         .then((response) => {
           // this.moveToFolder(response.id)
+          this.$store.commit('SET_UPLOAD_STATE', true);
           this.$notify.success({
             title: 'File Upload',
             message: 'File uploaded successfully',
@@ -178,7 +151,7 @@ export default Vue.extend({
       this.uploadDocument(file)
     },
     uploadDocumentFromInput(event) {
-      const inputElement = event.currentTarget 
+      const inputElement = event.currentTarget
       if (!inputElement) return
 
       const file = inputElement.files?.length
@@ -202,12 +175,12 @@ export default Vue.extend({
 
       setTimeout(() => {
         this.loading = false
-        ;(async () => {
-          // await this.$notify.info({
-          //   title: 'Unimplemented',
-          //   message: 'This feature has not been implemented',
-          // })
-        })()
+          ; (async () => {
+            // await this.$notify.info({
+            //   title: 'Unimplemented',
+            //   message: 'This feature has not been implemented',
+            // })
+          })()
         this.closeModal()
       }, 1000)
 
@@ -253,7 +226,7 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-* >>> .el-dialog {
+*>>>.el-dialog {
   width: 600px !important;
   max-width: 95% !important;
   border-radius: 20px !important;
@@ -261,24 +234,25 @@ export default Vue.extend({
   position: relative !important;
   overflow: hidden;
 }
-* >>> .el-dialog__header {
+
+*>>>.el-dialog__header {
   padding-bottom: 20px;
   display: none;
 }
 
-* >>> .el-dialog__header,
-* >>> .el-dialog__footer {
+*>>>.el-dialog__header,
+*>>>.el-dialog__footer {
   text-align: left !important;
   background: #DBE9D2;
 }
 
-* >>> .el-dialog__body {
+*>>>.el-dialog__body {
   /* padding-top: 0 !important;
   padding-bottom: 0 !important; */
   background: #DBE9D2;
 }
 
-* >>> .el-select .el-input__inner {
+*>>>.el-select .el-input__inner {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }

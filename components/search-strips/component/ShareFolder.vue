@@ -1,7 +1,7 @@
 <template>
   <div class="self-center flex items-center">
     <button @click="setFileFavourite" class="mr-1.5 pr-1.5 border-[#EBEBEB] border-r flex "
-      v-if="$auth.loggedIn && showShareIcon && favouriteFileLoaded">
+      v-if="$auth.loggedIn && showShareIcon">
       <span class="inline-block heart-icon" ref="heart">
         <heart-outline-icon :fillColor="toggleHeartColor ? fillHeartColor : 'rgb(119,181,80)'" width="22" height="22" />
       </span>
@@ -9,8 +9,8 @@
     <button @click="showShareCompanyFilesFunc">
       <ShareOutlineIcon />
     </button>
-    <ShareFilesModal :userFile="file" @qrLoad="showQrcodeFileFunc" v-model="showShareCompanyFiles" />
-    <QrcodeShare :userFile="file" v-model="showQrcodeFiles" />
+    <ShareFilesModal :userFile="folder" @qrLoad="showQrcodeFileFunc" v-model="showShareCompanyFiles" />
+    <QrcodeShare :userFile="folder" v-model="showQrcodeFiles" />
   </div>
 </template>
 
@@ -26,7 +26,7 @@ export default {
   components: { HeartOutlineIcon, ShareIcon, ShareOutlineIcon, ShareFilesModal, QrcodeShare },
   props: {
     link: String,
-    file: {
+    folder: {
       type: Object
     },
     showShareIcon: {
@@ -39,7 +39,6 @@ export default {
       fillHeartColor: 'none',
       toggleHeartColor: true,
       favouriteFileId: null,
-      favouriteFileLoaded: false,
       showShareCompanyFiles:false,
       showQrcodeFiles: false
     }
@@ -76,10 +75,10 @@ export default {
     setFileFavourite() {
       if (!this.$auth.loggedIn) return
       this.animateElement(this.$refs.heart)
-      if (!this.file) return;
+      if (!this.folder) return;
 
       if (this.fillHeartColor == "none") {
-        this.$axios.$post('/favourites', { fileId: this.file.id })
+        this.$axios.$post('/favourites', { folderId: this.folder.id})
           .then((response) => {
             this.fillHeartColor = '#77C360';
             this.favouriteFileId = response.id;
@@ -96,14 +95,13 @@ export default {
     },
     getFavouriteFile() {
       if (!this.$auth.loggedIn) return
-      if (!this.file) return;
+      if (!this.folder) return;
 
       this.$axios
-        .$get(`/favourites/?fileId=${this.file.id}&userId=${this.$auth?.user?.id}`)
+        .$get(`/favourites/?folderId=${this.folder.id}&userId=${this.$auth?.user?.id}`)
         .then((response) => {
           if (response.data.length > 0) this.fillHeartColor = '#77C360'
-          this.favouriteFileId = response.data[0]?.id;
-          this.favouriteFileLoaded = true
+          // this.favouriteFileId = response.data[0]?.id;
         })
     },
 

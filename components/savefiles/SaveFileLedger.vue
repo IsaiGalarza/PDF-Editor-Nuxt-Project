@@ -40,8 +40,8 @@
       <table key="3" ref="fileLedgerTable" class="file-ledger-table" v-else>
         <thead>
           <tr class="text-left">
-            <th class="text-left fixed-col left">No</th>
-            <th class="text-center">File Name</th>
+            <th class="w-12 text-left fixed-col left">No</th>
+            <th class="text-left !pl-16">File Name</th>
             <th class="text-center">Actions</th>
             <th class="text-center">Date & time</th>
             <th class="fixed-col text-right"></th>
@@ -65,7 +65,8 @@
                 <div>
                   <p class="text-sm font-medium text-center">
                     <nuxt-link :to="`/pdf/${file.paperLink}`">
-                      {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName }}
+                      <!-- {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName }} -->
+                      {{ file.fileName | removeExtension }}
                     </nuxt-link>
                   </p>
                   <p class="text-xs">
@@ -169,6 +170,11 @@ export default Vue.extend({
     EmptyFileLedger
   },
   props: ['searchContect'],
+  filters: {
+    removeExtension(filename) {
+      return filename.replace(/\.[^\/.]+$/, '');
+    }
+  },
   async fetch() { },
   data() {
     return {

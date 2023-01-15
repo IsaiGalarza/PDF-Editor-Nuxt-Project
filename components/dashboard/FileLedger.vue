@@ -62,8 +62,8 @@
       <table key="3" ref="fileLedgerTable" class="file-ledger-table" v-else>
         <thead>
           <tr class="text-left">
-            <th class="w-12 text-left fixed-col left">No</th>
-            <th class="text-left !pl-16">File Name</th>
+            <th class="text-left fixed-col left">No</th>
+            <th class="text-center">File Name</th>
             <th class="text-center">{{ isPaidUser ? 'Action' : 'Actions' }}</th>
             <th class="text-center" v-if="isPaidUser">Action By</th>
             <th class="text-center">Date & time</th>
@@ -75,38 +75,21 @@
             <td class="text-left fixed-col left">{{ i + 1 + returnedDataPage }}</td>
             <td class="text-center">
               <div class="flex items-center gap-1.5">
-                <div class="border !border-paperdazgreen-300 p-0.5"
-                  :class="[
-                    (file.role == userType.PAID || $auth.user.role == userType.FREE) ? 'rounded-md w-9 h-9' : 'circle circle-17'
-                  ]">
-                  <img
-                    v-if="(file.fileOwner || {}).profile_picture"
-                  :src="
+                <div class="border border-paperdazgreen-300 p-0.5"
+                  :class="[file.role == userType.PAID ? 'rounded-md w-9 h-9' : 'circle circle-17']">
+                  <img :src="
                     (file.fileOwner || {}).profile_picture ||
                     '/img/placeholder_picture.png'
                   " alt=""
                     :class="[file.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
-                    <div v-else class="text-paperdazgreen-300 h-[30px] leading-[30px]">
-                      {{ (file.fileOwner || {}).company_name | initialFirstName }}
-                    </div>
                 </div>
                 <div>
-                  <p class="text-sm font-medium text-center ml-1 flex">
+                  <p class="text-sm font-medium">
                     <nuxt-link :to="`/pdf/${file.paperLink}`">
-                      <!-- {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName  }} -->
-                      {{ file.fileName | removeExtension }}
+                      {{ file.fileName }}
                     </nuxt-link>
                   </p>
-                  <a
-                    v-if="$auth.user.role == userType.FREE"
-                    :href="`/public/profile/${(file.fileOwnerId || {})}`"
-                    target="_blank"
-                  >
-                    <p class="ml-1 text-xs">
-                      {{ (file.fileOwner || {}).company_name }}
-                    </p>
-                  </a>
-                  <p v-else class="ml-1 text-xs">
+                  <p class="text-xs">
                     {{ (file || {}).userName }}
                   </p>
                 </div>
@@ -203,14 +186,6 @@ export default Vue.extend({
     EmptyFileLedger
   },
   props: ['searchContect'],
-  filters: {
-    removeExtension(filename) {
-      return filename.replace(/\.[^\/.]+$/, '');
-    },
-    initialFirstName (name) {
-      return name?.charAt(0).toUpperCase()
-    },
-  },
   async fetch() { },
   data() {
     return {

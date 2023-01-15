@@ -20,7 +20,7 @@
               <file-solid-icon />
             </span>
           </div>
-          <div 
+          <div
           @click="showShareCompanyFilesFunc"
           class="circle circle-22 bg-paperdazgreen-400 text-white cursor-pointer">
             <share-icon />
@@ -95,7 +95,7 @@
                 <CreditIcon width='25' height='25' class="mr-[4px]" v-if="member.type == 'payment'"/>
                 <LeavesIcon width="25" height="25" class="mr-[4px]" v-else/>
               </span>
-              <span class="inline-block w-[50%] text-left"> 
+              <span class="inline-block w-[50%] text-left">
                 {{  member.type != 'payment' ? member.leavesEarned :  member.creditEarned}}
               </span>
             </td>
@@ -116,6 +116,16 @@
 
       <QrcodeShare  :link="referalLink" v-model="showQrcodeFiles" />
 
+      <el-dialog
+        :visible="true"
+        fullscreen
+        :show-close="false"
+        :append-to-body="true"
+      >
+      <div class="flex justify-center items-center h-full text-[80px] font-semibold text-white">
+        Coming soon..
+      </div>
+    </el-dialog>
   </section>
 </template>
 <script>
@@ -217,5 +227,14 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .ref-small-card {
   @apply px-4 py-2 h-[50px] rounded-xl border-2 border-paperdazgreen-400 grid grid-cols-[50px,1fr] gap-2 items-center text-sm font-medium text-[#909090];
+}
+::v-deep .el-dialog {
+  background: rgba(80, 80, 80, 0.8);
+  &__header {
+    padding: 0px;
+  }
+  &__body {
+    height: 100%;
+  }
 }
 </style>

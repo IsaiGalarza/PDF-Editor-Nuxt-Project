@@ -142,16 +142,16 @@ export default Vue.extend({
             break;
           case 'whatsapp':
             window.open(`whatsapp://send?text=${window.location.origin}`)
-            break;
+            break; 
           case 'twitter':
             window.open(`https://twitter.com/intent/tweet?text=${window.location.origin}`)
-            break;
+            break; 
           case 'facebook':
             window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.origin}`)
-            break;
+            break; 
           case 'instagram':
             window.open(`https://www.instagram.com/paperdaz_/`)
-            break;
+            break;  
          }
       },
       getCurrentRoute(){
@@ -178,7 +178,7 @@ export default Vue.extend({
         case 'Packages':
         this.isPaidUser ? this.$nuxt.$router.push('/settings?tab=billing') : this.$nuxt.$router.push('/packages?type=default')
           break;
-
+      
         default:
           this.$nuxt.$router.push(link)
           break;
@@ -199,12 +199,7 @@ export default Vue.extend({
           link: '/company-files',
           exact: false,
         })
-        this.links.splice(2, 1, {
-          label: 'Billing',
-          icon: 'NewsPaperIcon',
-          link: '/settings?tab=billing',
-          exact: false,
-        },)
+        
       }
        if (this.$store.getters.userType === UserTypeEnum.TEAM) {
         this.links.splice(1, 1);

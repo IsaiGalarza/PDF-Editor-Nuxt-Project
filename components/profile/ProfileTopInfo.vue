@@ -59,26 +59,19 @@
         </span>
       </template>
     </el-dialog>
-
-
     <!-- logo container -->
     <div class="bg-white md:w-3/12 lg:w-[19%] w-full profile-image-container">
-
       <div class="icon-img relative" @click="toggleShow">
         <input type="file" class="hidden" v-show="false" @change="uploadProfilePicture" ref="referenceInput" />
-
-
         <img v-if="profilePhoto != null" :src="profilePhoto" id="referenceImg"
           class="top-profile-image cursor-pointer" />
         <span v-else>
           {{ firstCompanyName }}
         </span>
-
       </div>
       <div v-if="isUser" class="text-wrapper" @click="toggleShow">Click to upload an image</div>
     </div>
     <!-- end of logo container -->
-
     <!-- dentals container -->
     <div class="bg-white sm:w-12/12 md:w-9/12 lg:w-[80%] w-full profile-dental-container">
       <!-- <h1>{{user.companyName || ''}}</h1> -->
@@ -99,7 +92,6 @@
           <span class="text-[15px] font-[900] text-paperdazgreen-500" v-else>&#x2715;</span>
         </button> -->
       </div>
-
       <div class="input-wrapper">
         <input type="number" v-model="phone" placeholder="Company`s phone number" :disabled="editEnalble"
           :class="[editEnalble ? 'text-gray-400' : 'text-black']" />
@@ -108,7 +100,6 @@
           <span class="text-[15px] font-[900] text-paperdazgreen-500" v-else>&#x2715;</span>
         </button> -->
       </div>
-
       <div class="w-full grid place-items-center">
         <button
           class="w-[160px] flex justify-center items-center text-white py-2 mt-3 text-center border-none bg-paperdazgreen-400 rounded-md"
@@ -123,7 +114,6 @@
   </section>
 </template>
 <style src="~/assets/cropper.css">
-
 </style>
 <script>
 import Pencil from '~/assets/recent-icons/pencil.vue'
@@ -135,8 +125,6 @@ import mixins from 'vue-typed-mixins'
 import SpinnerDottedIcon from '../svg-icons/SpinnerDottedIcon.vue'
 import ballloader from '../loader/ballloader.vue'
 import { ErrorHandler } from '~/types/ErrorFunction'
-
-
 import { Cropper } from 'vue-advanced-cropper';
 import VerticalButtons from './cropper/VerticalButtons';
 import SquareButton from './cropper/SquareButton';
@@ -163,7 +151,6 @@ function getMimeType(file, fallback = null) {
       return fallback;
   }
 }
-
 export default mixins(login).extend({
   name: 'profile-top-info',
   props: ['userInfo'],
@@ -248,9 +235,7 @@ export default mixins(login).extend({
     },
     async uploadProfilePicture(event) {
       // if (!this.isUser) return;
-
       let fileInput = event.target
-
       if (
         fileInput.files.length < 1 ||
         fileInput.files[0].size / 1024 / 1024 > 2
@@ -260,12 +245,10 @@ export default mixins(login).extend({
         })
         return
       }
-
       let formdata = new FormData()
       formdata.append('upload', fileInput.files[0], 'user-profile-picture.jpg')
       formdata.append('type', 'profilePicture')
       formdata.append('userId', this.user.id)
-
       await this.$axios
         .$patch(`/files`, formdata)
         .then((response) => {
@@ -382,9 +365,6 @@ export default mixins(login).extend({
   },
   destroyed() {
     // Revoke the object URL, to allow the garbage collector to destroy the uploaded before file
-    if (this.image.src) {
-      URL.revokeObjectURL(this.image.src);
-    }
   },
   mounted() {
     
@@ -437,47 +417,36 @@ export default mixins(login).extend({
   }
 })
 </script>
-
 <style lang="scss" scoped>
 .font-family {
   font-family: inherit !important;
 }
-
 .profile-image-container {
   @apply bg-white flex justify-center flex-wrap items-center py-4 rounded-[10px];
-
   .icon-img {
     @apply w-40 h-40 font-[900] text-[6em] text-paperdazgreen-500 cursor-pointer border-2 border-paperdazgreen-400/60 grid place-items-center rounded-[8px];
     text-shadow: 1px 5px 7px rgb(148 148 148);
   }
-
   .text-wrapper {
     @apply block w-full text-center text-[0.8rem] text-paperdazgray-400 mt-1;
   }
 }
-
 .profile-dental-container {
   @apply py-4 rounded-[10px];
-
   h1 {
     @apply border-b-2 border-paperdazgray-200 py-4 text-[1.2rem] pl-4 font-medium;
   }
-
   .input-wrapper {
     @apply border-paperdazgray-200 py-2;
-
     input {
       @apply border-none bg-transparent px-3 text-[16px];
       width: calc(100% - 40px);
       outline: none !important;
     }
-
     button {}
   }
-
   .input-wrapper-title {
     @apply py-2;
-
     input {
       @apply border-none bg-transparent px-3 text-[24px];
       width: calc(100% - 40px);
@@ -485,15 +454,12 @@ export default mixins(login).extend({
     }
   }
 }
-
 .scanner-container {
   @apply bg-white rounded-[10px] py-4;
-
   b {
     @apply block text-center text-[0.8rem];
   }
 }
-
 .top-profile-image {
   @apply absolute w-[90%] h-[90%] mt-[5%] ml-[5%] object-cover rounded-lg m-2;
 }

@@ -134,8 +134,12 @@
                 <td class="fixed-col left">{{ i + 1 + returnedDataPage }}</td>
                 <td class="text-left">
                   <div class="flex items-center gap-3 whitespace-nowrap min-w-[150px] max-w-[400px]">
-                    <span class="p-0.5 border border-paperdazgreen-400"
-                      :class="[file.role == userType.PAID ? 'rounded-md w-9 h-9 min-w-[36px] min-h-[36px]' : 'circle circle-17']">
+                    <!-- <span class="p-0.5 border border-paperdazgreen-400"
+                      :class="[file.role == userType.PAID ? 'rounded-md w-9 h-9 min-w-[36px] min-h-[36px]' : 'circle circle-17']"> -->
+                    <span class="p-0.5 border border-paperdazgreen-400" :class="[
+                  (file.role == userType.PAID && $auth.user.id != file.userId)
+                    ? 'rounded-md w-9 h-9 min-w-[36px] min-h-[36px]'
+                    : 'circle circle-17']">
                       <img :src="
                         (file.user || {}).profile_picture ||
                         '/img/placeholder_picture.png'
@@ -565,6 +569,7 @@ export default Vue.extend({
     background: var(--background);
     padding-top: 20px;
   }
+
   & td {
     @apply py-3 sm:text-[12px] md:text-base;
   }

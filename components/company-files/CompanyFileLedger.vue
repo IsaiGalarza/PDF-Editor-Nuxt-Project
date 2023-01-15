@@ -135,15 +135,7 @@
                 <td class="text-left">
                   <div class="flex items-center gap-3 whitespace-nowrap min-w-[150px] max-w-[400px]">
                     <span class="p-0.5 border border-paperdazgreen-400"
-<<<<<<< HEAD
-                      :class="[
-                        (file.role == userType.PAID && $auth.user.id != file.userId)
-                          ? 'rounded-md w-9 h-9 min-w-[36px] min-h-[36px]'
-                          : 'circle circle-17']"
-                    >
-=======
-                      :class="[file.role == userType.PAID ? 'rounded-md w-9 h-9' : 'circle circle-17']">
->>>>>>> parent of 31b2336 (Merge branch 'main' into phpradar)
+                      :class="[file.role == userType.PAID ? 'rounded-md w-9 h-9 min-w-[36px] min-h-[36px]' : 'circle circle-17']">
                       <img :src="
                         (file.user || {}).profile_picture ||
                         '/img/placeholder_picture.png'

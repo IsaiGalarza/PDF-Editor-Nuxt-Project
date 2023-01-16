@@ -456,7 +456,7 @@ export default mixins(GlobalMixin, login).extend({
 
         .then((response) => {
           this.notification = [...this.notification, ...response.data]
-          this.isRead = (this.notification[0].isRead == 1)
+          this.isRead = (this.notification[0]?.isRead == 1)
           this.totalNotification = response.total
           this.isLoadedSuccess = true;
         })

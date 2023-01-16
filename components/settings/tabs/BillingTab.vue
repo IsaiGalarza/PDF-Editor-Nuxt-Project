@@ -316,6 +316,7 @@ export default Vue.extend({
 
           this.isSubscribeActive = this.stagingPackage.isCancelled
           this.propsPackageName = this.stagingPackage
+          console.log(this.propsPackageName, 'propspacke');
 
         })
         .catch((err) => { })
@@ -325,7 +326,7 @@ export default Vue.extend({
   data() {
     return {
       refetchCard: false,
-      propsPackageName: '',
+      propsPackageName: {},
       splitCard: '',
       card_month: '',
       card_year: '',

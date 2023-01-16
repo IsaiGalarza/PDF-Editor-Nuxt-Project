@@ -72,7 +72,7 @@
                   <nuxt-link :to="`/public-profile/${item.id}`" class="cursor-pointer">{{ (item || {}).name }}</nuxt-link>
                 </p>
               </div>
-              <SearchShare :file="item" :showShareIcon="true" />
+              <ShareFolder :folder="item" :showShareIcon="true" />
             </div>
           </div>
           <!-- End:: Single row -->
@@ -160,6 +160,7 @@ import ArrowDownIcon from '~/components/svg-icons/ArrowDownIcon.vue'
 import FilePagination from '~/components/pagination/FilePagination.vue'
 import ShareFileOptions from '~/components/profile/components/ShareFileOptions.vue'
 import SearchShare from '~/components/search-strips/component/SearchShare.vue'
+import ShareFolder from '~/components/search-strips/component/ShareFolder.vue'
 
 export default Vue.extend({
   components: {
@@ -174,6 +175,7 @@ export default Vue.extend({
     SpinnerDottedIcon,
     ArrowDownIcon,
     FilePagination,
+    ShareFolder,
     ShareFileOptions
   },
   name: 'PublicProfilePage',

@@ -19,7 +19,6 @@
         </li>
       </ul>
     </div>
-
     <transition name="fade" mode="out-in" :duration="200">
     <main class="relative w-full">
          <!-- START: spinner container -->
@@ -53,12 +52,12 @@
                   </div>
                 </td>
                 <td class="w-4 fixed-col right">
-                  <input 
+                  <input
                    @input="getCheckValue"
                    data_patch="accessRequest"
-                   :checked="app.accessRequest" 
-                   data_family="app" 
-                   type="checkbox" 
+                   :checked="app.accessRequest"
+                   data_family="app"
+                   type="checkbox"
                    class="checkbox"/>
                 </td>
               </tr>
@@ -70,11 +69,11 @@
                   </div>
                 </td>
                 <td class="w-4 fixed-col right">
-                 <input 
+                 <input
                   @input="getCheckValue"
                    data_patch="inviteRequest"
                   data_family="app"
-                  type="checkbox" 
+                  type="checkbox"
                   :checked="app.inviteRequest"
                   class="checkbox"/>
                 </td>
@@ -87,7 +86,7 @@
                   </div>
                 </td>
                 <td class="w-4 fixed-col right">
-                  <input 
+                  <input
                   @input="getCheckValue"
                    data_patch="fileAction"
                   data_family="app"
@@ -107,13 +106,13 @@
                   <input
                   @input="getCheckValue"
                    data_patch="referalCredit"
-                   data_family="app" 
+                   data_family="app"
                   :checked="app.referalCredit"
-                  type="checkbox" 
+                  type="checkbox"
                   class="checkbox"/>
                 </td>
               </tr>
-              <tr v-if="isTeamMember">
+              <!-- <tr v-if="isTeamMember">
                 <td>
                   <div class="text-sm">
                     <p class="mb-1 font-semibold">Payments</p>
@@ -124,18 +123,17 @@
                   <input
                   @input="getCheckValue"
                    data_patch="payment"
-                   data_family="app" 
+                   data_family="app"
                   type="checkbox"
-                  :checked="app.payment" 
+                  :checked="app.payment"
                   class="checkbox"/>
                 </td>
-              </tr>
+              </tr> -->
             </tbody>
           </table>
         </form>
       </section>
       <!-- End:: App notifications paymentsection -->
-
       <!-- Start:: Email notifications section -->
       <section
         v-if="currentState == 'email'"
@@ -161,8 +159,8 @@
                   <input
                    @input="getCheckValue"
                    data_patch="accessRequest"
-                   data_family="email" 
-                  type="checkbox" 
+                   data_family="email"
+                  type="checkbox"
                   :checked="email.accessRequest"
                   class="checkbox"/>
                 </td>
@@ -175,10 +173,10 @@
                   </div>
                 </td>
                 <td class="w-4 fixed-col right">
-                  <input 
+                  <input
                   @input="getCheckValue"
                   data_patch="inviteRequest"
-                  data_family="email" 
+                  data_family="email"
                   type="checkbox"
                   :checked="email.inviteRequest"
                   class="checkbox"/>
@@ -192,11 +190,11 @@
                   </div>
                 </td>
                 <td class="w-4 fixed-col right">
-                  <input 
+                  <input
                   @input="getCheckValue"
                   data_patch="fileAction"
-                  data_family="email" 
-                  type="checkbox" 
+                  data_family="email"
+                  type="checkbox"
                   :checked="email.fileAction"
                   class="checkbox"/>
                 </td>
@@ -209,15 +207,15 @@
                   </div>
                 </td>
                 <td class="w-4 fixed-col right">
-                  <input data_family="email" 
-                  type="checkbox" 
+                  <input data_family="email"
+                  type="checkbox"
                   @input="getCheckValue"
                   data_patch="referalCredit"
                   :checked="email.referalCredit"
                   class="checkbox"/>
                 </td>
               </tr>
-              <tr v-if="isTeamMember">
+              <!-- <tr v-if="isTeamMember">
                 <td>
                   <div class="text-sm">
                     <p class="mb-1 font-semibold">Payments</p>
@@ -225,15 +223,15 @@
                   </div>
                 </td>
                 <td class="w-4 fixed-col right">
-                  <input 
+                  <input
                   @input="getCheckValue"
                   data_patch="payment"
-                  data_family="email" 
-                  type="checkbox" 
+                  data_family="email"
+                  type="checkbox"
                   :checked="email.payment"
                   class="checkbox"/>
                 </td>
-              </tr>
+              </tr> -->
             </tbody>
           </table>
         </div>
@@ -243,7 +241,6 @@
     </transition>
   </div>
 </template>
-
 <script>
 import Vue from 'vue'
 import BellIcon from '~/components/svg-icons/BellIcon.vue'
@@ -252,7 +249,6 @@ import SwitchWidget from '~/components/widgets/SwitchWidget.vue'
 import AuthUser from '~/models/AuthUser'
 import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
 import UserTypeEnum from '~/models/UserTypeEnum'
-
 export default Vue.extend({
   name: 'NotificationsTab',
   components: { BellIcon, EnvelopeOutlinedIcon, SwitchWidget, SpinnerDottedIcon },
@@ -288,7 +284,7 @@ export default Vue.extend({
         switch (getFamilyAttr) {
           case 'app':
             this.patchNotification({...dataApp})
-            return    
+            return
           case 'email':
             this.patchNotification({...dataEmail})
             return;
@@ -322,14 +318,12 @@ export default Vue.extend({
           message:"Could not make the change"
           })
         })
-        
     },
     async queryNotificationApp(){
        await this.$axios
         .$get(`/notification-settings/?userId=${(this.$auth.user).id}&type=app`)
-        .then((response) => { 
-        let [gottenNotificationApp] = response; 
-
+        .then((response) => {
+        let [gottenNotificationApp] = response;
         this.app = Object.keys(gottenNotificationApp).map(function(key, index) {
           if(gottenNotificationApp[key] == '1')
            gottenNotificationApp[key] = true
@@ -337,19 +331,17 @@ export default Vue.extend({
            gottenNotificationApp[key] = false
           else
            gottenNotificationApp[key]
-        }); 
+        });
           this.app = gottenNotificationApp
           })
         .catch((err) => {
-            
         })
     },
      async queryNotificationEmail(){
        await this.$axios
         .$get(`/notification-settings/?userId=${(this.$auth.user).id}&type=email`)
-        .then((response) => { 
-         let [gottenNotificationEmail] = response; 
-
+        .then((response) => {
+         let [gottenNotificationEmail] = response;
         this.email = Object.keys(gottenNotificationEmail).map(function(key, index) {
           if(gottenNotificationEmail[key] == '1')
            gottenNotificationEmail[key] = true
@@ -357,22 +349,18 @@ export default Vue.extend({
            gottenNotificationEmail[key] = false
           else
            gottenNotificationEmail[key]
-        }); 
+        });
           this.email = gottenNotificationEmail
         })
         .catch((err) => {
-            
         })
     },
-
   },
   mounted(){
      (this.isTeamMember) = !((this.$auth.user).role == UserTypeEnum.TEAM)
   },
-
 })
 </script>
-
 <style lang="postcss" scoped>
 .checkbox{
   -webkit-appearance: none;
@@ -399,18 +387,15 @@ export default Vue.extend({
   left:20px;
   background-color: rgb(119 181 80);
 }
-
 .menu-item {
   @apply min-w-[220px] max-w-full transition ease-in-out duration-200 w-full grid gap-2 text-sm font-bold items-center h-16 border-2 border-paperdazgreen-400 rounded-2xl px-5 cursor-pointer;
   grid-template-columns: 25px 1fr;
   &:not(:last-child) {
     @apply mb-5;
   }
-
   &:hover {
     @apply bg-paperdazgreen-400 bg-opacity-5;
   }
-
   &.active {
     @apply text-white bg-paperdazgreen-400;
   }

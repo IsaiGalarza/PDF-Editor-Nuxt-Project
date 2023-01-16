@@ -39,7 +39,7 @@
     >
       Do you want to delete your aditional features from
       <span class="font-semibold text-paperdazgreen-500 uppercase"
-        >'{{ packagename.packageName }}'</span
+        >'{{(packagename || {}).packageName}}'</span
       >
       subscription?
     </p>
@@ -83,9 +83,7 @@ export default Vue.extend({
     event: 'updateVisibility',
   },
   props: {
-    packagename: {
-      type: String,
-    },
+    packagename:{},
     visible: {
       type: Boolean,
       default: false,
@@ -114,6 +112,7 @@ export default Vue.extend({
   },
   mounted() {
     this.showModal = this.visible
+    console.log('here', this.packagename);
   },
   methods: {
     closeModal() {

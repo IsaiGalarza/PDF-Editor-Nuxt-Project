@@ -20,14 +20,13 @@
               <file-solid-icon />
             </span>
           </div>
-          <div 
+          <div
           @click="showShareCompanyFilesFunc"
           class="circle circle-22 bg-paperdazgreen-400 text-white cursor-pointer">
             <share-icon />
           </div>
         </form>
       </div>
-
       <div class="bg-white py-4 px-6 rounded-2xl grid grid-cols-1 gap-5">
         <h3 class="text-lg font-semibold text-center text-paperdazgreen-400">
           Credits Earned
@@ -40,7 +39,6 @@
             <span class="truncate">{{ user.totalCreditsEarned }}</span> USD
           </p>
         </div>
-
         <div class="ref-small-card">
           <div>
              <LeavesIcon width="33" height="33"/>
@@ -52,9 +50,6 @@
       </div>
     </div>
     <!-- end:: Teams link -->
-
-
-
     <div class="rounded-2xl bg-white overflow-x-auto custom-scrollbar p-6 relative">
       <h2
         class="text-center text-2xl text-paperdazgreen-400 font-semibold pb-3 border-b border-paperdazgreen-400"
@@ -95,7 +90,7 @@
                 <CreditIcon width='25' height='25' class="mr-[4px]" v-if="member.type == 'payment'"/>
                 <LeavesIcon width="25" height="25" class="mr-[4px]" v-else/>
               </span>
-              <span class="inline-block w-[50%] text-left"> 
+              <span class="inline-block w-[50%] text-left">
                 {{  member.type != 'payment' ? member.leavesEarned :  member.creditEarned}}
               </span>
             </td>
@@ -107,7 +102,6 @@
       </div>
     </div>
     <FilePagination :totalFile="totalreferee" @setPage="setPage"/>
-
       <ShareFilesModal
       :link="referalLink"
       @qrLoad="showQrcodeFileFunc"
@@ -116,6 +110,16 @@
 
       <QrcodeShare  :link="referalLink" v-model="showQrcodeFiles" />
 
+      <el-dialog
+        :visible="true"
+        fullscreen
+        :show-close="false"
+        :append-to-body="true"
+      >
+      <div class="flex justify-center items-center h-full text-[80px] font-semibold text-white">
+        Coming soon..
+      </div>
+    </el-dialog>
   </section>
 </template>
 <script>
@@ -130,8 +134,6 @@ import InviteEarnLogo from '~/components/svg-icons/InviteEarnLogo.vue'
 import FilePagination from '~/components/pagination/FilePagination.vue'
 import ShareFilesModal from '~/components/company-files/Tabs/ShareFilesModal.vue'
 import QrcodeShare from '~/components/company-files/Tabs/QrcodeShare.vue'
-
-
 export default Vue.extend({
   name: 'ReferralTab',
   components: { ShareIcon, FileSolidIcon, CreditIcon, LeavesIcon, SpinnerDottedIcon, InviteEarnLogo, FilePagination, ShareFilesModal, QrcodeShare },
@@ -150,11 +152,9 @@ export default Vue.extend({
   async fetch() {},
   mounted() {
     this.getAllReferee( this.returnRefereePage )
-
     ;(this.referalLink) = `${
     window.location.origin
     }/register/?referreeCode=${(this.$auth.user).referralCode}`
-
     this.$nuxt.$emit('tableScrollObserver')
     ;(this.user) = this.$auth.user
   },
@@ -177,7 +177,6 @@ export default Vue.extend({
       })
       .catch(() => {
        })
-
       .finally(()=>{
        this.referalsIsLoaded = false;
        })
@@ -213,9 +212,17 @@ export default Vue.extend({
   }
 })
 </script>
-
 <style lang="scss" scoped>
 .ref-small-card {
   @apply px-4 py-2 h-[50px] rounded-xl border-2 border-paperdazgreen-400 grid grid-cols-[50px,1fr] gap-2 items-center text-sm font-medium text-[#909090];
+}
+::v-deep .el-dialog {
+  background: rgba(80, 80, 80, 0.8);
+  &__header {
+    padding: 0px;
+  }
+  &__body {
+    height: 100%;
+  }
 }
 </style>

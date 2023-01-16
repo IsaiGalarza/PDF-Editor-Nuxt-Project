@@ -136,6 +136,7 @@ export default Vue.extend({
         .$post('/files', formData)
         .then((response) => {
           // this.moveToFolder(response.id)
+          this.$store.commit('SET_UPLOAD_STATE', true);
           this.$notify.success({
             title: 'File Upload',
             message: 'File uploaded successfully',

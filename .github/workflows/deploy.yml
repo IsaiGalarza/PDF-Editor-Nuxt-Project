@@ -41,12 +41,11 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: generate # will run `nuxt generate` command
-      - name: Finish
-        uses: garygrossgarten/github-action-scp@release
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
         with:
-          local: dist
-          remote: /var/www/test
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.PASSPHRASE }}
+          name: dist-without-markdown
+          path: |
+            dist
+            !dist/**/*.md
           

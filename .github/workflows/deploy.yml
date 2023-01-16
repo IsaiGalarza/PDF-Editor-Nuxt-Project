@@ -41,8 +41,9 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: generate # will run `yarn build:prod` command
-          script: |
-            rm -r /var/www/test/*
-            mv -t /var/www/test/ ./dist/*
-            echo 'Deployment successful to digital ocean'
+      - name: Finish
+        run: |
+          rm -r /var/www/test/*
+          mv -t /var/www/test/ ./dist/*
+          echo 'Deployment successful to digital ocean'
           

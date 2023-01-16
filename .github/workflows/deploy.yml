@@ -10,6 +10,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Deploy NodeJS app
         uses: appleboy/ssh-action@master
         with:
@@ -20,8 +21,17 @@ jobs:
           script: |
             cd paperdaz-app/Paperdaz-2.0
             git pull origin main
-            yarn install
-            yarn generate
-            rm -r /var/www/test/*
-            mv -t /var/www/test/ ./dist/*
-            echo 'Deployment successful to digital ocean'
+            echo 'Pull successful to digital ocean'
+            
+      - name: Set Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - name: Run install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install # will run `yarn install` command
+      - name: Build production bundle
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build:prod # will run `yarn build:prod` command

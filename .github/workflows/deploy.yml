@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Deploy NodeJS app
+      - name: Pull paperdaz app
         uses: appleboy/ssh-action@master
         with:
           host: ${{secrets.SSH_HOST}}
@@ -34,4 +34,9 @@ jobs:
       - name: Build production bundle
         uses: borales/actions-yarn@v4
         with:
-          cmd: build:prod # will run `yarn build:prod` command
+          cmd: generate # will run `yarn build:prod` command
+          script: |
+            rm -r /var/www/test/*
+            mv -t /var/www/test/ ./dist/*
+            echo 'Deployment successful to digital ocean'
+          

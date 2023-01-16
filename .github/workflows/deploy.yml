@@ -40,11 +40,11 @@ jobs:
       - name: Build production bundle
         uses: borales/actions-yarn@v4
         with:
-          cmd: build # will run `yarn build:prod` command
+          cmd: generate # will run `nuxt generate` command
       - name: Finish
         uses: canastro/copy-file-action@master
         with:
-          source: "./dist/*"
+          source: "dist/*"
           target: "/var/www/test/"
           cmd: echo 'Deployment successful to digital ocean'
           

@@ -24,6 +24,7 @@ jobs:
             cd paperdaz-app/Paperdaz-2.0
             git pull origin main
             echo 'Pull successful to digital ocean'
+            rm -r node_modules
             npm install
             npm run build
             rm -rf /var/www/test/*

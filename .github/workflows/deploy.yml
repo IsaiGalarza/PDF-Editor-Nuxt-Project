@@ -48,5 +48,5 @@ jobs:
           key: ${{secrets.SSH_KEY}}
           username: ${{secrets.SSH_USERNAME}}
           passphrase: ${{secrets.PASSPHRASE}}
-          source: 'dist/*'
+          source: 'index.html,dist/*'
           target: '/var/www/test'

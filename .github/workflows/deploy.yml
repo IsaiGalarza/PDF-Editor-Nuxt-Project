@@ -42,8 +42,9 @@ jobs:
         with:
           cmd: generate # will run `yarn build:prod` command
       - name: Finish
-        run: |
-          rm -rf /var/www/test/*
-          mv -t /var/www/test/ ./dist/*
-          echo 'Deployment successful to digital ocean'
+        uses: canastro/copy-file-action@master
+        with:
+          source: "./dist/*"
+          target: "/var/www/test/"
+          cmd: echo 'Deployment successful to digital ocean'
           

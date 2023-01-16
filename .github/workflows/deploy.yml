@@ -31,6 +31,7 @@ jobs:
           echo "${{ secrets.ENV_FILE }}" > .env
       - name: Run Install
         run: |
-          yarn install & generate
+          yarn install
+          yarn generate
       
           

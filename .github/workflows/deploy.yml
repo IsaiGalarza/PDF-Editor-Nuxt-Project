@@ -25,27 +25,12 @@ jobs:
             git pull origin main
             echo 'Pull successful to digital ocean'
             
-      - name: Set Node.js 16.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-      - name: Run install
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: install # will run `yarn install` command
       - name: Create env file
         run: |
           touch .env
           echo "${{ secrets.ENV_FILE }}" > .env
-      - name: Build production bundle
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: generate # will run `nuxt generate` command
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: dist-without-markdown
-          path: |
-            dist
-            !dist/**/*.md
+      - name: Run Install
+        run: |
+          yarn install & generate
+      
           

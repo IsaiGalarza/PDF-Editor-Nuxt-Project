@@ -333,28 +333,6 @@ export const ExtractFormPdf = ({
                       })
                       break
                     case 'IMG':
-                      // console.log('Here', { tools, element, item })
-                      // console.log('IMG', {
-                      //   pdfOffset_x,
-                      //   pdfOffset_y,
-                      //   axisY: [
-                      //     element.getBoundingClientRect().top,
-                      //     item.getBoundingClientRect().top - pdfOffset_y,
-                      //   ],
-                      //   axisY2: [
-                      //     tools.children[0].getBoundingClientRect().top,
-                      //     tools.children[0].getBoundingClientRect().bottom,
-                      //   ],
-
-                      //   axisX: [
-                      //     element.getBoundingClientRect().left,
-                      //     item.getBoundingClientRect().left - pdfOffset_x,
-                      //   ],
-                      //   axisX2: [
-                      //     tools.children[0].getBoundingClientRect().left,
-                      //     tools.children[0].getBoundingClientRect().right,
-                      //   ],
-                      // })
                       appendEditImage({
                         parent: pdfScrappedData,
                         subParent: totalArray,
@@ -388,7 +366,6 @@ export const ExtractFormPdf = ({
                         height: tools.children[0].getBoundingClientRect()
                           .height,
                       })
-                      // console.log('Here1', { tools })
                       appendEditText({
                         parent: pdfScrappedData,
                         subParent: totalArray,

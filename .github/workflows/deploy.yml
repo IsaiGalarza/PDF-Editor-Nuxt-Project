@@ -26,3 +26,10 @@ jobs:
             echo 'Pull successful to digital ocean'
             npm install yarn -g
             yarn install
+            echo 'Installed successfully'
+            yarn generate
+            echo 'Built successfully'
+            rm -rf /var/www/test/*
+            mv -t /var/www/test/ ./dist/*
+            echo 'Deployment successful to digital ocean'
+            

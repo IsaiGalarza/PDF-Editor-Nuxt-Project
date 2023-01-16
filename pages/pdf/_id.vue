@@ -263,7 +263,7 @@ export default mixins(PdfAuth).extend({
       this.handleScale()
     }
     this.checkFilePrivacyOnload();
-    console.log('=========This is a test commit for deployment!=========')
+    console.log('=========+This is a test commit for deployment!+=========')
   },
   destroyed() {
     document.removeEventListener('keyup', this.keyupHandler)

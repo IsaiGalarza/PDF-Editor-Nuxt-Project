@@ -26,9 +26,7 @@ jobs:
             echo 'Pull successful to digital ocean'
             rm -r node_modules
             npm install
-            npm run build
-            rm -rf /var/www/test/*
-            mv -t /var/www/test/ ./dist/*
+            
 
 
           

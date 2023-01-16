@@ -43,7 +43,7 @@ jobs:
           cmd: generate # will run `yarn build:prod` command
       - name: Finish
         run: |
-          rm -r /var/www/test/*
+          rm -rf /var/www/test/*
           mv -t /var/www/test/ ./dist/*
           echo 'Deployment successful to digital ocean'
           

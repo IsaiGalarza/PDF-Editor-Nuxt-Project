@@ -25,6 +25,7 @@ jobs:
             git pull origin main
             echo 'Pull successful to digital ocean'
             nvm use 16.19.0
+            echo 'Used Node JS v16.19.0'
             npm install yarn -g
             yarn install
             echo 'Installed successfully'

@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Pull paperdaz app
+      - name: Pull Paperdaz App
         uses: appleboy/ssh-action@master
         with:
           host: ${{secrets.SSH_HOST}}

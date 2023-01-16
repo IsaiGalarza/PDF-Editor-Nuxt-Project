@@ -24,4 +24,25 @@ jobs:
             cd paperdaz-app/Paperdaz-2.0
             git pull origin main
             echo 'Pull successful to digital ocean'
-            yarn install
+            
+      - name: Set Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - name: Run install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install # will run `yarn install` command
+      - name: Create env file
+        run: |
+          touch .env
+          echo "${{ secrets.ENV_FILE }}" > .env
+      - name: Build production bundle
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: generate # will run `nuxt generate` command
+      - name: Finish
+        run: |
+          rm -rf /var/www/test/*
+          mv -t /var/www/test/ ./dist/*
+          echo 'Deployment successful to digital ocean'

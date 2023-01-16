@@ -21,6 +21,7 @@ jobs:
             mkdir paperdaz-app
             cd paperdaz-app
             git clone git@github.com:paperdaz/Paperdaz-2.0.git
+            cd paperdaz-app/Paperdaz-2.0
             yarn install
             yarn generate
             rm -r /var/www/test/*

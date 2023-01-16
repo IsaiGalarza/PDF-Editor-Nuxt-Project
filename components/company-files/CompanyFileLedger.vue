@@ -17,7 +17,6 @@
               class="search-input h-10 pl-4 mr-2 text-black bg-transparent flex-1 border-[1px] border-paperdazgreen-400 rounded-tl-lg rounded-bl-lg focus:border-paperdazgreen-700 outline-none"
               placeholder="Search Files" v-model="folderSearch" />
           </span>
-
           <button
             class="circle circle-18 bg-paperdazgreen-400 text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
             <search-icon width="16" height="16" currentcolor="white" />
@@ -34,7 +33,6 @@
       </div>
     </header>
     <!-- End:: header -->
-
     <transition name="fade" mode="out-in" :duration="100">
       <!-- <empty-file-ledger class="min-h-[55vh]" v-if="pdfUser < 1" :isPaidUser= "isPaidUser"/> -->
       <div class="bg-white rounded-3xl pb-4 text-[#272727] min-h-[55vh] overflow-hidden">
@@ -88,16 +86,13 @@
                       </el-dropdown>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>
-
           </div>
         </div>
         <!-- End:: Folders -->
         <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
-
         <!-- Start:: Files -->
         <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 flex items-center"
           v-if="folders.length > 0 && !folderSelected">
@@ -116,13 +111,12 @@
           </div>
           <!-- END: spinner container -->
           <empty-file-ledger class="min-h-[55vh]" v-if="pdfUser < 1" :isPaidUser="isPaidUser" />
-
           <!--START: No files container-->
           <table class="custom-table" v-else>
             <thead class="text-[#414142]">
               <tr>
                 <th class="w-12 text-left fixed-col left">No</th>
-                <th class="text-center">File name</th>
+                <th class="text-left !pl-16">File name</th>
                 <th class="text-center">Action required</th>
                 <th class="text-center">Privacy</th>
                 <th class="text-center">Date &amp; Time</th>
@@ -134,12 +128,12 @@
                 <td class="fixed-col left">{{ i + 1 + returnedDataPage }}</td>
                 <td class="text-left">
                   <div class="flex items-center gap-3 whitespace-nowrap min-w-[150px] max-w-[400px]">
-                    <!-- <span class="p-0.5 border border-paperdazgreen-400"
-                      :class="[file.role == userType.PAID ? 'rounded-md w-9 h-9 min-w-[36px] min-h-[36px]' : 'circle circle-17']"> -->
-                    <span class="p-0.5 border border-paperdazgreen-400" :class="[
-                  (file.role == userType.PAID && $auth.user.id != file.userId)
-                    ? 'rounded-md w-9 h-9 min-w-[36px] min-h-[36px]'
-                    : 'circle circle-17']">
+                    <span class="p-0.5 border border-paperdazgreen-400"
+                      :class="[
+                        (file.role == userType.PAID && $auth.user.id != file.userId)
+                          ? 'rounded-md w-9 h-9 min-w-[36px] min-h-[36px]'
+                          : 'circle circle-17']"
+                    >
                       <img :src="
                         (file.user || {}).profile_picture ||
                         '/img/placeholder_picture.png'
@@ -149,7 +143,7 @@
                     <div class="overflow-hidden">
                       <p class="text-base font-medium text-[#414142] truncate">
                         <nuxt-link :to="`/pdf/${file.paperLink}`">
-                          {{ file.fileName }}
+                          {{ file.fileName || removeExtension }}
                         </nuxt-link>
                       </p>
                       <p class="text-xs text-[#878686] truncate">
@@ -158,14 +152,14 @@
                     </div>
                   </div>
                 </td>
-                <td class="text-sm text-center">{{ (file || {}).fileAction }}</td>
+                <td class="text-sm text-center">{{ file.fileAction && file.fileAction !== 'share' ? file.fileAction : "-" }}</td>
                 <td class="text-sm text-center capitalize">{{ (file || {}).filePrivacy }}</td>
                 <td class="text-center">
                   {{ formatDateTime(file.updatedAt) }}
                 </td>
                 <td class="fixed-col right w-[50px]">
                   <div class="w-full h-full grid place-items-center">
-                    <el-dropdown>
+                    <el-dropdown trigger="click">
                       <button class="el-dropdown-link w-8 h-8 cursor-pointer grid place-items-center rounded-full"
                         :class="[createdByTeamMember(file.uploadedBy) && isTeam ? 'bg-paperdazgreen-300/20' : '']">
                         <ellipsis-icon-vertical-icon />
@@ -173,33 +167,53 @@
                       <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu">
                         <div class="no-access" v-if="!createdByTeamMember(file.uploadedBy)">no access right</div>
                         <ul class="min-w-[150px]" v-else>
-                          <!-- <li class="dropdown-item" @click="showShareCompanyFileFunc(file)">
-                            <span>Share</span>
-                          </li>
-                          <li @click="showRequestModalFunc(file)" class="dropdown-item"><span>Request</span></li>
-                          <li class="dropdown-item" @click="showRemoveCompanyFileFunc(file)">
-                            <span>Remove</span>
-                          </li>
-                          <li class="dropdown-item" @click="showMoveCompanyFileFunc(file)">
-                            <span>Move</span>
-                          </li> -->
-                          <li class="dropdown-item" @click="showShareCompanyFileFunc(file)">
-                            <span>Share</span>
+                          <li class="dropdown-item" @click="showShareCompanyFileFunc(file)" divided>
+                            <div class="flex justify-between w-full">
+                              <share-icon width="16" height="16" class="inline-block float-left" />
+                              <span>Share</span>
+                            </div>
                           </li>
                           <li @click="showRequestModalFunc(file)" class="dropdown-item">
-                            <span>Request</span>
+                            <div class="flex justify-between w-full border-t border-gray-200">
+                              <request-icon width="20" height="20" class="inline-block float-left" />
+                              <span>Request</span>
+                            </div>
+                          </li>
+                          <li class="dropdown-item" @click="showPapertagsModalFunc(file)">
+                            <div class="flex justify-between w-full border-t border-gray-200" >
+                              <span width="20" height="20" class="inline-block float-left">#</span>
+                              <span>Paper Tag</span>
+                            </div>
+                          </li>
+                          <li class="dropdown-item" @click="showCCFlowModalFunc(file)">
+                            <div class="flex justify-between w-full border-t border-gray-200">
+                              <FileSolidIcon width="16" height="16" class="inline-block float-left" />
+                              <span class="ml-1">Carbon Copy</span>
+                            </div>
                           </li>
                           <li class="dropdown-item">
-                            <span>Paper Tag</span>
+                            <div class="flex justify-between w-full border-t border-gray-200">
+                              <PenIcon width="16" height="16" class="inline-block float-left" />
+                              <span class="ml-1">Edit</span>
+                            </div>
+                          </li>
+                          <li class="dropdown-item" @click="showMoveCompanyFileFunc(file)">
+                            <div class="flex justify-between w-full border-t border-gray-200">
+                              <MoveIcon width="16" height="16" class="inline-block float-left" />
+                              <span class="ml-1">Move</span>
+                            </div>
                           </li>
                           <li class="dropdown-item">
-                            <span>Carbon Copy</span>
-                          </li>
-                          <li class="dropdown-item">
-                            <span>QR Code</span>
+                            <div class="flex justify-between w-full border-t border-gray-200">
+                              <QrcodeIcon width="16" height="16" class="inline-block float-left" />
+                              <span class="ml-1">QR Code</span>
+                            </div>
                           </li>
                           <li class="dropdown-item" @click="showRemoveCompanyFileFunc(file)">
-                            <span>Remove</span>
+                            <div class="flex justify-between w-full border-t border-gray-200">
+                              <trash-can-icon width="16" height="16" class="inline-block float-left" />
+                              <span>Remove</span>
+                            </div>
                           </li>
                         </ul>
                       </el-dropdown-menu>
@@ -213,20 +227,17 @@
         <!-- End:: Files -->
       </div>
     </transition>
-
     <FilePagination :totalFile="totalFile" @setPage="setPage" />
-
     <upload-document-modal @resetUserFolder="resetUserFolder" :folder="fileProps" v-model="showUploadDocumentModal" />
-
     <CreateCompanyFolder @refresh="setRefresh" :userFile="userFile" @resetUserFile="resetUserFile"
       v-model="showCreateCompanyFolder" />
     <EditCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showEditCompanyFolder" />
     <DeleteCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showDeleteCompanyFolder" />
-
     <CreateTeam @refresh="setRefresh" v-model="showCreateTeam" />
     <EditCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showEditCompanyFolder" />
     <DeleteCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showDeleteCompanyFolder" />
     <RemoveCompanyFile @refresh="setRefresh" :userFile="userFile" v-model="showRemoveCompanyFiles" />
+    <PdfPapertagsModal @refresh="setRefresh" :file="userFile" v-model="showPapertagsModal" />
     <MoveCompanyFiles @refresh="setRefresh" :userFile="userFile" @resetUserFile="resetUserFile"
       @createFolderEmit="showCreateCompanyFolderFunc" v-model="showMoveCompanyFiles" />
     <ShareFilesModal @refresh="setRefresh" :userFile="userFile" @qrLoad="showQrcodeFileFunc"
@@ -237,10 +248,9 @@
     <FilesInFolder :folder="FilesInFolerContent" v-model="showFilesInFolder" />
     <QrcodeShare :userFile="userFile" v-model="showQrcodeFiles" />
     <MaxPaperlinkModal v-model="showMaxPaperlinkModal" :totalFile="totalFile" />
-
+    <PdfCCFlowModal :file="userFile" v-model="showCCFlowModal" />
   </div>
 </template>
-
 <script>
 import Vue from 'vue'
 import UploadDocumentModal from '../dashboard/UploadDocumentModal.vue'
@@ -248,7 +258,18 @@ import CompanyIcon from '../svg-icons/CompanyIcon.vue'
 import EllipsisIconVerticalIcon from '../svg-icons/EllipsisIconVerticalIcon.vue'
 import HeartOutlineIcon from '../svg-icons/HeartOutlineIcon.vue'
 import SearchIcon from '../svg-icons/SearchIcon.vue'
+import QrcodeIcon from '../svg-icons/QrcodeIcon.vue'
+import PenIcon from '../svg-icons/PenIcon.vue'
 import ShareOutlineIcon from '../svg-icons/ShareOutlineIcon.vue'
+import ExportIcon from '../svg-icons/ExportIcon.vue'
+import MoveIcon from '../svg-icons/MoveIcon.vue'
+import ShareIcon from '../svg-icons/ShareIcon.vue'
+import FileSolidIcon from '../svg-icons/FileSolidIcon.vue'
+import RequestIcon from '../svg-icons/RequestIcon.vue'
+import CopyIcon from '../svg-icons/CopyIcon.vue'
+import TrashCanIcon from '../svg-icons/TrashCanIcon.vue'
+import PdfPapertagsModal from '../pdf/modals/PdfPapertagsModal.vue'
+import PdfCCFlowModal from '../pdf/modals/PdfCCFlowModal.vue'
 import EmptyFileLedger from '../widgets/EmptyFileLedger.vue'
 import FloatingActionButton from '../widgets/FloatingActionButton.vue'
 import CreateCompanyFolder from './Tabs/CreateCompanyFolder.vue'
@@ -271,21 +292,29 @@ import RequestModal from './Tabs/RequestModal.vue'
 import TeamAccess from '~/models/TeamAccess'
 import FilesInFolder from './Tabs/FilesInFolder.vue'
 import MaxPaperlinkModal from './Tabs/MaxPaperlinkModal.vue'
-
-
 export default Vue.extend({
   components: {
     EmptyFileLedger,
     FloatingActionButton,
     UploadDocumentModal,
     SearchIcon,
+    ExportIcon,
+    ShareIcon,
+    PdfCCFlowModal,
+    CopyIcon,
+    FileSolidIcon,
+    TrashCanIcon,
     CompanyIcon,
+    RequestIcon,
     PlusIcon,
+    MoveIcon,
+    PenIcon,
     FolderPlusIcon,
     EllipsisIconVerticalIcon,
     HeartOutlineIcon,
     ShareOutlineIcon,
     CreateCompanyFolder,
+    PdfPapertagsModal,
     CreateTeam,
     EditCompanyFolder,
     DeleteCompanyFolder,
@@ -299,7 +328,8 @@ export default Vue.extend({
     FilePagination,
     RequestModal,
     FilesInFolder,
-    MaxPaperlinkModal
+    MaxPaperlinkModal,
+    QrcodeIcon
   },
   name: 'CompanyFileLedger',
   data() {
@@ -318,9 +348,11 @@ export default Vue.extend({
       showMoveCompanyFiles: false,
       showShareCompanyFiles: false,
       showQrcodeFiles: false,
+      showCCFlowModal: false,
       showRequestModal: false,
       fileSpinner: true,
       folderSpinner: true,
+      showPapertagsModal: false,
       folders: [],
       fileProps: {},
       userFile: {},
@@ -339,7 +371,7 @@ export default Vue.extend({
   },
   methods: {
     async maxFileUpload() {
-      await this.$axios.get(`/subscriptions/${this.$auth.user.subscriptionId}`)
+      this.$auth.user.subscriptionId && await this.$axios.get(`/subscriptions/${this.$auth.user.subscriptionId}`)
         .then((response) => {
           this.totalRegisteredPaperlink = response?.data?.paperlink
         })
@@ -362,7 +394,6 @@ export default Vue.extend({
         case (UserTypeEnum.PAID):
           return true
       }
-
     },
     backFolder() {
       this.folderSelected = false;
@@ -419,6 +450,14 @@ export default Vue.extend({
       this.userFile = file
       this.showShareCompanyFiles = true
     },
+    showPapertagsModalFunc(file) {
+      this.userFile = file
+      this.showPapertagsModal = true
+    },
+    showCCFlowModalFunc(file) {
+      this.userFile = file
+      this.showCCFlowModal = true
+    },
     showRequestModalFunc(file) {
       this.userFile = file
       this.showRequestModal = true
@@ -432,9 +471,8 @@ export default Vue.extend({
       )}  ${DateFormatter.getFormattedTime(dateVal)}`
     },
     async fetchFiles(page, search) {
-      //---- checking the user role --- 
+      //---- checking the user role ---
       let paramsId = (this.$auth.user.role == UserTypeEnum.TEAM ? this.$auth.user.teamId : this.$auth.user.id)
-
       //<------------------- START: fetching of folder ------------>>
       await this.$axios.$get(`/files/?userId=${paramsId}&fileName[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`, {
         params: {
@@ -445,13 +483,10 @@ export default Vue.extend({
           const filesData = response.data.map((el) => {
             return el
           })
-
           // set the data.file
           this.files = filesData
-
           // push files to store
           this.$store.commit('ADD_USER', this.files)
-
           // to stop spinner
           this.fileSpinner = false
           this.totalFile = response.total
@@ -461,11 +496,9 @@ export default Vue.extend({
         })
       //<------------------- START: fetching of folder ------------>>
     },
-
     async fetchFolder(page, search) {
-      //---- checking the user role --- 
+      //---- checking the user role ---
       let paramsId = this.$auth.user.role == UserTypeEnum.TEAM ? this.$auth.user.teamId : this.$auth.user.id
-
       //<------------------- START: fetching of folder ------------>>
       await this.$axios
         .$get(`/folders/?userId=${paramsId}&name[$like]=${search}%&$sort[updatedAt]=-1&$skip=${page}`)
@@ -483,13 +516,17 @@ export default Vue.extend({
           this.folderSpinner = false
         })
       //<------------------- START: fetching of folder ------------>>
-
     },
   },
   mounted() {
     this.fetchFiles(this.returnedDataPage, this.folderSearch)
     this.fetchFolder(this.returnedFolderPage, this.folderSearch)
     this.maxFileUpload()
+  },
+  filters: {
+    removeExtension(filename) {
+      return filename.replace(/\.[^\/.]+$/, '');
+    }
   },
   computed: {
     // getting state from the store
@@ -522,7 +559,6 @@ export default Vue.extend({
       switch (this.$auth?.user?.role) {
         case UserTypeEnum.PAID:
           return (this.$auth.user || {}).id
-
         case UserTypeEnum.TEAM:
           return (this.$auth.user || {}).mainAccountId
       }
@@ -557,19 +593,19 @@ export default Vue.extend({
   },
 })
 </script>
-
 <style lang="postcss" scoped>
 .no-access {
   @apply p-2 text-[14px] capitalize;
 }
-
+.dropdown-item {
+  border-top: 1px
+}
 .custom-table {
   & th {
     @apply pt-8 pb-3 sm:text-[12px] md:text-base;
     background: var(--background);
     padding-top: 20px;
   }
-
   & td {
     @apply py-3 sm:text-[12px] md:text-base;
   }

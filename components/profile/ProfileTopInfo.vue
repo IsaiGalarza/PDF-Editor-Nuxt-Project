@@ -114,6 +114,7 @@
   </section>
 </template>
 <style src="~/assets/cropper.css">
+
 </style>
 <script>
 import Pencil from '~/assets/recent-icons/pencil.vue'
@@ -168,7 +169,7 @@ export default mixins(login).extend({
       name: '',
       profilePhoto: null,
       isLoading: false,
-      imageUpload:false,
+      imageUpload: false,
       dialogVisible: false,
       image: {
         src: null,
@@ -183,7 +184,7 @@ export default mixins(login).extend({
   // async asyncData({ params, query, $axios}) {
   //    let companyUser = $axios.get(`/users/${}`)
   // },
-  components: { Pencil, SpinnerDottedIcon, Cropper, VerticalButtons, SquareButton,ballloader },
+  components: { Pencil, SpinnerDottedIcon, Cropper, VerticalButtons, SquareButton, ballloader },
   methods: {
     toggleShow() {
       //this.show = !this.show;
@@ -367,7 +368,7 @@ export default mixins(login).extend({
     // Revoke the object URL, to allow the garbage collector to destroy the uploaded before file
   },
   mounted() {
-    
+
     console.log('>>>>>>>>>>>>???', this.userInfo)
     this.phone = this.userInfo?.phone
     this.address = this.userInfo?.address
@@ -421,32 +422,42 @@ export default mixins(login).extend({
 .font-family {
   font-family: inherit !important;
 }
+
 .profile-image-container {
   @apply bg-white flex justify-center flex-wrap items-center py-4 rounded-[10px];
+
   .icon-img {
     @apply w-40 h-40 font-[900] text-[6em] text-paperdazgreen-500 cursor-pointer border-2 border-paperdazgreen-400/60 grid place-items-center rounded-[8px];
     text-shadow: 1px 5px 7px rgb(148 148 148);
   }
+
   .text-wrapper {
     @apply block w-full text-center text-[0.8rem] text-paperdazgray-400 mt-1;
   }
 }
+
 .profile-dental-container {
   @apply py-4 rounded-[10px];
+
   h1 {
     @apply border-b-2 border-paperdazgray-200 py-4 text-[1.2rem] pl-4 font-medium;
   }
+
   .input-wrapper {
     @apply border-paperdazgray-200 py-2;
+
     input {
       @apply border-none bg-transparent px-3 text-[16px];
       width: calc(100% - 40px);
       outline: none !important;
     }
+
     button {}
   }
+
   .input-wrapper-title {
     @apply py-2;
+
     input {
       @apply border-none bg-transparent px-3 text-[24px];
       width: calc(100% - 40px);
@@ -454,16 +465,20 @@ export default mixins(login).extend({
     }
   }
 }
+
 .scanner-container {
   @apply bg-white rounded-[10px] py-4;
+
   b {
     @apply block text-center text-[0.8rem];
   }
 }
+
 .top-profile-image {
   @apply absolute w-[90%] h-[90%] mt-[5%] ml-[5%] object-cover rounded-lg m-2;
 }
-.spinner-container{
+
+.spinner-container {
   z-index: 9999;
 }
 </style>

@@ -10,13 +10,13 @@
     >
       <el-input
         ref="packagecode"
-        placeholder="Enter promotional codes"
+        placeholder="Enter Promotion Name"
         v-model="promotionCode"
       />
       <button
         class="text-sm h-6 sm:h-10 bg-paperdazgreen-400 text-white rounded-lg px-5 hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150 shadow px-3"
       >
-        Update
+        Search
       </button>
     </form>
     <!-- Start:: already existing package -->

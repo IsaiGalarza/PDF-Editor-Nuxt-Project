@@ -4,14 +4,12 @@
       <div v-if="windowOnLoad" class="absolute w-full h-full min-h-[70vh] grid bg-white rounded-xl place-content-center z-10 top-0 left-0">
         <spinner-dotted-icon height="32" width="32" class="text-paperdazgray-400 animate-spin" />
       </div>
-
     <profile-tab v-model="currentTab" :tabs="tabs" class="mb-10" />
     <keep-alive>
       <component :is="currrentTabComponent" />
     </keep-alive>
   </div>
 </template>
-
 <script>
 import Vue from 'vue'
 import ProfileTab from '~/components/settings/ProfileTab.vue'
@@ -23,7 +21,6 @@ import BillingTab from '~/components/settings/tabs/BillingTab.vue'
 import UserTypeEnum from '~/models/UserTypeEnum'
 import ReferralTabVue from '~/components/settings/tabs/ReferralTab.vue'
 import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
-
 export default Vue.extend({
   name: 'SettingsPage',
   components: { ProfileTab , SpinnerDottedIcon},
@@ -61,7 +58,7 @@ export default Vue.extend({
         //check if is a social user to remove settings tabs
         if (this.$auth.user.id && this.$auth.user.socialLogin !== null){
           this.tabs.splice(1, 1)
-        } 
+        }
   },
   beforeMount() {
     if (this.$store.getters.userType === UserTypeEnum.PAID) {
@@ -69,6 +66,7 @@ export default Vue.extend({
         label: 'Billing',
         value: 'billing',
         component: BillingTab,
+        hidden: true
       })
     } else if (this.$store.getters.userType === UserTypeEnum.FREE) {
       this.tabs.splice(3, 0, {
@@ -102,7 +100,7 @@ export default Vue.extend({
         label: 'Billing',
         value: 'billing',
         component: BillingTab,
-
+        hidden: true
       })
     } else if (this.$store.getters.userType === UserTypeEnum.FREE) {
         this.tabs.splice(3, 0, {
@@ -114,14 +112,12 @@ export default Vue.extend({
      else if (this.$store.getters.userType === UserTypeEnum.TEAM) {
         this.tabs.splice(1, (this.tabs.length-2))
     }
-
     //<<<<-- check if user is a social user--->>>>
    if (this.$auth.user.socialLogin !== null) {
       this.tabs.splice(1, 1)
       }
       this.windowOnLoad = false;
     },
-
   }
 })
 </script>

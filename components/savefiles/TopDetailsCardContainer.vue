@@ -57,7 +57,7 @@ export default Vue.extend({
       //<------------------- START: fetching of folder ------------>>
       await this.$axios.$get(`/favourites/?userId=${paramsId}`)
         .then((response) => {
-          const filesData = []
+          let filesData = []
           filesData = response.total > 0 && response.data.map((el) => {
             return el.file
           })

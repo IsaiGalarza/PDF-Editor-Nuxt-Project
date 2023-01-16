@@ -170,8 +170,7 @@ import FilePrivacy from "~/models/FilePrivacy"
 import FileAction from '~/models/FileAction'
 import RemoveFileModal from './modals/RemoveFileModal.vue'
 import AddToPageDrawOrType from '../modals/AddToPageDrawOrType.vue'
-import DoneModal from '../../components/pdf/modals/DoneModal.vue'
-
+import { mapState, mapActions } from 'vuex'
 export default Vue.extend({
   components: {
     EllipsisIconVerticalIcon,
@@ -219,6 +218,7 @@ export default Vue.extend({
     }
   },
   computed: {
+    ...mapState(['upload_state']),
     isFree() {
       return ((this.$auth?.user)?.role == UserTypeEnum.FREE)
     },
@@ -246,8 +246,16 @@ export default Vue.extend({
   },
   methods: {
     cancelPublish() {
-      window.location.assign('/dashboard')
-      // this.$nuxt.$router.push('/dashboard');
+      if (this.upload_state) {
+        this.$axios.delete(`/files/${this.file?.id}`)
+          .then(() => {
+            this.$store.commit('SET_UPLOAD_STATE', false);
+            window.location.assign('/dashboard')
+          })
+      } else {
+        this.$store.commit('SET_UPLOAD_STATE', false);
+        window.location.assign('/dashboard')
+      }
     },
     showQrcodeFileFunc() {
       this.showQrcodeFiles = true
@@ -303,6 +311,7 @@ export default Vue.extend({
       }
     },
     saveChanges() {
+      this.$store.commit('SET_UPLOAD_STATE', false);
       this.saveFunction = 'saved'
       this.$emit('publishFileFunction')
     },
@@ -317,6 +326,9 @@ export default Vue.extend({
         ' ' +
         (this.$auth?.user)?.lastName
     },
+    '$store.state.upload_state': function () {
+      this.upload_state = this.$store.state.upload_state
+    }
   },
 })
 </script>

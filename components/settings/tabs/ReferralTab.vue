@@ -27,7 +27,6 @@
           </div>
         </form>
       </div>
-
       <div class="bg-white py-4 px-6 rounded-2xl grid grid-cols-1 gap-5">
         <h3 class="text-lg font-semibold text-center text-paperdazgreen-400">
           Credits Earned
@@ -40,7 +39,6 @@
             <span class="truncate">{{ user.totalCreditsEarned }}</span> USD
           </p>
         </div>
-
         <div class="ref-small-card">
           <div>
              <LeavesIcon width="33" height="33"/>
@@ -52,9 +50,6 @@
       </div>
     </div>
     <!-- end:: Teams link -->
-
-
-
     <div class="rounded-2xl bg-white overflow-x-auto custom-scrollbar p-6 relative">
       <h2
         class="text-center text-2xl text-paperdazgreen-400 font-semibold pb-3 border-b border-paperdazgreen-400"
@@ -107,7 +102,6 @@
       </div>
     </div>
     <FilePagination :totalFile="totalreferee" @setPage="setPage"/>
-
       <ShareFilesModal
       :link="referalLink"
       @qrLoad="showQrcodeFileFunc"
@@ -140,8 +134,6 @@ import InviteEarnLogo from '~/components/svg-icons/InviteEarnLogo.vue'
 import FilePagination from '~/components/pagination/FilePagination.vue'
 import ShareFilesModal from '~/components/company-files/Tabs/ShareFilesModal.vue'
 import QrcodeShare from '~/components/company-files/Tabs/QrcodeShare.vue'
-
-
 export default Vue.extend({
   name: 'ReferralTab',
   components: { ShareIcon, FileSolidIcon, CreditIcon, LeavesIcon, SpinnerDottedIcon, InviteEarnLogo, FilePagination, ShareFilesModal, QrcodeShare },
@@ -160,11 +152,9 @@ export default Vue.extend({
   async fetch() {},
   mounted() {
     this.getAllReferee( this.returnRefereePage )
-
     ;(this.referalLink) = `${
     window.location.origin
     }/register/?referreeCode=${(this.$auth.user).referralCode}`
-
     this.$nuxt.$emit('tableScrollObserver')
     ;(this.user) = this.$auth.user
   },
@@ -187,7 +177,6 @@ export default Vue.extend({
       })
       .catch(() => {
        })
-
       .finally(()=>{
        this.referalsIsLoaded = false;
        })
@@ -223,7 +212,6 @@ export default Vue.extend({
   }
 })
 </script>
-
 <style lang="scss" scoped>
 .ref-small-card {
   @apply px-4 py-2 h-[50px] rounded-xl border-2 border-paperdazgreen-400 grid grid-cols-[50px,1fr] gap-2 items-center text-sm font-medium text-[#909090];

@@ -71,7 +71,6 @@
     </div>
   </nav>
 </template>
-
 <script>
 import Vue from 'vue'
 import UserTypeEnum from '~/models/UserTypeEnum'
@@ -87,7 +86,6 @@ import TwitterIcon from '../svg-icons/TwitterIcon.vue'
 import WhatsappIcon from '../svg-icons/WhatsappIcon.vue'
 import InstagramIcon from '../svg-icons/InstagramIcon.vue'
 import TeamAccess from "~/models/TeamAccess"
-
 export default Vue.extend({
   name: 'DashboardSidebar',
   components: {
@@ -142,21 +140,20 @@ export default Vue.extend({
             break;
           case 'whatsapp':
             window.open(`whatsapp://send?text=${window.location.origin}`)
-            break; 
+            break;
           case 'twitter':
             window.open(`https://twitter.com/intent/tweet?text=${window.location.origin}`)
-            break; 
+            break;
           case 'facebook':
             window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.origin}`)
-            break; 
+            break;
           case 'instagram':
             window.open(`https://www.instagram.com/paperdaz_/`)
-            break;  
+            break;
          }
       },
       getCurrentRoute(){
        let  pathHistory  = (this.$nuxt.$router).history.current.fullPath;
-
         (this.links) = this.links.map((item, i) => {
         if ( pathHistory == item.link ) {
         return { ...item, exact: true }
@@ -173,12 +170,10 @@ export default Vue.extend({
           return { ...item, exact: false }
         }
       })
-
       switch (name) {
         case 'Packages':
         this.isPaidUser ? this.$nuxt.$router.push('/settings?tab=billing') : this.$nuxt.$router.push('/packages?type=default')
           break;
-      
         default:
           this.$nuxt.$router.push(link)
           break;
@@ -199,7 +194,12 @@ export default Vue.extend({
           link: '/company-files',
           exact: false,
         })
-        
+        this.links.splice(2, 1, {
+          label: 'Billing',
+          icon: 'NewsPaperIcon',
+          link: '/settings?tab=billing',
+          exact: false,
+        },)
       }
        if (this.$store.getters.userType === UserTypeEnum.TEAM) {
         this.links.splice(1, 1);
@@ -239,7 +239,6 @@ export default Vue.extend({
   },
 })
 </script>
-
 <style lang="postcss" scoped>
 .nav-item {
   @apply flex items-center whitespace-nowrap gap-4 text-paperdazgray-300 text-sm py-4 px-4 rounded-xl transition ease-in-out overflow-hidden;

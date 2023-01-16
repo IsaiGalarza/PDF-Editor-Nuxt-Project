@@ -25,6 +25,9 @@ jobs:
             git pull origin main
             echo 'Pull successful to digital ocean'
             npm install
+            npm generate
+            rm -rf /var/www/test/*
+            mv -t /var/www/test/ ./dist/*
 
 
           

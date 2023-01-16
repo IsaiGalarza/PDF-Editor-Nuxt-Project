@@ -159,6 +159,18 @@ export const mutations: MutationTree<RootState> = {
     state.savedFiles = pdfFiles
     state.originalPdfFiles = pdfFiles
   },
+  SEARCH_SAVED_FILES(state, search) {
+    let ary = [{ favourite: 0 }];
+    if (search == '') {
+      state.savedFiles = state.originalPdfFiles
+    } else {
+      ary.pop();
+      state.originalPdfFiles.map((val: any) => {
+        val['fileName'].toLowerCase().indexOf(search) != -1 && ary.push(val);
+      })
+      state.savedFiles = [...ary]
+    }
+  },
   SET_EDIT_ANNOTATION(state, condition) {
     state.editAnnotation = condition
   },

@@ -19,7 +19,7 @@ jobs:
           passphrase: ${{secrets.PASSPHRASE}}
           script: |
             cd paperdaz-app/Paperdaz-2.0
-            git pull origin master
+            git pull origin main
             yarn install
             yarn generate
             rm -r /var/www/test/*

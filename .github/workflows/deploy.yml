@@ -18,9 +18,8 @@ jobs:
           username: ${{secrets.SSH_USERNAME}}
           passphrase: ${{secrets.PASSPHRASE}}
           script: |
-            cd paperdaz-app
-            git pull origin master
             cd paperdaz-app/Paperdaz-2.0
+            git pull origin master
             yarn install
             yarn generate
             rm -r /var/www/test/*

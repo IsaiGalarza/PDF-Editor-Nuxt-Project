@@ -24,10 +24,7 @@ jobs:
             cd paperdaz-app/Paperdaz-2.0
             git pull origin main
             echo 'Pull successful to digital ocean'
-            
-      - name: Create env file
-        run: |
-          touch .env
-          echo "${{ secrets.ENV_FILE }}" > .env
-      - run: yarn install
+            npm install
+
+
           

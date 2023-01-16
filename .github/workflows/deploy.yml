@@ -34,7 +34,7 @@ jobs:
       - name: Load Environment Values
         uses: c-py/action-dotenv-to-setenv@v2
         with:
-          env-file: .env
+          env-file: dev.env
       - name: Build production bundle
         uses: borales/actions-yarn@v4
         with:

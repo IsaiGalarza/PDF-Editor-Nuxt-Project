@@ -31,6 +31,10 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: install # will run `yarn install` command
+      - name: Load Environment Values
+        uses: c-py/action-dotenv-to-setenv@v2
+        with:
+          env-file: .env
       - name: Build production bundle
         uses: borales/actions-yarn@v4
         with:

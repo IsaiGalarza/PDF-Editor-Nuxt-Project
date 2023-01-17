@@ -11,7 +11,7 @@
       <div
         class="w-full xs:max-w-[280px] text-xs font-medium flex items-center relative justify-end"
       >
-          <span 
+          <span
            class="el-dropdown-link"
           :class="[show ? 'left-roll' : 'no-roll']"
           >
@@ -24,7 +24,7 @@
               @keypress="searchFiles"
             />
           </span>
-        <button 
+        <button
         @click="show = !show"
         class="circle circle-18 bg-paperdazgreen-400 text-white">
           <search-icon width="16" height="16" currentcolor="white"/>
@@ -77,7 +77,7 @@
                 <div>
                   <p class="text-sm font-medium text-[#505050]">
                     <nuxt-link :to="`/pdf/${file.paperLink}`">
-                      {{ file.fileName }}
+                      {{ file.fileName | removeExtension }}
                     </nuxt-link>
                   </p>
                   <p class="text-xs font-light text-[#727272]">
@@ -95,8 +95,8 @@
                 <button
                   class="circle circle-17 bg-paperdazgreen-400 text-white"
                 >
-                <component :is="displayShare(file.shared)" 
-                
+                <component :is="displayShare(file.shared)"
+
                 />
                   <!-- <facebook-icon width="8" /> -->
                 </button>
@@ -133,8 +133,8 @@
         </tbody>
       </table>
     </div>
-           
-      
+
+
       <FilePagination :totalFile="totalFile" @setPage="setPage"/>
 
     <upload-document-modal v-model="showUploadDocumentModal" />
@@ -145,13 +145,13 @@
     />
 
     <share-files-modal
-    @refresh="setRefresh" 
+    @refresh="setRefresh"
     @qrLoad="showQrcodeFileFunc"
-    :userFile="userFile" 
+    :userFile="userFile"
     v-model="showShareCompanyFiles" />
 
-    <QrcodeShare 
-    :userFile="userFile" 
+    <QrcodeShare
+    :userFile="userFile"
     v-model="showQrcodeFiles" />
   </main>
 </template>
@@ -215,6 +215,11 @@ export default Vue.extend({
   layout: 'dashboard',
   //@ts-ignore
   mixins: [Free_Users],
+  filters: {
+    removeExtension(filename) {
+      return filename?.replace(/\.[^\/.]+$/, '');
+    }
+  },
   data() {
     return {
       returnedDataPage:0,
@@ -303,7 +308,7 @@ export default Vue.extend({
       }
     },
     searchFiles(event){
-    if (event.key === "Enter"){ 
+    if (event.key === "Enter"){
     this.searchValue = event.target.value
     }
     },

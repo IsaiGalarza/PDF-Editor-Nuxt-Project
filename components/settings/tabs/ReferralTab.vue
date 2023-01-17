@@ -1,5 +1,8 @@
 <template>
-  <section>
+  <section class="relative">
+    <div class="coming-soon">
+      Coming soon..
+    </div>
     <!-- start:: Teams link -->
     <div class="grid grid-cols-1 md:grid-cols-[1fr,max-content] gap-6 mb-8">
       <div class="rounded-2xl p-4 bg-white text-paperdazgreen-400">
@@ -109,17 +112,6 @@
       />
 
       <QrcodeShare  :link="referalLink" v-model="showQrcodeFiles" />
-
-      <el-dialog
-        :visible="true"
-        fullscreen
-        :show-close="false"
-        :append-to-body="true"
-      >
-      <div class="flex justify-center items-center h-full text-[80px] font-semibold text-white">
-        Coming soon..
-      </div>
-    </el-dialog>
   </section>
 </template>
 <script>
@@ -216,13 +208,7 @@ export default Vue.extend({
 .ref-small-card {
   @apply px-4 py-2 h-[50px] rounded-xl border-2 border-paperdazgreen-400 grid grid-cols-[50px,1fr] gap-2 items-center text-sm font-medium text-[#909090];
 }
-::v-deep .el-dialog {
-  background: rgba(80, 80, 80, 0.8);
-  &__header {
-    padding: 0px;
-  }
-  &__body {
-    height: 100%;
-  }
+.coming-soon {
+  @apply w-full flex absolute justify-center items-center h-full text-[80px] font-semibold text-white z-[200] bg-[#808080] opacity-[.8];
 }
 </style>

@@ -40,8 +40,9 @@
           <img width="24" height="24" src="~/assets/img/PAPERDAZ1 2.png" />
           <p class="text-[15px] font-semibold flex items-center text-grey w-[90%] pr-3 truncate">
             <button class="mr-1"></button>
-            <span title="Patient Registration & Disclosure ..." class="truncate inline-block pr-2">{{ file.fileName
-            }}</span>
+            <span title="Patient Registration & Disclosure ..." class="truncate inline-block pr-2">
+              {{ file.fileName | removeExtension }}
+            </span>
           </p>
           <button class="w-[10%] text-right checkbox-container">
             <input :id="file.id" class="checkbox" type="checkbox" />
@@ -94,6 +95,11 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
+  },
+  filters: {
+    removeExtension(filename) {
+      return filename?.replace(/\.[^\/.]+$/, '');
+    }
   },
   data() {
     return {

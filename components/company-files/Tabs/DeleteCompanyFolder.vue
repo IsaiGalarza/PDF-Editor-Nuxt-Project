@@ -35,10 +35,10 @@
     </template>
     <!-- Start:: Body -->
     <p
-      class="text-center block font-medium max-w-[290px] mx-auto mb-6 whitespace-none"
+      class="text-center block font-medium max-w-[290px] mx-auto mb-0 whitespace-none"
     >
-     You want to remove <br />
-      <span class="font-semibold text-paperdazgreen-500 uppercase">'{{folder.name}}'</span>
+     You want to remove
+      <div class="font-semibold text-paperdazgreen-500 uppercase text-center mb-6 ">{{folder.name}}</div>
     </p>
     <div class="flex justify-around">
       <button

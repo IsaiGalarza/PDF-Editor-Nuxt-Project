@@ -143,7 +143,7 @@
                     <div class="overflow-hidden">
                       <p class="text-base font-medium text-[#414142] truncate">
                         <nuxt-link :to="`/pdf/${file.paperLink}`">
-                          {{ file.fileName || removeExtension }}
+                          {{ file.fileName | removeExtension }}
                         </nuxt-link>
                       </p>
                       <p class="text-xs text-[#878686] truncate">

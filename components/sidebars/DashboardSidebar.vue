@@ -1,10 +1,7 @@
 <template>
   <nav class="flex flex-col bg-white h-full w-full rounded-2xl py-8">
     <div class="flex justify-end px-8">
-      <span
-        class="py-2 mb-3 cursor-pointer inline-block lg:hidden"
-        @click="$emit('close')"
-      >
+      <span class="py-2 mb-3 cursor-pointer inline-block lg:hidden" @click="$emit('close')">
         <times-icon width="12" height="12" />
       </span>
     </div>
@@ -13,24 +10,14 @@
     </nuxt-link>
     <ul class="overflow-y-auto overflow-x-hidden flex-1 px-4 custom-scrollbar">
       <li>
-        <div
-          v-for="(link, i) in links"
-          :key="i"
-          class="nav-item cursor-pointer"
-          @click="shuffleRoute(i, link.link, link.label)"
-          :class="{
+        <div v-for="(link, i) in links" :key="i" class="nav-item cursor-pointer"
+          @click="shuffleRoute(i, link.link, link.label)" :class="{
             active: link.exact,
             // ? $nuxt.$route.path == link.link
             // : $nuxt.$route.fullPath.startsWith(link.link),
-          }"
-        >
+          }">
           <div class="w-5 h-5">
-            <svg-icon
-              class="h-full w-full"
-              height="100%"
-              width="100%"
-              :value="link.icon"
-            />
+            <svg-icon class="h-full w-full" height="100%" width="100%" :value="link.icon" />
           </div>
           <span>{{ link.label }}</span>
         </div>
@@ -39,28 +26,20 @@
     <div class="px-8">
       <p class="text-center text-[#909090] mb-6 font-medium">Find us on</p>
       <div class="flex flex-wrap items-center gap-2 justify-center">
-        <span
-         @click="socialShareFunction('facebook')"
-          class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white"
-        >
+        <span @click="socialShareFunction('facebook')"
+          class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white">
           <facebook-icon height="12" />
         </span>
-        <span
-          @click="socialShareFunction('linkedin')"
-          class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white"
-        >
+        <span @click="socialShareFunction('linkedin')"
+          class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white">
           <linked-in-icon height="12" />
         </span>
-        <span
-        @click="socialShareFunction('linkedin')"
-          class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white"
-        >
+        <span @click="socialShareFunction('linkedin')"
+          class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white">
           <instagram-icon height="11" />
         </span>
-        <span
-          @click="socialShareFunction('twitter')"
-          class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white"
-        >
+        <span @click="socialShareFunction('twitter')"
+          class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white">
           <twitter-icon height="11" />
         </span>
       </div>
@@ -133,37 +112,37 @@ export default Vue.extend({
     }
   },
   methods: {
-      socialShareFunction(val){
-         switch (val) {
-          case 'linkedin':
-            window.open(`https://www.linkedin.com/company/80987259/`)
-            break;
-          case 'whatsapp':
-            window.open(`whatsapp://send?text=${window.location.origin}`)
-            break;
-          case 'twitter':
-            window.open(`https://twitter.com/intent/tweet?text=${window.location.origin}`)
-            break;
-          case 'facebook':
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.origin}`)
-            break;
-          case 'instagram':
-            window.open(`https://www.instagram.com/paperdaz_/`)
-            break;
-         }
-      },
-      getCurrentRoute(){
-       let  pathHistory  = (this.$nuxt.$router).history.current.fullPath;
-        (this.links) = this.links.map((item, i) => {
-        if ( pathHistory == item.link ) {
-        return { ...item, exact: true }
+    socialShareFunction(val) {
+      switch (val) {
+        case 'linkedin':
+          window.open(`https://www.linkedin.com/company/80987259/`)
+          break;
+        case 'whatsapp':
+          window.open(`whatsapp://send?text=${window.location.origin}`)
+          break;
+        case 'twitter':
+          window.open(`https://twitter.com/intent/tweet?text=${window.location.origin}`)
+          break;
+        case 'facebook':
+          window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.origin}`)
+          break;
+        case 'instagram':
+          window.open(`https://www.instagram.com/paperdaz_/`)
+          break;
+      }
+    },
+    getCurrentRoute() {
+      let pathHistory = (this.$nuxt.$router).history.current.fullPath;
+      (this.links) = this.links.map((item, i) => {
+        if (pathHistory == item.link || pathHistory == `${item.link}/`) {
+          return { ...item, exact: true }
         } else {
-        return { ...item, exact: false }
+          return { ...item, exact: false }
         }
       })
-      },
+    },
     shuffleRoute(index, link, name) {
-      ;(this.links) = this.links.map((item, i) => {
+      (this.links) = this.links.map((item, i) => {
         if (index == i) {
           return { ...item, exact: true }
         } else {
@@ -172,7 +151,7 @@ export default Vue.extend({
       })
       switch (name) {
         case 'Packages':
-        this.isPaidUser ? this.$nuxt.$router.push('/settings?tab=billing') : this.$nuxt.$router.push('/packages?type=default')
+          this.isPaidUser ? this.$nuxt.$router.push('/settings?tab=billing') : this.$nuxt.$router.push('/packages?type=default')
           break;
         default:
           this.$nuxt.$router.push(link)
@@ -199,9 +178,9 @@ export default Vue.extend({
           icon: 'NewsPaperIcon',
           link: '/settings?tab=billing',
           exact: false,
-        },)
+        })
       }
-       if (this.$store.getters.userType === UserTypeEnum.TEAM) {
+      if (this.$store.getters.userType === UserTypeEnum.TEAM) {
         this.links.splice(1, 1);
         this.links.splice(1, 0, {
           label: 'Company Files',
@@ -221,7 +200,7 @@ export default Vue.extend({
     },
   },
   computed: {
-    isPaidUser(){
+    isPaidUser() {
       return this.$auth.user.role == UserTypeEnum.PAID
     }
   },
@@ -233,7 +212,7 @@ export default Vue.extend({
       this.checkToRouteLinks()
       this.getCurrentRoute()
     },
-    "$nuxt.$route": function(){
+    "$nuxt.$route": function () {
       this.getCurrentRoute()
     }
   },
@@ -243,15 +222,18 @@ export default Vue.extend({
 .nav-item {
   @apply flex items-center whitespace-nowrap gap-4 text-paperdazgray-300 text-sm py-4 px-4 rounded-xl transition ease-in-out overflow-hidden;
   background: transparent;
-  & > * {
+
+  &>* {
     position: relative;
     z-index: 1;
   }
+
   &.active {
     @apply text-white bg-paperdazgreen-300;
     transition: 0.25s;
     box-shadow: 0px 5px 7px 2px rgba(95, 201, 63, 0.25);
     position: relative;
+
     &::before {
       content: '';
       position: absolute;
@@ -262,6 +244,7 @@ export default Vue.extend({
       right: 15%;
       background: rgba(255, 255, 255, 0.2);
     }
+
     &::after {
       content: '';
       position: absolute;

@@ -616,6 +616,7 @@ export default Vue.extend({
   border-top: 1px
 }
 .custom-table {
+  height: fit-content;
   & th {
     @apply pt-8 pb-3 sm:text-[12px] md:text-base;
     background: var(--background);

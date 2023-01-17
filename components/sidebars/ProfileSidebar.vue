@@ -138,6 +138,7 @@ export default Vue.extend({
     QRCode.toCanvas(this.$refs.qrcancas, this.qrCodeurl, function () { });
   },
   "$auth.user": function () {
+    console.log(this.qrCodeurl);
     QRCode.toCanvas(this.$refs.qrcancas, this.qrCodeurl, function () {});
   },
   methods: {

@@ -191,7 +191,7 @@
                               <span class="ml-1">Carbon Copy</span>
                             </div>
                           </li>
-                          <li class="dropdown-item">
+                          <li class="dropdown-item" @click="showEditCompanyFileFunc(file)">
                             <div class="flex justify-between w-full border-t border-gray-200">
                               <PenIcon width="16" height="16" class="inline-block float-left" />
                               <span class="ml-1">Edit</span>
@@ -203,7 +203,7 @@
                               <span class="ml-1">Move</span>
                             </div>
                           </li>
-                          <li class="dropdown-item">
+                          <li class="dropdown-item" @click="showQrCodeFunc(file)">
                             <div class="flex justify-between w-full border-t border-gray-200">
                               <QrcodeIcon width="16" height="16" class="inline-block float-left" />
                               <span class="ml-1">QR Code</span>
@@ -232,9 +232,10 @@
     <CreateCompanyFolder @refresh="setRefresh" :userFile="userFile" @resetUserFile="resetUserFile"
       v-model="showCreateCompanyFolder" />
     <EditCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showEditCompanyFolder" />
+    <EditCompanyFile @refresh="setRefresh" :file="fileProps" v-model="showEditCompanyFile" />
+    <QrCode @refresh="setRefresh" :file="fileProps" v-model="showQrCode" />
     <DeleteCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showDeleteCompanyFolder" />
     <CreateTeam @refresh="setRefresh" v-model="showCreateTeam" />
-    <EditCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showEditCompanyFolder" />
     <DeleteCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showDeleteCompanyFolder" />
     <RemoveCompanyFile @refresh="setRefresh" :userFile="userFile" v-model="showRemoveCompanyFiles" />
     <PdfPapertagsModal @refresh="setRefresh" :file="userFile" v-model="showPapertagsModal" />
@@ -275,6 +276,8 @@ import FloatingActionButton from '../widgets/FloatingActionButton.vue'
 import CreateCompanyFolder from './Tabs/CreateCompanyFolder.vue'
 import CreateTeam from './Tabs/CreateTeam.vue'
 import EditCompanyFolder from './Tabs/EditCompanyFolder.vue'
+import EditCompanyFile from './Tabs/EditCompanyFile.vue'
+import QrCode from './Tabs/QrCode.vue'
 import DeleteCompanyFolder from './Tabs/DeleteCompanyFolder.vue'
 import AddCompanyfiles from './Tabs/AddCompanyfiles.vue'
 import RemoveCompanyFile from './Tabs/RemoveCompanyFile.vue'
@@ -317,6 +320,8 @@ export default Vue.extend({
     PdfPapertagsModal,
     CreateTeam,
     EditCompanyFolder,
+    EditCompanyFile,
+    QrCode,
     DeleteCompanyFolder,
     AddCompanyfiles,
     RemoveCompanyFile,
@@ -340,7 +345,9 @@ export default Vue.extend({
       totalFile: null,
       showCreateCompanyFolder: false,
       showCreateTeam: false,
+      showQrCode:false,
       showEditCompanyFolder: false,
+      showEditCompanyFile:false,
       showDeleteCompanyFolder: false,
       folderProperty: '',
       showAddCompanyFiles: false,
@@ -429,6 +436,14 @@ export default Vue.extend({
     showEditCompanyFolderFunc(file) {
       this.fileProps = file
       this.showEditCompanyFolder = true
+    },
+    showEditCompanyFileFunc(file) {
+      this.fileProps = file
+      this.showEditCompanyFile = true
+    },
+    showQrCodeFunc(file) {
+      this.fileProps = file
+      this.showQrCode = true
     },
     showDeleteCompanyFolderFunc(file) {
       this.fileProps = file

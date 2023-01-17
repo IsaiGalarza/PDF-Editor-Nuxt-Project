@@ -39,13 +39,13 @@
                   </td>
                   <td style="padding-top: 2px; padding-bottom: 2px;">
                     ${{
-                      $auth.user.package_type == 'yearly'
+                      stagingPackage.plan == 'yearly'
                         ? stagingPackage.yearlyPrice
                         : stagingPackage.monthlyPrice
                     }}
                     USD /
                     <span>{{
-                      $auth.user.package_type == 'yearly' ? 'Year' : 'Month'
+                      stagingPackage.plan == 'yearly' ? 'Year' : 'Month'
                     }}</span>
                   </td>
                 </tr>
@@ -236,7 +236,7 @@
       @popCredit="notEnoughCredit" :subscriptionPlan="subscriptionPlan" />
     <insufficient-credit-modal v-model="showInsufficientCreditModal" />
 
-    <UpdateSubscriptionModal v-model="showSubscriptionModal" />
+    <UpdateSubscriptionModal v-model="showSubscriptionModal" :subscriptionId="this.subscriptionId" @setRefresh="setRefresh"/>
   </section>
 </template>
 
@@ -298,7 +298,7 @@ export default Vue.extend({
         .then((response) => {
           //  --setting the package card info--
           const [subscribeResponseData] = response.data
-
+          this.subscriptionId = subscribeResponseData.id
           this.stagingPackage = {
             ...subscribeResponseData,
             name: subscribeResponseData.packageName,
@@ -316,8 +316,6 @@ export default Vue.extend({
 
           this.isSubscribeActive = this.stagingPackage.isCancelled
           this.propsPackageName = this.stagingPackage
-          console.log(this.propsPackageName, 'propspacke');
-
         })
         .catch((err) => { })
 
@@ -350,6 +348,7 @@ export default Vue.extend({
       },
       // additionalFeatures: undefined,
       stagingPackage: {},
+      subscriptionId: -1
     }
   },
   computed: {
@@ -375,6 +374,10 @@ export default Vue.extend({
     showSubscriptionFunction() {
       this.showSubscriptionModal = true
     },
+    setRefresh() {
+      this.$nuxt.refresh()
+      fetch();
+    },  
     notEnoughCredit() {
       this.showInsufficientCreditModal = true
     },

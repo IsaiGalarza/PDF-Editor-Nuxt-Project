@@ -2,29 +2,16 @@
   <div class="">
     <div class="flex flex-wrap w-full justify-center">
       <div class="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 mb-3">
-        <package-card
-          :edited="false"
-          :create="false"
-          show-bottom-button
-          class="package-card-check-width"
-          :style="{ '--count': 1 }"
-          @bottom-button-clicked="$emit('next-tab', $event)"
-          :stagingPackage="stagingPackage"
-          :disableStart = "true"
-        />
+        <package-card :edited="false" :create="false" show-bottom-button class="package-card-check-width"
+          :style="{ '--count': 1 }" @bottom-button-clicked="$emit('next-tab', $event)" :stagingPackage="stagingPackage"
+          :disableStart="true" />
       </div>
       <div class="w-full sm:w-full md:w-2/3 lg:w-2/3">
         <form class="" @submit="submit">
           <div class="form-group">
-            <label class="input-label font-bold" for=""
-              >Create business Name
+            <label class="input-label font-bold" for="">Create business Name
             </label>
-            <el-input
-              :disabled="loading"
-              placeholder="Name Surname"
-              required
-              v-model="companyName"
-            />
+            <el-input :disabled="loading" placeholder="Name Surname" required v-model="companyName" />
           </div>
           <div class="h-1 bg-black"></div>
           <div class="h-4"></div>
@@ -34,63 +21,37 @@
               <img class="float-right inline w-[134px]" src="~/assets/img/payment.png" />
             </label>
           </div>
-          <message-alert-widget
-            class="mb-7"
-            :message="errorMessage"
-            v-if="errorMessage"
-            :type="'error'"
-          />
+          <message-alert-widget class="mb-7" :message="errorMessage" v-if="errorMessage" :type="'error'" />
 
           <div class="form-group">
             <label class="input-label" for="">Name of card holder</label>
-            <el-input
-              :disabled="loading"
-              placeholder="Name Surname"
-              required
-              v-model="name"
-            />
+            <el-input :disabled="loading" placeholder="Name Surname" required v-model="name" />
           </div>
           <div class="form-group">
             <label class="input-label" for="">Card Number</label>
-            <el-input
-              :disabled="loading"
-              placeholder="0000-0000-0000-0000"
-              :value="cardNumberWithDashes"
-              @input="inputCardNumber"
-              required
-            />
+            <el-input :disabled="loading" placeholder="0000-0000-0000-0000" :value="cardNumberWithDashes"
+              @input="inputCardNumber" required />
           </div>
           <div class="grid gap-5 grid-cols-2">
             <div class="form-group">
               <label class="input-label" for="">Expiration Date</label>
-              <el-input
-                :disabled="loading"
-                placeholder="MM/YY"
-                required
-                :value="expirationDateWithSlashes"
-                @input="inputExpirationDate"
-              />
+              <el-input :disabled="loading" placeholder="MM/YY" required :value="expirationDateWithSlashes"
+                @input="inputExpirationDate" />
             </div>
             <div class="form-group">
               <label class="input-label" for="">CVC</label>
-              <el-input
-                :disabled="loading"
-                placeholder="000"
-                required
-                v-model="cvv"
-                type="password"
-                maxlength="3"
-              />
+              <el-input :disabled="loading" placeholder="000" required v-model="cvv" type="password" maxlength="3" />
             </div>
           </div>
 
           <div class="grid place-items-center mt-6">
-            <button
-              class="rounded-lg bg-paperdazgreen-400 shadow text-sm h-10 px-6 disabled:bg-opacity-50 w-full"
-              :disabled="loading"
-            >
+            <button class="rounded-lg bg-paperdazgreen-400 shadow text-sm h-10 px-6 disabled:bg-opacity-50 w-full"
+              :disabled="loading">
               <span class="inline-flex items-center gap-3 ">
-                <span>Pay {{ this.packageData?.plan=="yearly"?(stagingPackage || {}).yearlyPrice:(stagingPackage || {}).monthlyPrice }}</span>
+                <span>Pay {{
+                  this.packageData?.plan == "yearly" ? (stagingPackage || {}).yearlyPrice : (stagingPackage ||
+                    {}).monthlyPrice
+                }}</span>
                 <transition name="fade" :duration="100">
                   <span v-show="loading" class="animate-spin">
                     <spinner-dotted-icon height="22" width="22" />
@@ -217,7 +178,7 @@ export default Vue.extend({
       this.$nuxt.$router.push('/register')
     },
     inputCardNumber(val) {
-      if(val.length > 19) return;
+      if (val.length > 19) return;
       let temp = val.replace(/(-+)|([^0-9]+)/g, '')
       this.cardNumberWithDashes = (temp.match(/.{1,4}/g) || []).join('-')
     },
@@ -284,12 +245,12 @@ export default Vue.extend({
         exp_month: this.expMonth,
         cvv: this.cvv,
       }
-      
+
       this.loading = true
       this.errorMessage = ''
 
       let proceedToPayment = false
-      
+
       await this.$axios
         .$post('/cards', data)
         .then((response) => {
@@ -306,12 +267,12 @@ export default Vue.extend({
         this.loading = false
         return
       }
-
       this.$axios
         .$post('/subscriptions', {
           ...this.packageData,
           companyName: this.companyName,
           createFlage: true,
+          cardId: this.cardId
         })
         .then(async () => {
           this.$notify.success({
@@ -346,10 +307,11 @@ form {
   margin: 0 auto;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
+
 .input-label {
   @apply font-bold text-sm block;
 
-  & + * {
+  &+* {
     @apply mt-1;
   }
 }

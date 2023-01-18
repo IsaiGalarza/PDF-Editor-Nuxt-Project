@@ -36,17 +36,17 @@
       <!-- Start:: Body -->
 
       <div class="flex justify-around">
-        <div v-if="this.folder?.files?.length < 1" 
+        <div v-if="this.folder?.files?.length < 1"
         class="w-full text-center py-2"
         > Folder is empty</div>
         <ul class="w-full overflow-x-auto max-h-[330px] h-auto" v-else>
-            <li 
+            <li
             v-for="file in folder.files"
             class="flex w-full justify-start items-center py-3">
                 <PaperdazIcon width='25'/>
-             <span class="w-[calc(100%-45px)] ml-2 inline-block truncate font-[500] cursor-pointer text-[16px]"> 
+             <span class="w-[calc(100%-45px)] ml-2 inline-block truncate font-[500] cursor-pointer text-[16px]">
                 <nuxt-link :to="`/pdf/${file.paperLink}`">
-                    {{ file.fileName }}
+                    {{ file.fileName | removeExtension }}
                 </nuxt-link>
                 </span>
             </li>
@@ -55,7 +55,7 @@
       <!-- end :: body -->
     </el-dialog>
   </template>
-  
+
   <script>
   import Vue from 'vue'
   import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
@@ -74,6 +74,11 @@ import PaperdazIcon from '~/components/svg-icons/PaperdazIcon.vue'
       },
       folder:{
         type: Object
+      }
+    },
+    filters: {
+      removeExtension(filename) {
+        return filename?.replace(/\.[^\/.]+$/, '');
       }
     },
     data() {
@@ -99,11 +104,11 @@ import PaperdazIcon from '~/components/svg-icons/PaperdazIcon.vue'
       closeModal() {
         this.$emit('updateVisibility', false)
       },
-     
+
     },
   })
   </script>
-  
+
   <style scoped>
   * >>> .el-dialog {
     width: 500px !important;
@@ -116,21 +121,20 @@ import PaperdazIcon from '~/components/svg-icons/PaperdazIcon.vue'
   * >>> .el-dialog__header {
     padding-bottom: 20px;
   }
-  
+
   * >>> .el-dialog__header,
   * >>> .el-dialog__footer {
     text-align: left !important;
   }
-  
+
   * >>> .el-dialog__body {
     /* padding-top: 0 !important;
     padding-bottom: 0 !important; */
     background: #fcfcfd;
   }
-  
+
   * >>> .el-select .el-input__inner {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
   }
   </style>
-  

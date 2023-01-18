@@ -28,7 +28,7 @@
                 " alt="" class="h-16 w-16 rounded-2 object-cover" />
                 <div class="overflow-hidden">
                   <nuxt-link :to="`/pdf/${item.paperLink}`">
-                    <p class="text-sm text-black truncate font-semibold">{{ item.fileName }}</p>
+                    <p class="text-sm text-black truncate font-semibold">{{ item.fileName | removeExtension }}</p>
                     <p class="text-sm text-black mb-1 truncate font-semibold">
                       {{ (item.user || {}).company_name }}
                     </p>
@@ -269,6 +269,11 @@ export default mixins(GlobalMixin, login).extend({
       type: String,
       default: ''
     }
+  },
+  filters: {
+    removeExtension(filename) {
+      return filename?.replace(/\.[^\/.]+$/, '');
+    },
   },
   data() {
     return {

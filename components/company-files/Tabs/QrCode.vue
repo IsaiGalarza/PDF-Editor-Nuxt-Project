@@ -13,13 +13,13 @@
     </div>
     <!--End:: Close Button -->
     <template #title>
-      <h4 class="text-center font-semibold text-xl">{{ fileName }}</h4>
+      <h4 class="text-center font-semibold text-xl">{{ fileName | removeExtension }}</h4>
     </template>
     <!-- Start:: Body -->
     <div class="flex justify-around">
       <canvas ref="qrcanvas" width="200" height="200" class="object-contain"></canvas>
 
-      <button class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[900%] 
+      <button class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[900%]
         shadow-md
          text-white rounded-lg bg-paperdazgreen-400" :disabled="loading" @click="email">
         <span class="inline-flex gap-1 items-center text-[16px]">
@@ -27,7 +27,7 @@
           <spinner-dotted-icon v-show="loading" height="20" width="20" class="animate-spin" />
         </span>
       </button>
-      <button class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[900%] 
+      <button class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[900%]
         shadow-md
          text-white rounded-lg bg-paperdazgreen-400" :disabled="loading" @click="download">
         <span class="inline-flex gap-1 items-center text-[16px]">
@@ -61,6 +61,11 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
+  },
+  filters: {
+    removeExtension(filename) {
+      return filename?.replace(/\.[^\/.]+$/, '');
+    }
   },
   data() {
     return {

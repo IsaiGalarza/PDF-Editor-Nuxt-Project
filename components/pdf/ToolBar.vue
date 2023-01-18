@@ -71,7 +71,7 @@
       isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.name)">
         <user-profile-solid-icon />
       </button>
-      <zoom-in-out @zoomIn="$emit('zoomIn')" @zoomOut="$emit('zoomOut')" />
+      <!-- <zoom-in-out @zoomIn="$emit('zoomIn')" @zoomOut="$emit('zoomOut')" /> -->
       <div class="flex">
         <!-- <div v-if="isComplete && isCreator" class="mx-1">
           <button

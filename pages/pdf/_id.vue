@@ -26,7 +26,7 @@
           :limitZoom="1000"
           disableZoomControl="disable"
         >
-          <div class="pdf-pages-outer pb-6 relative" ref="PagesOuter" :style="pagesOuterStyle">
+          <div class="pdf-pages-outer pb-6 relative" ref="PagesOuter" >
             <div class="pdf-single-pages-outer w-full" ref="pdf-single-pages-outer" v-if="pdf">
               <div :class="[
                 'pdf-single-page-outer w-full',

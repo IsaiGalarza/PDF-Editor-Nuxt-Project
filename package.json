@@ -60,6 +60,7 @@
     "vue-carousel": "^0.18.0",
     "vue-image-crop-upload": "^3.0.3",
     "vue-masked-input": "^0.5.2",
+    "vue-pinch-zoom": "^1.0.1",
     "vue-qrcode-component": "^2.1.1",
     "vue-qrious": "^2.0.1",
     "vue-query": "^1.26.0",

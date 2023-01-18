@@ -20,56 +20,63 @@
         :isLoading="pdfLoading" @zoomIn="zoom *= 1.1" @zoomOut="zoom /= 1.1" />
       <div class="pdf-editor-view relative custom-scrollbar overflow-scroll w-full" @scroll="setScrollPage" v-if="pdf"
         ref="scrollingElement">
-        <div class="pdf-pages-outer pb-6 relative" ref="PagesOuter" :style="pagesOuterStyle">
-          <div class="pdf-single-pages-outer w-full" ref="pdf-single-pages-outer" v-if="pdf">
-            <div :class="[
-              'pdf-single-page-outer w-full',
-              { 'mt-6': pI > 0 && !downloadingPdf },
-            ]" :ref="`pdf-single-page-outer-${pI + 1}`" v-for="(page, pI) in pdf.numPages" :key="pI"
-              v-hammer:pan="(ev) => handlePanning(ev, undefined, undefined, pI + 1)" @mouseup="onMouseUp"
-              @mousedown="onMouseDown" style="position: relative;">
+        <pinch-zoom
+          ref="pinch"
+          :limitPan="true"
+          :limitZoom="1000"
+          disableZoomControl="disable"
+        >
+          <div class="pdf-pages-outer pb-6 relative" ref="PagesOuter" :style="pagesOuterStyle">
+            <div class="pdf-single-pages-outer w-full" ref="pdf-single-pages-outer" v-if="pdf">
+              <div :class="[
+                'pdf-single-page-outer w-full',
+                { 'mt-6': pI > 0 && !downloadingPdf },
+              ]" :ref="`pdf-single-page-outer-${pI + 1}`" v-for="(page, pI) in pdf.numPages" :key="pI"
+                v-hammer:pan="(ev) => handlePanning(ev, undefined, undefined, pI + 1)" @mouseup="onMouseUp"
+                @mousedown="onMouseDown" style="position: relative;">
 
-              <div
-                v-if="((filteredAnnotationButton.length > 0) && isSign && curSignInitialPage == ('sign' + (pI + 1)) && isAgreedSign == 1)"
-                class="flex absolute" :style="signAlaram">
-                <div class="bg-[#77B550] p-1 text-white text-[12px] border-rounded-lg">
-                  {{ "Sign " + signNumber }}
+                <div
+                  v-if="((filteredAnnotationButton.length > 0) && isSign && curSignInitialPage == ('sign' + (pI + 1)) && isAgreedSign == 1)"
+                  class="flex absolute" :style="signAlaram">
+                  <div class="bg-[#77B550] p-1 text-white text-[12px] border-rounded-lg">
+                    {{ "Sign " + signNumber }}
+                  </div>
+                  <div
+                    class="w-0 h-0 border-t-[14px] -ml-[1px] border-b-[14px] border-t-transparent border-b-transparent border-l-[14px] border-l-[#77B550]">
+                  </div>
                 </div>
                 <div
-                  class="w-0 h-0 border-t-[14px] -ml-[1px] border-b-[14px] border-t-transparent border-b-transparent border-l-[14px] border-l-[#77B550]">
+                  v-if="((filteredAnnotationButton.length > 0) && isSign && curSignInitialPage == ('initial' + (pI + 1)) && isAgreedSign == 1)"
+                  :style="signAlaram" class="absolute flex">
+                  <div class="bg-[#77B550] py-1 text-white text-[12px] border-rounded-lg">
+                    {{
+                        "Initial " + InitialNumber
+                    }}
+                  </div>
+                  <div
+                    class="w-0 h-0 border-t-[14px] -ml-[1px] border-b-[14px] border-t-transparent border-b-transparent border-l-[14px] border-l-[#77B550]">
+                  </div>
                 </div>
+                <tool-wrapper v-for="tool in fillteredTools(pI + 1)" :toolLength="fillteredTools(pI + 1).length"
+                  :key="tool.id" :selectedToolType="selectedToolType" :dragHandler="handlePanning" :id="tool.id"
+                  :tool="tool" :type="tool.type" :x1="tool.x1" :y1="tool.y1" :x2="tool.x2" :y2="tool.y2"
+                  :points="tool.points" :deleteTool="deleteTool" :handleIncrease="handleIncrease" :mouseUp="mouseUp"
+                  :lineStart="lineStart" :handleDecrease="handleDecrease" :fontSize="tool.fontSize" :scale="tool.scale"
+                  @pos-change="onPosChange" @resetJustMounted="resetJustMounted" :activeToolId="activeToolId"
+                  :setActiveToolId="setActiveToolId" :pageNumber="pI + 1" :value="tool.value" :file="file"
+                  :justMounted="tool.justMounted" :drawingStart="drawingStart" :showPublishModal="showPublishModal"
+                  :generatePDF="generatePDF" @toolWrapperBeforeChecked="toolWrapperBeforeChecked"
+                  @toolWrapperAfterChecked="toolWrapperAfterChecked" v-model="tool.value"
+                  :setInitialSignType="setInitialSignType" />
+                <!-- </div> -->
+                <pdf-page :handlePanning="handlePanning" :onCLickSinglePageOuter="onCLickSinglePageOuter" :file="file"
+                  :page-number="pI + 1" :pdf="pdf" :scale="scale" @setPageHeight="setPageHeight"
+                  :initialOrigin="setInitialOrigin" @setPageWidth="onloadPdfquery" :confirmDone="confirmDone"
+                  :isCreator="isCreator" />
               </div>
-              <div
-                v-if="((filteredAnnotationButton.length > 0) && isSign && curSignInitialPage == ('initial' + (pI + 1)) && isAgreedSign == 1)"
-                :style="signAlaram" class="absolute flex">
-                <div class="bg-[#77B550] py-1 text-white text-[12px] border-rounded-lg">
-                  {{
-                      "Initial " + InitialNumber
-                  }}
-                </div>
-                <div
-                  class="w-0 h-0 border-t-[14px] -ml-[1px] border-b-[14px] border-t-transparent border-b-transparent border-l-[14px] border-l-[#77B550]">
-                </div>
-              </div>
-              <tool-wrapper v-for="tool in fillteredTools(pI + 1)" :toolLength="fillteredTools(pI + 1).length"
-                :key="tool.id" :selectedToolType="selectedToolType" :dragHandler="handlePanning" :id="tool.id"
-                :tool="tool" :type="tool.type" :x1="tool.x1" :y1="tool.y1" :x2="tool.x2" :y2="tool.y2"
-                :points="tool.points" :deleteTool="deleteTool" :handleIncrease="handleIncrease" :mouseUp="mouseUp"
-                :lineStart="lineStart" :handleDecrease="handleDecrease" :fontSize="tool.fontSize" :scale="tool.scale"
-                @pos-change="onPosChange" @resetJustMounted="resetJustMounted" :activeToolId="activeToolId"
-                :setActiveToolId="setActiveToolId" :pageNumber="pI + 1" :value="tool.value" :file="file"
-                :justMounted="tool.justMounted" :drawingStart="drawingStart" :showPublishModal="showPublishModal"
-                :generatePDF="generatePDF" @toolWrapperBeforeChecked="toolWrapperBeforeChecked"
-                @toolWrapperAfterChecked="toolWrapperAfterChecked" v-model="tool.value"
-                :setInitialSignType="setInitialSignType" />
-              <!-- </div> -->
-              <pdf-page :handlePanning="handlePanning" :onCLickSinglePageOuter="onCLickSinglePageOuter" :file="file"
-                :page-number="pI + 1" :pdf="pdf" :scale="scale" @setPageHeight="setPageHeight"
-                :initialOrigin="setInitialOrigin" @setPageWidth="onloadPdfquery" :confirmDone="confirmDone"
-                :isCreator="isCreator" />
             </div>
           </div>
-        </div>
+        </pinch-zoom>
         <!-- <button   @click="downloadPdf">download</button> -->
         <div id="bottom"></div>
       </div>
@@ -98,6 +105,8 @@
 import * as pdfJs from 'pdfjs-dist/build/pdf'
 import * as worker from 'pdfjs-dist/build/pdf.worker.entry'
 pdfJs.GlobalWorkerOptions.workerSrc = worker
+
+import PinchZoom from "vue-pinch-zoom";
 
 import jsPDF from 'jspdf'
 
@@ -174,7 +183,9 @@ export default mixins(PdfAuth).extend({
     BlockPrivateFile,
     BlockDonotPostFile,
     AddToPageDrawOrType,
-    DoneModal
+    DoneModal,
+    PinchZoom
+
   },
   data: () => ({
     pdf: null,
@@ -263,7 +274,6 @@ export default mixins(PdfAuth).extend({
       this.handleScale()
     }
     this.checkFilePrivacyOnload();
-    console.log('+++This is a test commit for deployments on main server!+++>>>')
   },
   destroyed() {
     document.removeEventListener('keyup', this.keyupHandler)

@@ -21,7 +21,7 @@
     <div ref="ledgerContainer" class="bg-white rounded-2xl flex-1 min-h-[50vh] lg:min-h-[40vh] position-relative"
       :class="[
         (files || []).length <= 0 || $fetchState.pending
-          ? 'p-5 flex items-center justify-center'
+          ? 'p-5 flex justify-center'
           : 'pb-4 overflow-x-auto custom-scrollbar',
       ]">
       <!-- <transition name="fade" mode="out-in"> -->
@@ -380,6 +380,7 @@ export default Vue.extend({
   @apply text-sm w-full whitespace-nowrap;
   border-collapse: separate;
   border-spacing: 0px 0px;
+  height: fit-content;
   & tr {
     @apply border-b border-gray-100;
     transition: all 0.2s ease-in-out;

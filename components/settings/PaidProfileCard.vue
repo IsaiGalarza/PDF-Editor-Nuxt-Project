@@ -6,10 +6,8 @@
           {{ userAccount }}
         </h3>
         <div class="w-40 h-40 mx-auto p-0.5 mb-2">
-          <div @click="PopUpFileInput" class="w-full h-full border-2 border-[#B7EF94] p-2 cursor-pointer rounded-lg">
+          <div @click="visibleUploadImageDialog = true" class="w-full h-full border-2 border-[#B7EF94] p-2 cursor-pointer rounded-lg">
             <img :src="profilePhoto" class="w-full h-full profilePhoto rounded-lg" alt="" />
-            <input ref="profileInput" @input="uploadProfilePicture" type="file" class="hidden"
-              accept="image/x-png,image/jiff,image/jpeg,image/jpg" />
           </div>
         </div>
         <p class="text-lg font-semibold mb-2 capitalize">
@@ -36,6 +34,10 @@
     <QrcodeShare :link="link" v-model="showQrcode" />
 
     <ShareFilesModal :link="link" v-model="showShareCompany" />
+    <cropper-image-upload
+      :show="visibleUploadImageDialog"
+      @visibleDialog="(show) => (visibleUploadImageDialog = show)"
+    />
   </div>
 </template>
 
@@ -44,6 +46,7 @@ import Vue from 'vue'
 import BarcodeIcon from '../svg-icons/BarcodeIcon.vue'
 import BuildingIcon from '../svg-icons/BuildingIcon.vue'
 import ShareIcon from '../svg-icons/ShareIcon.vue'
+import CropperImageUpload from '../cropper/CropperImageUpload.vue'
 import login from "~/mixins/login"
 import mixins from 'vue-typed-mixins'
 import UserTypeEnum from '~/models/UserTypeEnum'
@@ -52,11 +55,12 @@ import ShareFilesModal from '../company-files/Tabs/ShareFilesModal.vue'
 
 export default mixins(login).extend({
   name: 'PaidProfileCard',
-  components: { BarcodeIcon, ShareIcon, BuildingIcon, QrcodeShare, ShareFilesModal },
+  components: { BarcodeIcon, ShareIcon, BuildingIcon, QrcodeShare, ShareFilesModal, CropperImageUpload },
   data() {
     return {
       showQrcode: false,
-      showShareCompany: false
+      showShareCompany: false,
+      visibleUploadImageDialog: false,
     }
   },
   computed: {

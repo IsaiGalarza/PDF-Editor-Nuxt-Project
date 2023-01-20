@@ -80,7 +80,9 @@
                     (file.fileOwner || {}).profile_picture ||
                     '/img/placeholder_picture.png'
                   " alt=""
-                    :class="[file.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
+                    :class="[
+                      (file.role == userType.PAID || $auth.user.role == userType.FREE) ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']"
+                    />
                     <div v-else class="text-paperdazgreen-300 h-[30px] leading-[30px]">
                       {{ (file.fileOwner || {}).company_name | initialFirstName }}
                     </div>

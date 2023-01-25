@@ -1,8 +1,8 @@
 <template>
-  <section class="flex flex-wrap w-full md:justify-between font-family">
+  <section class="font-family grid grid-cols-1 md:grid-cols-[max-content,1fr] gap-6">
     <!-- logo container -->
-    <div class="bg-white md:w-[34%] lg:w-[24%] w-full profile-image-container !py-0">
-      <div class="icon-img md:mx-6 my-6 relative" @click="visibleUploadImageDialog = true">
+    <div class="bg-white md:w-[250px] w-full profile-image-container !py-0">
+      <div class="icon-img md:mx-7 my-7 relative" @click="visibleUploadImageDialog = true">
         <img v-if="profilePhoto != null" :src="profilePhoto" id="referenceImg"
           class="top-profile-image cursor-pointer" />
         <span v-else>
@@ -25,7 +25,7 @@
     </div>
     <!-- end of logo container -->
     <!-- dentals container -->
-    <div class="bg-white sm:w-12/12  md:w-[64%]  lg:w-[74%] w-full profile-dental-container">
+    <div class="bg-white sm:w-12/12 profile-dental-container">
       <!-- <h1>{{user.companyName || ''}}</h1> -->
       <header class="text-600 text-[#414142] font-semibold pl-7 pb-9 border-b border-[#DCDCDC] relative">
           <div class="input-wrapper-title flex justify-between items-start">
@@ -231,7 +231,7 @@ export default mixins(login).extend({
   @apply bg-white flex justify-center flex-wrap items-center py-4 rounded-[10px];
 
   .icon-img {
-    @apply w-56 h-56 font-[900] text-[6em] text-paperdazgreen-500 cursor-pointer border-2 border-paperdazgreen-400/60 grid place-items-center rounded-[8px];
+    @apply w-[195px] h-[195px] font-[900] text-[6em] text-paperdazgreen-500 cursor-pointer border-2 border-paperdazgreen-400/60 grid place-items-center rounded-[30px];
     text-shadow: 1px 5px 7px rgb(148 148 148);
   }
 
@@ -279,7 +279,7 @@ export default mixins(login).extend({
 }
 
 .top-profile-image {
-  @apply absolute w-[90%] h-[90%] mt-[5%] ml-[5%] object-cover rounded-lg m-2;
+  @apply absolute w-[90%] h-[90%] object-cover rounded-lg flex items-center justify-center rounded-[24px];
 }
 
 .spinner-container {

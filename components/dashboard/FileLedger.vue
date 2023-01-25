@@ -110,7 +110,9 @@
               </div>
             </td>
             <td class="text-center">
-              {{ (file.fileAction || "-") | formatFileAction }}
+              {{
+                  (isPaidUser ? file.fileAction : file.action)  || "-"
+              }}
             </td>
             <td class="text-center" v-if="isPaidUser">
               {{ file.user.firstName + " " + file.user.lastName }}
@@ -201,15 +203,6 @@ export default Vue.extend({
     initialFirstName (name) {
       return name?.charAt(0).toUpperCase()
     },
-    formatFileAction(value) {
-      if (value) {
-        value = value.charAt(0).toUpperCase() + value.slice(1)
-        return (
-          value.charAt((value.length - 1) === 'e') ? (value + 'd') : (value + 'ed')
-        )
-      }
-      return null
-    }
   },
   async fetch() { },
   data() {

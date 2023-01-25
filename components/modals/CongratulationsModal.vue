@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="showModal" :append-to-body="true" style="" :show-close="false" center
+  <el-dialog :visible.sync="showModal" :append-to-body="true" style=""  center
     class="relative text-[#414042]">
 
     <template #title>
@@ -11,11 +11,11 @@
     <p class="w-full text-center block py-0 px-2 pb-8 break-normal">
       Your business page has been
       created. You can switch accounts
-      by changing your profile. t</p>
+      by changing your profile. Take that out</p>
     <!-- end :: body -->
   </el-dialog>
 </template>
-  
+
 <script>
 import Vue from 'vue'
 import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
@@ -72,7 +72,7 @@ export default Vue.extend({
 })
 
 </script>
-  
+
 <style scoped>
 *>>>.el-dialog {
   padding-top: 50px;
@@ -108,4 +108,3 @@ border-radius: 16px;
   padding-bottom: 0 !important;
 }
 </style>
-  

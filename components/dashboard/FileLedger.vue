@@ -61,7 +61,7 @@
             <th class="text-left !pl-16">File Name</th>
             <th class="text-center">{{ isPaidUser ? 'Action' : 'Actions' }}</th>
             <th class="text-center" v-if="isPaidUser">Action By</th>
-            <th class="text-center">Date & time</th>
+            <th class="text-center">Date & Time</th>
             <th class="fixed-col right text-right"></th>
           </tr>
         </thead>
@@ -87,7 +87,7 @@
                       {{ (file.fileOwner || {}).company_name | initialFirstName }}
                     </div>
                 </div>
-                <div>
+                <div class="overflow-hidden">
                   <p class="text-sm font-medium text-center ml-1 flex">
                     <nuxt-link :to="`/pdf/${file.paperLink}`">
                       <!-- {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName  }} -->
@@ -99,18 +99,18 @@
                     :href="`/public/profile/${(file.fileOwnerId || {})}`"
                     target="_blank"
                   >
-                    <p class="ml-1 text-xs">
+                    <p class="ml-1 text-xs flex">
                       {{ (file.fileOwner || {}).company_name }}
                     </p>
                   </a>
-                  <p v-else class="ml-1 text-xs">
+                  <p v-else class="ml-1 text-xs flex">
                     {{ (file || {}).userName }}
                   </p>
                 </div>
               </div>
             </td>
             <td class="text-center">
-              {{ file.fileAction || "-" }}
+              {{ (file.fileAction || "-") | formatFileAction }}
             </td>
             <td class="text-center" v-if="isPaidUser">
               {{ file.user.firstName + " " + file.user.lastName }}
@@ -201,6 +201,15 @@ export default Vue.extend({
     initialFirstName (name) {
       return name?.charAt(0).toUpperCase()
     },
+    formatFileAction(value) {
+      if (value) {
+        value = value.charAt(0).toUpperCase() + value.slice(1)
+        return (
+          value.charAt((value.length - 1) === 'e') ? (value + 'd') : (value + 'ed')
+        )
+      }
+      return null
+    }
   },
   async fetch() { },
   data() {

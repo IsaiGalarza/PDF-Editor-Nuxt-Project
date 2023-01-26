@@ -3,7 +3,7 @@
     <span class="el-dropdown-link">
       <el-input placeholder="" v-model="searchString" size="small" class="search-box" @blur="$emit('onBlurInput')">
         <template #suffix>
-          <span class="grid place-items-center h-full w-full"><search-icon width="14" height="14" /></span>
+          <span class="grid place-items-center h-full w-full" @click="$emit('onToggle')"><search-icon width="14" height="14" /></span>
         </template>
       </el-input>
     </span>
@@ -48,7 +48,7 @@ export default mixins(GlobalMixin, login).extend({
     SearchIcon,
     SearchShare,
   },
-  emits: ['onBlurInput'],
+  emits: ['onBlurInput', 'onToggle'],
   data() {
     return {
       searchString: '',

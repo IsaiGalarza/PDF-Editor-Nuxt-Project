@@ -171,12 +171,11 @@ export default Vue.extend({
   },
   watch: {
     visible(val) {
-      this.fetchCard()
+      // this.fetchCard()
       this.showModal = val; 
     },
     showModal(val) {
       this.$emit('updateVisibility', val)
-
       if (val && (!this.card || Object.keys(this.card).length == 0)) {
         this.$fetch()
       }
@@ -188,7 +187,7 @@ export default Vue.extend({
 
         this.inputCardNumber(card.card_number?.toString() || '')
         this.name = card.card_holder_name || ''
-        this.inputExpirationDate(`${card.exp_month}/${card.exp_year}`)
+        // this.inputExpirationDate(`${card.exp_month}/${card.exp_year}`)
         this.cvv = card.cvv
       },
     },
@@ -198,7 +197,7 @@ export default Vue.extend({
   },
   mounted() {
     this.showModal = this.visible;
-    this.fetchCard()
+    // this.fetchCard()
   },
   computed: {
     cardNumber() {

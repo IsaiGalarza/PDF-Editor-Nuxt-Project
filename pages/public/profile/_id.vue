@@ -124,7 +124,7 @@
               <div class="overflow-hidden">
                 <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
                   <nuxt-link :to="`/pdf/${item.paperLink}`" class="cursor-pointer">
-                    {{ (item || {}).fileName || ' ' }}
+                    {{ ((item || {}).fileName || ' ') | removeExtension }}
                   </nuxt-link>
                 </p>
               </div>
@@ -198,6 +198,11 @@ export default Vue.extend({
     }
   },
   // middleware:['paid_user'],
+  filters: {
+    removeExtension(filename) {
+      return filename?.replace(/\.[^\/.]+$/, '');
+    }
+  },
   data() {
     return {
       returnedDataPage: 0,

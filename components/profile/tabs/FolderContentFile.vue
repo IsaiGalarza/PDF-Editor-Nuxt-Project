@@ -50,7 +50,7 @@
           <img class="w-5 ml-3" src="@/assets/recent-icons/PAPERDAZ-pro.svg" />
           <label class="text-[0.90rem] font-[400] pl-2 w-full white-space">
             <nuxt-link :to="`/pdf/${file.paperLink}`">
-            {{ file.fileName }}
+            {{ file.fileName | removeExtension }}
             </nuxt-link>
           </label>
         </div>
@@ -85,7 +85,12 @@ export default mixins(login).extend({
     EmptyFileFolder,
     ArrowDownIcon,
     ShareFileOptions
-},
+  },
+  filters: {
+    removeExtension(filename) {
+      return filename?.replace(/\.[^\/.]+$/, '');
+    }
+  },
   data() {
     return {
       header: this.header,

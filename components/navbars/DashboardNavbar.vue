@@ -103,7 +103,7 @@
           ]">
             <!-- <img :src="profilePhoto" class="w-full h-full profilePhoto" alt=""
               :class="[isPaidUser ? 'rounded-md' : 'rounded-full']" /> -->
-            <span v-if="isPaidUser" class="text-3xl font-bold w-full h-full text-center text-paperdazgreen-300"
+            <span v-if="isPaidUser" class="text-3xl font-bold w-full h-full text-center text-paperdazgreen-300 rounded-md"
               style="text-shadow: 1px 2px 3px grey;">{{ (userCompanyName || '').charAt(0).toUpperCase() }}</span>
             <img v-else :src="profilePhoto" :class="[isPaidUser ? 'rounded-md' : 'rounded-full']" />
           </span>
@@ -129,7 +129,7 @@
               class="flex items-center justify-start hover:bg-paperdazgray-200/60 relative top-2 p-1 mb-1 w-[160px] border-t-[1px] border-paperdazgray-100">
               <span class="border border-paperdazgreen-300 mr-2 p-0.5 overflow-hidden relative text-center" :class="[
                 !isAccountPaid(account.role)
-                  ? 'w-[45px] h-[45px] rounded-full pt-1'
+                  ? 'w-[45px] h-[40px] items-center rounded-md'
                   : 'circle-20 rounded-full',
               ]">
                 <img :src="
@@ -137,7 +137,7 @@
                   (account || {}).profilePicture ||
                   '/img/placeholder_picture.png'
                 " class="w-full h-full rounded-full" alt="" v-if="isAccountPaid(account.role)" />
-                <span v-else class="text-3xl font-bold w-full rounded-full h-full text-center text-paperdazgreen-300"
+                <span v-else class="text-3xl font-bold w-full rounded-md h-full text-center text-paperdazgreen-300"
                   style="text-shadow: 1px 2px 3px grey;">{{ (account.companyName || '').charAt(0).toUpperCase()
                   }}</span>
               </span>
@@ -236,6 +236,11 @@ export default mixins(GlobalMixin, login).extend({
       type: String,
       default: ''
     }
+  },
+  filters: {
+    removeExtension(filename) {
+      return filename?.replace(/\.[^\/.]+$/, '');
+    },
   },
   data() {
     return {

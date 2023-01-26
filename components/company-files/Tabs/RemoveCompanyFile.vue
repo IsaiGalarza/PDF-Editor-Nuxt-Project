@@ -35,10 +35,12 @@
     </template>
     <!-- Start:: Body -->
     <p
-      class="text-center block font-medium max-w-[290px] mx-auto mb-6 whitespace-none"
+      class="text-center block font-medium max-w-[290px] mx-auto mb-0 whitespace-none"
     >
-     You want to remove 
-      <span class="font-semibold text-paperdazgreen-500 uppercase">'{{fileInfo.fileName}}'</span>
+     You want to remove
+      <div class="font-semibold text-paperdazgreen-500 uppercase block text-center mb-6">
+        {{fileInfo.fileName | removeExtension}}
+      </div>
     </p>
     <div class="flex justify-around">
       <button
@@ -89,6 +91,11 @@ export default Vue.extend({
     visible: {
       type: Boolean,
       default: false,
+    },
+  },
+  filters: {
+    removeExtension(filename) {
+      return filename?.replace(/\.[^\/.]+$/, '');
     },
   },
   data() {

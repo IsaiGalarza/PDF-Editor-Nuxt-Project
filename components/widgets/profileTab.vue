@@ -73,17 +73,17 @@
             </div>
             <span class="border border-paperdazgreen-300 mr-2 p-0.5 overflow-hidden relative text-center" :class="[
               isPaidUser
-                ? 'w-[45px] h-[45px] rounded-md pt-1'
+                ? 'w-[45px] h-[45px] rounded-md'
                 : 'circle-20 rounded-full'
             ]">
-              <!-- <img
+              <img
                 :src="profilePhoto"
                 class="w-full h-full profilePhoto"
                 alt=""
                 :class="[isPaidUser ? 'rounded-md' : 'rounded-full']"
-              /> -->
-              <span class="text-3xl font-bold w-full h-full text-center text-paperdazgreen-300"
-                style="text-shadow: 1px 2px 3px grey;">{{ (userInfo.companyName || '').charAt(0).toUpperCase() }}</span>
+              />
+              <!-- <span class="text-3xl font-bold w-full h-full text-center text-paperdazgreen-300"
+                style="text-shadow: 1px 2px 3px grey;">{{ (userInfo.companyName || '').charAt(0).toUpperCase() }}</span> -->
             </span>
             <span class="text-gray-500"><arrow-down-icon class="h-1 w-1.5 sm:h-2.5 sm:w-4" /></span>
           </span>

@@ -175,7 +175,7 @@
   
   // email-acout emauil,password-referal-code
   export default mixins(GlobalMixin, login).extend({
-    name: 'DashboardNavbar',
+    name: 'PdfNavbar',
     components: {
       SearchIcon,
       BellIcon,

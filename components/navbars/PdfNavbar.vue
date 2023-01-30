@@ -1,6 +1,6 @@
 <template>
     <nav
-      class="px-3 px-lg-5 bg-white lg:rounded-lg w-full flex items-center justify-between shadow"
+      class="px-3 px-lg-5 bg-white w-full flex items-center justify-between shadow"
       :class="[compact ? 'py-1 h-12' : 'min-h-[60px] sm:min-h-[70px] py-4 h-16']"
     >
       <p
@@ -175,7 +175,7 @@
   
   // email-acout emauil,password-referal-code
   export default mixins(GlobalMixin, login).extend({
-    name: 'DashboardNavbar',
+    name: 'PdfNavbar',
     components: {
       SearchIcon,
       BellIcon,

@@ -11,12 +11,12 @@
       :numPages="propsNumPages" :currentPage="currentPage" :pdf="pdf" @sideSetScrollPage="sideSetScrollPage"
       v-if="displayPDF" />
     <main v-if="displayPDF" class="grid grid-rows-[max-content,max-content,1fr] gap-1 w-full mx-auto px-[2%]">
-      <pdf-page-action-tray :file="file" @update-file="file = $event" :tools="tools" class="w-full"
+      <pdf-page-action-tray :file="file" @update-file="file = $event" :tools="tools" class="w-full position-absolute"
         @isDeletedFunc="isDeletedFunc" :pdfContainerDimension="pdfContainerDimension"
         @publishFileFunction="publishFileFunction" />
 
       <tool-bar :file="file" @tool-change="onToolChange" :selectedToolType="selectedToolType" @undo="undo"
-        :openTypeSignModal="openTypeSignModal" :openTypeInitialModal="openTypeInitialModal" class="w-full"
+        :openTypeSignModal="openTypeSignModal" :openTypeInitialModal="openTypeInitialModal" class="w-full mt-5"
         :isLoading="pdfLoading" @zoomIn="zoom *= 1.1" @zoomOut="zoom /= 1.1" />
       <div class="pdf-editor-view relative custom-scrollbar overflow-scroll w-full" @scroll="setScrollPage" v-if="pdf"
         ref="scrollingElement">

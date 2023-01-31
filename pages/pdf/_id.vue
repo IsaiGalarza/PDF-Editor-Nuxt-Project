@@ -4,75 +4,212 @@
   -->
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-[max-content,1fr] grid-rows-1 h-full max-h-full overflow-hidden"
-    id="pdf-page-vue">
+  <div
+    class="
+      grid grid-cols-1
+      md:grid-cols-[max-content,1fr]
+      grid-rows-1
+      h-full
+      max-h-full
+      overflow-hidden
+    "
+    id="pdf-page-vue"
+  >
     <!-- pdf page aside has hidden md:grid -->
-    <pdf-page-aside class="hidden md:block" @nextPage="nextPageHandler" @prevPage="prevPageHandler"
-      :numPages="propsNumPages" :currentPage="currentPage" :pdf="pdf" @sideSetScrollPage="sideSetScrollPage"
-      v-if="displayPDF" />
-    <main v-if="displayPDF" class="grid grid-rows-[max-content,max-content,1fr] gap-1 w-full mx-auto px-[2%]">
-      <pdf-page-action-tray :file="file" @update-file="file = $event" :tools="tools" class="w-full position-absolute"
-        @isDeletedFunc="isDeletedFunc" :pdfContainerDimension="pdfContainerDimension"
-        @publishFileFunction="publishFileFunction" />
+    <pdf-page-aside
+      class="hidden md:block"
+      @nextPage="nextPageHandler"
+      @prevPage="prevPageHandler"
+      :numPages="propsNumPages"
+      :currentPage="currentPage"
+      :pdf="pdf"
+      @sideSetScrollPage="sideSetScrollPage"
+      v-if="displayPDF"
+    />
+    <main
+      v-if="displayPDF"
+      class="
+        grid grid-rows-[max-content,max-content,1fr]
+        gap-1
+        w-full
+        mx-auto
+        px-[2%]
+      "
+    >
+      <pdf-page-action-tray
+        :file="file"
+        @update-file="file = $event"
+        :tools="tools"
+        class="w-full position-absolute"
+        @isDeletedFunc="isDeletedFunc"
+        :pdfContainerDimension="pdfContainerDimension"
+        @publishFileFunction="publishFileFunction"
+      />
 
-      <tool-bar :file="file" @tool-change="onToolChange" :selectedToolType="selectedToolType" @undo="undo"
-        :openTypeSignModal="openTypeSignModal" :openTypeInitialModal="openTypeInitialModal" class="w-full mt-5"
-        :isLoading="pdfLoading" @zoomIn="zoom *= 1.1" @zoomOut="zoom /= 1.1" />
-      <div class="pdf-editor-view relative custom-scrollbar overflow-scroll w-full" @scroll="setScrollPage" v-if="pdf"
-        ref="scrollingElement">
+      <tool-bar
+        :file="file"
+        @tool-change="onToolChange"
+        :selectedToolType="selectedToolType"
+        @undo="undo"
+        :openTypeSignModal="openTypeSignModal"
+        :openTypeInitialModal="openTypeInitialModal"
+        class="w-full mt-5"
+        :isLoading="pdfLoading"
+        @zoomIn="zoom *= 1.1"
+        @zoomOut="zoom /= 1.1"
+      />
+      <div
+        class="pdf-editor-view relative custom-scrollbar overflow-scroll w-full"
+        @scroll="setScrollPage"
+        v-if="pdf"
+        ref="scrollingElement"
+      >
         <pinch-zoom
           ref="pinch"
           :limitPan="true"
           :limitZoom="1000"
           disableZoomControl="disable"
         >
-          <div class="pdf-pages-outer pb-6 relative" ref="PagesOuter" >
-            <div class="pdf-single-pages-outer w-full" ref="pdf-single-pages-outer" v-if="pdf">
-              <div :class="[
-                'pdf-single-page-outer w-full',
-                { 'mt-6': pI > 0 && !downloadingPdf },
-              ]" :ref="`pdf-single-page-outer-${pI + 1}`" v-for="(page, pI) in pdf.numPages" :key="pI"
-                v-hammer:pan="(ev) => handlePanning(ev, undefined, undefined, pI + 1)" @mouseup="onMouseUp"
-                @mousedown="onMouseDown" style="position: relative;">
-
+          <div class="pdf-pages-outer pb-6 relative" ref="PagesOuter">
+            <div
+              class="pdf-single-pages-outer w-full"
+              ref="pdf-single-pages-outer"
+              v-if="pdf"
+            >
+              <div
+                :class="[
+                  'pdf-single-page-outer w-full',
+                  { 'mt-6': pI > 0 && !downloadingPdf },
+                ]"
+                :ref="`pdf-single-page-outer-${pI + 1}`"
+                v-for="(page, pI) in pdf.numPages"
+                :key="pI"
+                v-hammer:pan="
+                  (ev) => handlePanning(ev, undefined, undefined, pI + 1)
+                "
+                @mouseup="onMouseUp"
+                @mousedown="onMouseDown"
+                style="position: relative"
+              >
                 <div
-                  v-if="((filteredAnnotationButton.length > 0) && isSign && curSignInitialPage == ('sign' + (pI + 1)) && isAgreedSign == 1)"
-                  class="flex absolute" :style="signAlaram">
-                  <div class="bg-[#77B550] p-1 text-white text-[12px] border-rounded-lg">
-                    {{ "Sign " + signNumber }}
+                  v-if="
+                    filteredAnnotationButton.length > 0 &&
+                    isSign &&
+                    curSignInitialPage == 'sign' + (pI + 1) &&
+                    isAgreedSign == 1
+                  "
+                  class="flex absolute"
+                  :style="signAlaram"
+                >
+                  <div
+                    class="
+                      bg-[#77B550]
+                      p-1
+                      text-white text-[12px]
+                      border-rounded-lg
+                    "
+                  >
+                    {{ 'Sign ' + signNumber }}
                   </div>
                   <div
-                    class="w-0 h-0 border-t-[14px] -ml-[1px] border-b-[14px] border-t-transparent border-b-transparent border-l-[14px] border-l-[#77B550]">
-                  </div>
+                    class="
+                      w-0
+                      h-0
+                      border-t-[14px]
+                      -ml-[1px]
+                      border-b-[14px]
+                      border-t-transparent
+                      border-b-transparent
+                      border-l-[14px]
+                      border-l-[#77B550]
+                    "
+                  ></div>
                 </div>
                 <div
-                  v-if="((filteredAnnotationButton.length > 0) && isSign && curSignInitialPage == ('initial' + (pI + 1)) && isAgreedSign == 1)"
-                  :style="signAlaram" class="absolute flex">
-                  <div class="bg-[#77B550] py-1 text-white text-[12px] border-rounded-lg">
-                    {{
-                        "Initial " + InitialNumber
-                    }}
+                  v-if="
+                    filteredAnnotationButton.length > 0 &&
+                    isSign &&
+                    curSignInitialPage == 'initial' + (pI + 1) &&
+                    isAgreedSign == 1
+                  "
+                  :style="signAlaram"
+                  class="absolute flex"
+                >
+                  <div
+                    class="
+                      bg-[#77B550]
+                      py-1
+                      text-white text-[12px]
+                      border-rounded-lg
+                    "
+                  >
+                    {{ 'Initial ' + InitialNumber }}
                   </div>
                   <div
-                    class="w-0 h-0 border-t-[14px] -ml-[1px] border-b-[14px] border-t-transparent border-b-transparent border-l-[14px] border-l-[#77B550]">
-                  </div>
+                    class="
+                      w-0
+                      h-0
+                      border-t-[14px]
+                      -ml-[1px]
+                      border-b-[14px]
+                      border-t-transparent
+                      border-b-transparent
+                      border-l-[14px]
+                      border-l-[#77B550]
+                    "
+                  ></div>
                 </div>
-                <tool-wrapper v-for="tool in fillteredTools(pI + 1)" :toolLength="fillteredTools(pI + 1).length"
-                  :key="tool.id" :selectedToolType="selectedToolType" :dragHandler="handlePanning" :id="tool.id"
-                  :tool="tool" :type="tool.type" :x1="tool.x1" :y1="tool.y1" :x2="tool.x2" :y2="tool.y2"
-                  :points="tool.points" :deleteTool="deleteTool" :handleIncrease="handleIncrease" :mouseUp="mouseUp"
-                  :lineStart="lineStart" :handleDecrease="handleDecrease" :fontSize="tool.fontSize" :scale="tool.scale"
-                  @pos-change="onPosChange" @resetJustMounted="resetJustMounted" :activeToolId="activeToolId"
-                  :setActiveToolId="setActiveToolId" :pageNumber="pI + 1" :value="tool.value" :file="file"
-                  :justMounted="tool.justMounted" :drawingStart="drawingStart" :showPublishModal="showPublishModal"
-                  :generatePDF="generatePDF" @toolWrapperBeforeChecked="toolWrapperBeforeChecked"
-                  @toolWrapperAfterChecked="toolWrapperAfterChecked" v-model="tool.value"
-                  :setInitialSignType="setInitialSignType" />
+                <tool-wrapper
+                  v-for="tool in fillteredTools(pI + 1)"
+                  :toolLength="fillteredTools(pI + 1).length"
+                  :key="tool.id"
+                  :selectedToolType="selectedToolType"
+                  :dragHandler="handlePanning"
+                  :id="tool.id"
+                  :tool="tool"
+                  :type="tool.type"
+                  :x1="tool.x1"
+                  :y1="tool.y1"
+                  :x2="tool.x2"
+                  :y2="tool.y2"
+                  :points="tool.points"
+                  :deleteTool="deleteTool"
+                  :handleIncrease="handleIncrease"
+                  :mouseUp="mouseUp"
+                  :lineStart="lineStart"
+                  :handleDecrease="handleDecrease"
+                  :fontSize="tool.fontSize"
+                  :scale="tool.scale"
+                  @pos-change="onPosChange"
+                  @resetJustMounted="resetJustMounted"
+                  :activeToolId="activeToolId"
+                  :setActiveToolId="setActiveToolId"
+                  :pageNumber="pI + 1"
+                  :value="tool.value"
+                  :file="file"
+                  :justMounted="tool.justMounted"
+                  :drawingStart="drawingStart"
+                  :showPublishModal="showPublishModal"
+                  :generatePDF="generatePDF"
+                  @toolWrapperBeforeChecked="toolWrapperBeforeChecked"
+                  @toolWrapperAfterChecked="toolWrapperAfterChecked"
+                  v-model="tool.value"
+                  :setInitialSignType="setInitialSignType"
+                />
                 <!-- </div> -->
-                <pdf-page :handlePanning="handlePanning" :onCLickSinglePageOuter="onCLickSinglePageOuter" :file="file"
-                  :page-number="pI + 1" :pdf="pdf" :scale="scale" @setPageHeight="setPageHeight"
-                  :initialOrigin="setInitialOrigin" @setPageWidth="onloadPdfquery" :confirmDone="confirmDone"
-                  :isCreator="isCreator" />
+                <pdf-page
+                  :handlePanning="handlePanning"
+                  :onCLickSinglePageOuter="onCLickSinglePageOuter"
+                  :file="file"
+                  :page-number="pI + 1"
+                  :pdf="pdf"
+                  :scale="scale"
+                  @setPageHeight="setPageHeight"
+                  :initialOrigin="setInitialOrigin"
+                  @setPageWidth="onloadPdfquery"
+                  :confirmDone="confirmDone"
+                  :isCreator="isCreator"
+                />
               </div>
             </div>
           </div>
@@ -80,18 +217,38 @@
         <!-- <button   @click="downloadPdf">download</button> -->
         <div id="bottom"></div>
       </div>
-      <button class="w-full bg-paperdazgreen-400 py-2 text-white overflow-hidden duration-300"
-        v-if="(isScrollBottom && $auth.loggedIn && isConfirm && !isCreator)" id="confirmButtton"
-        @click="confirmDocument()">
+      <button
+        class="
+          w-full
+          bg-paperdazgreen-400
+          py-2
+          text-white
+          overflow-hidden
+          duration-300
+        "
+        v-if="isScrollBottom && $auth.loggedIn && isConfirm && !isCreator"
+        id="confirmButtton"
+        @click="confirmDocument()"
+      >
         Click to Confirm
       </button>
     </main>
 
-    <ExistFileManagerModal :file="file" :tools="tools" @confirmExistFileManager="confirmExistFileManager"
-      v-model="showExitFileManager" />
+    <ExistFileManagerModal
+      :file="file"
+      :tools="tools"
+      @confirmExistFileManager="confirmExistFileManager"
+      v-model="showExitFileManager"
+    />
 
-    <PublishPdfModal @startGeneratePdf="startGeneratePdf" @successFileFunction="successFileFunction" :file="file"
-      :tools="tools" @trackSubmitTools="trackSubmitTools" v-model="showPublishModal" />
+    <PublishPdfModal
+      @startGeneratePdf="startGeneratePdf"
+      @successFileFunction="successFileFunction"
+      :file="file"
+      :tools="tools"
+      @trackSubmitTools="trackSubmitTools"
+      v-model="showPublishModal"
+    />
 
     <BlockPrivateFile :file="file" v-model="showBlockPrivate" />
     <BlockDonotPostFile :file="file" v-model="showBlockDonotPost" />
@@ -106,7 +263,7 @@ import * as pdfJs from 'pdfjs-dist/build/pdf'
 import * as worker from 'pdfjs-dist/build/pdf.worker.entry'
 pdfJs.GlobalWorkerOptions.workerSrc = worker
 
-import PinchZoom from "vue-pinch-zoom";
+import PinchZoom from 'vue-pinch-zoom'
 
 import jsPDF from 'jspdf'
 
@@ -184,8 +341,7 @@ export default mixins(PdfAuth).extend({
     BlockDonotPostFile,
     AddToPageDrawOrType,
     DoneModal,
-    PinchZoom
-
+    PinchZoom,
   },
   data: () => ({
     pdf: null,
@@ -253,11 +409,11 @@ export default mixins(PdfAuth).extend({
     showSaveModal: false,
     signAlaram: {
       top: '0px',
-      left: '0px'
+      left: '0px',
     },
     curSignInitialPage: 0,
     openTypeSignModal: false,
-    openTypeInitialModal: false
+    openTypeInitialModal: false,
   }),
   created() {
     this.fetchPdf()
@@ -273,7 +429,7 @@ export default mixins(PdfAuth).extend({
     window.onresize = () => {
       this.handleScale()
     }
-    this.checkFilePrivacyOnload();
+    this.checkFilePrivacyOnload()
   },
   destroyed() {
     document.removeEventListener('keyup', this.keyupHandler)
@@ -306,7 +462,7 @@ export default mixins(PdfAuth).extend({
       .then((response) => {
         return response
       })
-      .catch((err) => { })
+      .catch((err) => {})
 
     return { file, user }
   },
@@ -359,7 +515,7 @@ export default mixins(PdfAuth).extend({
       )
     },
     isAgreedSign() {
-      return this.$store.state.agreeSign;
+      return this.$store.state.agreeSign
     },
     isConfirm() {
       return String(this.file.fileAction).toLowerCase() === FileAction.CONFIRM
@@ -453,8 +609,8 @@ export default mixins(PdfAuth).extend({
       this.selectedToolIndex < 0 ? null : this.tools[this.selectedToolIndex]
     },
     isScrollBottom() {
-      return this.$store.state.scrollPosition;
-    }
+      return this.$store.state.scrollPosition
+    },
   },
   methods: {
     onMouseDown: function () {
@@ -462,25 +618,28 @@ export default mixins(PdfAuth).extend({
       this.mouseUp = false
     },
     onMouseUp: function () {
-      this.mouseUp = true;
-      this.mouseDown = false;
+      this.mouseUp = true
+      this.mouseDown = false
       this.isPanning = false
       this.lastPosX = 0
       this.lastPosY = 0
-      setTimeout(() => { this.drawingStart = false; this.lineStart = false; }, 50);
+      setTimeout(() => {
+        this.drawingStart = false
+        this.lineStart = false
+      }, 50)
     },
 
     setInitialSignType: function (type) {
-      if (type == "sign") {
+      if (type == 'sign') {
         this.openTypeSignModal = true
-      } else if (type == "initial") {
-        this.openTypeInitialModal = true;
+      } else if (type == 'initial') {
+        this.openTypeInitialModal = true
       } else {
-        return;
+        return
       }
     },
 
-    scrollToSignInitial(type = "") {
+    scrollToSignInitial(type = '') {
       if (this.isCreator || !this.$auth.loggedIn) return
 
       setTimeout(() => {
@@ -495,29 +654,37 @@ export default mixins(PdfAuth).extend({
         //   this.showDoneModal = true;
         // }
         if (type == 'mounted' && this.filteredAnnotationButton.length > 0) {
-          let signNum = 0, initialNum = 0;
+          let signNum = 0,
+            initialNum = 0
           this.filteredAnnotationButton.map((val, ind) => {
-            let twrap = val.parentElement.parentElement.parentElement;
+            let twrap = val.parentElement.parentElement.parentElement
             if (twrap.id.indexOf('sign') > -1) {
-              signNum++;
+              signNum++
             }
             if (twrap.id.indexOf('initial') > -1) {
-              initialNum++;
+              initialNum++
             }
           })
-          this.signNumber = signNum;
-          this.InitialNumber = initialNum;
+          this.signNumber = signNum
+          this.InitialNumber = initialNum
         }
         if (this.filteredAnnotationButton[0]) {
           this.filteredAnnotationButton[0].classList.add('pulse')
-          window.selem = this.filteredAnnotationButton[0];
+          window.selem = this.filteredAnnotationButton[0]
           // this.filteredAnnotationButton[0].scrollIntoView({ block: 'center', behavior: 'smooth' })
-          type !== 'mounted' && !((type === "appendsign" || type === "appendinitial") && this.isComplete) && this.filteredAnnotationButton[0].scrollIntoView({ block: 'center' })
-          let toolwrapper = this.filteredAnnotationButton[0].parentElement.parentElement.parentElement;
-          this.signAlaram.top = toolwrapper.style.top;
-          this.curSignInitialPage = toolwrapper.id;
-          type === "appendsign" && this.signNumber--;
-          type === "appendinitial" && this.InitialNumber--;
+          type !== 'mounted' &&
+            !(
+              (type === 'appendsign' || type === 'appendinitial') &&
+              this.isComplete
+            ) &&
+            this.filteredAnnotationButton[0].scrollIntoView({ block: 'center' })
+          let toolwrapper =
+            this.filteredAnnotationButton[0].parentElement.parentElement
+              .parentElement
+          this.signAlaram.top = toolwrapper.style.top
+          this.curSignInitialPage = toolwrapper.id
+          type === 'appendsign' && this.signNumber--
+          type === 'appendinitial' && this.InitialNumber--
           // this.signAlaram.left = this.filteredAnnotationButton[0].parentElement.parentElement.parentElement.style.left
         }
       }, 100)
@@ -543,7 +710,7 @@ export default mixins(PdfAuth).extend({
       }
     },
     confirmDone() {
-      this.showDoneModal = true;
+      this.showDoneModal = true
     },
     checkFilePrivacyOnload() {
       switch (this.file.filePrivacy) {
@@ -621,9 +788,9 @@ export default mixins(PdfAuth).extend({
       }
     },
     checkUserPermission() {
-      this.$axios.get(`/permissions?fileId=${this.file.id}`)
-        .then((response) => {
-        })
+      this.$axios
+        .get(`/permissions?fileId=${this.file.id}`)
+        .then((response) => {})
     },
     onloadPdfquery(val) {
       // these function contains setting the pdf container to the same width as the pdf
@@ -638,7 +805,6 @@ export default mixins(PdfAuth).extend({
       // this._scrollToConfirm()
 
       this._setToolsFromFileAnnotations()
-
 
       let { width, height } = val
       this.pdfContainerDimension = val
@@ -661,7 +827,7 @@ export default mixins(PdfAuth).extend({
       if (this.currentPage <= this.pdf.numPages - 1) {
         document
           .querySelectorAll('.pdf-page')
-        [this.currentPage].scrollIntoView(true)
+          [this.currentPage].scrollIntoView(true)
       }
     },
     _setPdfToolBarCompanyName() {
@@ -680,17 +846,23 @@ export default mixins(PdfAuth).extend({
         this.currentPage = this.currentPage - 2
         document
           .querySelectorAll('.pdf-page')
-        [this.currentPage].scrollIntoView(true)
-      } catch (err) { }
+          [this.currentPage].scrollIntoView(true)
+      } catch (err) {}
     },
     async _setToolsFromFileAnnotations() {
       this.tools = JSON.parse(this.file.annotaions || `[]`)
-      this.tools = await Promise.all(this.tools.map(async (_el, index) => {
-        if (_el.type === 'appendSignature' || _el.type === 'appendInitial')
-          return { ..._el, id: index + 1, completed: await this.toDataURL(_el.completed) }
-        else return { ..._el, id: index + 1 }
-      }))
-      console.log({tools:this.tools})
+      this.tools = await Promise.all(
+        this.tools.map(async (_el, index) => {
+          if (_el.type === 'appendSignature' || _el.type === 'appendInitial')
+            return {
+              ..._el,
+              id: index + 1,
+              completed: await this.toDataURL(_el.completed),
+            }
+          else return { ..._el, id: index + 1 }
+        })
+      )
+      console.log({ tools: this.tools })
       this.initialFileAnnotation = JSON.parse(this.file.annotaions || `[]`).map(
         (_el, index) => {
           return { ..._el, id: index + 1 }
@@ -698,19 +870,19 @@ export default mixins(PdfAuth).extend({
       )
     },
     async toDataURL(url) {
-      const response = await fetch(url);
-      const blob = await response.blob();
+      const response = await fetch(url)
+      const blob = await response.blob()
       return await new Promise((resolve, _) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.readAsDataURL(blob);
-      });
+        const reader = new FileReader()
+        reader.onloadend = () => resolve(reader.result)
+        reader.readAsDataURL(blob)
+      })
     },
     setScrollPage() {
       let current =
         Number(
           document.querySelector('.pdf-editor-view').scrollTop -
-          (this.currentPage * this.pageGapBetween - this.pageGapBetween)
+            (this.currentPage * this.pageGapBetween - this.pageGapBetween)
         ) / Number(document.querySelector('.pdf-page').clientHeight)
 
       this.currentPage = Math.floor(current) + 1
@@ -720,11 +892,11 @@ export default mixins(PdfAuth).extend({
       this.currentPage = val
       document
         .querySelectorAll('.pdf-page')
-      [this.currentPage - 1].scrollIntoView(true)
+        [this.currentPage - 1].scrollIntoView(true)
     },
 
     confirmDocument() {
-      this.scrollToSignInitial();
+      this.scrollToSignInitial()
 
       if (this.filteredAnnotationButton.length > 0) {
         this.$notify.error({
@@ -876,12 +1048,10 @@ export default mixins(PdfAuth).extend({
     async downloadPdf() {
       await htmlToImage
         .toPng(document.querySelector('#sai'))
-        .then(function (dataUrl) {
-        })
+        .then(function (dataUrl) {})
         .catch(function (error) {
           console.error('oops, something went wrong!', error)
         })
-
     },
     async deleteTool(id) {
       let index = this.tools.findIndex((t) => t.id == id)
@@ -906,14 +1076,14 @@ export default mixins(PdfAuth).extend({
         this.lastPosX = elem.offsetLeft
         this.lastPosY = elem.offsetTop
         if (this.selectedToolType == this.TOOL_TYPE.line) {
-          this.lineStart = true;
+          this.lineStart = true
           await this.placeTool(event.srcEvent, pageNumber)
           this.selectedToolId = this.tools[this.tools.length - 1].id
         } else if (this.selectedToolType == this.TOOL_TYPE.highlight) {
           await this.placeTool(event.srcEvent, pageNumber)
           this.selectedToolId = this.tools[this.tools.length - 1].id
         } else if (this.selectedToolType == this.TOOL_TYPE.draw) {
-          this.drawingStart = true;
+          this.drawingStart = true
           await this.placeTool(event.srcEvent, pageNumber)
           this.selectedToolId = this.tools[this.tools.length - 1].id
         }
@@ -993,7 +1163,7 @@ export default mixins(PdfAuth).extend({
         document.scrollingElement ||
         document.body
 
-      const boundingRect = scrollingElement.getBoundingClientRect();
+      const boundingRect = scrollingElement.getBoundingClientRect()
 
       //if there is no clientX or there is no clientY on event
       // return 0, 0
@@ -1056,7 +1226,7 @@ export default mixins(PdfAuth).extend({
         this.selectedToolType == this.TOOL_TYPE.highlight ||
         this.selectedToolType == this.TOOL_TYPE.draw
       )
-        return;
+        return
       this.placeTool(event, pageNumber)
       if (
         !(
@@ -1214,7 +1384,6 @@ export default mixins(PdfAuth).extend({
 }
 
 .custom-scrollbar {
-
   /* Handle */
   &::-webkit-scrollbar-thumb {
     @apply bg-gray-500 bg-opacity-30;

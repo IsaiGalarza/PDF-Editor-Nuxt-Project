@@ -899,5 +899,16 @@ $screens: 'xxs', 'xs', 'sm', 'md', 'lg', 'xl';
 
 //paperdaz 2.0
 .search-box {
-  input { border: none;}
+  input {
+    border: none;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    height: 40px !important;
+  }
+}
+
+.search-box .el-input__suffix {
+  right: 0 !important;
 }

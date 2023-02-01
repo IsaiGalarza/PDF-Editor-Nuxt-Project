@@ -45,6 +45,7 @@
         @isDeletedFunc="isDeletedFunc"
         :pdfContainerDimension="pdfContainerDimension"
         @publishFileFunction="publishFileFunction"
+        :canceled="canceled"
       />
 
       <tool-bar
@@ -56,6 +57,7 @@
         :openTypeInitialModal="openTypeInitialModal"
         class="w-full"
         :isLoading="pdfLoading"
+        @cancel="canceled = true"
         @zoomIn="zoom *= 1.1"
         @zoomOut="zoom /= 1.1"
       />
@@ -416,6 +418,8 @@ export default mixins(PdfAuth).extend({
     curSignInitialPage: 0,
     openTypeSignModal: false,
     openTypeInitialModal: false,
+
+    canceled: false,
   }),
   created() {
     this.fetchPdf()
@@ -864,7 +868,6 @@ export default mixins(PdfAuth).extend({
           else return { ..._el, id: index + 1 }
         })
       )
-      console.log({ tools: this.tools })
       this.initialFileAnnotation = JSON.parse(this.file.annotaions || `[]`).map(
         (_el, index) => {
           return { ..._el, id: index + 1 }
@@ -1028,7 +1031,6 @@ export default mixins(PdfAuth).extend({
       this.$forceUpdate()
     },
     fillteredTools(pageNumber) {
-      console.log({ tools: this.tools })
       return this.tools.filter(
         (t) => !t.isDeleted && t.pageNumber == pageNumber
       )
@@ -1385,6 +1387,13 @@ export default mixins(PdfAuth).extend({
     pdf(v) {
       this.handleScale()
     },
+    filteredAnnotationButton (value, oldValue) {
+      if (value.length === 0 && oldValue.length > 0) {
+        this.$store.commit('SET_UPLOAD_STATE', false);
+        this.saveFunction = 'saved'
+        this.publishFileFunction()
+      }
+    }
   },
   beforeRouteLeave(to, from, next) {
     if (this.$store.state.pdfExit == true) {

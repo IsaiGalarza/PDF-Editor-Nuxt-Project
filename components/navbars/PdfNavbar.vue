@@ -3,8 +3,8 @@
       class="px-3 px-lg-5 bg-white w-full flex items-center justify-between shadow"
       :class="[compact ? 'py-1 h-12' : 'min-h-[60px] sm:min-h-[70px] py-4 h-16']"
     >
-      <p
-        class="capitalize inline-flex items-center gap-3"
+      <div
+        class="capitalize inline-flex items-center gap-2 lg:gap-3"
         :class="[compact ? 'text-sm sm:text-base' : 'text-base sm:text-xl']"
       >
         <span
@@ -13,8 +13,19 @@
           ><hamburger-icon /></span
         >
         <!-- <a :href="`/public/profile/${title.route}`"  target="_blanck">{{ title.name || routeName }}</a> -->
-        File Manager
-      </p>
+        <span v-if="isPaidUser" class="text-3xl font-bold w-full h-full text-center text-paperdazgreen-300 rounded-md" style="text-shadow: 1px 2px 3px grey;">{{ (userCompanyName || '').charAt(0).toUpperCase() }}</span>
+
+        <div v-if="login || false" class="lg:hidden flex flex-col text-sm leading-[15px] flex-wrap justify-end">
+          <span class="text-black text-[13px] font-[600] capitalize text-left">
+            {{ userCompanyName || '' }}
+          </span>
+
+          <span class="text-[#524D5B] text-[11.5px] text-left leading-0">
+            {{ userFullName || '' }}
+          </span>
+        </div>
+      </div>
+      
       <div v-if="$auth.loggedIn" class="h-full self-stretch flex items-center">
   
         <!-- container for user name -->

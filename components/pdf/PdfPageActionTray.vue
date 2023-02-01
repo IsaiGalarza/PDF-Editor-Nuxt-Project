@@ -1,5 +1,5 @@
 <template>
-  <div class="py-2 flex items-center text-black gap-2 bg-white flex justify-left">
+  <div class="py-2 flex items-center text-black bg-white flex justify-left ml-[-2%] w-[104%]">
     <div class="flex items-center gap-lg-4 flex-1 justify-between max-w-4xl px-lg-4 px-3">
       <!-- If authenticated user is created -->
       <span v-if="!isCreator" class="capitalize font-medium">{{
@@ -117,11 +117,11 @@
 
     <div class="flex items-center pe-lg-4">
 
-      <button v-if="!isConfirm && $auth.loggedIn" @click="saveChanges"
+      <button v-if="!isConfirm && $auth.loggedIn && isCreator" @click="saveChanges"
         class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7">
-        {{ isCreator? ' Publish': 'Done' }}
+        Publish
       </button>
-      <button v-if="!isConfirm && $auth.loggedIn" @click="cancelPublish"
+      <button v-if="!isConfirm && $auth.loggedIn && isCreator" @click="cancelPublish"
         class="mr-2 text-xs text-white bg-zinc-400 border rounded px-3 h-7">
         Cancel
       </button>
@@ -201,7 +201,11 @@ export default Vue.extend({
     pdfContainerDimension: { type: Object },
     tools: { type: Array },
     successFileFunction: { type: Function },
-    isDeletedFunc: { type: Function }
+    isDeletedFunc: { type: Function },
+    canceled: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -328,6 +332,9 @@ export default Vue.extend({
     },
     '$store.state.upload_state': function () {
       this.upload_state = this.$store.state.upload_state
+    },
+    'canceled': function () {
+      this.cancelPublish()
     }
   },
 })

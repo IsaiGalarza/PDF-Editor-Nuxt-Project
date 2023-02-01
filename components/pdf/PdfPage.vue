@@ -43,6 +43,8 @@ export default {
       this.pdf.getPage(this.pageNumber).then(page => {
         this.$store.commit('SET_PDF_OFFSET_Y', page.view[1])
         this.$store.commit('SET_PDF_OFFSET_X', page.view[0])
+        this.$store.commit('SET_PDF_OFFSET_W', page.view[2])
+        this.$store.commit('SET_PDF_OFFSET_H', page.view[3])
       });
 
       let page = await this.pdf.getPage(this.pageNumber)

@@ -34,13 +34,14 @@
         w-full
         mx-auto
         px-[2%]
+        pb-[2%]
       "
     >
       <pdf-page-action-tray
         :file="file"
         @update-file="file = $event"
         :tools="tools"
-        class="w-full position-absolute"
+        class="w-full"
         @isDeletedFunc="isDeletedFunc"
         :pdfContainerDimension="pdfContainerDimension"
         @publishFileFunction="publishFileFunction"
@@ -53,7 +54,7 @@
         @undo="undo"
         :openTypeSignModal="openTypeSignModal"
         :openTypeInitialModal="openTypeInitialModal"
-        class="w-full mt-5"
+        class="w-full"
         :isLoading="pdfLoading"
         @zoomIn="zoom *= 1.1"
         @zoomOut="zoom /= 1.1"
@@ -166,7 +167,7 @@
                   :selectedToolType="selectedToolType"
                   :dragHandler="handlePanning"
                   :id="tool.id"
-                  :tool="tool"
+                  :tool="calToolPos(tool)"
                   :type="tool.type"
                   :x1="tool.x1"
                   :y1="tool.y1"
@@ -179,7 +180,7 @@
                   :lineStart="lineStart"
                   :handleDecrease="handleDecrease"
                   :fontSize="tool.fontSize"
-                  :scale="tool.scale"
+                  :scale="scale"
                   @pos-change="onPosChange"
                   @resetJustMounted="resetJustMounted"
                   :activeToolId="activeToolId"
@@ -213,6 +214,7 @@
               </div>
             </div>
           </div>
+          
         </pinch-zoom>
         <!-- <button   @click="downloadPdf">download</button> -->
         <div id="bottom"></div>
@@ -1026,6 +1028,7 @@ export default mixins(PdfAuth).extend({
       this.$forceUpdate()
     },
     fillteredTools(pageNumber) {
+      console.log({ tools: this.tools })
       return this.tools.filter(
         (t) => !t.isDeleted && t.pageNumber == pageNumber
       )
@@ -1243,9 +1246,10 @@ export default mixins(PdfAuth).extend({
       if (Array.isArray(parent)) parent = parent[0]
 
       let { x, y } = !initialPoint
-        ? this.pointerPos(e, parent || this.$refs.PagesOuter)
+        ? this.pointerPos(e, parent || this.$refs.scrollingElement)
         : initialPoint
       this.toolId = this.tools.length
+      const scrollingElement = this.$refs.scrollingElement
       let obj = {
         type: this.TOOL_TYPE[this.selectedToolType],
         top: y - this.TOOL_THRESHOLD[this.selectedToolType].tool.top,
@@ -1256,6 +1260,10 @@ export default mixins(PdfAuth).extend({
         isChecked: true,
         user: this.$auth?.user?.id,
         justMounted: true,
+      }
+      if (scrollingElement) {
+        obj.left = obj.left/(scrollingElement.clientWidth/this.$store.state.pdfOffset_w)
+        obj.top = obj.top/(scrollingElement.clientHeight/this.$store.state.pdfOffset_h)
       }
       if (this.selectedToolType == this.TOOL_TYPE.line) {
         obj.x1 = obj.left
@@ -1336,6 +1344,36 @@ export default mixins(PdfAuth).extend({
 
       return array
     },
+    toolX(x) {
+      if (!x) return 0
+      let pagesOuter = this.$refs.PagesOuter
+      if (pagesOuter) {
+        return (pagesOuter.clientWidth/this.$store.state.pdfOffset_w)*x
+      }
+      return x
+    },
+    toolY(y) {
+      if (!y) return 0
+      let pagesOuter = this.$refs.PagesOuter
+      if (pagesOuter) {
+        return (pagesOuter.clientHeight/this.$store.state.pdfOffset_h)*y
+      }
+      return y
+    },
+    calToolPos(tool) {
+      let left = tool.left || 0
+      let top = tool.top || 0
+      const scrollingElement = this.$refs.scrollingElement
+      if (scrollingElement) {
+        left = (scrollingElement.clientWidth/this.$store.state.pdfOffset_w)*left
+        top = (scrollingElement.clientHeight/this.$store.state.pdfOffset_h)*top
+      }
+      return {
+        ...tool,
+        left,
+        top,
+      }
+    }
   },
   watch: {
     setContainerPage: function () {

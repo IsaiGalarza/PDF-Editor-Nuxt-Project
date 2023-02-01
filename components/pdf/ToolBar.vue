@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <div>
     <div class="bg-[#F4F906] text-[#EE1B1B] text-base px-6 py-2 flex items-center"
       v-if="isConfirm && !isLoading && $auth.loggedIn && isCreator">
       <!-- <exclamation-icon class="text-white mr-2" /> -->
@@ -174,7 +174,7 @@
     <div v-if="isLoading" class="w-full bg-paperdazgray-200 text-center">Loading PDF...</div>
     <pdf-not-logged-user v-model="showPdfNotLoggedInUser" />
     <AlertModal v-model="showAlert" />
-  </section>
+  </div>
 
 </template>
 

@@ -20,6 +20,8 @@ export const state = () => ({
   pdfScale: 1.305,
   pdfOffset_y: 0,
   pdfOffset_x: 0,
+  pdfOffset_w: 0,
+  pdfOffset_h: 0,
   scrollPosition: false,
   upload_state: false,
   showCongratulationsModal: false,
@@ -96,6 +98,14 @@ export const mutations: MutationTree<RootState> = {
   // -- Setting the pdf page name --
   SET_PDF_OFFSET_X(state, pdfOffsetPayload: number) {
     state.pdfOffset_x = pdfOffsetPayload
+  },
+  // -- Setting the pdf page name --
+  SET_PDF_OFFSET_W(state, pdfOffsetPayload: number) {
+    state.pdfOffset_w = pdfOffsetPayload
+  },
+  // -- Setting the pdf page name --
+  SET_PDF_OFFSET_H(state, pdfOffsetPayload: number) {
+    state.pdfOffset_h = pdfOffsetPayload
   },
   // -- All info from a package --
   PACKAGE_INFO(state, info) {

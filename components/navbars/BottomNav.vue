@@ -1,6 +1,6 @@
 <template>
   <div id="bottom-nav" class="bg-white flex items-center text-[#606060]">
-    <span class="h-full flex items-center justify-center flex-1 px-3" v-show="isSearch">
+    <span class="h-full flex items-center justify-center items-center flex-1 px-3" v-show="isSearch">
       <search-input @onBlurInput="isSearch = false" @onToggle="isSearch = false" />
     </span>
     <span class="h-full flex items-center justify-center flex-1 px-1" v-show="!isSearch">

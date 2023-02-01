@@ -1,5 +1,5 @@
 <template>
-  <nav class="px-3 px-lg-5 bg-white lg:rounded-lg w-full flex items-center justify-between shadow"
+  <nav class="px-3 px-lg-5 bg-white lg:rounded-lg w-full flex items-center justify-between shadow z-20"
     :class="[compact ? 'py-1 h-12' : 'min-h-[60px] sm:min-h-[70px] py-4 h-16']">
     <p class="capitalize inline-flex items-center gap-3"
       :class="[compact ? 'text-sm sm:text-base' : 'text-base sm:text-xl']">

@@ -15,7 +15,7 @@
         <input type="checkbox" class="ml-1" @change="checkBoxChange" /></span>
       <div class="float-right lg:mr-4 mr-2 flex align-items-center">
         <button class="bg-paperdazgreen-400 h-7 px-2 rounded mr-1 text-xs text-white"
-          @click="signContinue">Continue</button>
+          @click="signContinue">Start</button>
         <button class="bg-[#979797] px-2 rounded h-7 text-xs text-white" @click="signCancel">Cancel</button>
       </div>
     </div>
@@ -248,9 +248,9 @@ export default {
     },
     selectedToolType: {},
     openTypeSignModal: Boolean,
-    openTypeInitialModal: Boolean
+    openTypeInitialModal: Boolean,
   },
-  emits: ['zoomOut', 'zoomIn'],
+  emits: ['zoomOut', 'zoomIn', 'cancel'],
   computed: {
     TOOL_TYPE() {
       return TOOL_TYPE
@@ -307,6 +307,7 @@ export default {
     },
     signCancel() {
       this.$store.commit('UN_SET_AGREE_SIGN');
+      this.$emit('cancel')
     },
     checkBoxChange(e) {
       this.signAgreeChecked = e.target.checked

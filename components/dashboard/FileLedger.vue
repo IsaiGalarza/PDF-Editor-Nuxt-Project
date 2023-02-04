@@ -111,7 +111,7 @@
             </td>
             <td class="text-center">
               {{
-                  (isPaidUser ? file.fileAction : file.action)  || "-"
+                  (isPaidUser ? file.fileAction : formatFileAction(file.file.fileAction, file.action))  || "-"
               }}
             </td>
             <td class="text-center" v-if="isPaidUser">
@@ -176,6 +176,7 @@ import CreateCompanyFolder from '../company-files/Tabs/CreateCompanyFolder.vue'
 import UploadDocumentModal from './UploadDocumentModal.vue'
 import CreateTeam from '../company-files/Tabs/CreateTeam.vue'
 import EmptyFileLedger from '../widgets/EmptyFileLedger.vue'
+import FileAction from "~/models/FileAction"
 export default Vue.extend({
   components: {
     TreeIcon,
@@ -237,6 +238,39 @@ export default Vue.extend({
     this.fetchFiles(this.returnedDataPage, this.searchValue)
   },
   methods: {
+    formatFileAction(fileAction, action) {
+      let isEd = false
+      switch ((fileAction || '').toLowerCase()) {
+        case FileAction.COMPLETE:
+          isEd = true
+          break;
+        case FileAction.SIGNED:
+          isEd = true
+          if (action === FileAction.COMPLETE)  {
+            fileAction = FileAction.SIGNED
+            isEd = false
+          }
+          else if (action === FileAction.CONFIRM)  {
+            fileAction = FileAction.CONFIRM
+          }
+          break;
+        case FileAction.CONFIRM:
+          if (action === FileAction.COMPLETE)  {
+            isEd = false
+          } else {
+            isEd = true
+          }
+          break;
+        default:
+          return ''
+        }
+
+      fileAction = fileAction.charAt(0).toUpperCase() + fileAction.slice(1)
+      if (isEd) {
+        fileAction = fileAction.charAt(fileAction.length - 1) === 'e' ? (fileAction + 'd') : (fileAction + 'ed')
+      }
+      return fileAction
+    },
     showCreateCompanyFolderFunc() {
       this.showCreateCompanyFolder = true
     },

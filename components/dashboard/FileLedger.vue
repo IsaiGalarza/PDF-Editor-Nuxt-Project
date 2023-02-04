@@ -61,7 +61,7 @@
             <th class="text-left !pl-16">File Name</th>
             <th class="text-center">{{ isPaidUser ? 'Action' : 'Actions' }}</th>
             <th class="text-center" v-if="isPaidUser">Action By</th>
-            <th class="text-center">Date & time</th>
+            <th class="text-center">Date & Time</th>
             <th class="fixed-col right text-right"></th>
           </tr>
         </thead>
@@ -80,12 +80,14 @@
                     (file.fileOwner || {}).profile_picture ||
                     '/img/placeholder_picture.png'
                   " alt=""
-                    :class="[file.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
+                    :class="[
+                      (file.role == userType.PAID || $auth.user.role == userType.FREE) ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']"
+                    />
                     <div v-else class="text-paperdazgreen-300 h-[30px] leading-[30px]">
                       {{ (file.fileOwner || {}).company_name | initialFirstName }}
                     </div>
                 </div>
-                <div>
+                <div class="overflow-hidden">
                   <p class="text-sm font-medium text-center ml-1 flex">
                     <nuxt-link :to="`/pdf/${file.paperLink}`">
                       <!-- {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName  }} -->
@@ -97,18 +99,20 @@
                     :href="`/public/profile/${(file.fileOwnerId || {})}`"
                     target="_blank"
                   >
-                    <p class="ml-1 text-xs">
+                    <p class="ml-1 text-xs flex">
                       {{ (file.fileOwner || {}).company_name }}
                     </p>
                   </a>
-                  <p v-else class="ml-1 text-xs">
+                  <p v-else class="ml-1 text-xs flex">
                     {{ (file || {}).userName }}
                   </p>
                 </div>
               </div>
             </td>
             <td class="text-center">
-              {{ file.fileAction || "-" }}
+              {{
+                  (isPaidUser ? file.fileAction : formatFileAction(file.file.fileAction, file.action))  || "-"
+              }}
             </td>
             <td class="text-center" v-if="isPaidUser">
               {{ file.user.firstName + " " + file.user.lastName }}
@@ -172,6 +176,7 @@ import CreateCompanyFolder from '../company-files/Tabs/CreateCompanyFolder.vue'
 import UploadDocumentModal from './UploadDocumentModal.vue'
 import CreateTeam from '../company-files/Tabs/CreateTeam.vue'
 import EmptyFileLedger from '../widgets/EmptyFileLedger.vue'
+import FileAction from "~/models/FileAction"
 export default Vue.extend({
   components: {
     TreeIcon,
@@ -233,6 +238,39 @@ export default Vue.extend({
     this.fetchFiles(this.returnedDataPage, this.searchValue)
   },
   methods: {
+    formatFileAction(fileAction, action) {
+      let isEd = false
+      switch ((fileAction || '').toLowerCase()) {
+        case FileAction.COMPLETE:
+          isEd = true
+          break;
+        case FileAction.SIGNED:
+          isEd = true
+          if (action === FileAction.COMPLETE)  {
+            fileAction = FileAction.SIGNED
+            isEd = false
+          }
+          else if (action === FileAction.CONFIRM)  {
+            fileAction = FileAction.CONFIRM
+          }
+          break;
+        case FileAction.CONFIRM:
+          if (action === FileAction.COMPLETE)  {
+            isEd = false
+          } else {
+            isEd = true
+          }
+          break;
+        default:
+          return ''
+        }
+
+      fileAction = fileAction.charAt(0).toUpperCase() + fileAction.slice(1)
+      if (isEd) {
+        fileAction = fileAction.charAt(fileAction.length - 1) === 'e' ? (fileAction + 'd') : (fileAction + 'ed')
+      }
+      return fileAction
+    },
     showCreateCompanyFolderFunc() {
       this.showCreateCompanyFolder = true
     },

@@ -38,7 +38,7 @@
             <th class="w-12 text-left fixed-col left">No</th>
             <th class="text-left !pl-16">File Name</th>
             <th class="text-center">Actions</th>
-            <th class="text-center">Date & time</th>
+            <th class="text-center">Date & Time</th>
             <!-- <th class="fixed-col text-right"></th> -->
             <th class="fixed-col right text-right"></th>
           </tr>

@@ -1,5 +1,5 @@
 <template>
-  <nav class="px-5 bg-white lg:rounded-lg w-full flex items-center justify-between shadow"
+  <nav class="px-3 px-lg-5 bg-white lg:rounded-lg w-full flex items-center justify-between shadow"
     :class="[compact ? 'py-1 h-12' : 'min-h-[60px] sm:min-h-[70px] py-4 h-16']">
     <p class="capitalize inline-flex items-center gap-3"
       :class="[compact ? 'text-sm sm:text-base' : 'text-base sm:text-xl']">
@@ -8,40 +8,7 @@
     </p>
     <div class="hidden lg:inline-block text-[#BBBBBB] pr-4 border-r mr-2 w-[50%]">
       <!-- <div class="text-[#BBBBBB] mr-4"> -->
-      <el-dropdown trigger="click" class="w-full">
-        <span class="el-dropdown-link">
-          <el-input placeholder="" v-model="searchString" size="small" class="search-box">
-            <template #suffix>
-              <span class="grid place-items-center h-full w-full"><search-icon width="14" height="14" /></span>
-            </template>
-          </el-input>
-        </span>
-        <el-dropdown-menu slot="dropdown" :class="topSearchContent.length > 0 ? '' : 'hidden'">
-          <!-- Start:: dropdown -->
-          <div class="bg-white rounded-lg whitespace-nowrap w-[40vw]">
-            <div class="max-h-[60vh] custom-scrollbar overflow-y-auto p-2">
-              <article class="py-4 text-[#9F9F9F] grid grid-cols-[max-content,1fr,max-content] gap-4"
-                v-for="item in topSearchContent" :key="item.id">
-                <img :src="
-                  (item.user || {}).profile_picture ||
-                  '/img/placeholder_picture.png'
-                " alt="" class="h-16 w-16 rounded-2 object-cover" />
-                <div class="overflow-hidden">
-                  <nuxt-link :to="`/pdf/${item.paperLink}`">
-                    <p class="text-sm text-black truncate font-semibold">{{ item.fileName | removeExtension }}</p>
-                    <p class="text-sm text-black mb-1 truncate font-semibold">
-                      {{ (item.user || {}).company_name }}
-                    </p>
-                    <p class="text-[11px] mt-0.5 truncate">{{item.paperLink}}</p>
-                  </nuxt-link>
-                </div>
-                <SearchShare :showShareIcon="true" :file="item" />
-              </article>
-            </div>
-          </div>
-          <!-- End:: dropdown -->
-        </el-dropdown-menu>
-      </el-dropdown>
+      <search-input />
     </div>
     <div v-if="$auth.loggedIn" class="h-full self-stretch flex items-center">
       <!-- Start:: search -->
@@ -131,13 +98,20 @@
         <span class="flex items-center el-dropdown-link">
           <span class="border border-paperdazgreen-300 mr-2 p-0.5 overflow-hidden relative text-center" :class="[
             isPaidUser
-              ? 'w-[45px] h-[45px] rounded-md pt-1'
+              ? 'w-[45px] h-[45px] rounded-md'
               : 'circle-20 rounded-full',
           ]">
             <!-- <img :src="profilePhoto" class="w-full h-full profilePhoto" alt=""
               :class="[isPaidUser ? 'rounded-md' : 'rounded-full']" /> -->
-            <span v-if="isPaidUser" class="text-3xl font-bold w-full h-full text-center text-paperdazgreen-300 rounded-md"
-              style="text-shadow: 1px 2px 3px grey;">{{ (userCompanyName || '').charAt(0).toUpperCase() }}</span>
+            <img
+              v-if="isPaidUser"
+              :src="profilePhoto"
+              class="w-full h-full profilePhoto"
+              alt=""
+              :class="[isPaidUser ? 'rounded-md' : 'rounded-full']"
+            />
+            <!-- <span v-if="isPaidUser" class="text-3xl font-bold w-full h-full text-center text-paperdazgreen-300 rounded-md"
+              style="text-shadow: 1px 2px 3px grey;">{{ (userCompanyName || '').charAt(0).toUpperCase() }}</span> -->
             <img v-else :src="profilePhoto" :class="[isPaidUser ? 'rounded-md' : 'rounded-full']" />
           </span>
           <span class="text-black"><arrow-down-icon class="h-2 w-3 sm:h-2.5 sm:w-4" /></span>
@@ -170,9 +144,18 @@
                   (account || {}).profilePicture ||
                   '/img/placeholder_picture.png'
                 " class="w-full h-full rounded-full" alt="" v-if="isAccountPaid(account.role)" />
-                <span v-else class="text-3xl font-bold w-full rounded-md h-full text-center text-paperdazgreen-300"
+                <!-- <span v-else class="text-3xl font-bold w-full rounded-md h-full text-center text-paperdazgreen-300"
                   style="text-shadow: 1px 2px 3px grey;">{{ (account.companyName || '').charAt(0).toUpperCase()
-                  }}</span>
+                  }}</span> -->
+                <img
+                  v-else
+                  :src="
+                    (account || {}).teampicture ||
+                    (account || {}).profilePicture ||
+                    '/img/placeholder_picture.png'"
+                  class="w-full h-full profilePhoto rounded-md"
+                  alt=""
+                />
               </span>
               <div class="w-[calc(100%-1.75rem)] pl-2 leading-[12px] relative flex flex-wrap items-center">
                 <span class="text-[12px] truncate font-[500] capitalize inline-block my-0 w-full">{{ (account.teamName
@@ -236,7 +219,7 @@ import TrashCanIcon from '../svg-icons/TrashCanIcon.vue'
 import SpinnerDottedIcon from '../svg-icons/SpinnerDottedIcon.vue'
 import StatusUser from '~/models/StatusUser'
 import LandingPageSearchModal from '../landing/LandingPageSearchModal.vue'
-import SearchShare from '../search-strips/component/SearchShare.vue'
+import SearchInput from './SearchInput.vue'
 
 // email-acout emauil,password-referal-code
 export default mixins(GlobalMixin, login).extend({
@@ -258,7 +241,7 @@ export default mixins(GlobalMixin, login).extend({
     SpinnerDottedIcon,
     SearchIcon,
     LandingPageSearchModal,
-    SearchShare
+    SearchInput
   },
   props: {
     compact: {
@@ -277,14 +260,12 @@ export default mixins(GlobalMixin, login).extend({
   },
   data() {
     return {
-      searchString: '',
       profile: '',
       account: [],
       notification: [],
       notificationSpinner: false,
       notificationPage: 0,
       totalNotification: null,
-      topSearchContent: [],
       notificationPerPage: 10,
       isLoadedSuccess: false,
       isRead: true,
@@ -293,18 +274,6 @@ export default mixins(GlobalMixin, login).extend({
     }
   },
   computed: {
-    searchResult() {
-      if (!this.searchString) return []
-      return [
-        { id: 1 },
-        { id: 2 },
-        { id: 3 },
-        { id: 4 },
-        { id: 5 },
-        { id: 6 },
-        { id: 7 }
-      ]
-    },
     routeName() {
       return (this.$nuxt.$route.name || '').replace(/-/g, ' ')
     },
@@ -368,17 +337,6 @@ export default mixins(GlobalMixin, login).extend({
       if (this.notification[0]?.isRead == 1 || this.notification.length < 1) return
       this.$axios.patch(`/notification/${(this.notification[0] || []).id}`, { isRead: 1 })
       this.isRead = true
-    },
-    async getGeneralSearch(topsearch) {
-      if (!topsearch.trim()) return
-
-      // await this.$axios.get(`/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&fileName[$like]=${topsearch}%`)
-      await this.$axios.get(`/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&$or[0][fileName][$like]=${topsearch}%&$or[1][companyName][$like]=${topsearch}%`)
-        .then((response) => {
-          const { data } = response.data
-          this.topSearchContent = data
-        })
-      // &$or[1][uploadedBy]={ team member id }&$or[2][uploadedBy]={ team member id 2 }
     },
     async deleteNotification(id) {
       this.notificationSpinner = true
@@ -519,9 +477,6 @@ export default mixins(GlobalMixin, login).extend({
           // this.isLoading = false
         })
     },
-    querySearch(_queryString, cb) {
-      cb(this.searchResult)
-    },
     handleCommand(command) {
       switch (command) {
         case 'logout':
@@ -559,9 +514,6 @@ export default mixins(GlobalMixin, login).extend({
     notificationPage: function () {
       this.getUserNotification(this.notificationPage)
     },
-    searchString: function () {
-      this.getGeneralSearch(this.searchString)
-    }
   },
   mounted() {
     if (!this.user?.id) return

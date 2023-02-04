@@ -10,13 +10,13 @@
       <span class="float-left pt-2 px-2">Scroll to the bottom of file to confirm that you have read.</span>
       <button class="text-white bg-zinc-500 rounded px-4 py-2 float-right mr-2" @click="cancelConfrim">Cancel</button>
     </div>
-    <div class="flex justify-between h-full pt-2" v-if="userRole == 'free_user' && isSign && isAgreedSign === -1">
-      <span class="float-left m-2 text-sm font-bold ">I agree to apply my electronic signature/initials.
+    <div class="flex justify-between h-full" v-if="userRole == 'free_user' && isSign && isAgreedSign === -1">
+      <span class="float-left m-2 text-[10px] lg:text-sm font-bold w-50 d-flex">I agree to apply my electronic signature/initials.
         <input type="checkbox" class="ml-1" @change="checkBoxChange" /></span>
-      <div class="float-right mr-4 pt-[2px]">
-        <button class="bg-paperdazgreen-400 py-2 px-3 rounded mr-1 text-white font-semibold"
+      <div class="float-right lg:mr-4 mr-2 flex align-items-center">
+        <button class="bg-paperdazgreen-400 h-7 px-2 rounded mr-1 text-xs text-white"
           @click="signContinue">Continue</button>
-        <button class="bg-[#979797] px-2 rounded py-2 text-white font-semibold" @click="signCancel">Cancel</button>
+        <button class="bg-[#979797] px-2 rounded h-7 text-xs text-white" @click="signCancel">Cancel</button>
       </div>
     </div>
     <div v-else v-if="userRole == 'free_user' && isSign && isAgreedSign === 1"

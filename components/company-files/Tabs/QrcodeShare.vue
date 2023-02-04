@@ -117,6 +117,7 @@ export default Vue.extend({
     },
 
     async generateQR() {
+      if (!this.$refs.qrcancas) return
       QRCode.toCanvas(
         this.$refs.qrcancas,
         (this.link || `${window.location.origin}/pdf/${this.userFile.paperLink || ''}`),

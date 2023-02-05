@@ -863,11 +863,12 @@ export default mixins(PdfAuth).extend({
             return {
               ..._el,
               id: index + 1,
-              completed: await this.toDataURL(_el.completed),
+              // completed: await this.toDataURL(_el.completed),
             }
           else return { ..._el, id: index + 1 }
         })
       )
+      console.log({ tools: this.tools, user: this.$auth.user })
       this.initialFileAnnotation = JSON.parse(this.file.annotaions || `[]`).map(
         (_el, index) => {
           return { ..._el, id: index + 1 }

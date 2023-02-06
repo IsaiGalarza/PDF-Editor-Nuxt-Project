@@ -10,12 +10,12 @@
       <div
         class="flex-1 flex flex-wrap flex-col lg:flex-row items-center gap-15 lg:gap-8 sm:gap-4 text-[#6C6777] justify-center"
       >
-        <a href="/#key-features-section">Features</a>
-        <nuxt-link to="/packages/?type=default">Packages</nuxt-link>
+        <a href="/#key-features-section" class="my-1">Features</a>
+        <nuxt-link to="/packages/?type=default" class="my-1">Packages</nuxt-link>
         <!-- <a href="/#upload-file-section">Upload File</a> -->
-        <nuxt-link to="/about">About</nuxt-link>
-        <nuxt-link to="/faq">FAQ</nuxt-link>
-        <nuxt-link to="/contact-us">Contact Us</nuxt-link>
+        <nuxt-link to="/about" class="my-1">About</nuxt-link>
+        <nuxt-link to="/faq" class="my-1">FAQ</nuxt-link>
+        <nuxt-link to="/contact-us" class="my-1">Contact Us</nuxt-link>
       </div>
 
       <div class="flex flex-col gap-2 items-center">

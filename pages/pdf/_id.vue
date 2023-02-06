@@ -470,6 +470,7 @@ export default mixins(PdfAuth).extend({
       })
       .catch((err) => {})
 
+    store.commit('SET_FILE', file)
     return { file, user }
   },
 
@@ -1394,7 +1395,7 @@ export default mixins(PdfAuth).extend({
         this.saveFunction = 'saved'
         this.publishFileFunction()
       }
-    }
+    },
   },
   beforeRouteLeave(to, from, next) {
     if (this.$store.state.pdfExit == true) {

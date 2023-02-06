@@ -1,6 +1,6 @@
 <template>
   <div class="" style="">
-    <section class="container pt-14 pb-24">
+    <section class="container lg:pt-14 pt-8 lg:pb-24 pb-16">
       <!-- Start:: tab indicator -->
       <div
         class="tab-indicator-container"
@@ -197,7 +197,7 @@ export default mixins(GlobalMixin).extend({
 
 <style lang="scss" scoped>
 .tab-indicator-container {
-  @apply mx-auto relative flex items-center justify-between mb-20 w-full max-w-[600px];
+  @apply mx-auto relative flex items-center justify-between lg:mb-20 mb-14 w-full max-w-[600px];
   --circle-size: 60px;
 
   &.second::before {

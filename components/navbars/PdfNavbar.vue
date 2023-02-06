@@ -12,16 +12,29 @@
           @click="$emit('open-sidebar')"
           ><hamburger-icon /></span
         >
-        <!-- <a :href="`/public/profile/${title.route}`"  target="_blanck">{{ title.name || routeName }}</a> -->
-        <span v-if="isPaidUser" class="text-3xl font-bold w-full h-full text-center text-paperdazgreen-300 rounded-md" style="text-shadow: 1px 2px 3px grey;">{{ (userCompanyName || '').charAt(0).toUpperCase() }}</span>
-
-        <div v-if="login || false" class="lg:hidden flex flex-col text-sm leading-[15px] flex-wrap justify-end">
-          <span class="text-black text-[13px] font-[600] capitalize text-left">
-            {{ userCompanyName || '' }}
+        <div class="inline-flex items-center gap-1">
+          <!-- <a :href="`/public/profile/${title.route}`"  target="_blanck">{{ title.name || routeName }}</a> -->
+          <span
+            v-if="companyPhoto"
+            class="border border-paperdazgreen-300 mr-2 p-0.5 w-[40px] h-[40px] rounded-md overflow-hidden relative"
+          >
+            <img
+              :src="companyPhoto"
+              class="w-full h-full profilePhoto"
+              alt=""
+              :class="[isPaidUser ? 'rounded-md' : 'rounded-full']"
+            />
           </span>
+          <span v-else class="text-3xl font-bold w-full h-full text-center text-paperdazgreen-300 rounded-md" style="text-shadow: 1px 2px 3px grey;">{{ (userCompanyName || '').charAt(0).toUpperCase() }}</span>
 
-          <span class="text-[#524D5B] text-[11.5px] text-left leading-0">
-            {{ userFullName || '' }}
+          <!-- <div  class="lg:hidden flex flex-col text-sm leading-[15px] justify-end">
+            
+          </div> -->
+          <span v-if="isPaidUser" class="text-black text-[13px] font-[600] text-nowrap capitalize text-left">
+            File Manager
+          </span>
+          <span v-else class="text-black text-[13px] font-[600] text-nowrap capitalize text-left">
+            {{ businessName }}
           </span>
         </div>
       </div>
@@ -50,7 +63,7 @@
               class="border border-paperdazgreen-300 mr-2 p-0.5 overflow-hidden relative"
               :class="[
                 isPaidUser
-                  ? 'w-[45px] h-[45px] rounded-md'
+                  ? 'w-[40px] h-[40px] rounded-md'
                   : 'circle-20 rounded-full',
               ]"
             >
@@ -103,17 +116,17 @@
                   />
                 </span>
                 <div class="w-[calc(100%-1.75rem)] pl-2 leading-[12px] relative flex flex-wrap items-center">
-                <span
-                  class="text-[12px] truncate font-[500] capitalize inline-block my-0 w-full"
-                  >{{(account.teamName || account.companyName || account.firstName || '')}}</span
-                >
-                <span class="text-[9px] truncate font-[500] capitalize inline-block my-0 w-full">
-                  {{account.status}}
-                  <i class="absolute w-[3px] h-[3px] inline-block rounded-full left-[calc(100%-16px)] -bottom-[2px] p-[3px] border-[2px] border-white"
-                  :class="[checkStatus(account.status)]"
-                  ></i>
-                </span>
-              </div>
+                  <span
+                    class="text-[12px] truncate font-[500] capitalize inline-block my-0 w-full"
+                    >{{(account.teamName || account.companyName || account.firstName || '')}}</span
+                  >
+                  <span class="text-[9px] truncate font-[500] capitalize inline-block my-0 w-full">
+                    {{account.status}}
+                    <i class="absolute w-[3px] h-[3px] inline-block rounded-full left-[calc(100%-16px)] -bottom-[2px] p-[3px] border-[2px] border-white"
+                    :class="[checkStatus(account.status)]"
+                    ></i>
+                  </span>
+                </div>
               </div>
             </div>
             <!-- END: user account -->
@@ -280,6 +293,12 @@
       profilePhoto() {
         return this.$store.getters.profilePhoto
       },
+      companyPhoto() {
+        return this.$store.state.file.user.profile_picture
+      },
+      businessName() {
+        return this.$store.state.file.user.company_name || ''
+      }
     },
     methods: {
       isAccountPaid(val){
@@ -443,6 +462,7 @@
       },
     },
     mounted() {
+      console.log({file: this.$store.state.file})
       if (!this.user?.id) return
       this.fetchUsersInitialAccount()
       this.getUsersAccount()

@@ -5,7 +5,7 @@
       :visible.sync="show"
       id="profile-image-cropper"
       title="Profile Image"
-      width="50%"
+      :width="width"
       :before-close="() => $emit('visibleDialog', false)"
     >
       <div>
@@ -115,6 +115,7 @@ export default mixins(login).extend({
         width: null,
         height: null,
       },
+      windowWidth: 0,
     }
   },
   props: {
@@ -125,6 +126,13 @@ export default mixins(login).extend({
   },
   emits: ['visibleDialog'],
   mounted() {
+  },
+  created() {
+    this.windowWidth = window.innerWidth
+    window.addEventListener("resize", this.onWindowResizeHandle);
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.onWindowResizeHandle);
   },
   methods: {
     boundaries({ cropper, imageSize }) {
@@ -226,12 +234,18 @@ export default mixins(login).extend({
         default:
           return fallback;
       }
+    },
+    onWindowResizeHandle (event) {
+      this.windowWidth = event.target.innerWidth
     }
   },
   computed: {
     user() {
       return this.$auth?.user
     },
+    width() {
+      return this.windowWidth > 800 ? '50%' : '90%'
+    }
   },
 })
 </script>

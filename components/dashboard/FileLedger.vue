@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-col">
     <h3
-      class="text-paperdazgray-700 font-semibold text-xl flex flex-col gap-3 xs:flex-row xs:items-center justify-between whitespace-nowrap"
-      :class="isPaidUser ? '' : 'mb-4 mt-4'">
+      class="text-paperdazgray-700 font-semibold text-xl flex flex-col xs:flex-row xs:items-center justify-between whitespace-nowrap mt-3 mb-2"
+    >
       <!-- <div class="flex">
         <span>{{ isPaidUser ? "File Ledger" : "Ledger" }}</span>
         <div v-if="isPaidUser" class="flex">
@@ -10,22 +10,23 @@
           <img src="../../assets/img/users-icon.png" class="-ml-8" />
         </div>
       </div> -->
-      <h5 class="text-lg font-semibold text-[#272727] inline-flex items-center gap-2 mr-12 float-left">
-        {{ isPaidUser ? "File Ledger" : "Ledger" }} <a :href="`/public/profile/${mainUserLink}`" target="_blanck">
+      <h5 class="text-lg font-semibold text-[#272727] inline-flex items-center gap-2 w-full my-2">
+        {{ isPaidUser ? "File Ledger" : "Ledger" }}
+        <a :href="`/public/profile/${mainUserLink}`" target="_blanck">
           <!-- <company-icon /> -->
-          <img src="../../assets/img/company-icon.png" v-if="isPaidUser" />
+          <img src="../../assets/img/company-icon.png" class="lg:w-[30px] w-[20px]" v-if="isPaidUser" />
         </a>
-        <img src="../../assets/img/users-icon.png" class="-ml-8 cursor-pointer" @click="showCreateTeamFunc"
+        <img src="../../assets/img/users-icon.png" class="cursor-pointer lg:w-[44px] w-[35px]" @click="showCreateTeamFunc"
           v-if="isPaidUser" />
       </h5>
-      <div class="w-full xs:max-w-[250px] text-xs font-medium flex justify-end  items-center relative float-right ">
-        <span class="el-dropdown-link left-roll mr-4">
+      <div class="w-full text-xs font-medium flex justify-end  items-center relative my-2">
+        <span class="el-dropdown-link left-roll1 flex-1">
           <input type="text"
-            class="search-input h-10 transition pl-4 mr-2 bg-transparent flex-1 border-[1px] border-paperdazgreen-400 rounded-tl-lg rounded-bl-lg focus:border-paperdazgreen-700 outline-none"
+            class="search-input h-10 transition w-75 pl-4 bg-transparent mr-2 flex-1 border-[1px] border-paperdazgreen-400 rounded-tl-lg rounded-bl-lg focus:border-paperdazgreen-700 outline-none float-right"
             placeholder="Search Files" v-model="searchParam" />
         </span>
         <button
-          class="circle circle-18 bg-paperdazgreen-400 text-white mr-2 hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
+          class="circle circle-18 bg-paperdazgreen-400 text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
           <search-icon width="16" height="16" currentcolor="white" />
         </button>
         <!-- <div class="flex" v-if="isPaidUser">
@@ -42,7 +43,8 @@
     </h3>
     <div ref="ledgerContainer" class="bg-white rounded-2xl flex-1 min-h-[50vh] lg:min-h-[40vh] position-relative"
       :class="[
-        (files || []).length <= 0 || $fetchState.pending
+        // (files || []).length <= 0 || $fetchState.pending
+        (pdfUser || []).length <= 0 || $fetchState.pending
           ? 'p-5 flex justify-center'
           : 'pb-4 overflow-x-auto custom-scrollbar',
       ]">

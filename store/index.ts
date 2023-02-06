@@ -25,7 +25,8 @@ export const state = () => ({
   scrollPosition: false,
   upload_state: false,
   showCongratulationsModal: false,
-  agreeSign: -1
+  agreeSign: -1,
+  file: {}
 })
 
 export type RootState = ReturnType<typeof state>
@@ -192,6 +193,9 @@ export const mutations: MutationTree<RootState> = {
   },
   SET_PDF_PAGE_BOTTOM(state) {
     state.scrollPosition = true;
+  },
+  SET_FILE(state, file) {
+    state.file = file
   }
 }
 

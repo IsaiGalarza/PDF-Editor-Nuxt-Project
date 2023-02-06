@@ -37,7 +37,7 @@
       <!-- <div
         class="flex-1 flex items-center gap-5 justify-end text-xs font-medium"
       > -->
-      <span class="hidden md:inline">{{ file.fileName.length > 12 ? `${file.fileName.substr(0, 8)}....pdf` : file.fileName }}</span>
+      <span class="hidden md:inline">{{ file.fileName.length > 12 ? `${file.fileName.substr(0, 8)}...` : file.fileName }}</span>
 
       <span class="hidden md:inline">
         <span class="circle circle-2 bg-[#757575]"></span>

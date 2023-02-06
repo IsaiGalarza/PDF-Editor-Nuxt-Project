@@ -1,5 +1,5 @@
 <template>
-  <div class="sticky z-20 h-14 pt-5 pb-5 transition ease-in-out" :class="[{
+  <div class="sticky z-20 h-14 py-lg-5 pt-4 pb-4 transition ease-in-out" :class="[{
     'shadow-md': scrolled,
     'bg-white': scrolled,
   }, landingPage ? 'bg-white' : '']" style="top: -0.1px; padding-top: 48px" id="appbar">

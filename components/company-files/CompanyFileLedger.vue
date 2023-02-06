@@ -1,20 +1,21 @@
 <template>
   <div>
     <!-- Start:: header -->
-    <header class="flex items-center flex-wrap gap-4 justify-between">
-      <h5 class="text-lg font-semibold text-[#272727] inline-flex items-center gap-2">
-        Company Files <a :href="`/public/profile/${mainUserLink}`" target="_blanck">
+    <header class="flex flex-col xs:flex-row xs:items-center justify-between whitespace-nowrap px-2 mt-3 mb-2">
+      <h5 class="text-lg font-semibold text-[#272727] inline-flex w-full items-center gap-2 my-2">
+        Company Files
+        <a :href="`/public/profile/${mainUserLink}`" target="_blanck">
           <!-- <company-icon /> -->
-          <img src="../../assets/img/company-icon.png" />
+          <img src="../../assets/img/company-icon.png" class="lg:w-[30px] w-[20px]" />
         </a>
-        <img src="../../assets/img/users-icon.png" @click="showCreateTeamFunc" class="-ml-8 cursor-pointer" />
+        <img src="../../assets/img/users-icon.png" @click="showCreateTeamFunc" class="lg:w-[44px] w-[35px] cursor-pointer" />
       </h5>
-      <div class="text-white flex items-center">
-        <div action="" class="w-full xs:max-w-[280px] text-xs font-medium flex items-center relative justify-end mr-2"
+      <div class="w-full text-white flex items-center my-2">
+        <div action="" class="flex-1 text-xs font-medium flex items-center relative justify-end mr-2"
           @submit.prevent="$event.preventDefault()">
-          <span class="el-dropdown-link left-roll mr-2">
+          <span class="el-dropdown-link left-roll1 flex-1">
             <input type="text"
-              class="search-input h-10 pl-4 mr-2 text-black bg-transparent flex-1 border-[1px] border-paperdazgreen-400 rounded-tl-lg rounded-bl-lg focus:border-paperdazgreen-700 outline-none"
+              class="search-input w-full lg:w-[75%] h-10 pl-4 mr-2 text-black bg-transparent flex-1 border-[1px] border-paperdazgreen-400 rounded-tl-lg rounded-bl-lg focus:border-paperdazgreen-700 outline-none float-right"
               placeholder="Search Files" v-model="folderSearch" />
           </span>
           <button

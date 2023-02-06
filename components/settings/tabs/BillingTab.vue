@@ -5,7 +5,7 @@
         <spinner-dotted-icon class="text-paperdazgreen-400/30 animate-spin" />
       </div>
       <div class="flex gap-4 flex-col lg:flex-row" v-else>
-        <div class="lg:max-w-[300px] rounded-3xl bg-white py-6 px-8 lg:self-start grid place-items-center">
+        <div class="lg:max-w-[300px] rounded-3xl bg-white p-6 lg:self-start grid place-items-center">
           <package-card v-if="stagingPackage && Object.keys(stagingPackage).length > 0"
             :lockPrice="$auth.user.package_type" :stagingPackage="stagingPackage" />
         </div>

@@ -6,7 +6,7 @@
     <form
       @submit.prevent="sendPackageCode"
       v-if="pagesDefault"
-      class="flex items-center gap-2 w-full max-w-[500px] mx-auto mb-12"
+      class="flex items-center gap-2 w-full max-w-[500px] mx-auto lg:mb-12 mb-8"
     >
       <el-input
         ref="packagecode"
@@ -14,7 +14,7 @@
         v-model="promotionCode"
       />
       <button
-        class="text-sm h-6 sm:h-10 bg-paperdazgreen-400 text-white rounded-lg px-5 hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150 shadow px-3"
+        class="text-sm h-10 bg-paperdazgreen-400 text-white rounded-lg px-lg-5 px-3 hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150 shadow"
       >
         Search
       </button>
@@ -24,10 +24,10 @@
     <transition name="fade" mode="out-in" :duration="200">
       <!-- Start:: already existing package -->
       <div v-if="pagesDefault" key="selecting">
-        <div class="relative py-4">
+        <div class="relative lg:py-4">
           <div class="swiper mySwiper overflow-hidden" ref="swiper">
             <div
-              class="swiper-wrapper py-8"
+              class="swiper-wrapper lg:py-8 py-4 -mx-4 mx-lg-0"
               ref="wrapper"
               :class="[orderedPackages.length < 2 ? 'flex justify-center' : 'item-center']"
             >
@@ -303,9 +303,9 @@ export default Vue.extend({
   @apply whitespace-normal mx-4;
 }
 .swiper-button-prev {
-  @apply absolute top-[calc(50%-20px)] left-[5px];
+  @apply absolute top-[calc(50%-20px)] left-[-5px] z-[19];
 }
 .swiper-button-next {
-  @apply absolute top-[calc(50%-20px)] right-[40px];
+  @apply absolute top-[calc(50%-20px)] right-[30px] z-[19];
 }
 </style>

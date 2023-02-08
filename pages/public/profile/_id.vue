@@ -120,16 +120,14 @@
           <div v-else v-for="(item, i) in files" :key="i + 'file'"
             class="grid grid-cols-[max-content,1fr,max-content] gap-2 items-center mx-4 border-b border-[#DCDCDC] py-3">
             <img src="/icon.png" width="23" height="23" />
-            <div class="flex justify-between">
-              <div class="overflow-hidden">
-                <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
-                  <nuxt-link :to="`/pdf/${item.paperLink}`" class="cursor-pointer">
-                    {{ ((item || {}).fileName || ' ') | removeExtension }}
-                  </nuxt-link>
-                </p>
-              </div>
-              <SearchShare :file="item" :showShareIcon="true" />
+            <div class="overflow-hidden">
+              <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
+                <nuxt-link :to="`/pdf/${item.paperLink}`" class="cursor-pointer">
+                  {{ ((item || {}).fileName || ' ') | removeExtension }}
+                </nuxt-link>
+              </p>
             </div>
+            <SearchShare :file="item" :showShareIcon="true" />
             <!-- <ShareFileOptions :file="item" /> -->
           </div>
           <!-- End:: Single row -->
@@ -280,6 +278,7 @@ export default Vue.extend({
           this.checkWEmptyFileFolder = filesData <= 0
           this.fileSpinner = false
           this.totalFile = response.total
+          console.log('files====>', this.files)
         })
     },
 

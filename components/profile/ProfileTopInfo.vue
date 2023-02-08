@@ -31,7 +31,7 @@
           <div class="input-wrapper-title flex justify-between items-start">
         <!-- <input type="text" v-model="name" placeholder="Apple Dental" :disabled="true"
           class="text-black text-2xl" /> -->
-          <span class="text-2xl text-grey pl-3"> {{ userInfo.companyName }}</span>
+          <span class="text-2xl text-grey pl-3"> {{ name }}</span>
           <button v-if="isUser" @click="toggleInput" class="float-right pr-10 md:pr-20">
             <img
               src="../../assets/img/pencil.png"

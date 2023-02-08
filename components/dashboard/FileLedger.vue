@@ -22,7 +22,7 @@
       <div class="w-full text-xs font-medium flex justify-end  items-center relative my-2">
         <span class="el-dropdown-link left-roll1 flex-1">
           <input type="text"
-            class="search-input h-10 transition w-75 pl-4 bg-transparent mr-2 flex-1 border-[1px] border-paperdazgreen-400 rounded-tl-lg rounded-bl-lg focus:border-paperdazgreen-700 outline-none float-right"
+            class="search-input h-10 transition w-75 pl-4 bg-transparent mr-2 flex-1 border-[1px] border-paperdazgreen-400 rounded-lg focus:border-paperdazgreen-700 outline-none float-right"
             placeholder="Search Files" v-model="searchParam" />
         </span>
         <button

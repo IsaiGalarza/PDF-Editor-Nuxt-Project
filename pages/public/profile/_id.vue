@@ -48,7 +48,7 @@
         </header>
 
         <!-- Start:: Folders-item -->
-        <div class="max-h-36 overflow-y-auto custom-scrollbar relative">
+        <div class="max-h-36">
           <!-- START: spinner container -->
           <div v-if="folderSpinner"
             class="absolute z-10 w-full h-full bg-white top-0 left-0 rounded-lg flex justify-center items-center">
@@ -64,16 +64,14 @@
 
           <!-- Start:: Single row -->
           <div v-for="(item, i) in folders" :key="i + 'folder'"
-            class="grid grid-cols-[max-content,1fr] gap-2 items-center mx-4 border-b border-[#DCDCDC] py-2">
+            class="grid grid-cols-[max-content,1fr,max-content] gap-2 items-center mx-4 border-b border-[#DCDCDC] py-2">
             <img class="w-7" src="@/assets/recent-icons/OpenedFolder.svg" />
-            <div class="flex justify-between">
-              <div class="overflow-hidden">
-                <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
-                  <nuxt-link :to="`/public-profile/${item.id}`" class="cursor-pointer">{{ (item || {}).name }}</nuxt-link>
-                </p>
-              </div>
-              <ShareFolder :folder="item" :showShareIcon="true" />
+            <div class="overflow-hidden">
+              <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
+                <nuxt-link :to="`/public-profile/${item.id}`" class="cursor-pointer">{{ (item || {}).name }}</nuxt-link>
+              </p>
             </div>
+            <ShareFolder :folder="item" :showShareIcon="true" />
           </div>
           <!-- End:: Single row -->
         </div>
@@ -278,7 +276,6 @@ export default Vue.extend({
           this.checkWEmptyFileFolder = filesData <= 0
           this.fileSpinner = false
           this.totalFile = response.total
-          console.log('files====>', this.files)
         })
     },
 

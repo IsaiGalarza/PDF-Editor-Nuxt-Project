@@ -279,7 +279,7 @@ export default mixins(login).extend({
 }
 
 .top-profile-image {
-  @apply absolute w-[90%] h-[90%] object-cover rounded-lg flex items-center justify-center rounded-[30px];
+  @apply absolute w-[90%] h-[90%] object-cover rounded-lg flex items-center justify-center rounded-[24px];
 }
 
 .spinner-container {

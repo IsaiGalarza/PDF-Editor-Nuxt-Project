@@ -17,7 +17,7 @@
           <th class="text-center">File Name</th>
           <th class="text-center">Action</th>
           <th class="text-center" v-if="isPaidUser">Action By</th>
-          <th class="text-center">Date & time</th>
+          <th class="text-center">Date & Time</th>
           <th class="fixed-col right"></th>
         </tr>
       </thead>

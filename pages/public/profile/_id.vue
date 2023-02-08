@@ -37,7 +37,7 @@
           <div @submit.prevent class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
             <span class="el-dropdown-link" >
               <input type="text" placeholder="Search any folder..."
-                class="rounded-lg border !border-paperdazgreen-400 px-2 h-8 w-48 placeholder:italic"
+                class="rounded-lg border !border-paperdazgreen-400 px-2 h-8 sm:w-[165px] md:w-48 placeholder:italic"
                 v-model="searchFolderParam" />
             </span>
 
@@ -93,7 +93,7 @@
           <form @submit.prevent class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
             <span class="el-dropdown-link">
               <input type="text" placeholder="Search any file..."
-                class="rounded-lg border !border-paperdazgreen-400 px-2 h-8 w-48 placeholder:italic"
+                class="rounded-lg border !border-paperdazgreen-400 px-2 h-8 sm:w-[165px] md:w-48  placeholder:italic"
                 v-model="searchFileParam" />
             </span>
             <button @click="showFile = !showFile" type="button"

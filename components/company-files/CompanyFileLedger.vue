@@ -15,7 +15,7 @@
           @submit.prevent="$event.preventDefault()">
           <span class="el-dropdown-link left-roll1 flex-1">
             <input type="text"
-              class="search-input w-full lg:w-[75%] h-10 pl-4 mr-2 text-black bg-transparent flex-1 border-[1px] border-paperdazgreen-400 rounded-tl-lg rounded-bl-lg focus:border-paperdazgreen-700 outline-none float-right"
+              class="search-input w-full lg:w-[75%] h-10 pl-4 mr-2 text-black bg-transparent flex-1 border-[1px] border-paperdazgreen-400 rounded-lg focus:border-paperdazgreen-700 outline-none float-right"
               placeholder="Search Files" v-model="folderSearch" />
           </span>
           <button
@@ -36,7 +36,7 @@
     <!-- End:: header -->
     <transition name="fade" mode="out-in" :duration="100">
       <!-- <empty-file-ledger class="min-h-[55vh]" v-if="pdfUser < 1" :isPaidUser= "isPaidUser"/> -->
-      <div class="bg-white rounded-3xl pb-4 text-[#272727] min-h-[55vh] overflow-hidden">
+      <div class="bg-white rounded-3xl pb-4 text-[#272727] overflow-hidden">
         <!-- Start:: Folders -->
         <div v-if="(folders.length > 0 && !folderSelected)">
           <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 flex items-center">
@@ -127,7 +127,7 @@
             <tbody class="text-[#505050]">
               <tr v-for="(file, i) in pdfUser" :key="i">
                 <td class="fixed-col left">{{ i + 1 + returnedDataPage }}</td>
-                <td class="text-left">
+                <td class="text-left overflow-hidden">
                   <div class="flex items-center gap-3 whitespace-nowrap min-w-[150px] max-w-[400px]">
                     <span class="p-0.5 border border-paperdazgreen-400"
                       :class="[

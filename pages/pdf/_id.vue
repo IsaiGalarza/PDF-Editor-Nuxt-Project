@@ -169,7 +169,7 @@
                   :selectedToolType="selectedToolType"
                   :dragHandler="handlePanning"
                   :id="tool.id"
-                  :tool="calToolPos(tool)"
+                  :tool="tool"
                   :type="tool.type"
                   :x1="tool.x1"
                   :y1="tool.y1"
@@ -423,6 +423,7 @@ export default mixins(PdfAuth).extend({
   }),
   created() {
     this.fetchPdf()
+    this.setToolsFromFileAnnotations()
     this.$BUS.$on('is-deleted', this.isDeletedFunc)
     this.$BUS.$on('download-pdf', this.downloadPdf)
     this.$BUS.$on('scrollToSignInitial', this.scrollToSignInitial)
@@ -434,6 +435,7 @@ export default mixins(PdfAuth).extend({
     document.addEventListener('keyup', this.keyupHandler)
     window.onresize = () => {
       this.handleScale()
+      this.pdfBoundingRect()
     }
     this.checkFilePrivacyOnload()
   },
@@ -476,6 +478,7 @@ export default mixins(PdfAuth).extend({
 
   updated() {
     this.handleScale()
+    // this.pdfBoundingRect()
   },
   head() {
     return {
@@ -492,23 +495,6 @@ export default mixins(PdfAuth).extend({
     }
   },
 
-  beforeRouteLeave(to, from, next) {
-    if (this.$store.state.pdfExit == true) {
-      return next(true)
-    }
-    if (!this.displayPDF) {
-      return next(true)
-    }
-    if (this.isCreator) {
-      this.nextRoute ? next(true) : next(false)
-      this.exitFileManager(to.fullPath)
-      this.nextRoute = to.fullPath
-    } else {
-      this.nextRoute ? next(true) : next(false)
-      this.exitFileManager(to.fullPath)
-      this.nextRoute = to.fullPath
-    }
-  },
   computed: {
     ...mapState(['pageName']),
     getAllPdfPages() {
@@ -534,14 +520,6 @@ export default mixins(PdfAuth).extend({
       return String(this.file.fileAction).toLowerCase() === FileAction.SIGNED
     },
 
-    pagesOuterStyle() {
-      let scale = `scale(${this.scale * this.zoom})`
-      return {
-        transform: scale,
-        '-webkit-transform': scale,
-        'transform-origin': '0px 0px',
-      }
-    },
     TOOL_TYPE() {
       return TOOL_TYPE
     },
@@ -811,8 +789,6 @@ export default mixins(PdfAuth).extend({
 
       // this._scrollToConfirm()
 
-      this._setToolsFromFileAnnotations()
-
       let { width, height } = val
       this.pdfContainerDimension = val
       this.setContainerPage = width
@@ -826,6 +802,7 @@ export default mixins(PdfAuth).extend({
       setTimeout(() => {
         this.scrollToSignInitial('mounted')
       }, 1000)
+      this.pdfBoundingRect()
     },
     setPageHeight(val) {
       this.pageHeight = val
@@ -856,26 +833,44 @@ export default mixins(PdfAuth).extend({
           [this.currentPage].scrollIntoView(true)
       } catch (err) {}
     },
-    async _setToolsFromFileAnnotations() {
+    setToolsFromFileAnnotations() {
       this.tools = JSON.parse(this.file.annotaions || `[]`)
-      this.tools = await Promise.all(
-        this.tools.map(async (_el, index) => {
-          if (_el.type === 'appendSignature' || _el.type === 'appendInitial')
-            return {
-              ..._el,
-              id: index + 1,
-              // completed: await this.toDataURL(_el.completed),
-            }
-          else return { ..._el, id: index + 1 }
-        })
-      )
-      console.log({ tools: this.tools, user: this.$auth.user })
+      this.tools = this.tools.map((_el, index) => {
+        if (_el.type === 'appendSignature' || _el.type === 'appendInitial')
+          return {
+            ..._el,
+            id: index + 1,
+            // completed: await this.toDataURL(_el.completed),
+          }
+        else return { ..._el, id: index + 1 }
+      })
       this.initialFileAnnotation = JSON.parse(this.file.annotaions || `[]`).map(
         (_el, index) => {
           return { ..._el, id: index + 1 }
         }
       )
+      console.log({ tools: this.tools, initialFileAnnotation: this.initialFileAnnotation, file: this.file })
     },
+    // async _setToolsFromFileAnnotations() {
+    //   this.tools = JSON.parse(this.file.annotaions || `[]`)
+    //   this.tools = await Promise.all(
+    //     this.tools.map(async (_el, index) => {
+    //       if (_el.type === 'appendSignature' || _el.type === 'appendInitial')
+    //         return {
+    //           ..._el,
+    //           id: index + 1,
+    //           // completed: await this.toDataURL(_el.completed),
+    //         }
+    //       else return { ..._el, id: index + 1 }
+    //     })
+    //   )
+    //   console.log({ tools: this.tools, file: this.file })
+    //   this.initialFileAnnotation = JSON.parse(this.file.annotaions || `[]`).map(
+    //     (_el, index) => {
+    //       return { ..._el, id: index + 1 }
+    //     }
+    //   )
+    // },
     async toDataURL(url) {
       const response = await fetch(url)
       const blob = await response.blob()
@@ -1186,8 +1181,17 @@ export default mixins(PdfAuth).extend({
         mouseXRelativeToScrollingElement + (scrollingElement.scrollLeft || 0)
       const y =
         mouseYRelativeToScrollingElement + (scrollingElement.scrollTop || 0)
+      
+      // console.log({
+      //   x: x / this.scale,
+      //   y: y / this.scale,
+      //   offX: event.offsetX,
+      //   offY: event.offsetY,
+      //   scale: this.scale
+      // })
 
       return { x: x / this.scale, y: y / this.scale }
+      // return { x: event.offsetX, y: event.offsetY }
     },
     previousPointerPos(event, parent) {
       let eventDoc, doc, body
@@ -1251,23 +1255,23 @@ export default mixins(PdfAuth).extend({
 
       let { x, y } = !initialPoint
         ? this.pointerPos(e, parent || this.$refs.scrollingElement)
+        // ? this.pointerPos(e, parent || this.$refs['pdf-single-page-outer'])
         : initialPoint
       this.toolId = this.tools.length
-      const scrollingElement = this.$refs.scrollingElement
       let obj = {
         type: this.TOOL_TYPE[this.selectedToolType],
         top: y - this.TOOL_THRESHOLD[this.selectedToolType].tool.top,
         left: x - this.TOOL_THRESHOLD[this.selectedToolType].tool.left,
+        _top: y - this.TOOL_THRESHOLD[this.selectedToolType].tool.top,
+        _left: x - this.TOOL_THRESHOLD[this.selectedToolType].tool.left,
         isDeleted: false,
         id: ++this.toolId,
         pageNumber,
         isChecked: true,
         user: this.$auth?.user?.id,
         justMounted: true,
-      }
-      if (scrollingElement) {
-        obj.left = obj.left/(scrollingElement.clientWidth/this.$store.state.pdfOffset_w)
-        obj.top = obj.top/(scrollingElement.clientHeight/this.$store.state.pdfOffset_h)
+        pdfWidth: parent.offsetWidth,
+        pdfHeight: parent.offsetHeight
       }
       if (this.selectedToolType == this.TOOL_TYPE.line) {
         obj.x1 = obj.left
@@ -1302,9 +1306,51 @@ export default mixins(PdfAuth).extend({
         let s = scrollingElem.clientWidth / pagesOuter.clientWidth
         if (s != this.scale) {
           this.scale = s
+          
           this.$forceUpdate()
         }
       }
+    },
+    pdfBoundingRect() {
+      if (!this.pdf) return
+      const canvasBoundingRects = []
+      for (let i=0; i<this.propsNumPages; i++) {
+        let el = this.$refs[`pdf-single-page-outer-${i+1}`]
+        if (Array.isArray(el)) el = el[0]
+        canvasBoundingRects.push({
+          pageNumber: i+1,
+          width: el?.offsetWidth || 0,
+          height: el?.offsetHeight || 0,
+        })
+      }
+      this.renderScaledAnnotations(canvasBoundingRects)
+    },
+    renderScaledAnnotations(canvasBoundingRects) {
+      this.tools = this.tools.map(tool => {
+        const obj = { ...tool }
+        const pdf = canvasBoundingRects.find(val => val.pageNumber === tool.pageNumber)
+        obj.top = obj._top * (pdf.height/obj.pdfHeight) // * 1.08
+        obj.left = obj._left * (pdf.width/obj.pdfWidth) // * 0.95
+
+        if (this.selectedToolType == this.TOOL_TYPE.line) {
+          obj.x1 = obj.left
+          obj.y1 = obj.top
+          delete obj.left
+          delete obj.top
+        } else if (this.selectedToolType == this.TOOL_TYPE.highlight) {
+          obj.x1 = obj.left
+          obj.y1 = obj.top
+          delete obj.left
+          delete obj.top
+        } else if (this.selectedToolType == this.TOOL_TYPE.draw) {
+          obj.points = [obj.left, obj.top]
+        } else if (this.selectedToolType == this.TOOL_TYPE.appendSignature) {
+          obj.x1 = obj.left
+          obj.y1 = obj.top
+        }
+
+        return obj
+      })
     },
     async fetchPdf() {
       this.$store.commit('SET_LOADED_PDF', this.file)
@@ -1388,6 +1434,9 @@ export default mixins(PdfAuth).extend({
     },
     pdf(v) {
       this.handleScale()
+      this.$nextTick(() => {
+        this.pdfBoundingRect()
+      })
     },
     filteredAnnotationButton (value, oldValue) {
       if (value.length === 0 && oldValue.length > 0) {

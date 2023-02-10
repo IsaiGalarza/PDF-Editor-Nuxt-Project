@@ -191,6 +191,9 @@ export default {
     },
     fontSize() {
       this.toolMenuPosCalculation()
+    },
+    tool() {
+      this.checkAndSetPosition()
     }
   },
   computed: {

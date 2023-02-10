@@ -462,7 +462,6 @@
       },
     },
     mounted() {
-      console.log({file: this.$store.state.file})
       if (!this.user?.id) return
       this.fetchUsersInitialAccount()
       this.getUsersAccount()

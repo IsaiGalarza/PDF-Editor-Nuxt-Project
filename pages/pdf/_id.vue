@@ -1265,6 +1265,8 @@ export default mixins(PdfAuth).extend({
         left: x - this.TOOL_THRESHOLD[this.selectedToolType].tool.left,
         _top: y - this.TOOL_THRESHOLD[this.selectedToolType].tool.top,
         _left: x - this.TOOL_THRESHOLD[this.selectedToolType].tool.left,
+        pageScaleX: 1,
+        pageScaleY: 1,
         isDeleted: false,
         id: ++this.toolId,
         pageNumber,
@@ -1332,6 +1334,8 @@ export default mixins(PdfAuth).extend({
         const pdf = canvasBoundingRects.find(val => val.pageNumber === tool.pageNumber)
         obj.top = obj._top * (pdf.height/obj.pdfHeight) // * 1.08
         obj.left = obj._left * (pdf.width/obj.pdfWidth) // * 0.95
+        obj.pageScaleX = pdf.width/obj.pdfWidth
+        obj.pageScaleY = pdf.height/obj.pdfHeight
 
         if (this.selectedToolType == this.TOOL_TYPE.line) {
           // obj.x1 = obj.left
@@ -1444,6 +1448,17 @@ export default mixins(PdfAuth).extend({
         this.$store.commit('SET_UPLOAD_STATE', false);
         this.saveFunction = 'saved'
         this.publishFileFunction()
+      }
+    },
+    drawingStart (v) {
+      if (!v) {
+        let tool = this.tools.find((t) => t.id == this.selectedToolId)
+        if (tool.points) {
+          tool.top = Math.min(...tool.points.filter((v, i) => i % 2 == 1))
+          tool.left = Math.min(...tool.points.filter((v, i) => i % 2 == 0))
+          tool._top = Math.min(...tool.points.filter((v, i) => i % 2 == 1))
+          tool._left = Math.min(...tool.points.filter((v, i) => i % 2 == 0))
+        }
       }
     },
   },

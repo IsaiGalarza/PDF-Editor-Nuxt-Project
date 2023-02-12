@@ -59,7 +59,8 @@ export default {
     },
     style() {
       return {
-        width: `${this.width + 2}px`,
+        width: `${this.width*this.tool.pageScaleX + 2}px`,
+        height: `${this.height*this.tool.pageScaleY + 2}px`,
         'stroke-linecap': 'round',
         'stroke-linejoin': 'round',
         'stroke-width': '2',

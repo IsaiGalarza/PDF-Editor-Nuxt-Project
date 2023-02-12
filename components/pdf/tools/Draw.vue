@@ -31,7 +31,7 @@ export default {
       if (this.generatePDF) {
         this.convertImage();
       }
-    }
+    },
   },
   methods: {
     convertImage: function () {
@@ -42,7 +42,7 @@ export default {
       let canvas = document.createElement("canvas");
       img.onload = () => {
       	canvas.width = img.width;
-	canvas.height = img.height;
+	      canvas.height = img.height;
         canvas.getContext("2d").drawImage(img, 0, 0);
         this.svgToImageData = canvas.toDataURL("image/png")
       }
@@ -80,7 +80,7 @@ export default {
     viewBox() {
       let x1 = Math.min(this.x1, this.x2)
       let y1 = Math.min(this.y1, this.y2) //Math.min(this.y1, this.y2) : Math.max(this.y1, this.y2)
-      return `${x1 - 1.5} ${y1 - 1.5} ${this.width + 2} ${this.height + 2}`
+      return `${x1 - 1.5} ${y1 - 1.5} ${this.width*this.scale.xScale + 2} ${this.height*this.scale.yScale + 2}`
     },
     width() {
       return Math.abs(this.x2 - this.x1)
@@ -88,6 +88,12 @@ export default {
     height() {
       return Math.abs(this.y2 - this.y1)
     },
+    scale() {
+      const xScale = this.tool._left/this.tool.left
+      const yScale = this.tool._top/this.tool.top
+      console.log({ xScale, yScale })
+      return { xScale, yScale }
+    }
   },
 }
 </script>

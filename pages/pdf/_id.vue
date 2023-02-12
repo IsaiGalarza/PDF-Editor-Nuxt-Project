@@ -1190,7 +1190,8 @@ export default mixins(PdfAuth).extend({
       //   scale: this.scale
       // })
 
-      return { x: x / this.scale, y: y / this.scale }
+      return { x, y }
+      // return { x: x / this.scale, y: y / this.scale }
       // return { x: event.offsetX, y: event.offsetY }
     },
     previousPointerPos(event, parent) {

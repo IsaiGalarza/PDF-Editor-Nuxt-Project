@@ -1334,17 +1334,17 @@ export default mixins(PdfAuth).extend({
         obj.left = obj._left * (pdf.width/obj.pdfWidth) // * 0.95
 
         if (this.selectedToolType == this.TOOL_TYPE.line) {
-          obj.x1 = obj.left
-          obj.y1 = obj.top
-          delete obj.left
-          delete obj.top
+          // obj.x1 = obj.left
+          // obj.y1 = obj.top
+          // delete obj.left
+          // delete obj.top
         } else if (this.selectedToolType == this.TOOL_TYPE.highlight) {
-          obj.x1 = obj.left
-          obj.y1 = obj.top
-          delete obj.left
-          delete obj.top
+          // obj.x1 = obj.left
+          // obj.y1 = obj.top
+          // delete obj.left
+          // delete obj.top
         } else if (this.selectedToolType == this.TOOL_TYPE.draw) {
-          obj.points = [obj.left, obj.top]
+          // obj.points = [obj.left, obj.top]
         } else if (this.selectedToolType == this.TOOL_TYPE.appendSignature) {
           obj.x1 = obj.left
           obj.y1 = obj.top

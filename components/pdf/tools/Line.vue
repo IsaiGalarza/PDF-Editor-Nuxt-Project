@@ -55,7 +55,8 @@ export default {
   computed: {
     style() {
       return {
-        width: `${this.width + 10}px`,
+        width: `${(this.width+10)*this.tool.pageScaleX}px`,
+        height: `${(this.height+10)*this.tool.pageScaleY}px`,
       }
     },
     viewBox() {
@@ -65,7 +66,7 @@ export default {
         x1 = this.x2 < this.x1 ? this.x2 - 3 : this.x1 - 3
         y1 = Math.min(this.y1, this.y2) - 3
       }
-      return `${x1} ${y1} ${this.width + 10} ${this.height + 10}`
+      return `${x1} ${y1} ${(this.width || 0) + 10} ${(this.height || 0) + 10}`
     },
     width() {
       return Math.abs(this.x2 - this.x1)

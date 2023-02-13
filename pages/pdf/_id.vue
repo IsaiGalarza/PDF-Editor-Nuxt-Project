@@ -1399,36 +1399,6 @@ export default mixins(PdfAuth).extend({
 
       return array
     },
-    toolX(x) {
-      if (!x) return 0
-      let pagesOuter = this.$refs.PagesOuter
-      if (pagesOuter) {
-        return (pagesOuter.clientWidth/this.$store.state.pdfOffset_w)*x
-      }
-      return x
-    },
-    toolY(y) {
-      if (!y) return 0
-      let pagesOuter = this.$refs.PagesOuter
-      if (pagesOuter) {
-        return (pagesOuter.clientHeight/this.$store.state.pdfOffset_h)*y
-      }
-      return y
-    },
-    calToolPos(tool) {
-      let left = tool.left || 0
-      let top = tool.top || 0
-      const scrollingElement = this.$refs.scrollingElement
-      if (scrollingElement) {
-        left = (scrollingElement.clientWidth/this.$store.state.pdfOffset_w)*left
-        top = (scrollingElement.clientHeight/this.$store.state.pdfOffset_h)*top
-      }
-      return {
-        ...tool,
-        left,
-        top,
-      }
-    }
   },
   watch: {
     setContainerPage: function () {
@@ -1451,7 +1421,7 @@ export default mixins(PdfAuth).extend({
       }
     },
     drawingStart (v) {
-      if (!v) {
+      if (this.selectedToolType == this.TOOL_TYPE.draw && !v) {
         let tool = this.tools.find((t) => t.id == this.selectedToolId)
         if (tool.points) {
           tool.top = Math.min(...tool.points.filter((v, i) => i % 2 == 1))
@@ -1461,6 +1431,21 @@ export default mixins(PdfAuth).extend({
         }
       }
     },
+    lineStart (v) {
+      if (this.selectedToolType == this.TOOL_TYPE.line && !v) {
+        let tool = this.tools.find((t) => t.id == this.selectedToolId)
+        tool._left = tool.x2
+        tool._top = tool.y1
+        if (tool.y1 != null && tool.y2 != null) {
+          if (tool.y2 < tool.y1) tool._top = tool.y2
+          else tool._top = tool.y1
+        }
+        if (tool.x1 != null && tool.x2 != null) {
+          if (tool.x2 < tool.x1) tool._left = tool.x2 + 3
+          else tool._left = tool.x1 - 3
+        }
+      }
+    }
   },
   beforeRouteLeave(to, from, next) {
     if (this.$store.state.pdfExit == true) {

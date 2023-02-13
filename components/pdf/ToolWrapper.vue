@@ -219,7 +219,7 @@ export default {
     },
     wrpStyle() {
       let top = this.top
-      let left = this.left 
+      let left = this.left
       return {
         top: `${top}px`,
         left: `${left}px`,

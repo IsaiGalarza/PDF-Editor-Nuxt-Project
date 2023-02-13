@@ -49,7 +49,6 @@ export default {
       img.src = 'data:image/svg+xml;base64,' + window.btoa(svgStr);
     },
   },
-
   computed: {
     d() {
       let l = this.points
@@ -59,8 +58,8 @@ export default {
     },
     style() {
       return {
-        width: `${this.width*this.tool.pageScaleX + 2}px`,
-        height: `${this.height*this.tool.pageScaleY + 2}px`,
+        width: `${(this.width+2)*this.tool.pageScaleX}px`,
+        height: `${(this.height+2)*this.tool.pageScaleY}px`,
         'stroke-linecap': 'round',
         'stroke-linejoin': 'round',
         'stroke-width': '2',
@@ -81,7 +80,7 @@ export default {
     viewBox() {
       let x1 = Math.min(this.x1, this.x2)
       let y1 = Math.min(this.y1, this.y2) //Math.min(this.y1, this.y2) : Math.max(this.y1, this.y2)
-      return `${x1 - 1.5} ${y1 - 1.5} ${this.width*this.scale.xScale + 2} ${this.height*this.scale.yScale + 2}`
+      return `${x1 - 1.5} ${y1 - 1.5} ${this.width + 2} ${this.height + 2}`
     },
     width() {
       return Math.abs(this.x2 - this.x1)
@@ -89,12 +88,6 @@ export default {
     height() {
       return Math.abs(this.y2 - this.y1)
     },
-    scale() {
-      const xScale = this.tool._left/this.tool.left
-      const yScale = this.tool._top/this.tool.top
-      console.log({ xScale, yScale })
-      return { xScale, yScale }
-    }
   },
 }
 </script>

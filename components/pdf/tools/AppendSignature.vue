@@ -5,7 +5,7 @@
       :elemFill="uploaded && initialimgDisplay" :uploaded="uploaded" @click="setInitialImgDisplay" class="annot-button"
       :class="[
         $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ', isAgreedSign !== 1 && isSign ? 'pointer-events-none' : ''
-      ]" width="18" />
+      ]" :width="(tool?.pageScaleY || 1)*18" />
     <img v-else-if="uploaded" class="absolute-image" :src="signature" :style="style" />
     <img v-else class="absolute-image" src="../../../assets/img/sign.png" />
 
@@ -26,7 +26,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     scale: Number,
     file: Object,
     completed: String,
-    setInitialSignType:Function
+    setInitialSignType:Function,
+    tool: Object,
   },
   data() {
     return {
@@ -70,7 +71,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     style() {
       return {
         width: 'auto',
-        height: `${(this.scale || 1) * 20}px`,
+        // height: `${((this.scale || 1) * 20)}px`,
+        height: `${((this.tool?.pageScaleY || 1) * 20)}px`,
       }
     },
   },

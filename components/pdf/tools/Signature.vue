@@ -12,6 +12,7 @@ export default {
   props: {
     scale: Number,
     value: String,
+    tool: Object,
   },
   mounted() {
   },
@@ -26,15 +27,14 @@ export default {
       return {
         // width: `${(this.scale || 1) * 287}px`,
         // height: `${(this.scale || 1) * 60}px`,
-        height: `${(this.scale || 1) * 30}px`,
-        maxHeight: `${(this.scale || 1) * 30}px`,
+        height: `${(this.tool?.pageScaleY || 1) * 30}px`,
+        maxHeight: `${(this.tool?.pageScaleY || 1) * 30}px`,
         objectFit: 'contain',
       }
     },
   },
   watch: {
     scale: function () {
-      // alert('dchdcjhlj')
     }
   }
 }

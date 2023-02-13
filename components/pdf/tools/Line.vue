@@ -55,8 +55,8 @@ export default {
   computed: {
     style() {
       return {
-        width: `${(this.width+10)*this.tool.pageScaleX}px`,
-        height: `${(this.height+10)*this.tool.pageScaleY}px`,
+        width: `${(this.width+10)*(this.tool?.pageScaleX || 1)}px`,
+        height: `${(this.height+10)*(this.tool?.pageScaleY || 1)}px`,
       }
     },
     viewBox() {

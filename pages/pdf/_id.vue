@@ -611,6 +611,32 @@ export default mixins(PdfAuth).extend({
       setTimeout(() => {
         this.drawingStart = false
         this.lineStart = false
+        let tool = this.tools.find((t) => t.id == this.selectedToolId)
+        switch (this.selectedToolType) {
+          case this.TOOL_TYPE.draw:
+            if (tool.points) {
+              tool.top = Math.min(...tool.points.filter((v, i) => i % 2 == 1))
+              tool.left = Math.min(...tool.points.filter((v, i) => i % 2 == 0))
+              tool._top = Math.min(...tool.points.filter((v, i) => i % 2 == 1))
+              tool._left = Math.min(...tool.points.filter((v, i) => i % 2 == 0))
+            }
+            break
+          case this.TOOL_TYPE.line:
+            if (tool.y1 != null && tool.y2 != null) {
+            if (tool.y2 < tool.y1) tool._top = tool.y2
+              else tool._top = tool.y1
+            }
+            if (tool.x1 != null && tool.x2 != null) {
+              if (tool.x2 < tool.x1) tool._left = tool.x2 + 3
+              else tool._left = tool.x1 - 3
+            }
+            break
+          case this.TOOL_TYPE.highlight:
+            tool._left = Math.min(tool.x1, tool.x2)
+            break
+          default:
+            return
+        }
       }, 50)
     },
 
@@ -1420,32 +1446,6 @@ export default mixins(PdfAuth).extend({
         this.publishFileFunction()
       }
     },
-    drawingStart (v) {
-      if (this.selectedToolType == this.TOOL_TYPE.draw && !v) {
-        let tool = this.tools.find((t) => t.id == this.selectedToolId)
-        if (tool.points) {
-          tool.top = Math.min(...tool.points.filter((v, i) => i % 2 == 1))
-          tool.left = Math.min(...tool.points.filter((v, i) => i % 2 == 0))
-          tool._top = Math.min(...tool.points.filter((v, i) => i % 2 == 1))
-          tool._left = Math.min(...tool.points.filter((v, i) => i % 2 == 0))
-        }
-      }
-    },
-    lineStart (v) {
-      if (this.selectedToolType == this.TOOL_TYPE.line && !v) {
-        let tool = this.tools.find((t) => t.id == this.selectedToolId)
-        tool._left = tool.x2
-        tool._top = tool.y1
-        if (tool.y1 != null && tool.y2 != null) {
-          if (tool.y2 < tool.y1) tool._top = tool.y2
-          else tool._top = tool.y1
-        }
-        if (tool.x1 != null && tool.x2 != null) {
-          if (tool.x2 < tool.x1) tool._left = tool.x2 + 3
-          else tool._left = tool.x1 - 3
-        }
-      }
-    }
   },
   beforeRouteLeave(to, from, next) {
     if (this.$store.state.pdfExit == true) {

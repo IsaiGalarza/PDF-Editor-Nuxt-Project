@@ -58,8 +58,8 @@ export default {
     },
     style() {
       return {
-        width: `${(this.width+2)*this.tool.pageScaleX}px`,
-        height: `${(this.height+2)*this.tool.pageScaleY}px`,
+        width: `${(this.width+2)*(this.tool?.pageScaleX || 1)}px`,
+        height: `${(this.height+2)*(this.tool?.pageScaleY || 1)}px`,
         'stroke-linecap': 'round',
         'stroke-linejoin': 'round',
         'stroke-width': '2',

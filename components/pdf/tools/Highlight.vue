@@ -12,20 +12,21 @@ export default {
     y1: Number,
     x2: Number,
     y2: Number,
+    tool: Object,
   },
   computed: {
     d() {
-      return `M${this.x1},${this.y1}L${this.x2},${this.y1}L${this.x2},${this.y2}L${this.x1},${this.y2}`
+      return `M${this.x1 || 0},${this.y1 || 0}L${this.x2 || 0},${this.y1 || 0}L${this.x2 || 0},${this.y2 || 0}L${this.x1 || 0},${this.y2 || 0}`
     },
     style() {
       return {
-        width: `${this.width}px`,
+        width: `${this.width*(this.tool?.pageScaleX || 1)}px`,
       }
     },
     viewBox() {
       let x1 = Math.min(this.x1, this.x2)
       let y1 = this.y2 < this.y1 ? this.y2 : this.y1 //Math.min(this.y1, this.y2) : Math.max(this.y1, this.y2)
-      return `${x1} ${y1} ${this.width} ${this.height}`
+      return `${x1 || 0} ${y1 || 0} ${this.width || 0} ${this.height || 0}`
     },
     width() {
       return Math.abs(this.x2 - this.x1)

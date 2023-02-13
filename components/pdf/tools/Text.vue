@@ -27,7 +27,8 @@ export default {
     fontSize: Number,
     value: String,
     file: Object,
-    justMounted: Boolean
+    justMounted: Boolean,
+    tool: Object,
   },
   data: () => ({
     text: null,
@@ -90,7 +91,8 @@ export default {
     },
     style () {
       return {
-        fontSize: `${this.fontSize || 11}px`,
+        // fontSize: `${this.fontSize || 11}px`,
+        fontSize: `${(this.fontSize || 11)*(this.tool?.pageScaleX || 1)}px`,
         // width: `${this.inputWidth}px`
       }
     },

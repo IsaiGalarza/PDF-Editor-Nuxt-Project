@@ -12,12 +12,15 @@ export default {
   props: {
     scale: Number,
     generatePDF: Boolean,
+    tool: Object,
   },
   computed: {
     style() {
       return {
-        width: `${(this.scale || 1) * 13}px`,
-        height: `${(this.scale || 1) * 13}px`,
+        // width: `${(this.scale || 1) * 13}px`,
+        // height: `${(this.scale || 1) * 13}px`,
+        width: `${(this.tool?.pageScaleX || 1) * 13}px`,
+        height: `${(this.tool?.pageScaleY || 1) * 13}px`,
         fill: `black`,
       }
     },

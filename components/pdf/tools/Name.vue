@@ -9,6 +9,7 @@ export default {
   props: {
     isActive: Boolean,
     fontSize: Number,
+    tool: Object,
   },
   // data: () => ({
   //   text: `${this.$auth.user.firstName} ${this.$auth.user.lastName}`,
@@ -19,7 +20,8 @@ export default {
     },
     style() {
       return {
-        fontSize: `${this.fontSize || 11}px`,
+        // fontSize: `${this.fontSize || 11}px`,
+        fontSize: `${(this.fontSize || 11)*(this.tool?.pageScaleX || 1)}px`,
       }
     },
   },

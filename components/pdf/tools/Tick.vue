@@ -13,6 +13,7 @@ export default {
   props: {
     scale: Number,
     generatePDF: Boolean,
+    tool: Object,
   },
   data() {
     return {
@@ -28,8 +29,10 @@ export default {
   computed: {
     style() {
       return {
-        width: `${(this.scale || 1) * 11}px`,
-        height: `${(this.scale || 1) * 11}px`,
+        // width: `${(this.scale || 1) * 11}px`,
+        // height: `${(this.scale || 1) * 11}px`,
+        width: `${(this.tool?.pageScaleX || 1) * 11}px`,
+        height: `${(this.tool?.pageScaleY || 1) * 11}px`,
       }
     },
   },

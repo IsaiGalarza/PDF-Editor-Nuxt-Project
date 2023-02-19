@@ -67,11 +67,19 @@
         v-if="pdf"
         ref="scrollingElement"
       >
-        <pinch-zoom
+        <!-- <pinch-zoom
           ref="pinch"
           :limitPan="true"
           :limitZoom="1000"
           disableZoomControl="disable"
+        > -->
+        <pinch-scroll-zoom
+          ref="zoomer"
+          :width="$refs.scrollingElement?.offsetWidth -4 || 0"
+          :height="$refs.PagesOuter?.offsetHeight || 0"
+          :scale="scale"
+          @scaling="scalingHandler"
+          style="overflow: hidden;"
         >
           <div class="pdf-pages-outer pb-6 relative" ref="PagesOuter">
             <div
@@ -217,7 +225,8 @@
             </div>
           </div>
           
-        </pinch-zoom>
+        </pinch-scroll-zoom>
+        <!-- </pinch-zoom> -->
         <!-- <button   @click="downloadPdf">download</button> -->
         <div id="bottom"></div>
       </div>
@@ -268,6 +277,7 @@ import * as worker from 'pdfjs-dist/build/pdf.worker.entry'
 pdfJs.GlobalWorkerOptions.workerSrc = worker
 
 import PinchZoom from 'vue-pinch-zoom'
+import PinchScrollZoom, { PinchScrollZoomEmitData } from "@coddicat/vue-pinch-scroll-zoom";
 
 import jsPDF from 'jspdf'
 
@@ -346,6 +356,8 @@ export default mixins(PdfAuth).extend({
     AddToPageDrawOrType,
     DoneModal,
     PinchZoom,
+    PinchScrollZoom,
+    PinchScrollZoomEmitData
   },
   data: () => ({
     pdf: null,
@@ -1425,6 +1437,9 @@ export default mixins(PdfAuth).extend({
 
       return array
     },
+    scalingHandler(e) {
+      console.log(e)
+    }
   },
   watch: {
     setContainerPage: function () {

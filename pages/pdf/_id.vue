@@ -67,20 +67,20 @@
         v-if="pdf"
         ref="scrollingElement"
       >
-        <!-- <pinch-zoom
+        <pinch-zoom
           ref="pinch"
           :limitPan="true"
           :limitZoom="1000"
           disableZoomControl="disable"
-        > -->
-        <pinch-scroll-zoom
+        >
+        <!-- <pinch-scroll-zoom
           ref="zoomer"
           :width="$refs.scrollingElement?.offsetWidth -4 || 0"
           :height="$refs.PagesOuter?.offsetHeight || 0"
           :scale="scale"
           @scaling="scalingHandler"
           style="overflow: hidden;"
-        >
+        > -->
           <div class="pdf-pages-outer pb-6 relative" ref="PagesOuter">
             <div
               class="pdf-single-pages-outer w-full"
@@ -225,8 +225,8 @@
             </div>
           </div>
           
-        </pinch-scroll-zoom>
-        <!-- </pinch-zoom> -->
+        <!-- </pinch-scroll-zoom> -->
+        </pinch-zoom>
         <!-- <button   @click="downloadPdf">download</button> -->
         <div id="bottom"></div>
       </div>

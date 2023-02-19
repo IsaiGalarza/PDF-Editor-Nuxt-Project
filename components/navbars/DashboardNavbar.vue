@@ -96,11 +96,11 @@
       <!-- <--- START: navbar dropdown --- -->
       <el-dropdown trigger="click" @command="handleCommand">
         <span class="flex items-center el-dropdown-link">
-          <span class="border border-paperdazgreen-300 mr-2 p-0.5 overflow-hidden relative text-center" :class="[
+          <span class="border-paperdazgreen-300 mr-2 p-0.5 overflow-hidden relative text-center" :class="[
             isPaidUser
               ? 'w-[45px] h-[45px] rounded-md'
               : 'circle-20 rounded-full',
-          ]">
+          ]" style="borderWidth: 1px">
             <!-- <img :src="profilePhoto" class="w-full h-full profilePhoto" alt=""
               :class="[isPaidUser ? 'rounded-md' : 'rounded-full']" /> -->
             <img
@@ -171,11 +171,11 @@
           </div>
           <!-- END: user account -->
 
-          <el-dropdown-item class="lg:hidden" command="settings" divided v-if="!profile">
+          <!-- <el-dropdown-item class="lg:hidden" command="settings" divided v-if="!profile">
             <span class="inline-flex gap-2 items-center">
               <gear-icon height="14" width="14" />
               Settings</span>
-          </el-dropdown-item>
+          </el-dropdown-item> -->
           <el-dropdown-item divided command="logout">
             <span class="text-red-600 inline-flex gap-2 items-center">
               <sign-out-icon height="14" width="14" />

@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex flex-col bg-white h-full w-full rounded-2xl py-8">
+  <nav class="flex flex-col bg-white h-full w-full rounded-tr-2xl rounded-br-2xl py-8">
     <div class="flex justify-end px-8">
       <span class="py-2 mb-3 cursor-pointer inline-block lg:hidden" @click="$emit('close')">
         <times-icon width="12" height="12" />
@@ -64,6 +64,7 @@ import TimesIcon from '../svg-icons/TimesIcon.vue'
 import TwitterIcon from '../svg-icons/TwitterIcon.vue'
 import WhatsappIcon from '../svg-icons/WhatsappIcon.vue'
 import InstagramIcon from '../svg-icons/InstagramIcon.vue'
+import GearIcon from '../svg-icons/GearIcon.vue'
 import TeamAccess from "~/models/TeamAccess"
 export default Vue.extend({
   name: 'DashboardSidebar',
@@ -77,7 +78,8 @@ export default Vue.extend({
     WhatsappIcon,
     ReditIcon,
     TimesIcon,
-    InstagramIcon
+    InstagramIcon,
+    GearIcon
   },
   data() {
     return {
@@ -106,6 +108,12 @@ export default Vue.extend({
           label: 'Contact us',
           icon: 'CustomerCareIcon',
           link: '/contact-us',
+          exact: false,
+        },
+        {
+          label: 'Settings',
+          icon: 'GearIcon',
+          link: '/settings',
           exact: false,
         },
       ],

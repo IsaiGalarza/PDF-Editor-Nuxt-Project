@@ -1,41 +1,59 @@
 <template>
-  <div class="rounded-2xl bg-white py-6 px-6 flex items-center justify-center">
+  <div class="rounded-2xl px-6 flex items-center justify-center">
     <div class="flex flex-col items-center">
-      <h3
+      <div
         class="
-          uppercase
-          text-paperdazgray-500
-          font-semibold
+          circle
+          circle-50
+          rounded-full
+          mx-auto
+          mb-3
+          h-full
+          p-1
+          cursor-pointer
+          profile-avatar
+        "
+      >
+        <img
+          :src="profilePhoto"
+          class="circle w-full h-full profilePhoto"
+          alt=""
+        />
+        <div class="absolute w-[28px] h-[28px] flex justify-center items-center bg-paperdazgreen-400 rounded-full right-[4px] bottom-[4px]" @click="visibleUploadImageDialog = true">
+          <carmera-icon />
+        </div>
+      </div>
+      <p class="text-xl mb-1 capitalize">
+        {{ `${user.firstName} ${user.lastName}` }}
+      </p>
+      <p
+        class="
+          text-paperdazpurple-100
           text-center
-          mb-4
-          text-xl
+          text-sm
+          px-3.5
+          py-1.5
+          bg-white
+          rounded-full
+          mb-3
+          drop-shadow-md
         "
       >
         Free Account
-      </h3>
-      <div
-        class="circle circle-75 border-4 border-[#B7EF94] mx-auto p-0.5 mb-2"
-      >
-        <div
-          @click="visibleUploadImageDialog = true"
+      </p>
+      <p class="flex items-center gap-2 cursor-pointer">
+        <span>
+          <location-icon />
+        </span>
+        <span
           class="
-            circle
-            w-full
-            h-full
-            border-2 border-[#B7EF94]
-            p-1
-            cursor-pointer
+            text-center
+            text-xs
           "
-        >
-          <img
-            :src="profilePhoto"
-            class="circle w-full h-full profilePhoto"
-            alt=""
-          />
-        </div>
-      </div>
-      <p class="text-lg font-semibold mb-2 capitalize">
-        {{ `${user.firstName} ${user.lastName}` }}
+          style="color: #1400FF;"
+          >
+          Click on icon to pin location
+        </span>
       </p>
       <!-- <div
         class="border border-paperdazgray-100 inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-full"
@@ -54,6 +72,8 @@
 
 <script>
 import SingleLeafNoStalk from '../svg-icons/SingleLeafNoStalk.vue'
+import LocationIcon from '../svg-icons/LocationIcon.vue'
+import CarmeraIcon from '../svg-icons/CameraIcon.vue'
 import CropperImageUpload from '../cropper/CropperImageUpload.vue'
 import login from '~/mixins/login'
 import mixins from 'vue-typed-mixins'
@@ -62,6 +82,8 @@ export default mixins(login).extend({
   name: 'FreeProductCard',
   components: {
     SingleLeafNoStalk,
+    LocationIcon,
+    CarmeraIcon,
     CropperImageUpload,
   },
   data() {
@@ -111,4 +133,23 @@ export default mixins(login).extend({
   },
 })
 </script>
+
+<style scoped>
+.profile-avatar {
+  position: relative;
+}
+.profile-avatar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%; 
+  padding: 2px; 
+  background:linear-gradient(45deg,#98CAE9,#FFB0F4); 
+  -webkit-mask: 
+     linear-gradient(#fff 0 0) content-box, 
+     linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+}
+</style>
 

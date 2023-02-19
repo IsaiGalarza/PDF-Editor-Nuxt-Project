@@ -1,5 +1,5 @@
 <template>
-  <div class="small-details-card-container grid-cols-2 md:grid-cols-4">
+  <div class="small-details-card-container grid-cols-4 px-3 px-sm-0">
     <top-details-card v-for="(tab, i) in tabs" :key="tab.key" :isActive="tab.key === activeTab"
       @click.native="searchFilter(tab.key, tab.action)">
       <template #icon>

@@ -1,10 +1,10 @@
 <template>
-  <div class="py-4 lg:py-10 relative">
+  <div class="pt-2 lg:py-10 relative">
     <!-- spinner before page loaded -->
       <div v-if="windowOnLoad" class="absolute w-full h-full min-h-[70vh] grid bg-white rounded-xl place-content-center z-10 top-0 left-0">
         <spinner-dotted-icon height="32" width="32" class="text-paperdazgray-400 animate-spin" />
       </div>
-    <profile-tab v-model="currentTab" :tabs="tabs" class="mb-10" />
+    <profile-tab v-model="currentTab" :tabs="tabs" class="mb-3 sm:mb-10" />
     <keep-alive>
       <component :is="currrentTabComponent" />
     </keep-alive>
@@ -21,6 +21,7 @@ import BillingTab from '~/components/settings/tabs/BillingTab.vue'
 import UserTypeEnum from '~/models/UserTypeEnum'
 import ReferralTabVue from '~/components/settings/tabs/ReferralTab.vue'
 import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
+import ComingSoon from '~/components/widgets/ComingSoon.vue'
 export default Vue.extend({
   name: 'SettingsPage',
   components: { ProfileTab , SpinnerDottedIcon},
@@ -35,7 +36,8 @@ export default Vue.extend({
         {
           label: 'Referral Credit',
           value: 'referral-credit',
-          component: ReferralTabVue,
+          // component: ReferralTabVue,
+          component: ComingSoon,
         },
         // {
         //   label: 'Signature/Initials',

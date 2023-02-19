@@ -1,150 +1,159 @@
 <template>
   <div class="flex flex-col">
-    <h3
-      class="text-paperdazgray-700 font-semibold text-xl flex flex-col xs:flex-row xs:items-center justify-between whitespace-nowrap mt-3 mb-2"
-    >
-      <!-- <div class="flex">
-        <span>{{ isPaidUser ? "File Ledger" : "Ledger" }}</span>
-        <div v-if="isPaidUser" class="flex">
-          <img src="../../assets/img/company-icon.png" />
-          <img src="../../assets/img/users-icon.png" class="-ml-8" />
-        </div>
-      </div> -->
-      <h5 class="text-lg font-semibold text-[#272727] inline-flex items-center gap-2 w-full my-2">
-        {{ isPaidUser ? "File Ledger" : "Ledger" }}
-        <a :href="`/public/profile/${mainUserLink}`" target="_blanck">
-          <!-- <company-icon /> -->
-          <img src="../../assets/img/company-icon.png" class="lg:w-[30px] w-[20px]" v-if="isPaidUser" />
-        </a>
-        <img src="../../assets/img/users-icon.png" class="cursor-pointer lg:w-[44px] w-[35px]" @click="showCreateTeamFunc"
-          v-if="isPaidUser" />
-      </h5>
-      <div class="w-full text-xs font-medium flex justify-end  items-center relative my-2">
-        <span class="el-dropdown-link left-roll1 flex-1">
-          <input type="text"
-            class="search-input h-10 transition w-75 pl-4 bg-transparent mr-2 flex-1 border-[1px] border-paperdazgreen-400 rounded-lg focus:border-paperdazgreen-700 outline-none float-right"
-            placeholder="Search Files" v-model="searchParam" />
-        </span>
-        <button
-          class="circle circle-18 bg-paperdazgreen-400 text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
-          <search-icon width="16" height="16" currentcolor="white" />
-        </button>
-        <!-- <div class="flex" v-if="isPaidUser">
-          <button @click="showCreateCompanyFolderFunc"
-            class="circle circle-18 bg-paperdazgreen-400 text-xl text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
-            <folder-plus-icon />
-          </button>
-          <button @click="showUploadModalFunction"
-            class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-white text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
-            <plus-icon />
-          </button>
-        </div> -->
-      </div>
-    </h3>
-    <div ref="ledgerContainer" class="bg-white rounded-2xl flex-1 min-h-[50vh] lg:min-h-[40vh] position-relative"
-      :class="[
-        // (files || []).length <= 0 || $fetchState.pending
-        (pdfUser || []).length <= 0 || $fetchState.pending
-          ? 'p-5 flex justify-center'
-          : 'pb-4 overflow-x-auto custom-scrollbar',
-      ]">
+    
+    <div class="bg-white rounded-2xl flex-1 min-h-[50vh] lg:min-h-[40vh] position-relative pt-4"
+      >
       <!-- <transition name="fade" mode="out-in"> -->
       <img v-if="((pdfUser || []).length <= 0 && !spinner)" src="../../assets/img/dashboard-bg.png"
         class="position-absolute mt-24 md:left-[30%] md:w-auto sm:w-[200px]" />
-      <div v-if="spinner" key="1" class="p-6 flex justify-center items-center">
-        <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
-      </div>
-      <!-- Start:: empty file ledger -->
-      <!-- End:: empty file ledger -->
-      <table key="3" ref="fileLedgerTable" class="file-ledger-table" v-else>
-        <thead>
-          <tr class="text-left">
-            <th class="w-12 text-left fixed-col left">No</th>
-            <th class="text-left !pl-16">File Name</th>
-            <th class="text-center">{{ isPaidUser ? 'Action' : 'Actions' }}</th>
-            <th class="text-center" v-if="isPaidUser">Action By</th>
-            <th class="text-center">Date & Time</th>
-            <th class="fixed-col right text-right"></th>
-          </tr>
-        </thead>
-        <tbody v-if="(pdfUser.length > 0)">
-          <tr v-for="(file, i) in pdfUser" :key="file.id" :class="{ highlight: file.id == highlightedFileId }">
-            <td class="text-left fixed-col left">{{ i + 1 + returnedDataPage }}</td>
-            <td class="text-center">
-              <div class="flex items-center gap-1.5">
-                <div class="border !border-paperdazgreen-300 p-0.5"
-                  :class="[
-                    (file.role == userType.PAID || $auth.user.role == userType.FREE) ? 'rounded-md w-9 h-9' : 'circle circle-17'
-                  ]">
-                  <img
-                    v-if="(file.fileOwner || {}).profile_picture"
-                  :src="
-                    (file.fileOwner || {}).profile_picture ||
-                    '/img/placeholder_picture.png'
-                  " alt=""
+      <h3
+        class="text-paperdazgray-700 font-semibold text-xl flex xs:items-center justify-between whitespace-nowrap px-3"
+        :class="[isPaidUser ? 'flex-col sm:flex-row' : 'flex-row gap-2']"
+        v-if="!spinner"
+      >
+        <!-- <div class="flex">
+          <span>{{ isPaidUser ? "File Ledger" : "Ledger" }}</span>
+          <div v-if="isPaidUser" class="flex">
+            <img src="../../assets/img/company-icon.png" />
+            <img src="../../assets/img/users-icon.png" class="-ml-8" />
+          </div>
+        </div> -->
+        <h5 class="text-lg font-semibold text-[#272727] inline-flex items-center gap-2 sm:w-full" :class="[isPaidUser ? 'mb-2' : 'mb-0']">
+          {{ isPaidUser ? "File Ledger" : "Ledger" }}
+          <a :href="`/public/profile/${mainUserLink}`" target="_blanck">
+            <!-- <company-icon /> -->
+            <img src="../../assets/img/company-icon.png" class="lg:w-[30px] w-[20px]" v-if="isPaidUser" />
+          </a>
+          <img src="../../assets/img/users-icon.png" class="cursor-pointer lg:w-[44px] w-[35px]" @click="showCreateTeamFunc"
+            v-if="isPaidUser" />
+        </h5>
+        <div class="text-xs font-medium flex justify-end items-center gap-2 relative w-full">
+          <span class="el-dropdown-link left-roll1 flex-1">
+            <input type="text"
+              class="search-input h-10 transition bg-transparent ps-2 flex-1 border-[1px] border-paperdazgreen-400 rounded-lg focus:border-paperdazgreen-700 outline-none float-right sm:w-3/4 w-full"
+              placeholder="Search Files" v-model="searchParam" />
+          </span>
+          <button
+            class="circle circle-18 bg-paperdazgreen-400 text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
+            <search-icon width="16" height="16" currentcolor="white" />
+          </button>
+          <!-- <div class="flex" v-if="isPaidUser">
+            <button @click="showCreateCompanyFolderFunc"
+              class="circle circle-18 bg-paperdazgreen-400 text-xl text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
+              <folder-plus-icon />
+            </button>
+            <button @click="showUploadModalFunction"
+              class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-white text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
+              <plus-icon />
+            </button>
+          </div> -->
+        </div>
+      </h3>
+      <div
+        ref="ledgerContainer"
+        :class="[
+          // (files || []).length <= 0 || $fetchState.pending
+          (pdfUser || []).length <= 0 || $fetchState.pending
+            ? 'p-5 flex justify-center'
+            : 'pb-4 overflow-x-auto custom-scrollbar',
+        ]"
+      >
+        <div v-if="spinner" key="1" class="p-6 flex justify-center items-center">
+          <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
+        </div>
+        <!-- Start:: empty file ledger -->
+        <!-- End:: empty file ledger -->
+        <table key="3" ref="fileLedgerTable" class="file-ledger-table" v-else>
+          <thead class="text-sm sm:text-base">
+            <tr class="text-left">
+              <th class="w-12 text-left fixed-col left">No</th>
+              <th class="text-left !pl-16">File Name</th>
+              <th class="text-center">{{ isPaidUser ? 'Action' : 'Actions' }}</th>
+              <th class="text-center" v-if="isPaidUser">Action By</th>
+              <th class="text-center">Date & Time</th>
+              <th class="fixed-col right text-right"></th>
+            </tr>
+          </thead>
+          <tbody v-if="(pdfUser.length > 0)">
+            <tr v-for="(file, i) in pdfUser" :key="file.id" :class="{ highlight: file.id == highlightedFileId }">
+              <td class="text-left fixed-col left">{{ i + 1 + returnedDataPage }}</td>
+              <td class="text-center">
+                <div class="flex items-center gap-1.5">
+                  <div class="border !border-paperdazgreen-300 p-0.5"
                     :class="[
-                      (file.role == userType.PAID || $auth.user.role == userType.FREE) ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']"
-                    />
-                    <div v-else class="text-paperdazgreen-300 h-[30px] leading-[30px]">
-                      {{ (file.fileOwner || {}).company_name | initialFirstName }}
-                    </div>
-                </div>
-                <div class="overflow-hidden">
-                  <p class="text-sm font-medium text-center ml-1 flex">
-                    <nuxt-link :to="`/pdf/${file.paperLink}`">
-                      <!-- {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName  }} -->
-                      {{ file.fileName | removeExtension }}
-                    </nuxt-link>
-                  </p>
-                  <a
-                    v-if="$auth.user.role == userType.FREE"
-                    :href="`/public/profile/${(file.fileOwnerId || {})}`"
-                    target="_blank"
-                  >
-                    <p class="ml-1 text-xs flex">
-                      {{ (file.fileOwner || {}).company_name }}
+                      (file.role == userType.PAID || $auth.user.role == userType.FREE) ? 'rounded-md w-9 h-9' : 'circle circle-17'
+                    ]">
+                    <img
+                      v-if="(file.fileOwner || {}).profile_picture"
+                    :src="
+                      (file.fileOwner || {}).profile_picture ||
+                      '/img/placeholder_picture.png'
+                    " alt=""
+                      :class="[
+                        (file.role == userType.PAID || $auth.user.role == userType.FREE) ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']"
+                      />
+                      <div v-else class="text-paperdazgreen-300 h-[30px] leading-[30px]">
+                        {{ (file.fileOwner || {}).company_name | initialFirstName }}
+                      </div>
+                  </div>
+                  <div class="overflow-hidden">
+                    <p class="text-sm font-medium text-center ml-1 flex">
+                      <nuxt-link :to="`/pdf/${file.paperLink}`">
+                        <!-- {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName  }} -->
+                        {{ file.fileName | removeExtension }}
+                      </nuxt-link>
                     </p>
-                  </a>
-                  <p v-else class="ml-1 text-xs flex">
-                    {{ (file || {}).userName }}
-                  </p>
+                    <a
+                      v-if="$auth.user.role == userType.FREE"
+                      :href="`/public/profile/${(file.fileOwnerId || {})}`"
+                      target="_blank"
+                    >
+                      <p class="ml-1 text-xs flex">
+                        {{ (file.fileOwner || {}).company_name }}
+                      </p>
+                    </a>
+                    <p v-else class="ml-1 text-xs flex">
+                      {{ (file || {}).userName }}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </td>
-            <td class="text-center">
-              {{
-                  (isPaidUser ? file.fileAction : formatFileAction(file.file.fileAction, file.action))  || "-"
-              }}
-            </td>
-            <td class="text-center" v-if="isPaidUser">
-              {{ file.user.firstName + " " + file.user.lastName }}
-            </td>
-            <td class="text-center">
-              {{ formatDateTime(file.updatedAt) }}
-            </td>
-            <td class="fixed-col right">
-              <button class="cursor-pointer" @click="showShareCompanyFilesFunc(file)">
-                <share-outline-icon class="w-4 h-4" />
-              </button>
-            </td>
-          </tr>
-        </tbody>
-        <tbody v-else>
-          <tr v-for="i in 10" :key="i">
-            <td class="text-left fixed-col left">{{ i }}</td>
-            <td class="text-center">
-            </td>
-            <td class="text-center">
-            </td>
-            <td class="text-center">
-            </td>
-            <td class="text-center">
-            </td>
-            <td class="fixed-col right">
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              </td>
+              <td class="text-center">
+                {{
+                    (isPaidUser ? file.fileAction : formatFileAction(file.file.fileAction, file.action))  || "-"
+                }}
+              </td>
+              <td class="text-center" v-if="isPaidUser">
+                {{ file.user.firstName + " " + file.user.lastName }}
+              </td>
+              <td class="text-center">
+                {{ formatDateTime(file.updatedAt) }}
+              </td>
+              <td class="fixed-col right">
+                <button class="cursor-pointer" @click="showShareCompanyFilesFunc(file)">
+                  <share-outline-icon class="w-4 h-4" />
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          <tbody v-else>
+            <tr v-for="i in 10" :key="i">
+              <td class="text-left fixed-col left">{{ i }}</td>
+              <td class="text-center">
+              </td>
+              <td class="text-center">
+              </td>
+              <td class="text-center">
+              </td>
+              <td class="text-center">
+              </td>
+              <td class="fixed-col right">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
       <!-- </transition> -->
     </div>
     <FilePagination :totalFile="totalFile" @setPage="setPage" v-if="(pdfUser.length > 10)" />

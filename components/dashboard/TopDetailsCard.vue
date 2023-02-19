@@ -8,10 +8,10 @@
     <div
       class="text-content inline-flex flex-col justify-between items-center sm:items-end mt-2"
     >
-      <span class="font-bold text-2xl">
+      <span class="font-bold text-xl sm:text-2xl">
         <slot name="count">800</slot>
       </span>
-      <span class="font-medium text-paperdazgray-400 text-xs capitalize"
+      <span class="font-medium text-paperdazgray-400 text-xxs sm:text-xs capitalize"
         ><slot name="name">Ledger</slot></span
       >
     </div>
@@ -34,8 +34,7 @@ export default Vue.extend({
 
 <style lang="postcss" scoped>
 .details-card {
-  @apply cursor-pointer bg-white rounded-2xl flex flex-col items-center justify-center sm:flex-row sm:justify-between sm:items-center;
-  padding: 16px 14px;
+  @apply cursor-pointer bg-white rounded-lg sm:rounded-2xl flex flex-col items-center justify-center sm:flex-row sm:justify-between sm:items-center p-2 sm:px-4 sm:py-3.5;
   border: 0.97221px solid rgba(119, 181, 80, 0.15);
   transition: all 0.3s ease-in-out;
   &.active,
@@ -49,13 +48,18 @@ export default Vue.extend({
 }
 
 .icon-container {
-  @apply h-12
-            w-12
-            rounded-md
-            bg-paperdazgreen-50 bg-opacity-50
-            inline-flex
-            items-center
-            justify-center
-            text-paperdazgreen-500;
+  @apply h-8
+        w-8
+        sm:h-12
+        sm:w-12
+        p-1.5
+        sm:p-0
+        rounded
+        sm:rounded-md
+        bg-paperdazgreen-50 bg-opacity-50
+        inline-flex
+        items-center
+        justify-center
+        text-paperdazgreen-500;
 }
 </style>

@@ -16,7 +16,7 @@
       :title="$store.state.pageName || ''"
     />
     <div id="main-container" class="overflow-y-auto overflow-x-hidden">
-      <Nuxt class="py-4 flex-1 px-3 px-sm-4 px-lg-0 lg:pb-10" />
+      <Nuxt class="py-4 flex-1 px-sm-4 px-lg-0 lg:pb-10" />
     </div>
     <bottom-nav
       id="bottom-nav"
@@ -251,7 +251,7 @@ export default mixins(login).extend({
 #sidebar-container {
   --sidebar-container-width: 245px;
   position: fixed;
-  z-index: 20;
+  z-index: 21;
   top: 0;
   bottom: 0;
   left: calc(0px - var(--sidebar-container-width));
@@ -266,7 +266,7 @@ export default mixins(login).extend({
     left: 0;
     bottom: 0;
     z-index: -1;
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(5px);
     opacity: 0;
     pointer-events: none;

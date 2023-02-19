@@ -1,8 +1,5 @@
 <template>
   <section class="relative">
-    <div class="coming-soon">
-      Coming soon..
-    </div>
     <!-- start:: Teams link -->
     <div class="grid grid-cols-1 md:grid-cols-[1fr,max-content] gap-6 mb-8">
       <div class="rounded-2xl p-4 bg-white text-paperdazgreen-400">

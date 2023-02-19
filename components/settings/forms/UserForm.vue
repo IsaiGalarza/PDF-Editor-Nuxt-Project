@@ -3,7 +3,7 @@
     action=""
     ref="form"
     @submit.prevent="onSubmit"
-    class="profile-info-form grid grid-cols-1 gap-5"
+    class="profile-info-form grid grid-cols-1 gap-y-3 sm:gap-5"
   >
     <message-alert-widget
       :message="errorMessage"
@@ -12,7 +12,7 @@
       class="mb-8"
     />
     <div
-      class="grid gap-5"
+      class="grid gap-y-3 sm:gap-5"
       style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));"
     >
       <div>
@@ -33,7 +33,7 @@
       </div>
     </div>
     <div
-      class="grid gap-5"
+      class="grid gap-y-3 sm:gap-5"
       style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));"
     >
       <div>
@@ -56,7 +56,7 @@
       </div>
     </div>
     <div
-      class="grid gap-5"
+      class="grid gap-y-3 sm:gap-5"
       style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));"
     >
       <div class="relative">
@@ -76,7 +76,7 @@
         <div v-if="setDropDown" class="dropdown cursor-pointer z-10">
           <div
             v-for="(country, i) in dropDownContent"
-            class="flex items-center my-2 px-1"
+            class="flex items-center my-2 px-1" :key="i"
           >
             <img
               :src="country.flags.png"
@@ -101,7 +101,7 @@
       </div>
     </div>
     <div
-      class="grid gap-5"
+      class="grid gap-y-3 sm:gap-5"
       style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));"
     >
       <div>
@@ -365,10 +365,16 @@ export default mixins(login).extend({
 })
 </script>
 
+<style>
+.profile-info-form input {
+  @apply h-9 sm:h-10;
+}
+</style>
+
 <style lang="postcss" scoped>
 .profile-info-form label {
-  @apply block font-medium mb-0.5;
-  color: #282533;
+  @apply block mb-0.5 text-xs sm:text-base;
+  color: #707070;
 }
 .dropdown {
   @apply absolute top-[100%] left-0 w-full bg-white p-2;

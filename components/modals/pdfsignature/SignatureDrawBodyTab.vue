@@ -54,16 +54,17 @@ export default mixins(SignatureBodyMixin).extend({
       this.signaturePad.clear()
     },
     exportImage() {
+      this.$emit('export-image', this.getImage())
+    },
+    getImage() {
       if (!this.signaturePad) return
       const canvas = this.$refs.signatureCanvas 
 
       const trimmedCanvas = this.trimCanvas(canvas)
       
       if(!trimmedCanvas) return
-      const pngImage = trimmedCanvas.toDataURL()
-
-      this.$emit('export-image', pngImage)
-    },
+      return trimmedCanvas.toDataURL()
+    }
   },
   beforeDestroy() {
     try {

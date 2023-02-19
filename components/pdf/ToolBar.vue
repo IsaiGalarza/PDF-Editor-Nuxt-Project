@@ -232,9 +232,9 @@
     </div>
 
     <div v-if="isComplete && isCreator" class="flex items-center py-1">
-      <div class="w-1/3 text-center">
-        <button class="inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm"
-          @click="onImageClick">
+      <div class="w-1/3 text-center flex justify-center">
+        <button class="rounded-full h-8 sm:h-10 flex items-center gap-2 py-1 px-3 tool-item text-sm"
+        :class="[activeTool == TOOL_TYPE.star ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onImageClick">
           
           <!-- <input type="file" ref="image" class="hidden" />
           <star-icon /> -->
@@ -243,16 +243,16 @@
           <img src="../../assets/img/require-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         </button>
       </div>
-      <div class="w-1/3 text-center">
-        <button class="inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm"
-          @click="onSignClick">
+      <div class="w-1/3 text-center flex justify-center">
+        <button class="rounded-full h-8 sm:h-10 flex items-center gap-2 py-1 px-3 tool-item text-sm"
+        :class="[activeTool == TOOL_TYPE.appendSignature ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onSignClick">
           Sign
           <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         </button>
       </div>
-      <div class="w-1/3 text-center">
-        <button class="inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm"
-          @click="onInitialsClick">
+      <div class="w-1/3 text-center flex justify-center">
+        <button class="rounded-full h-8 sm:h-10 flex items-center gap-2 py-1 px-3 tool-item text-sm"
+        :class="[activeTool == TOOL_TYPE.appendInitial ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onInitialsClick">
           Initial
           <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         </button>

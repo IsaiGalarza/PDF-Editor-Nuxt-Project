@@ -1,10 +1,7 @@
 <template>
   <div class="bg-paperdazgreen-300 sm:bg-transparent py-2 flex items-center text-black justify-between ml-[-2%] w-[104%]">
     <div class="flex items-center gap-lg-4 flex-1 justify-between max-w-4xl px-lg-4 px-3">
-      <span class="font-bold">{{ file.fileName.length > 12 ? `${file.fileName.substr(0, 8)}...` : file.fileName }}</span>
-      <span class="sm:hidden cursor-pointer">
-        <img :src="require('~/assets/icons/info-circle.svg')" />
-      </span>
+      <span class="font-bold">{{ isCreator ? file.fileName.length > 12 ? `${file.fileName.substr(0, 8)}...` : file.fileName : file.fileName }}</span>
 
       <span class="hidden md:inline">
         <span class="circle circle-2 bg-[#757575]"></span>
@@ -37,7 +34,7 @@
 
       <!-- -- the content below is v-else if previous is v-if - -->
       <el-dropdown v-else trigger="click" class="font-medium flex" @command="handleAccessChange">
-        <span class="el-dropdown-link">
+        <span class="el-dropdown-link capitalize">
           {{ access }} <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
@@ -122,7 +119,10 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <!-- </div> -->
+
+      <span class="sm:hidden cursor-pointer" @click="showPdfInfo = true">
+        <img :src="require('~/assets/icons/info-circle.svg')" />
+      </span>
     </div>
 
     <div class="hidden sm:flex items-center justify-end pe-lg-4">
@@ -152,7 +152,35 @@
       use-default-button />
     <!-- v-model="showInitialModal" -->
 
-
+    <el-dialog :visible.sync="showPdfInfo" :append-to-body="true" :show-close="false" center width="100%" top="100vh" custom-class="-translate-y-full sm:hidden rounded"
+      class="bottom-0 overflow-hidden sm:hidden">
+      <div class="w-full flex flex-col p-0 -mt-8 -mb-4">
+        <div class="border-b flex items-center justify-between py-2">
+          <span class="font-bold">Action</span>
+          <span class="capitalize">{{ access }}</span>
+        </div>
+        <div class="border-b flex items-center justify-between py-2">
+          <span class="font-bold">Privacy</span>
+          <span class="capitalize">{{ file.fileAction }}</span>
+        </div>
+        <div class="border-b flex items-center justify-between py-2">
+          <span class="font-bold">Business</span>
+          <span class="">{{ businessName }}</span>
+        </div>
+        <div class="border-b flex items-center justify-between py-2">
+          <span class="font-bold">Uploaded by</span>
+          <span class="">{{ uploadedBy }}</span>
+        </div>
+        <div class="border-b flex items-center justify-between py-2">
+          <span class="font-bold">Date</span>
+          <span class="">{{(file.updatedAt || "").substring(0, 10)}}</span>
+        </div>
+        <div class="flex items-center justify-between py-2">
+          <span class="font-bold">Time</span>
+          <span class="">{{(file.updatedAt || "").substring(11, 16)}}</span>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -233,6 +261,7 @@ export default Vue.extend({
       saveFunction: '',
       showPublishModal: false,
       showRemoveModal: false,
+      showPdfInfo: false,
     }
   },
   computed: {
@@ -260,7 +289,13 @@ export default Vue.extend({
     },
     hasAccess() {
       return (this.file.filePrivacy == FilePrivacy.PRIVATE) && !this.isCreator
-    }
+    },
+    businessName() {
+      return this.file.user.company_name || 'N/A'
+    },
+    uploadedBy() {
+      return this.file.uploadedBy || 'N/A'
+    },
   },
   methods: {
     cancelPublish() {

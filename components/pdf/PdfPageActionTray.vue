@@ -1,12 +1,20 @@
 <template>
-  <div class="py-2 flex items-center text-black bg-white flex justify-left ml-[-2%] w-[104%]">
+  <div class="bg-paperdazgreen-300 sm:bg-transparent py-2 flex items-center text-black justify-between ml-[-2%] w-[104%]">
     <div class="flex items-center gap-lg-4 flex-1 justify-between max-w-4xl px-lg-4 px-3">
+      <span class="font-bold">{{ file.fileName.length > 12 ? `${file.fileName.substr(0, 8)}...` : file.fileName }}</span>
+      <span class="sm:hidden cursor-pointer">
+        <img :src="require('~/assets/icons/info-circle.svg')" />
+      </span>
+
+      <span class="hidden md:inline">
+        <span class="circle circle-2 bg-[#757575]"></span>
+      </span>
       <!-- If authenticated user is created -->
-      <span v-if="!isCreator" class="capitalize font-medium">{{
+      <span v-if="!isCreator" class="hidden md:inline capitalize font-medium">{{
         file.fileAction
       }}</span>
       <!-- else -->
-      <el-dropdown v-else trigger="click" class="font-medium flex" @command="handleActionChange">
+      <el-dropdown v-else trigger="click" class="hidden md:flex font-medium" @command="handleActionChange">
         <span class="el-dropdown-link capitalize">
           {{ file.fileAction }}
           <i class="el-icon-arrow-down el-icon--right"></i>
@@ -20,8 +28,12 @@
         </el-dropdown-menu>
       </el-dropdown>
 
+      <span class="hidden md:inline">
+        <span class="circle circle-2 bg-[#757575]"></span>
+      </span>
+
       <!-- If authenticated user is created -->
-      <span v-if="!isCreator" class="capitalize font-medium">{{ access }}</span>
+      <span v-if="!isCreator" class="hidden md:inline capitalize font-medium">{{ access }}</span>
 
       <!-- -- the content below is v-else if previous is v-if - -->
       <el-dropdown v-else trigger="click" class="font-medium flex" @command="handleAccessChange">
@@ -37,8 +49,6 @@
       <!-- <div
         class="flex-1 flex items-center gap-5 justify-end text-xs font-medium"
       > -->
-      <span class="hidden md:inline">{{ file.fileName.length > 12 ? `${file.fileName.substr(0, 8)}...` : file.fileName }}</span>
-
       <span class="hidden md:inline">
         <span class="circle circle-2 bg-[#757575]"></span>
       </span>
@@ -115,14 +125,14 @@
       <!-- </div> -->
     </div>
 
-    <div class="flex items-center pe-lg-4">
+    <div class="hidden sm:flex items-center justify-end pe-lg-4">
 
-      <button v-if="!isConfirm && $auth.loggedIn && isCreator" @click="saveChanges"
-        class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7">
-        Publish
+      <button v-if="$auth.loggedIn" @click="saveChanges" :disabled="disablePublish"
+        class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed">
+        Done
       </button>
-      <button v-if="!isConfirm && $auth.loggedIn && isCreator" @click="cancelPublish"
-        class="mr-2 text-xs text-white bg-zinc-400 border rounded px-3 h-7">
+      <button v-if="$auth.loggedIn" @click="cancelPublish"
+        class="mr-2 text-xs text-red-500 bg-white border rounded px-3 h-7 disabled:cursor-not-allowed">
         Cancel
       </button>
     </div>
@@ -205,7 +215,11 @@ export default Vue.extend({
     canceled: {
       type: Boolean,
       default: false
-    }
+    },
+    disablePublish: {
+      type: Boolean,
+      default: false
+    },
   },
   data() {
     return {

@@ -30,11 +30,11 @@
       v-if="displayPDF"
       class="
         grid grid-rows-[max-content,max-content,1fr]
-        gap-1
+        sm:gap-1
         w-full
         mx-auto
-        px-[2%]
-        pb-[2%]
+        sm:px-[2%]
+        sm:pb-[2%]
       "
     >
       <pdf-page-action-tray
@@ -46,6 +46,7 @@
         :pdfContainerDimension="pdfContainerDimension"
         @publishFileFunction="publishFileFunction"
         :canceled="canceled"
+        :disablePublish="filteredAnnotationButton.length > 0"
       />
 
       <tool-bar
@@ -245,7 +246,24 @@
       >
         Click to Confirm
       </button>
+
     </main>
+    <!-- Mobile Page Action -->
+    <div class="flex sm:hidden bg-zinc-200 flex-row-reverse justify-between items-center p-1">
+      <button v-if="$auth.loggedIn" @click="publishFileFunction" :disabled="filteredAnnotationButton.length > 0"
+        class="text-paperdazgreen-400 px-3 h-7 disabled:text-gray-400 disabled:cursor-not-allowed">
+        Done
+      </button>
+      <div
+        class="flex-1 grid place-items-center h-7 px-1 py-0.5"
+      >
+        {{ currentPage }} / {{ propsNumPages }}
+      </div>
+      <button v-if="$auth.loggedIn" @click="canceled = true"
+        class="text-red-500 px-3 h-7 disabled:cursor-not-allowed">
+        Cancel
+      </button>
+    </div>
 
     <ExistFileManagerModal
       :file="file"

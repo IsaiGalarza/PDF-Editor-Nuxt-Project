@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="px-2 sm:px-0">
     <div class="bg-[#F4F906] text-[#EE1B1B] text-base px-6 py-2 flex items-center"
       v-if="isConfirm && !isLoading && $auth.loggedIn && isCreator">
       <!-- <exclamation-icon class="text-white mr-2" /> -->
@@ -19,55 +19,162 @@
         <button class="bg-[#979797] px-2 rounded h-7 text-xs text-white" @click="signCancel">Cancel</button>
       </div>
     </div>
-    <div v-else v-if="userRole == 'free_user' && isSign && isAgreedSign === 1"
+    <div v-else-if="userRole == 'free_user' && isSign && isAgreedSign === 1"
       class="h-full pt-2 font-bold pl-2 text-[#77b450]">
       You can sign and initial now.
     </div>
-    <div v-else v-if="userRole == 'free_user' && isSign && isAgreedSign === 0"
+    <div v-else-if="userRole == 'free_user' && isSign && isAgreedSign === 0"
       class="h-full pt-2 font-bold pl-2 text-[#77b450]">
       You can't sign and initial action.
     </div>
 
     <div v-if="(!isLoading && !isCreator && isComplete)"
-      class="tools-container-wrapper flex flex-wrap items-center justify-between bg-[#E8EAEC] w-full gap-x-1 gap-y-2 px-6 text-[#757575] text-base sm:text-2xl"
+      class="flex flex-wrap items-center justify-between w-full gap-x-1 gap-y-2 text-[#757575] text-base sm:text-2xl sm:hidden"
       :class="[isConfirm ? 'py-0' : 'py-2']">
-      <button :class="[activeTool == TOOL_TYPE.text ? 'bg-paperdazgreen-300/40 tool' : '',
+      <button class="rounded h-8 w-8 bg-white">-</button>
+      <div class="flex items-center">
+        <button class="rounded-l-lg h-8 w-24 flex items-center justify-between rounded-r-none p-2 px-3 text-sm" :class="showInsertTools ? 'bg-white' : 'bg-neutral-500 text-white'" @click="showInsertTools = false">
+          <group-tools />
+          <span>Tools</span>
+        </button>
+        <button class="rounded-r-lg h-8 w-24 flex items-center justify-between rounded-l-none p-2 px-3 text-sm" :class="!showInsertTools ? 'bg-white' : 'bg-neutral-500 text-white'" @click="showInsertTools = true">
+          <group-insert />
+          <span>Insert</span>
+        </button>
+      </div>
+      <button class="rounded h-8 w-8 bg-neutral-500 text-white">+</button>
+      <button @click="undoFunction" class="rounded h-8 bg-white text-sm px-2">UNDO</button>
+    </div>
+    <div v-if="(!isLoading && !isCreator && isComplete)"
+      class="tools-container-wrapper flex flex-wrap items-center justify-between w-full gap-x-1 gap-y-2 text-[#757575] text-base sm:text-2xl sm:hidden"
+      :class="[isConfirm ? 'py-0' : 'py-2']">
+      <template v-if="showInsertTools" class="overflow-x-auto">
+        <button class="rounded-full h-8 w-20 text-xs" :class="[activeTool == TOOL_TYPE.name ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+        isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.name)">
+          <user-profile-solid-icon class="mr-1" /> Name
+        </button>
+        <button class="rounded-full h-8 w-20 text-xs" :class="[activeTool == TOOL_TYPE.date ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+        isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.date)">
+          <calendar-icon class="mr-1" /> Date
+        </button>
+        <div class="flex">
+
+          <div class="mx-1">
+            <button
+              class="rounded-full h-8 w-20 flex items-center gap-2 py-1 px-4 text-xs"
+              :class="[activeTool == TOOL_TYPE.appendSignature ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+        isCreator ? 'opacity-40' : '']" @click="onSignClick">
+              Sign
+              <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
+            </button>
+            <div class="absolute w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[55px] cursor-pointer"
+              id="signtraybtn"
+              @click="() => { showSignTray = !showSignTray; showSignTray && (showInitialTray = false); }"></div>
+            <div v-if="(showSignTray)" v-click-outside="handleSignFocusOut"
+              class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-10 mt-1 tray-mode">
+              <img class="absolute-image border py-1 px-6 rounded h-[50px]" :src="signature" />
+              <img src="../../assets/img/pencil.png" class="cursor-pointer w-[12px] h-[12px] ml-1 mt-3"
+                @click="openSignModal" />
+            </div>
+          </div>
+
+          <div class="mx-1">
+            <button
+              class="rounded-full h-8 w-20 flex items-center gap-2 py-1 px-4 tool-item text-xs"
+              :class="[activeTool == TOOL_TYPE.appendInitial ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+        isCreator ? 'opacity-40' : '']"  @click="onInitialsClick">
+              Initial
+              <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
+            </button>
+            <div class="absolute w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[55px] cursor-pointer"
+              id="initialtraybtn"
+              @click="() => { showInitialTray = !showInitialTray; showInitialTray && (showSignTray = false); }">
+            </div>
+            <div v-if="showInitialTray" v-click-outside="handleInitialFocusOut"
+              class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-10 mt-1 tray-mode">
+              <img class="absolute-image border py-1 px-6 rounded h-[50px]" :src="initial" />
+              <img src="../../assets/img/pencil.png" class="cursor-pointer w-[12px] h-[12px] ml-1 mt-3"
+                @click="openInitialModal" />
+            </div>
+          </div>
+        </div>
+      </template>
+      <template v-else>
+        <button class="rounded h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.text ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+        isCreator ? 'opacity-40' : 'opacity-100']" @click="setSelectedType(TOOL_TYPE.text)">
+          <pdf-text-tool-icon />
+        </button>
+        <button class="rounded h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.tick ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+        isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.tick)">
+          <pdf-tick-icon />
+        </button>
+        <button class="rounded h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.cross ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+        isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.cross)">
+          <pdf-times-icon />
+        </button>
+        <button class="rounded h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.circle ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+        isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.circle)">
+          <hollow-circle-icon />
+        </button>
+        <button class="rounded text-base h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.dot ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+        isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.dot)">
+          <solid-circle-icon />
+        </button>
+        <button class="rounded h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.line ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+        isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.line)">
+          <pdf-rectangle-tool-icon />
+        </button>
+        <button class="rounded text-[#FFCF27] h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.highlight ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+        isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.highlight)">
+          <pdf-highlight-tool-icon />
+        </button>
+        <button class="rounded h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.draw ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+        isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.draw)">
+          <pdf-pen-tool-icon />
+        </button>
+      </template>
+    </div>
+
+    <div v-if="(!isLoading && !isCreator && isComplete)"
+      class="tools-container-wrapper hidden sm:flex flex-wrap items-center justify-between w-full gap-x-1 gap-y-2 text-[#757575] text-base sm:text-2xl"
+      :class="[isConfirm ? 'py-0' : 'py-2']">
+      <button class="rounded h-10 w-10" :class="[activeTool == TOOL_TYPE.text ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
       isCreator ? 'opacity-40' : 'opacity-100']" @click="setSelectedType(TOOL_TYPE.text)">
         <pdf-text-tool-icon />
       </button>
-      <button :class="[activeTool == TOOL_TYPE.tick ? 'bg-paperdazgreen-300/40 tool' : '',
+      <button class="rounded h-10 w-10" :class="[activeTool == TOOL_TYPE.tick ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
       isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.tick)">
         <pdf-tick-icon />
       </button>
-      <button :class="[activeTool == TOOL_TYPE.cross ? 'bg-paperdazgreen-300/40  tool' : '',
+      <button class="rounded h-10 w-10" :class="[activeTool == TOOL_TYPE.cross ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
       isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.cross)">
         <pdf-times-icon />
       </button>
-      <button :class="[activeTool == TOOL_TYPE.dot ? 'bg-paperdazgreen-300/40  tool' : '',
-      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.dot)" class="text-base">
-        <solid-circle-icon />
-      </button>
-      <button :class="[activeTool == TOOL_TYPE.circle ? 'bg-paperdazgreen-300/40  tool' : '',
+      <button class="rounded h-10 w-10" :class="[activeTool == TOOL_TYPE.circle ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
       isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.circle)">
         <hollow-circle-icon />
       </button>
-      <button :class="[activeTool == TOOL_TYPE.line ? 'bg-paperdazgreen-300/40 tool' : '',
+      <button class="rounded text-base h-10 w-10" :class="[activeTool == TOOL_TYPE.dot ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.dot)">
+        <solid-circle-icon />
+      </button>
+      <button class="rounded h-10 w-10" :class="[activeTool == TOOL_TYPE.line ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
       isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.line)">
         <pdf-rectangle-tool-icon />
       </button>
-      <button :class="[activeTool == TOOL_TYPE.highlight ? 'bg-paperdazgreen-300/40 tool' : '',
-      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.highlight)" class="text-[#FFCF27]">
+      <button class="rounded text-[#FFCF27] h-10 w-10" :class="[activeTool == TOOL_TYPE.highlight ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.highlight)">
         <pdf-highlight-tool-icon />
       </button>
-      <button :class="[activeTool == TOOL_TYPE.draw ? 'bg-paperdazgreen-300/40 tool' : '',
+      <button class="rounded h-10 w-10" :class="[activeTool == TOOL_TYPE.draw ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
       isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.draw)">
         <pdf-pen-tool-icon />
       </button>
-      <button :class="[activeTool == TOOL_TYPE.date ? 'bg-paperdazgreen-300/40 tool' : '',
+      <button class="rounded h-10 w-10" :class="[activeTool == TOOL_TYPE.date ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
       isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.date)">
         <calendar-icon />
       </button>
-      <button :class="[activeTool == TOOL_TYPE.name ? 'bg-paperdazgreen-300/40 tool' : '',
+      <button class="rounded h-10 w-10" :class="[activeTool == TOOL_TYPE.name ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
       isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.name)">
         <user-profile-solid-icon />
       </button>
@@ -83,11 +190,13 @@
 
         <div class="mx-1">
           <button
-            class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm" @click="onSignClick">
+            class="rounded h-10 w-28 flex items-center gap-2 py-1 px-4 text-sm"
+            :class="[activeTool == TOOL_TYPE.appendSignature ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+      isCreator ? 'opacity-40' : '']" @click="onSignClick">
             Sign
             <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
           </button>
-          <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[47px] cursor-pointer"
+          <div class="absolute w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[70px] cursor-pointer"
             id="signtraybtn"
             @click="() => { showSignTray = !showSignTray; showSignTray && (showInitialTray = false); }"></div>
           <div v-if="(showSignTray)" v-click-outside="handleSignFocusOut"
@@ -100,11 +209,13 @@
 
         <div class="mx-1">
           <button
-            class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 tool-item text-white text-sm" @click="onInitialsClick">
+            class="rounded h-10 w-28 flex items-center gap-2 py-1 px-4 tool-item text-sm"
+            :class="[activeTool == TOOL_TYPE.appendInitial ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+      isCreator ? 'opacity-40' : '']"  @click="onInitialsClick">
             Initial
             <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
           </button>
-          <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[54px] cursor-pointer"
+          <div class="absolute w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[70px] cursor-pointer"
             id="initialtraybtn"
             @click="() => { showInitialTray = !showInitialTray; showInitialTray && (showSignTray = false); }">
           </div>
@@ -117,7 +228,7 @@
         </div>
       </div>
 
-      <button @click="undoFunction" class="text-sm mr-4">UNDO</button>
+      <button @click="undoFunction" class="rounded h-10 bg-white text-sm">UNDO</button>
     </div>
 
     <div v-if="isComplete && isCreator" class="flex items-center py-1">
@@ -201,6 +312,8 @@ import AlertModal from './modals/AlertModal.vue'
 import initialURL from '~/assets/img/initials.png'
 import signatureURL from '~/assets/img/sign.png'
 import ZoomInOut from '@/components/pdf/ZoomInOut'
+import GroupTools from '../svg-icons/GroupTools.vue'
+import GroupInsert from '../svg-icons/GroupInsert.vue'
 
 export default {
   components: {
@@ -219,7 +332,9 @@ export default {
     ExclamationIcon,
     PdfNotLoggedUser,
     AlertModal,
-    ZoomInOut
+    ZoomInOut,
+    GroupTools,
+    GroupInsert,
   },
   mixins: [SaveSignatureInitialsMixin],
   data: () => ({
@@ -235,7 +350,8 @@ export default {
     initial: null,
     signature: null,
     showInitialTray: false,
-    showSignTray: false
+    showSignTray: false,
+    showInsertTools: false,
   }),
   props: {
     file: {
@@ -454,11 +570,7 @@ export default {
 <style lang="scss" scoped>
 .tools-container-wrapper {
   button {
-    @apply p-2
-  }
-
-  .tool {
-    @apply rounded-full;
+    @apply p-2 flex justify-center items-center
   }
 }
 

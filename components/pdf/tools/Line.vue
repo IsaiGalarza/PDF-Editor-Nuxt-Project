@@ -17,8 +17,11 @@ export default {
     id: Number,
     toolLength: Number,
     lineStart: Boolean,
+    drawingStart: Boolean,
     mouseUp: Boolean,
     generatePDF:Boolean
+  },
+  mounted() {
   },
   watch: {
     // mouseUp: function () {

@@ -1,5 +1,6 @@
 <template>
-  <div class="tool-wrapper" :style="wrpStyle" ref="Wrp" :id="getToolWrapperId">
+  <div class="tool-wrapper" :class="{'pointer-events-none': selectedToolType}" :style="wrpStyle" ref="Wrp" :id="getToolWrapperId">
+    <!-- <div class="tool-wrapper" :style="wrpStyle" ref="Wrp" :id="getToolWrapperId"> -->
     <div
       class="h-8 border text-black inline-flex items-center gap-1.5 px-1 backdrop-blur-sm bg-white/30 absolute tool-menu"
       v-show="isActive" ref="toolMenu" v-if="isCreator" v-hammer:pan="handleDrag">
@@ -166,6 +167,10 @@ export default {
   created() {
     this.checkAndSetPosition()
     this.clcPos()
+    // if (!this.lineStart && !this.drawingStart)
+    //   this.$refs.Wrp?.classList.add('pointer-events-none')
+    // else
+    //   this.$refs.Wrp?.classList.remomve('pointer-events-none')
   },
   watch: {
     x1() {

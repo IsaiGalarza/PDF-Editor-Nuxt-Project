@@ -189,7 +189,6 @@
                   :deleteTool="deleteTool"
                   :handleIncrease="handleIncrease"
                   :mouseUp="mouseUp"
-                  :lineStart="lineStart"
                   :handleDecrease="handleDecrease"
                   :fontSize="tool.fontSize"
                   :scale="scale"
@@ -201,6 +200,7 @@
                   :value="tool.value"
                   :file="file"
                   :justMounted="tool.justMounted"
+                  :lineStart="lineStart"
                   :drawingStart="drawingStart"
                   :showPublishModal="showPublishModal"
                   :generatePDF="generatePDF"
@@ -1131,8 +1131,6 @@ export default mixins(PdfAuth).extend({
       pageNumber
     ) {
       // if(!this.mouseDown) return;
-
-      if (event.target.className !== 'pdf-canvas') return
 
       var elem = this.$refs['pdf-single-pages-outer']
       if (!this.isPanning && id == undefined) {

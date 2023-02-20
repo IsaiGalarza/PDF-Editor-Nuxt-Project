@@ -653,7 +653,7 @@ export default mixins(PdfAuth).extend({
             break
           case this.TOOL_TYPE.line:
             if (tool.y1 != null && tool.y2 != null) {
-            if (tool.y2 < tool.y1) tool._top = tool.y2
+              if (tool.y2 < tool.y1) tool._top = tool.y2
               else tool._top = tool.y1
             }
             if (tool.x1 != null && tool.x2 != null) {
@@ -1128,6 +1128,8 @@ export default mixins(PdfAuth).extend({
     ) {
       // if(!this.mouseDown) return;
 
+      if (event.target.className !== 'pdf-canvas') return
+
       var elem = this.$refs['pdf-single-pages-outer']
       if (!this.isPanning && id == undefined) {
         this.isPanning = true
@@ -1215,29 +1217,30 @@ export default mixins(PdfAuth).extend({
 
       event = event || window.event
 
-      const scrollingElement =
-        parent ||
-        this.$refs.scrollingElement ||
-        document.scrollingElement ||
-        document.body
+      // const scrollingElement =
+      //   parent ||
+      //   this.$refs.scrollingElement ||
+      //   document.scrollingElement ||
+      //   document.body
 
-      const boundingRect = scrollingElement.getBoundingClientRect()
+      // const boundingRect = scrollingElement.getBoundingClientRect()
 
       //if there is no clientX or there is no clientY on event
       // return 0, 0
-      if (!(event.clientX && event.clientY)) return { x: 0, y: 0 }
+      // if (!(event.clientX && event.clientY)) return { x: 0, y: 0 }
+      if (!(event.offsetX && event.offsetY)) return { x: 0, y: 0 }
 
       // cursor relative to the scrollingElement
-      const mouseXRelativeToScrollingElement =
-        event.clientX - (boundingRect.left || 0)
-      const mouseYRelativeToScrollingElement =
-        event.clientY - (boundingRect.top || 0)
+      // const mouseXRelativeToScrollingElement =
+      //   event.clientX - (boundingRect.left || 0)
+      // const mouseYRelativeToScrollingElement =
+      //   event.clientY - (boundingRect.top || 0)
 
-      const x =
-        mouseXRelativeToScrollingElement + (scrollingElement.scrollLeft || 0)
-      const y =
-        mouseYRelativeToScrollingElement + (scrollingElement.scrollTop || 0)
-      
+      // const x =
+      //   mouseXRelativeToScrollingElement + (scrollingElement.scrollLeft || 0)
+      // const y =
+      //   mouseYRelativeToScrollingElement + (scrollingElement.scrollTop || 0)
+
       // console.log({
       //   x: x / this.scale,
       //   y: y / this.scale,
@@ -1246,9 +1249,9 @@ export default mixins(PdfAuth).extend({
       //   scale: this.scale
       // })
 
-      return { x, y }
+      // return { x, y }
       // return { x: x / this.scale, y: y / this.scale }
-      // return { x: event.offsetX, y: event.offsetY }
+      return { x: event.offsetX, y: event.offsetY }
     },
     previousPointerPos(event, parent) {
       let eventDoc, doc, body

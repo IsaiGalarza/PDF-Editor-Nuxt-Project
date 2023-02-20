@@ -73,6 +73,7 @@
           :limitPan="true"
           :limitZoom="1000"
           disableZoomControl="disable"
+          :disablePan="!panable"
         >
         <!-- <pinch-scroll-zoom
           ref="zoomer"
@@ -626,6 +627,9 @@ export default mixins(PdfAuth).extend({
     isScrollBottom() {
       return this.$store.state.scrollPosition
     },
+    panable() {
+      return this.lineStart || this.drawingStart
+    }
   },
   methods: {
     onMouseDown: function () {
@@ -1140,6 +1144,7 @@ export default mixins(PdfAuth).extend({
           await this.placeTool(event.srcEvent, pageNumber)
           this.selectedToolId = this.tools[this.tools.length - 1].id
         } else if (this.selectedToolType == this.TOOL_TYPE.highlight) {
+          this.drawingStart = true
           await this.placeTool(event.srcEvent, pageNumber)
           this.selectedToolId = this.tools[this.tools.length - 1].id
         } else if (this.selectedToolType == this.TOOL_TYPE.draw) {

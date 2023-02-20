@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col sm:flex-row gap-5">
-    <div class="p-4 flex-1 sm:flex-initial rounded-2xl bg-white sm:self-start">
-      <ul>
+  <div class="flex flex-col sm:flex-row max-sm:gap-4 sm:gap-5 max-sm:px-3 sm:px-0">
+    <div class="max-sm:p-2 sm:p-4 flex-1 sm:flex-initial rounded-2xl bg-white sm:self-start">
+      <ul class="flex max-sm:flex-row sm:flex-col max-sm:gap-2">
         <li
           class="menu-item"
           :class="{ active: currentState === 'app' }"
@@ -34,10 +34,10 @@
       <section
         v-if="currentState == 'app'"
         key="app"
-        class="flex-1 px-8 py-10 bg-white rounded-2xl relative"
+        class="flex-1 max-sm:px-0 max-sm:py-2 sm:px-8 sm:py-10 sm:bg-white rounded-2xl relative"
       >
         <h3
-          class="flex justify-center text-paperdazgreen-300 border-b-2 border-paperdazgreen-300 font-semibold text-2xl gap-2 pb-1 relative mb-7"
+          class="flex justify-center text-paperdazgreen-300 border-b-2 border-paperdazgreen-300 font-semibold text-2xl gap-2 pb-1 relative mb-7 max-sm:hidden"
         >
           <span>App Notifications</span>
         </h3>
@@ -46,8 +46,8 @@
             <tbody>
               <tr v-if="isTeamMember">
                 <td>
-                  <div class="text-sm">
-                    <p class="mb-1 font-semibold">Users &amp; Roles</p>
+                  <div class="max-sm:text-xs sm:text-sm">
+                    <p class="mb-1 text-sm font-semibold">Users &amp; Roles</p>
                     <p>Access requests for private files</p>
                   </div>
                 </td>
@@ -63,9 +63,9 @@
               </tr>
               <tr>
                 <td>
-                  <div class="text-sm">
-                    <p class="mb-1 font-semibold">Collaborations</p>
-                    <p>Invitation requests, Joining requests,</p>
+                  <div class="max-sm:text-xs sm:text-sm">
+                    <p class="mb-1 text-sm font-semibold">Collaborations</p>
+                    <p>Invitation requests, Joining requests</p>
                   </div>
                 </td>
                 <td class="w-4 fixed-col right">
@@ -80,8 +80,8 @@
               </tr>
               <tr>
                 <td>
-                  <div class="text-sm">
-                    <p class="mb-1 font-semibold">Actions</p>
+                  <div class="max-sm:text-xs sm:text-sm">
+                    <p class="mb-1 text-sm font-semibold">Actions</p>
                     <p>Files completed, confirmed, signed</p>
                   </div>
                 </td>
@@ -97,8 +97,8 @@
               </tr>
               <tr v-if="isTeamMember">
                 <td>
-                  <div class="text-sm">
-                    <p class="mb-1 font-semibold">Referral Credits</p>
+                  <div class="max-sm:text-xs sm:text-sm">
+                    <p class="mb-1 text-sm font-semibold">Referral Credits</p>
                     <p>Reference sign ups, credits earned</p>
                   </div>
                 </td>
@@ -114,8 +114,8 @@
               </tr>
               <!-- <tr v-if="isTeamMember">
                 <td>
-                  <div class="text-sm">
-                    <p class="mb-1 font-semibold">Payments</p>
+                  <div class="max-sm:text-xs sm:text-sm">
+                    <p class="mb-1 text-sm font-semibold">Payments</p>
                     <p>Billing reminders, package expiry</p>
                   </div>
                 </td>
@@ -138,10 +138,10 @@
       <section
         v-if="currentState == 'email'"
         key="email"
-        class="flex-1 px-8 py-10 bg-white rounded-2xl"
+        class="flex-1 max-sm:px-0 max-sm:py-2 sm:px-8 sm:py-10 sm:bg-white rounded-2xl relative"
       >
         <h3
-          class="flex justify-center text-paperdazgreen-300 border-b-2 border-paperdazgreen-300 font-semibold text-2xl gap-2 pb-1 relative mb-7"
+        class="flex justify-center text-paperdazgreen-300 border-b-2 border-paperdazgreen-300 font-semibold text-2xl gap-2 pb-1 relative mb-7 max-sm:hidden"
         >
           <span>Email Notifications</span>
         </h3>
@@ -150,8 +150,8 @@
             <tbody>
               <tr v-if="isTeamMember">
                 <td>
-                  <div class="text-sm">
-                    <p class="mb-1 font-semibold">Users &amp; Roles</p>
+                  <div class="max-sm:text-xs sm:text-sm">
+                    <p class="mb-1 text-sm font-semibold">Users &amp; Roles</p>
                     <p>Access requests for private files</p>
                   </div>
                 </td>
@@ -167,8 +167,8 @@
               </tr>
               <tr>
                 <td>
-                  <div class="text-sm">
-                    <p class="mb-1 font-semibold">Collaborations</p>
+                  <div class="max-sm:text-xs sm:text-sm">
+                    <p class="mb-1 text-sm font-semibold">Collaborations</p>
                     <p>Invitation requests, Joining requests,</p>
                   </div>
                 </td>
@@ -184,8 +184,8 @@
               </tr>
               <tr>
                 <td>
-                  <div class="text-sm">
-                    <p class="mb-1 font-semibold">Actions</p>
+                  <div class="max-sm:text-xs sm:text-sm">
+                    <p class="mb-1 text-sm font-semibold">Actions</p>
                     <p>Files completed, confirmed, signed</p>
                   </div>
                 </td>
@@ -201,8 +201,8 @@
               </tr>
               <tr v-if="isTeamMember">
                 <td>
-                  <div class="text-sm">
-                    <p class="mb-1 font-semibold">Referral Credits</p>
+                  <div class="max-sm:text-xs sm:text-sm">
+                    <p class="mb-1 text-sm font-semibold">Referral Credits</p>
                     <p>Reference sign ups, credits earned</p>
                   </div>
                 </td>
@@ -218,7 +218,7 @@
               <!-- <tr v-if="isTeamMember">
                 <td>
                   <div class="text-sm">
-                    <p class="mb-1 font-semibold">Payments</p>
+                    <p class="mb-1 text-sm font-semibold">Payments</p>
                     <p>Billing reminders, package expiry</p>
                   </div>
                 </td>
@@ -388,16 +388,30 @@ export default Vue.extend({
   background-color: rgb(119 181 80);
 }
 .menu-item {
-  @apply min-w-[220px] max-w-full transition ease-in-out duration-200 w-full grid gap-2 text-sm font-bold items-center h-16 border-2 border-paperdazgreen-400 rounded-2xl px-5 cursor-pointer;
+  @apply sm:min-w-[220px] sm:max-w-full transition ease-in-out duration-200 w-full grid max-sm:gap-1 sm:gap-2 max-sm:text-xs sm:text-sm sm:font-bold items-center max-sm:h-10 sm:h-16 border-2 border-paperdazgreen-400 max-sm:rounded-xl sm:rounded-2xl max-sm:px-2 sm:px-5 cursor-pointer;
   grid-template-columns: 25px 1fr;
   &:not(:last-child) {
-    @apply mb-5;
+    @apply max-sm:mb-0 sm:mb-5;
   }
   &:hover {
     @apply bg-paperdazgreen-400 bg-opacity-5;
   }
   &.active {
     @apply text-white bg-paperdazgreen-400;
+  }
+}
+.custom-table {
+  @apply border-spacing-x-0 border-spacing-y-3;
+  tr {
+    @apply bg-white;
+  }
+  tr td:first-child { @apply rounded-tl-xl }
+  tr td:last-child { @apply rounded-tr-xl }
+
+  tr td:first-child { @apply rounded-bl-xl }
+  tr td:last-child { @apply rounded-br-xl }
+  td {
+    @apply p-3;
   }
 }
 </style>

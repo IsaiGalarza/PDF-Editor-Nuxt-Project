@@ -64,7 +64,7 @@ import TimesIcon from '../svg-icons/TimesIcon.vue'
 import TwitterIcon from '../svg-icons/TwitterIcon.vue'
 import WhatsappIcon from '../svg-icons/WhatsappIcon.vue'
 import InstagramIcon from '../svg-icons/InstagramIcon.vue'
-import GearIcon from '../svg-icons/GearIcon.vue'
+import GearLightIcon from '../svg-icons/GearLightIcon.vue'
 import TeamAccess from "~/models/TeamAccess"
 export default Vue.extend({
   name: 'DashboardSidebar',
@@ -79,7 +79,7 @@ export default Vue.extend({
     ReditIcon,
     TimesIcon,
     InstagramIcon,
-    GearIcon
+    GearLightIcon
   },
   data() {
     return {
@@ -112,7 +112,7 @@ export default Vue.extend({
         },
         {
           label: 'Settings',
-          icon: 'GearIcon',
+          icon: 'GearLightIcon',
           link: '/settings',
           exact: false,
         },

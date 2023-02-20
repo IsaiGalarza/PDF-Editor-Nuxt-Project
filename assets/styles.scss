@@ -912,3 +912,10 @@ $screens: 'xxs', 'xs', 'sm', 'md', 'lg', 'xl';
 .search-box .el-input__suffix {
   right: 0 !important;
 }
+
+.pdf-info-modal {
+  z-index: 2000000001;
+  border-radius: 0px !important;
+  border-top-left-radius: 0.75rem !important;
+  border-top-right-radius: 0.75rem !important;
+}

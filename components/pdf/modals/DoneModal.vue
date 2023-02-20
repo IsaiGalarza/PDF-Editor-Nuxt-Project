@@ -12,11 +12,12 @@
       </span>
     </div>
     <!--End:: Close Button -->
-    <template #title>
-      <h4 class="text-center font-semibold text-2xl text-gray-800 pb-2">
-        {{ isComplete ? 'Check Email' : 'You are Done!' }}
-      </h4>
-    </template>
+    <div class="flex justify-center pb-2">
+      <CheckedFillIcon width="90" />
+    </div>
+    <h4 class="text-center font-semibold text-2xl text-gray-800 pb-2">
+      {{ isComplete ? 'Check Email' : 'You are Done!' }}
+    </h4>
     <span class="w-full text-center block py-0 px-2 pb-8 text-[16px]">
       {{ isComplete ? 'PDF copy has been sent!' : 'Check your email' }}
     </span>
@@ -26,9 +27,13 @@
 <script>
 import Vue from 'vue'
 import FileAction from '~/models/FileAction'
+import CheckedFillIcon from '../../svg-icons/CheckedFillIcon.vue'
 
 export default Vue.extend({
   name: 'DoneModal',
+  components: {
+    CheckedFillIcon,
+  },
   model: {
     prop: 'visible',
     event: 'updateVisibility',

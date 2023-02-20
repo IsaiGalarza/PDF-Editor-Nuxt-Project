@@ -1,23 +1,29 @@
 <template>
-  <div class="px-2 sm:px-0">
+  <div>
     <div class="bg-[#F4F906] text-[#EE1B1B] text-base px-6 py-2 flex items-center"
       v-if="isConfirm && !isLoading && $auth.loggedIn && isCreator">
       <!-- <exclamation-icon class="text-white mr-2" /> -->
       Free user will be asked to scroll to the bottom of last page to click Confirm. A copy with free user signature
       will be sent to all users.
     </div>
-    <div class="w-full py-1 pb-2" v-if="isConfirm && !isScrollBottom && !isCreator">
-      <span class="float-left pt-2 px-2">Scroll to the bottom of file to confirm that you have read.</span>
-      <button class="text-white bg-zinc-500 rounded px-4 py-2 float-right mr-2" @click="cancelConfrim">Cancel</button>
+    <div class="w-full py-1 pb-2 bg-gray-200 sm:bg-lime-200 flex items-center justify-between" v-if="isConfirm && !isScrollBottom && !isCreator">
+      <!-- <span class="float-left pt-2 px-2">Scroll to the bottom of file to confirm that you have read.</span> -->
+      <span class="float-left py-1 px-2">Click here to start Confirm
+        <input type="checkbox" class="ml-1" @change="confrimStart" />
+      </span>
+      <!-- <button class="text-white bg-zinc-500 rounded px-4 py-2 float-right mr-2" @click="cancelConfrim">Cancel</button> -->
+      <button class="bg-red-500 w-4 h-4 rounded-full text-xs text-white lg:mr-4 mr-2 sm:hidden" @click="cancelConfrim">x</button>
     </div>
-    <div class="flex justify-between h-full" v-if="userRole == 'free_user' && isSign && isAgreedSign === -1">
-      <span class="float-left m-2 text-[10px] lg:text-sm font-bold w-50 d-flex">I agree to apply my electronic signature/initials.
+    <div class="flex justify-between items-center h-full bg-gray-200" v-if="userRole == 'free_user' && isSign && isAgreedSign === -1">
+      <span class="float-left m-2 text-[10px] lg:text-sm font-bold d-flex">I agree to apply my electronic signature/initials.
         <input type="checkbox" class="ml-1" @change="checkBoxChange" /></span>
-      <div class="float-right lg:mr-4 mr-2 flex align-items-center">
+      <!-- <div class="float-right lg:mr-4 mr-2 flex align-items-center">
         <button class="bg-paperdazgreen-400 h-7 px-2 rounded mr-1 text-xs text-white"
           @click="signContinue">Start</button>
         <button class="bg-[#979797] px-2 rounded h-7 text-xs text-white" @click="signCancel">Cancel</button>
-      </div>
+      </div> -->
+      <button class="bg-[#979797] px-2 rounded h-7 text-xs text-white lg:mr-4 mr-2 hidden sm:block" @click="signCancel">Cancel</button>
+      <button class="bg-red-500 w-4 h-4 rounded-full text-xs text-white lg:mr-4 mr-2 sm:hidden" @click="signCancel">x</button>
     </div>
     <div v-else-if="userRole == 'free_user' && isSign && isAgreedSign === 1"
       class="h-full pt-2 font-bold pl-2 text-[#77b450]">
@@ -29,7 +35,7 @@
     </div>
 
     <div v-if="(!isLoading && !isCreator && isComplete)"
-      class="flex flex-wrap items-center justify-between w-full gap-x-1 gap-y-2 text-[#757575] text-base sm:text-2xl sm:hidden"
+      class="flex flex-wrap items-center justify-between w-full gap-x-1 gap-y-2 text-[#757575] text-base sm:text-2xl sm:hidden px-2"
       :class="[isConfirm ? 'py-0' : 'py-2']">
       <button class="rounded h-8 w-8 bg-white">-</button>
       <div class="flex items-center">
@@ -46,7 +52,7 @@
       <button @click="undoFunction" class="rounded h-8 bg-white text-sm px-2">UNDO</button>
     </div>
     <div v-if="(!isLoading && !isCreator && isComplete)"
-      class="tools-container-wrapper flex flex-wrap items-center justify-between w-full gap-x-1 gap-y-2 text-[#757575] text-base sm:text-2xl sm:hidden"
+      class="tools-container-wrapper flex flex-wrap items-center justify-between w-full gap-x-1 gap-y-2 text-[#757575] text-base sm:text-2xl sm:hidden px-2"
       :class="[isConfirm ? 'py-0' : 'py-2']">
       <template v-if="showInsertTools" class="overflow-x-auto">
         <button class="rounded-full h-8 w-20 text-xs" :class="[activeTool == TOOL_TYPE.name ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
@@ -116,7 +122,7 @@
         isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.circle)">
           <hollow-circle-icon />
         </button>
-        <button class="rounded text-base h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.dot ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+        <button class="rounded h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.dot ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
         isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.dot)">
           <solid-circle-icon />
         </button>
@@ -427,6 +433,7 @@ export default {
     },
     checkBoxChange(e) {
       this.signAgreeChecked = e.target.checked
+      this.signContinue()
     },
     allowAnnotationsSign_Initial(type) {
       switch (this.isCreator && (this.isComplete || this.isSign)) {
@@ -534,6 +541,11 @@ export default {
       }) : toDataURL(signatureURL).then((dataUrl) => {
         this.signature = dataUrl
       })
+    },
+    confrimStart(e) {
+      if (e.target.checked) {
+        this.$store.commit('SET_PDF_PAGE_BOTTOM')
+      }
     },
   },
   watch: {

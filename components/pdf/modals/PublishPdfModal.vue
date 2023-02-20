@@ -32,7 +32,7 @@
       If so, we will send a copy to your email.
     </span>
     <div class="flex justify-around mt-6">
-      <button class="h-10 text-xs w-[150px] max-w-[50%] rounded-lg shadow border-[#D9251E]" type="button"
+      <button class="h-10 text-xs w-[150px] max-w-[50%] rounded-lg shadow border-[#D9251E] mr-1" type="button"
         :disabled="isLoading" @click="closeModal()" :class="
           isConfirm
             ? 'bg-zinc-500 border-[0px] text-white'
@@ -41,7 +41,7 @@
         {{ isCreator ? 'Cancel' : 'Back' }}
       </button>
       <button
-        class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400"
+        class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400 ml-1"
         :disabled="isLoading" @click="onSubmit">
         <span class="inline-flex gap-1 items-center">
           Yes

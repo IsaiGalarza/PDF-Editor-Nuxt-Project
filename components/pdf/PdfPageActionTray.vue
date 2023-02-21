@@ -152,7 +152,7 @@
       use-default-button />
     <!-- v-model="showInitialModal" -->
 
-    <el-dialog :visible.sync="showPdfInfo" :append-to-body="true" :show-close="false" center width="100%" top="100vh" custom-class="-translate-y-full sm:hidden pdf-info-modal"
+    <el-dialog :visible.sync="showPdfInfo" :append-to-body="true" :show-close="false" center width="100%" top="100vh" custom-class="-translate-y-full sm:hidden bottom-sm-modal"
       class="bottom-0 overflow-hidden sm:hidden">
       <div class="w-full flex flex-col p-0 -mt-8 -mb-4">
         <div class="border-b flex items-center justify-between py-2">

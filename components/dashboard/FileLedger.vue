@@ -487,7 +487,7 @@ export default Vue.extend({
       this.fetchFiles(this.returnedDataPage, this.searchParam)
     },
     pdfUser: function () {
-      console.log('ppp', this.pdfUser);
+      // console.log('ppp', this.pdfUser);
     },
     refresh: function () {
       this.$nuxt.refresh()

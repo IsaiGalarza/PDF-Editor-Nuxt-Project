@@ -15,20 +15,20 @@
           @submit.prevent="$event.preventDefault()">
           <span class="el-dropdown-link left-roll1 flex-1">
             <input type="text"
-              class="search-input w-full lg:w-[75%] h-10 pl-4 mr-2 text-black bg-transparent flex-1 border-[1px] border-paperdazgreen-400 rounded-lg focus:border-paperdazgreen-700 outline-none float-right"
+              class="search-input w-[75%] h-10 pl-4 ml-2 mr-2 text-black bg-transparent flex-1 border-[1px] border-paperdazgreen-400 rounded-lg focus:border-paperdazgreen-700 outline-none float-right"
               placeholder="Search Files" v-model="folderSearch" />
           </span>
           <button
-            class="circle circle-18 bg-paperdazgreen-400 text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
+            class="circle circle-18 bg-paperdazgreen-400 text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
             <search-icon width="16" height="16" currentcolor="white" />
           </button>
         </div>
         <button @click="showCreateCompanyFolderFunc"
-          class="circle circle-18 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
+          class="hidden sm:circle sm:circle-18 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
           <folder-plus-icon />
         </button>
         <button @click="showUploadModalFunction"
-          class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
+          class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
           <plus-icon />
         </button>
       </div>
@@ -36,7 +36,7 @@
     <!-- End:: header -->
     <transition name="fade" mode="out-in" :duration="100">
       <!-- <empty-file-ledger class="min-h-[55vh]" v-if="pdfUser < 1" :isPaidUser= "isPaidUser"/> -->
-      <div class="bg-white rounded-3xl pb-4 text-[#272727] overflow-hidden">
+      <div class="bg-white rounded h-full sm:rounded-3xl pb-4 text-[#272727] overflow-hidden">
         <!-- Start:: Folders -->
         <div v-if="(folders.length > 0 && !folderSelected)">
           <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 flex items-center">
@@ -117,8 +117,8 @@
             <thead class="text-[#414142]">
               <tr>
                 <th class="w-12 text-left fixed-col left">No</th>
-                <th class="text-left !pl-16">File name</th>
-                <th class="text-center">Action required</th>
+                <th class="text-left sm:!pl-16">File name</th>
+                <th class="text-center">Action</th>
                 <th class="text-center">Privacy</th>
                 <th class="text-center">Date &amp; Time</th>
                 <th class="text-center fixed-col right"></th>
@@ -128,12 +128,12 @@
               <tr v-for="(file, i) in pdfUser" :key="i">
                 <td class="fixed-col left">{{ i + 1 + returnedDataPage }}</td>
                 <td class="text-left overflow-hidden">
-                  <div class="flex items-center gap-3 whitespace-nowrap min-w-[150px] max-w-[400px]">
-                    <span class="p-0.5 border border-paperdazgreen-400"
+                  <div class="flex items-center gap-3 whitespace-nowrap max-w-[100px] sm:min-w-[150px] sm:max-w-[400px]">
+                    <span class="p-0.5 border border-paperdazgreen-400 hidden sm:block"
                       :class="[
                         (file.role == userType.PAID && $auth.user.id != file.userId)
                           ? 'rounded-md w-9 h-9 min-w-[36px] min-h-[36px]'
-                          : 'circle circle-17']"
+                          : 'hidden sm:circle sm:circle-17']"
                     >
                       <img :src="
                         (file.user || {}).profile_picture ||
@@ -141,24 +141,30 @@
                       " alt=""
                         :class="[file.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
                     </span>
-                    <div class="overflow-hidden">
+                    <div class="overflow-hidden text-ellipsis max-w-[100px] sm:max-w-none">
                       <p class="text-base font-medium text-[#414142] truncate">
                         <nuxt-link :to="`/pdf/${file.paperLink}`">
                           {{ file.fileName | removeExtension }}
                         </nuxt-link>
                       </p>
-                      <p class="text-xs text-[#878686] truncate">
+                      <p class="text-xs text-[#878686] truncate hidden sm:block">
                         {{ file.userName }}
                       </p>
                     </div>
                   </div>
                 </td>
-                <td class="text-sm text-center">{{ file.fileAction && file.fileAction !== 'share' ? file.fileAction : "-" }}</td>
+                <td class="text-sm text-center"
+                  :class="
+                    file.fileAction === FileAction.COMPLETE ? 'text-paperdazgreen-400' :
+                    file.fileAction === FileAction.SIGNED ? 'text-blue-400' :
+                    file.fileAction === FileAction.CONFIRM ? 'text-purple-400' : ''
+                  "
+                >{{ file.fileAction && file.fileAction !== 'share' ? file.fileAction : "-" }}</td>
                 <td class="text-sm text-center capitalize">{{ (file || {}).filePrivacy }}</td>
                 <td class="text-center">
                   {{ formatDateTime(file.updatedAt) }}
                 </td>
-                <td class="fixed-col right w-[50px]">
+                <td class="fixed-col right w-4 sm:w-[50px]">
                   <div class="w-full h-full grid place-items-center">
                     <el-dropdown trigger="click">
                       <button class="el-dropdown-link w-8 h-8 cursor-pointer grid place-items-center rounded-full"
@@ -296,6 +302,7 @@ import RequestModal from './Tabs/RequestModal.vue'
 import TeamAccess from '~/models/TeamAccess'
 import FilesInFolder from './Tabs/FilesInFolder.vue'
 import MaxPaperlinkModal from './Tabs/MaxPaperlinkModal.vue'
+import FileAction from "~/models/FileAction"
 export default Vue.extend({
   components: {
     EmptyFileLedger,
@@ -374,7 +381,8 @@ export default Vue.extend({
       showUploadIcon: false,
       totalRegisteredPaperlink: null,
       showMaxPaperlinkModal: false,
-      folderSelected: false
+      folderSelected: false,
+      FileAction,
     }
   },
   methods: {

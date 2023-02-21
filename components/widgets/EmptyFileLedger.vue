@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-3xl px-5 py-10 grid place-items-center text-[#272727] position-relative">
+  <div class="bg-white rounded-3xl px-1 sm:px-5 py-0 sm:py-10 grid place-items-center text-[#272727] position-relative">
     <!-- <div class="inline-flex items-center flex-col">
       <h4 class="font-semibold text-xl mb-10">
         Upload a file and get 100 leaves

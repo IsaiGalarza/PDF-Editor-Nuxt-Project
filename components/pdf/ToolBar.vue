@@ -573,7 +573,7 @@ export default {
     }
   },
   mounted: function () {
-    console.log(this.openTypeInitialModal);
+    // console.log(this.openTypeInitialModal);
     this.changeInitialToBase64()
   }
 }

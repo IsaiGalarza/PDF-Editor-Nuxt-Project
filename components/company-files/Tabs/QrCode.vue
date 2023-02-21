@@ -98,7 +98,7 @@ export default Vue.extend({
   mounted() {
     // QRCode.toCanvas(this.$refs.qrcanvas, 'hello', function (res) { console.log('qqqqq>>>', res);});
     // console.log(this.$refs)
-    console.log('ddddrefs>>', this.$refs);
+    // console.log('ddddrefs>>', this.$refs);
     this.showModal = this.visible;
   },
   methods: {

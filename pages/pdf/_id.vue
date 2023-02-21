@@ -295,7 +295,7 @@ import * as worker from 'pdfjs-dist/build/pdf.worker.entry'
 pdfJs.GlobalWorkerOptions.workerSrc = worker
 
 import PinchZoom from 'vue-pinch-zoom'
-import PinchScrollZoom, { PinchScrollZoomEmitData } from "@coddicat/vue-pinch-scroll-zoom";
+import PinchScrollZoom from "@coddicat/vue-pinch-scroll-zoom";
 
 import jsPDF from 'jspdf'
 
@@ -375,7 +375,6 @@ export default mixins(PdfAuth).extend({
     DoneModal,
     PinchZoom,
     PinchScrollZoom,
-    PinchScrollZoomEmitData
   },
   data: () => ({
     pdf: null,
@@ -908,7 +907,7 @@ export default mixins(PdfAuth).extend({
           return { ..._el, id: index + 1 }
         }
       )
-      console.log({ tools: this.tools, initialFileAnnotation: this.initialFileAnnotation, file: this.file })
+      // console.log({ tools: this.tools, initialFileAnnotation: this.initialFileAnnotation, file: this.file })
     },
     // async _setToolsFromFileAnnotations() {
     //   this.tools = JSON.parse(this.file.annotaions || `[]`)

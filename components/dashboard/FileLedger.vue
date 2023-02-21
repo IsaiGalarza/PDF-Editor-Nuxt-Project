@@ -34,16 +34,16 @@
               placeholder="Search Files" v-model="searchParam" />
           </span>
           <button
-            class="circle circle-16 sm:circle-18 bg-paperdazgreen-400 text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
+            class="circle  circle-16 sm:circle-18 bg-paperdazgreen-400 text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
             <search-icon width="16" height="16" currentcolor="white" />
           </button>
           <!-- <div class="flex" v-if="isPaidUser">
             <button @click="showCreateCompanyFolderFunc"
-              class="circle circle-18 bg-paperdazgreen-400 text-xl text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
+              class="circle circle-18 bg-paperdazgreen-400 text-xl text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
               <folder-plus-icon />
             </button>
             <button @click="showUploadModalFunction"
-              class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-white text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
+              class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-white text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
               <plus-icon />
             </button>
           </div> -->
@@ -66,7 +66,7 @@
         <table key="3" ref="fileLedgerTable" class="file-ledger-table" v-else>
           <thead class="text-sm sm:text-base">
             <tr class="text-left">
-              <th class="text-left fixed-col left">No</th>
+              <th class="w-12 text-left fixed-col left">No</th>
               <th class="text-left !pl-5 sm:!pl-16">File Name</th>
               <th class="text-center">{{ isPaidUser ? 'Action' : 'Actions' }}</th>
               <th class="text-center" v-if="isPaidUser">Action By</th>
@@ -79,9 +79,9 @@
               <td class="text-left fixed-col left">{{ i + 1 + returnedDataPage }}</td>
               <td class="text-center">
                 <div class="flex items-center gap-1.5">
-                  <div class="border !border-paperdazgreen-300 p-0.5 hidden sm:block"
+                  <div class="border !border-paperdazgreen-300 p-0.5 hidden"
                     :class="[
-                      (file.role == userType.PAID || $auth.user.role == userType.FREE) ? 'rounded-md w-9 h-9' : 'circle circle-17'
+                      (file.role == userType.PAID || $auth.user.role == userType.FREE) ? 'sm:block rounded-md w-9 h-9' : 'sm:circle sm:circle-17'
                     ]">
                     <img
                       v-if="(file.fileOwner || {}).profile_picture"
@@ -97,7 +97,7 @@
                       </div>
                   </div>
                   <div class="max-sm:w-24">
-                    <p class="max-sm:truncate max-sm:text-xxs sm:text-base font-medium text-left sm:ml-1">
+                    <p class="max-sm:truncate max-sm:text-xs sm:text-base font-medium text-left sm:ml-1">
                       <nuxt-link :to="`/pdf/${file.paperLink}`">
                         <!-- {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName  }} -->
                         {{ file.fileName | removeExtension }}
@@ -109,18 +109,24 @@
                         :href="`/public/profile/${(file.fileOwnerId || {})}`"
                         target="_blank"
                       >
-                        <p class="ml-1 max-sm:text-xxs sm:text-base">
+                        <p class="ml-1 max-sm:text-xs sm:text-base">
                           {{ (file.fileOwner || {}).company_name }}
                         </p>
                       </a>
-                      <p v-else class="ml-1 max-sm:text-xxs sm:text-base flex">
+                      <p v-else class="ml-1 max-sm:text-xs sm:text-base flex">
                         {{ (file || {}).userName }}
                       </p>
                     </div>
                   </div>
                 </div>
               </td>
-              <td class="text-center">
+              <td class="text-sm text-center capitalize"
+                  :class="
+                    file.fileAction === FileAction.COMPLETE ? 'text-paperdazgreen-400' :
+                    file.fileAction === FileAction.SIGNED ? 'text-blue-400' :
+                    file.fileAction === FileAction.CONFIRM ? 'text-purple-400' : ''
+                  "
+              >
                 {{
                     (isPaidUser ? file.fileAction : formatFileAction(file.file.fileAction, file.action))  || "-"
                 }}
@@ -241,7 +247,8 @@ export default Vue.extend({
       scrollObserver: undefined,
       showUploadDocumentModal: false,
       showCreateCompanyFolder: false,
-      showCreateTeam: false
+      showCreateTeam: false,
+      FileAction,
     }
   },
   mounted() {
@@ -502,7 +509,7 @@ export default Vue.extend({
 <style lang="postcss" scoped>
 .file-ledger-table {
   --background: white;
-  @apply max-sm:text-xxs sm:text-base w-full whitespace-nowrap;
+  @apply max-sm:text-xs sm:text-base w-full whitespace-nowrap;
   border-collapse: separate;
   border-spacing: 0px 0px;
   height: fit-content;
@@ -514,11 +521,11 @@ export default Vue.extend({
     }
   }
   & th {
-    @apply max-sm:pt-4 max-sm:pb-1 sm:pt-8 sm:pb-3 max-sm:text-xxs sm:text-base;
+    @apply max-sm:pt-4 max-sm:pb-1 sm:pt-8 sm:pb-3 max-sm:text-xs sm:text-base;
     background: var(--background);
   }
   & td {
-    @apply py-3 max-sm:text-xxs sm:text-base;
+    @apply py-3 max-sm:text-xs sm:text-base;
   }
   & td,
   & th {

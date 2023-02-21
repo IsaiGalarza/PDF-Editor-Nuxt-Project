@@ -10,12 +10,12 @@
         </a>
         <img src="../../assets/img/users-icon.png" @click="showCreateTeamFunc" class="lg:w-[44px] w-[35px] cursor-pointer" />
       </h5>
-      <div class="w-full text-white flex items-center my-2">
+      <div class="w-full text-white flex items-center my-2 pl-2">
         <div action="" class="flex-1 text-xs font-medium flex items-center relative justify-end mr-2"
           @submit.prevent="$event.preventDefault()">
           <span class="el-dropdown-link left-roll1 flex-1">
             <input type="text"
-              class="search-input w-[75%] h-10 pl-4 ml-2 mr-2 text-black bg-transparent flex-1 border-[1px] border-paperdazgreen-400 rounded-lg focus:border-paperdazgreen-700 outline-none float-right"
+              class="w-full search-input h-10 pl-4 ml-2 mr-2 text-black bg-transparent flex-1 border-[1px] border-paperdazgreen-400 rounded-lg focus:border-paperdazgreen-700 outline-none float-right"
               placeholder="Search Files" v-model="folderSearch" />
           </span>
           <button
@@ -24,7 +24,7 @@
           </button>
         </div>
         <button @click="showCreateCompanyFolderFunc"
-          class="hidden sm:circle sm:circle-18 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
+          class="circle circle-18 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
           <folder-plus-icon />
         </button>
         <button @click="showUploadModalFunction"
@@ -129,7 +129,7 @@
                 <td class="fixed-col left">{{ i + 1 + returnedDataPage }}</td>
                 <td class="text-left overflow-hidden">
                   <div class="flex items-center gap-3 whitespace-nowrap max-w-[100px] sm:min-w-[150px] sm:max-w-[400px]">
-                    <span class="p-0.5 border border-paperdazgreen-400 hidden sm:block"
+                    <div class="p-0.5 border border-paperdazgreen-400 hidden sm:block"
                       :class="[
                         (file.role == userType.PAID && $auth.user.id != file.userId)
                           ? 'rounded-md w-9 h-9 min-w-[36px] min-h-[36px]'
@@ -140,9 +140,9 @@
                         '/img/placeholder_picture.png'
                       " alt=""
                         :class="[file.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
-                    </span>
-                    <div class="overflow-hidden text-ellipsis max-w-[100px] sm:max-w-none">
-                      <p class="text-base font-medium text-[#414142] truncate">
+                    </div>
+                  <div class="max-sm:w-24">
+                    <p class="max-sm:truncate max-sm:text-xs sm:text-base font-medium text-left sm:ml-1">
                         <nuxt-link :to="`/pdf/${file.paperLink}`">
                           {{ file.fileName | removeExtension }}
                         </nuxt-link>
@@ -153,15 +153,15 @@
                     </div>
                   </div>
                 </td>
-                <td class="text-sm text-center"
+                <td class="text-sm text-center capitalize"
                   :class="
                     file.fileAction === FileAction.COMPLETE ? 'text-paperdazgreen-400' :
                     file.fileAction === FileAction.SIGNED ? 'text-blue-400' :
                     file.fileAction === FileAction.CONFIRM ? 'text-purple-400' : ''
                   "
-                >{{ file.fileAction && file.fileAction !== 'share' ? file.fileAction : "-" }}</td>
+                >{{ file.fileAction && file.fileAction !== FileAction.SHARED ? file.fileAction : "-" }}</td>
                 <td class="text-sm text-center capitalize">{{ (file || {}).filePrivacy }}</td>
-                <td class="text-center">
+                <td class="text-center whitespace-normal px-1">
                   {{ formatDateTime(file.updatedAt) }}
                 </td>
                 <td class="fixed-col right w-4 sm:w-[50px]">
@@ -626,13 +626,47 @@ export default Vue.extend({
 }
 .custom-table {
   height: fit-content;
+  --background: white;
+  @apply max-sm:text-xs sm:text-base w-full whitespace-nowrap;
+  border-collapse: separate;
+  border-spacing: 0px 0px;
+  height: fit-content;
+  & tr {
+    @apply border-b border-gray-100;
+    transition: all 0.2s ease-in-out;
+    &.highlight {
+      --background: rgba(233, 254, 219, 0.46);
+    }
+  }
   & th {
-    @apply pt-8 pb-3 sm:text-[12px] md:text-base;
+    @apply max-sm:pt-4 max-sm:pb-1 sm:pt-8 sm:pb-3 max-sm:text-xs sm:text-base;
     background: var(--background);
-    padding-top: 20px;
   }
   & td {
-    @apply py-3 sm:text-[12px] md:text-base;
+    @apply py-3 max-sm:text-xs sm:text-base;
+  }
+  & td,
+  & th {
+    @apply px-1 border-b border-gray-100;
+    transition: all 0.2s ease-in-out;
+    background: var(--background);
+    &:first-child {
+      @apply pl-5;
+    }
+    &:last-child {
+      @apply pr-5;
+    }
+    &.fixed-col {
+      position: sticky;
+      background: white;
+      background: var(--background);
+      &.left {
+        left: -0.1px;
+      }
+      &.right {
+        right: -0.1px;
+      }
+    }
   }
 }
 </style>

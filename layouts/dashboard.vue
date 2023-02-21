@@ -3,7 +3,7 @@
   <div id="dashboard-layout" class="lg:p-4 bg-[#F6F5FA]">
     <div
       id="sidebar-container"
-      class="h-full overflow-hidden relative"
+      class="h-full overflow-hidden relative max-sm:z-[21] sm:z-20"
       :class="{ active: collapseSidebar }"
     >
       <div class="overlay" @click="collapseSidebar = false"></div>
@@ -11,7 +11,7 @@
     </div>
     <dashboard-navbar
       id="dashboard-navbar"
-      class="relative z-10 mb-lg-4 mb-2 justify-self-stretch"
+      class="relative z-20 mb-lg-4 mb-2 justify-self-stretch"
       @open-sidebar="collapseSidebar = true"
       :title="$store.state.pageName || ''"
     />
@@ -210,7 +210,7 @@ export default mixins(login).extend({
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 10;
+  z-index: 20;
 }
 
 #dashboard-navbar {
@@ -251,7 +251,6 @@ export default mixins(login).extend({
 #sidebar-container {
   --sidebar-container-width: 245px;
   position: fixed;
-  z-index: 21;
   top: 0;
   bottom: 0;
   left: calc(0px - var(--sidebar-container-width));

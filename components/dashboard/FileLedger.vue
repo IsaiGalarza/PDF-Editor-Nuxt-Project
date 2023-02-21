@@ -30,11 +30,11 @@
         <div class="text-xs font-medium flex justify-end items-center gap-2 relative w-full">
           <span class="el-dropdown-link left-roll1 flex-1">
             <input type="text"
-              class="search-input h-10 transition bg-transparent ps-2 flex-1 border-[1px] border-paperdazgreen-400 rounded-lg focus:border-paperdazgreen-700 outline-none float-right sm:w-3/4 w-full"
+              class="search-input h-8 sm:h-10 transition bg-transparent ps-2 flex-1 border-[1px] border-paperdazgreen-400 rounded-lg focus:border-paperdazgreen-700 outline-none float-right sm:w-3/4 w-full"
               placeholder="Search Files" v-model="searchParam" />
           </span>
           <button
-            class="circle circle-18 bg-paperdazgreen-400 text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
+            class="circle circle-16 sm:circle-18 bg-paperdazgreen-400 text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
             <search-icon width="16" height="16" currentcolor="white" />
           </button>
           <!-- <div class="flex" v-if="isPaidUser">
@@ -66,8 +66,8 @@
         <table key="3" ref="fileLedgerTable" class="file-ledger-table" v-else>
           <thead class="text-sm sm:text-base">
             <tr class="text-left">
-              <th class="w-12 text-left fixed-col left">No</th>
-              <th class="text-left !pl-16">File Name</th>
+              <th class="text-left fixed-col left">No</th>
+              <th class="text-left !pl-5 sm:!pl-16">File Name</th>
               <th class="text-center">{{ isPaidUser ? 'Action' : 'Actions' }}</th>
               <th class="text-center" v-if="isPaidUser">Action By</th>
               <th class="text-center">Date & Time</th>
@@ -79,7 +79,7 @@
               <td class="text-left fixed-col left">{{ i + 1 + returnedDataPage }}</td>
               <td class="text-center">
                 <div class="flex items-center gap-1.5">
-                  <div class="border !border-paperdazgreen-300 p-0.5"
+                  <div class="border !border-paperdazgreen-300 p-0.5 hidden sm:block"
                     :class="[
                       (file.role == userType.PAID || $auth.user.role == userType.FREE) ? 'rounded-md w-9 h-9' : 'circle circle-17'
                     ]">
@@ -96,25 +96,27 @@
                         {{ (file.fileOwner || {}).company_name | initialFirstName }}
                       </div>
                   </div>
-                  <div class="overflow-hidden">
-                    <p class="text-sm font-medium text-center ml-1 flex">
+                  <div class="max-sm:w-24">
+                    <p class="max-sm:truncate max-sm:text-xxs sm:text-base font-medium text-left sm:ml-1">
                       <nuxt-link :to="`/pdf/${file.paperLink}`">
                         <!-- {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName  }} -->
                         {{ file.fileName | removeExtension }}
                       </nuxt-link>
                     </p>
-                    <a
-                      v-if="$auth.user.role == userType.FREE"
-                      :href="`/public/profile/${(file.fileOwnerId || {})}`"
-                      target="_blank"
-                    >
-                      <p class="ml-1 text-xs flex">
-                        {{ (file.fileOwner || {}).company_name }}
+                    <div class="hidden sm:block">
+                      <a
+                        v-if="$auth.user.role == userType.FREE"
+                        :href="`/public/profile/${(file.fileOwnerId || {})}`"
+                        target="_blank"
+                      >
+                        <p class="ml-1 max-sm:text-xxs sm:text-base">
+                          {{ (file.fileOwner || {}).company_name }}
+                        </p>
+                      </a>
+                      <p v-else class="ml-1 max-sm:text-xxs sm:text-base flex">
+                        {{ (file || {}).userName }}
                       </p>
-                    </a>
-                    <p v-else class="ml-1 text-xs flex">
-                      {{ (file || {}).userName }}
-                    </p>
+                    </div>
                   </div>
                 </div>
               </td>
@@ -126,7 +128,7 @@
               <td class="text-center" v-if="isPaidUser">
                 {{ file.user.firstName + " " + file.user.lastName }}
               </td>
-              <td class="text-center">
+              <td class="text-center whitespace-normal px-1">
                 {{ formatDateTime(file.updatedAt) }}
               </td>
               <td class="fixed-col right">
@@ -500,7 +502,7 @@ export default Vue.extend({
 <style lang="postcss" scoped>
 .file-ledger-table {
   --background: white;
-  @apply text-sm w-full whitespace-nowrap;
+  @apply max-sm:text-xxs sm:text-base w-full whitespace-nowrap;
   border-collapse: separate;
   border-spacing: 0px 0px;
   height: fit-content;
@@ -512,15 +514,15 @@ export default Vue.extend({
     }
   }
   & th {
-    @apply pt-8 pb-3 sm:text-[12px] md:text-base;
+    @apply max-sm:pt-4 max-sm:pb-1 sm:pt-8 sm:pb-3 max-sm:text-xxs sm:text-base;
     background: var(--background);
   }
   & td {
-    @apply py-3 sm:text-[12px] md:text-base;
+    @apply py-3 max-sm:text-xxs sm:text-base;
   }
   & td,
   & th {
-    @apply px-2 border-b border-gray-100;
+    @apply px-1 border-b border-gray-100;
     transition: all 0.2s ease-in-out;
     background: var(--background);
     &:first-child {

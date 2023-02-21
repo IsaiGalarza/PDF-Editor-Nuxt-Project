@@ -73,7 +73,6 @@
           :limitPan="true"
           :limitZoom="1000"
           disableZoomControl="disable"
-          :disablePan="!panable"
         >
         <!-- <pinch-scroll-zoom
           ref="zoomer"

@@ -195,7 +195,7 @@ import CreateCompanyFolder from '../company-files/Tabs/CreateCompanyFolder.vue'
 import UploadDocumentModal from './UploadDocumentModal.vue'
 import CreateTeam from '../company-files/Tabs/CreateTeam.vue'
 import EmptyFileLedger from '../widgets/EmptyFileLedger.vue'
-import FileAction from "~/models/FileAction"
+import FileAction from '~/models/FileAction'
 export default Vue.extend({
   components: {
     TreeIcon,

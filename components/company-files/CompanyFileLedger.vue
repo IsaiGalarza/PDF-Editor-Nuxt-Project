@@ -2,7 +2,7 @@
   <div>
     <!-- Start:: header -->
     <header class="flex flex-col xs:flex-row xs:items-center justify-between whitespace-nowrap px-2 mt-3 mb-2">
-      <h5 class="text-lg font-semibold text-[#272727] inline-flex w-full items-center gap-2 my-2">
+      <h5 class="text-lg font-semibold text-[#272727] hidden sm:inline-flex w-full items-center gap-2 my-2">
         Company Files
         <a :href="`/public/profile/${mainUserLink}`" target="_blanck">
           <!-- <company-icon /> -->
@@ -24,11 +24,11 @@
           </button>
         </div>
         <button @click="showCreateCompanyFolderFunc"
-          class="circle circle-18 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
+          class="hidden sm:circle sm:circle-18 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
           <folder-plus-icon />
         </button>
         <button @click="showUploadModalFunction"
-          class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
+          class="hidden sm:circle sm:circle-18 p-2 ml-2 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
           <plus-icon />
         </button>
       </div>
@@ -37,9 +37,19 @@
     <transition name="fade" mode="out-in" :duration="100">
       <!-- <empty-file-ledger class="min-h-[55vh]" v-if="pdfUser < 1" :isPaidUser= "isPaidUser"/> -->
       <div class="bg-white rounded h-full sm:rounded-3xl pb-4 text-[#272727] overflow-hidden">
+        <div class="flex sm:hidden items-center justify-between px-4 py-3 border-b border-gray-100">
+          <div class="flex items-center bg-gray-100 rounded text-sm">
+            <div class="flex items-center justify-center h-8 w-24 cursor-pointer" :class="{'text-white bg-gray-500 rounded': !showFolders}" @click="showFolders = false">Files</div>
+            <div class="flex items-center justify-center h-8 w-24 cursor-pointer" :class="{'text-white bg-gray-500 rounded': showFolders}" @click="showFolders = true">Folders</div>
+          </div>
+          <button @click="showFolders ? showCreateCompanyFolderFunc() : showUploadModalFunction()"
+            class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-xl text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
+            <plus-icon />
+          </button>
+        </div>
         <!-- Start:: Folders -->
-        <div v-if="(folders.length > 0 && !folderSelected)">
-          <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 flex items-center">
+        <div v-if="(folders.length > 0 && !folderSelected)" :class="{'hidden sm:block': !showFolders}">
+          <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 hidden sm:flex items-center">
             Folders
           </h4>
           <div class="overflow-x-auto custom-scrollbar relative">
@@ -92,144 +102,154 @@
             </div>
           </div>
         </div>
-        <!-- End:: Folders -->
-        <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
-        <!-- Start:: Files -->
-        <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 flex items-center"
-          v-if="folders.length > 0 && !folderSelected">
-          Files
-        </h4>
-        <div v-if="folderSelected"
-          class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 flex items-center">
-          <button class="bg-paperdazgreen-400 p-2 text-white text-lg rounded-lg" @click="backFolder">Back</button>
-          <h2 class="text-paperdazgreen-400 font-bold w-5/6 text-center">{{ FilesInFolerContent.name }}</h2>
+        <div v-else-if="!fileSpinner" class="sm:hidden text-center text-sm p-4" :class="{'hidden': !showFolders}">
+          No Folders
         </div>
-        <div class="overflow-x-auto custom-scrollbar relative">
-          <!-- START: spinner container -->
-          <div v-if="fileSpinner"
-            class="absolute z-10 w-full h-full bg-white top-0 left-0 rounded-lg flex justify-center items-center">
-            <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
+        <!-- End:: Folders -->
+        <!-- Start:: Files -->
+        <div :class="{'hidden sm:block': showFolders}">
+          <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
+          <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 hidden sm:flex items-center"
+            v-if="folders.length > 0 && !folderSelected">
+            Files
+          </h4>
+          <div v-if="folderSelected"
+            class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 flex items-center">
+            <button class="bg-paperdazgreen-400 p-2 text-white text-lg rounded-lg" @click="backFolder">Back</button>
+            <h2 class="text-paperdazgreen-400 font-bold w-5/6 text-center">{{ FilesInFolerContent.name }}</h2>
           </div>
-          <!-- END: spinner container -->
-          <empty-file-ledger class="min-h-[55vh]" v-if="pdfUser < 1" :isPaidUser="isPaidUser" />
-          <!--START: No files container-->
-          <table class="custom-table" v-else>
-            <thead class="text-[#414142]">
-              <tr>
-                <th class="w-12 text-left fixed-col left">No</th>
-                <th class="text-left sm:!pl-16">File name</th>
-                <th class="text-center">Action</th>
-                <th class="text-center">Privacy</th>
-                <th class="text-center">Date &amp; Time</th>
-                <th class="text-center fixed-col right"></th>
-              </tr>
-            </thead>
-            <tbody class="text-[#505050]">
-              <tr v-for="(file, i) in pdfUser" :key="i">
-                <td class="fixed-col left">{{ i + 1 + returnedDataPage }}</td>
-                <td class="text-left overflow-hidden">
-                  <div class="flex items-center gap-3 whitespace-nowrap max-w-[100px] sm:min-w-[150px] sm:max-w-[400px]">
-                    <div class="p-0.5 border border-paperdazgreen-400 hidden sm:block"
-                      :class="[
-                        (file.role == userType.PAID && $auth.user.id != file.userId)
-                          ? 'rounded-md w-9 h-9 min-w-[36px] min-h-[36px]'
-                          : 'hidden sm:circle sm:circle-17']"
-                    >
-                      <img :src="
-                        (file.user || {}).profile_picture ||
-                        '/img/placeholder_picture.png'
-                      " alt=""
-                        :class="[file.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
+          <div class="overflow-x-auto custom-scrollbar relative">
+            <!-- START: spinner container -->
+            <div v-if="fileSpinner"
+              class="absolute z-10 w-full h-full bg-white top-0 left-0 rounded-lg flex justify-center items-center">
+              <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
+            </div>
+            <!-- END: spinner container -->
+            <empty-file-ledger class="min-h-[55vh]" v-if="pdfUser < 1" :isPaidUser="isPaidUser" />
+            <!--START: No files container-->
+            <table class="custom-table" v-else>
+              <thead class="text-[#414142]">
+                <tr>
+                  <th class="w-12 text-left fixed-col left">No</th>
+                  <th class="text-left sm:!pl-16">File name</th>
+                  <th class="text-center">Action</th>
+                  <th class="text-center">Privacy</th>
+                  <th class="text-center">Date &amp; Time</th>
+                  <th class="text-center fixed-col right"></th>
+                </tr>
+              </thead>
+              <tbody class="text-[#505050]">
+                <tr v-for="(file, i) in pdfUser" :key="i">
+                  <td class="fixed-col left">{{ i + 1 + returnedDataPage }}</td>
+                  <td class="text-left overflow-hidden">
+                    <div class="flex items-center gap-3 whitespace-nowrap max-w-[100px] sm:min-w-[150px] sm:max-w-[400px]">
+                      <div class="p-0.5 border border-paperdazgreen-400 hidden sm:block"
+                        :class="[
+                          (file.role == userType.PAID && $auth.user.id != file.userId)
+                            ? 'rounded-md w-9 h-9 min-w-[36px] min-h-[36px]'
+                            : 'hidden sm:circle sm:circle-17']"
+                      >
+                        <img :src="
+                          (file.user || {}).profile_picture ||
+                          '/img/placeholder_picture.png'
+                        " alt=""
+                          :class="[file.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
+                      </div>
+                      <div class="max-sm:w-24">
+                        <p class="max-sm:truncate max-sm:text-xs sm:text-base font-medium text-left sm:ml-1">
+                          <nuxt-link :to="`/pdf/${file.paperLink}`">
+                            {{ file.fileName | removeExtension }}
+                          </nuxt-link>
+                        </p>
+                        <p class="text-xs text-[#878686] truncate hidden sm:block">
+                          {{ file.userName }}
+                        </p>
+                      </div>
                     </div>
-                  <div class="max-sm:w-24">
-                    <p class="max-sm:truncate max-sm:text-xs sm:text-base font-medium text-left sm:ml-1">
-                        <nuxt-link :to="`/pdf/${file.paperLink}`">
-                          {{ file.fileName | removeExtension }}
-                        </nuxt-link>
-                      </p>
-                      <p class="text-xs text-[#878686] truncate hidden sm:block">
-                        {{ file.userName }}
-                      </p>
-                    </div>
-                  </div>
-                </td>
-                <td class="text-sm text-center capitalize"
-                  :class="
-                    file.fileAction === FileAction.COMPLETE ? 'text-paperdazgreen-400' :
-                    file.fileAction === FileAction.SIGNED ? 'text-blue-400' :
-                    file.fileAction === FileAction.CONFIRM ? 'text-purple-400' : ''
-                  "
-                >{{ file.fileAction && file.fileAction !== FileAction.SHARED ? file.fileAction : "-" }}</td>
-                <td class="text-sm text-center capitalize">{{ (file || {}).filePrivacy }}</td>
-                <td class="text-center whitespace-normal px-1">
-                  {{ formatDateTime(file.updatedAt) }}
-                </td>
-                <td class="fixed-col right w-4 sm:w-[50px]">
-                  <div class="w-full h-full grid place-items-center">
-                    <el-dropdown trigger="click">
-                      <button class="el-dropdown-link w-8 h-8 cursor-pointer grid place-items-center rounded-full"
-                        :class="[createdByTeamMember(file.uploadedBy) && isTeam ? 'bg-paperdazgreen-300/20' : '']">
+                  </td>
+                  <td class="text-sm text-center capitalize"
+                    :class="
+                      file.fileAction === FileAction.COMPLETE ? 'text-paperdazgreen-400' :
+                      file.fileAction === FileAction.SIGNED ? 'text-blue-400' :
+                      file.fileAction === FileAction.CONFIRM ? 'text-purple-400' : ''
+                    "
+                  >{{ file.fileAction && file.fileAction !== FileAction.SHARED ? file.fileAction : "-" }}</td>
+                  <td class="text-sm text-center capitalize">{{ (file || {}).filePrivacy }}</td>
+                  <td class="text-center whitespace-normal px-1">
+                    {{ formatDateTime(file.updatedAt) }}
+                  </td>
+                  <td class="fixed-col right w-4 sm:w-[50px]">
+                    <div class="w-full h-full grid place-items-center">
+                      <button class="sm:hidden w-8 h-8 cursor-pointer grid place-items-center rounded-full"
+                        :class="[createdByTeamMember(file.uploadedBy) && isTeam ? 'bg-paperdazgreen-300/20' : '']"
+                        @click="actionFile = file">
                         <ellipsis-icon-vertical-icon />
                       </button>
-                      <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu">
-                        <div class="no-access" v-if="!createdByTeamMember(file.uploadedBy)">no access right</div>
-                        <ul class="min-w-[150px]" v-else>
-                          <li class="dropdown-item" @click="showShareCompanyFileFunc(file)" divided>
-                            <div class="flex justify-between w-full">
-                              <share-icon width="16" height="16" class="inline-block float-left" />
-                              <span>Share</span>
-                            </div>
-                          </li>
-                          <li @click="showRequestModalFunc(file)" class="dropdown-item">
-                            <div class="flex justify-between w-full border-t border-gray-200">
-                              <request-icon width="20" height="20" class="inline-block float-left" />
-                              <span>Request</span>
-                            </div>
-                          </li>
-                          <li class="dropdown-item" @click="showPapertagsModalFunc(file)">
-                            <div class="flex justify-between w-full border-t border-gray-200" >
-                              <span width="20" height="20" class="inline-block float-left">#</span>
-                              <span>Paper Tag</span>
-                            </div>
-                          </li>
-                          <li class="dropdown-item" @click="showCCFlowModalFunc(file)">
-                            <div class="flex justify-between w-full border-t border-gray-200">
-                              <FileSolidIcon width="16" height="16" class="inline-block float-left" />
-                              <span class="ml-1">Carbon Copy</span>
-                            </div>
-                          </li>
-                          <li class="dropdown-item" @click="showEditCompanyFileFunc(file)">
-                            <div class="flex justify-between w-full border-t border-gray-200">
-                              <PenIcon width="16" height="16" class="inline-block float-left" />
-                              <span class="ml-1">Edit</span>
-                            </div>
-                          </li>
-                          <li class="dropdown-item" @click="showMoveCompanyFileFunc(file)">
-                            <div class="flex justify-between w-full border-t border-gray-200">
-                              <MoveIcon width="16" height="16" class="inline-block float-left" />
-                              <span class="ml-1">Move</span>
-                            </div>
-                          </li>
-                          <li class="dropdown-item" @click="showQrCodeFunc(file)">
-                            <div class="flex justify-between w-full border-t border-gray-200">
-                              <QrcodeIcon width="16" height="16" class="inline-block float-left" />
-                              <span class="ml-1">QR Code</span>
-                            </div>
-                          </li>
-                          <li class="dropdown-item" @click="showRemoveCompanyFileFunc(file)">
-                            <div class="flex justify-between w-full border-t border-gray-200">
-                              <trash-can-icon width="16" height="16" class="inline-block float-left" />
-                              <span>Remove</span>
-                            </div>
-                          </li>
-                        </ul>
-                      </el-dropdown-menu>
-                    </el-dropdown>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                      <el-dropdown trigger="click">
+                        <button class="hidden el-dropdown-link w-8 h-8 cursor-pointer sm:grid place-items-center rounded-full"
+                          :class="[createdByTeamMember(file.uploadedBy) && isTeam ? 'bg-paperdazgreen-300/20' : '']">
+                          <ellipsis-icon-vertical-icon />
+                        </button>
+                        <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu hidden sm:block">
+                          <div class="no-access" v-if="!createdByTeamMember(file.uploadedBy)">no access right</div>
+                          <ul class="min-w-[150px]" v-else>
+                            <li class="dropdown-item" @click="showShareCompanyFileFunc(file)" divided>
+                              <div class="flex justify-between w-full">
+                                <share-icon width="16" height="16" class="inline-block float-left" />
+                                <span>Share</span>
+                              </div>
+                            </li>
+                            <li @click="showRequestModalFunc(file)" class="dropdown-item">
+                              <div class="flex justify-between w-full border-t border-gray-200">
+                                <request-icon width="20" height="20" class="inline-block float-left" />
+                                <span>Request</span>
+                              </div>
+                            </li>
+                            <li class="dropdown-item" @click="showPapertagsModalFunc(file)">
+                              <div class="flex justify-between w-full border-t border-gray-200" >
+                                <span width="20" height="20" class="inline-block float-left">#</span>
+                                <span>Paper Tag</span>
+                              </div>
+                            </li>
+                            <li class="dropdown-item" @click="showCCFlowModalFunc(file)">
+                              <div class="flex justify-between w-full border-t border-gray-200">
+                                <FileSolidIcon width="16" height="16" class="inline-block float-left" />
+                                <span class="ml-1">Carbon Copy</span>
+                              </div>
+                            </li>
+                            <li class="dropdown-item" @click="showEditCompanyFileFunc(file)">
+                              <div class="flex justify-between w-full border-t border-gray-200">
+                                <PenIcon width="16" height="16" class="inline-block float-left" />
+                                <span class="ml-1">Edit</span>
+                              </div>
+                            </li>
+                            <li class="dropdown-item" @click="showMoveCompanyFileFunc(file)">
+                              <div class="flex justify-between w-full border-t border-gray-200">
+                                <MoveIcon width="16" height="16" class="inline-block float-left" />
+                                <span class="ml-1">Move</span>
+                              </div>
+                            </li>
+                            <li class="dropdown-item" @click="showQrCodeFunc(file)">
+                              <div class="flex justify-between w-full border-t border-gray-200">
+                                <QrcodeIcon width="16" height="16" class="inline-block float-left" />
+                                <span class="ml-1">QR Code</span>
+                              </div>
+                            </li>
+                            <li class="dropdown-item" @click="showRemoveCompanyFileFunc(file)">
+                              <div class="flex justify-between w-full border-t border-gray-200">
+                                <trash-can-icon width="16" height="16" class="inline-block float-left" />
+                                <span>Remove</span>
+                              </div>
+                            </li>
+                          </ul>
+                        </el-dropdown-menu>
+                      </el-dropdown>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <!-- End:: Files -->
       </div>
@@ -257,6 +277,126 @@
     <QrcodeShare :userFile="userFile" v-model="showQrcodeFiles" />
     <MaxPaperlinkModal v-model="showMaxPaperlinkModal" :totalFile="totalFile" />
     <PdfCCFlowModal :file="userFile" v-model="showCCFlowModal" />
+    <el-dialog :visible.sync="actionFile" :append-to-body="true" :show-close="false" center width="100%" top="100vh" custom-class="-translate-y-full sm:hidden bottom-sm-modal"
+      class="bottom-0 overflow-hidden sm:hidden">
+      <div class="w-full flex flex-col p-0 -mt-8 -mb-4" v-if="actionFile">
+        <div class="flex flex-col items-center justify-center gap-1 pb-5">
+          <div class="p-0.5 border border-paperdazgreen-400 w-20 h-20"
+            :class="[
+              (actionFile.role == userType.PAID && $auth.user.id != actionFile.userId)
+                ? 'rounded-md'
+                : 'circle']"
+          >
+            <img :src="
+              actionFile.user?.profile_picture ||
+              '/img/placeholder_picture.png'
+            " alt=""
+              :class="[actionFile.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
+          </div>
+          <p class="font-bold">{{ actionFile.role == userType.PAID ? 'Paid user' : 'Free user' }}</p>
+          <p class="font-bold text-lg mt-2 mb-0">
+            {{ actionFile.fileName | removeExtension }}
+          </p>
+          <p class="font-bold mb-0">
+            {{ formatDateTime(actionFile.updatedAt) }}
+          </p>
+          <p class="font-bold mt-2">
+            <nuxt-link :to="`/pdf/${actionFile.paperLink}`">
+              <span class="flex items-center gap-2">Sign <EyeIcon /></span>
+            </nuxt-link>
+          </p>
+        </div>
+        <div class="no-access" v-if="!createdByTeamMember(actionFile.uploadedBy)">no access right</div>
+        <ul class="min-w-[150px]" v-else>
+          <li class="dropdown-item" @click="showShareCompanyFileFunc(actionFile)" divided>
+            <div class="flex justify-between items-center w-full py-2">
+              <div class="flex items-center">
+                <div class="w-6 flex items-center justify-start">
+                  <share-icon width="16" height="16" class="inline-block float-left" />
+                </div>
+                <span>Share</span>
+              </div>
+              <arrow-down-icon class="h-2 w-3 -rotate-90" />
+            </div>
+          </li>
+          <li @click="showRequestModalFunc(actionFile)" class="dropdown-item">
+            <div class="flex justify-between items-center w-full border-t border-gray-200 py-2">
+              <div class="flex items-center">
+                <div class="w-6 flex items-center justify-start">
+                  <request-icon width="20" height="20" class="inline-block float-left" />
+                </div>
+                <span>Request</span>
+              </div>
+              <arrow-down-icon class="h-2 w-3 -rotate-90" />
+            </div>
+          </li>
+          <li class="dropdown-item" @click="showPapertagsModalFunc(actionFile)">
+            <div class="flex justify-between items-center w-full border-t border-gray-200 py-2" >
+              <div class="flex items-center">
+                <div width="20" height="20" class="float-left w-6 flex items-center justify-start">#</div>
+                <span>Paper Tag</span>
+              </div>
+              <arrow-down-icon class="h-2 w-3 -rotate-90" />
+            </div>
+          </li>
+          <li class="dropdown-item" @click="showCCFlowModalFunc(actionFile)">
+            <div class="flex justify-between items-center w-full border-t border-gray-200 py-2">
+              <div class="flex items-center">
+                <div class="w-6 flex items-center justify-start">
+                  <FileSolidIcon width="16" height="16" class="inline-block float-left" />
+                </div>
+                <span class="ml-1">Carbon Copy</span>
+              </div>
+              <arrow-down-icon class="h-2 w-3 -rotate-90" />
+            </div>
+          </li>
+          <li class="dropdown-item" @click="showEditCompanyFileFunc(actionFile)">
+            <div class="flex justify-between items-center w-full border-t border-gray-200 py-2">
+              <div class="flex items-center">
+                <div class="w-6 flex items-center justify-start">
+                  <PenIcon width="16" height="16" class="inline-block float-left" />
+                </div>
+                <span class="ml-1">Edit</span>
+              </div>
+              <arrow-down-icon class="h-2 w-3 -rotate-90" />
+            </div>
+          </li>
+          <li class="dropdown-item" @click="showMoveCompanyFileFunc(actionFile)">
+            <div class="flex justify-between items-center w-full border-t border-gray-200 py-2">
+              <div class="flex items-center">
+                <div class="w-6 flex items-center justify-start">
+                  <MoveIcon width="16" height="16" class="inline-block float-left" />
+                </div>
+                <span class="ml-1">Move</span>
+              </div>
+              <arrow-down-icon class="h-2 w-3 -rotate-90" />
+            </div>
+          </li>
+          <li class="dropdown-item" @click="showQrCodeFunc(actionFile)">
+            <div class="flex justify-between items-center w-full border-t border-gray-200 py-2">
+              <div class="flex items-center">
+                <div class="w-6 flex items-center justify-start">
+                  <QrcodeIcon width="16" height="16" class="inline-block float-left" />
+                </div>
+                <span class="ml-1">QR Code</span>
+              </div>
+              <arrow-down-icon class="h-2 w-3 -rotate-90" />
+            </div>
+          </li>
+          <li class="dropdown-item" @click="showRemoveCompanyFileFunc(actionFile)">
+            <div class="flex justify-between items-center w-full border-t border-gray-200 py-2">
+              <div class="flex items-center">
+                <div class="w-6 flex items-center justify-start">
+                  <trash-can-icon width="16" height="16" class="inline-block float-left" />
+                </div>
+                <span>Remove</span>
+              </div>
+              <arrow-down-icon class="h-2 w-3 -rotate-90" />
+            </div>
+          </li>
+        </ul>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -302,7 +442,9 @@ import RequestModal from './Tabs/RequestModal.vue'
 import TeamAccess from '~/models/TeamAccess'
 import FilesInFolder from './Tabs/FilesInFolder.vue'
 import MaxPaperlinkModal from './Tabs/MaxPaperlinkModal.vue'
-import FileAction from "~/models/FileAction"
+import FileAction from '~/models/FileAction'
+import ArrowDownIcon from '../svg-icons/ArrowDownIcon.vue'
+import EyeIcon from '../svg-icons/EyeIcon.vue'
 export default Vue.extend({
   components: {
     EmptyFileLedger,
@@ -342,7 +484,9 @@ export default Vue.extend({
     RequestModal,
     FilesInFolder,
     MaxPaperlinkModal,
-    QrcodeIcon
+    QrcodeIcon,
+    ArrowDownIcon,
+    EyeIcon,
   },
   name: 'CompanyFileLedger',
   data() {
@@ -382,6 +526,8 @@ export default Vue.extend({
       totalRegisteredPaperlink: null,
       showMaxPaperlinkModal: false,
       folderSelected: false,
+      showFolders: false,
+      actionFile: null,
       FileAction,
     }
   },
@@ -449,10 +595,12 @@ export default Vue.extend({
     showEditCompanyFileFunc(file) {
       this.fileProps = file
       this.showEditCompanyFile = true
+      this.actionFile = null
     },
     showQrCodeFunc(file) {
       this.fileProps = file
       this.showQrCode = true
+      this.actionFile = null
     },
     showDeleteCompanyFolderFunc(file) {
       this.fileProps = file
@@ -465,26 +613,33 @@ export default Vue.extend({
     showRemoveCompanyFileFunc(file) {
       this.userFile = file
       this.showRemoveCompanyFiles = true
+      this.actionFile = null
     },
     showMoveCompanyFileFunc(file) {
       this.userFile = file
       this.showMoveCompanyFiles = true
+      this.actionFile = null
     },
     showShareCompanyFileFunc(file) {
+      console.log(file)
       this.userFile = file
       this.showShareCompanyFiles = true
+      this.actionFile = null
     },
     showPapertagsModalFunc(file) {
       this.userFile = file
       this.showPapertagsModal = true
+      this.actionFile = null
     },
     showCCFlowModalFunc(file) {
       this.userFile = file
       this.showCCFlowModal = true
+      this.actionFile = null
     },
     showRequestModalFunc(file) {
       this.userFile = file
       this.showRequestModal = true
+      this.actionFile = null
     },
     showQrcodeFileFunc() {
       this.showQrcodeFiles = true

@@ -1,6 +1,6 @@
 <template>
   <input
-    type="text"
+    :type="type"
     class="input-field"
     :class="{ error: showAsError }"
     placeholder=""
@@ -16,6 +16,10 @@ export default Vue.extend({
     showAsError: {
       type: Boolean,
       default: false,
+    },
+    type: {
+      type: String,
+      default: 'text',
     },
   },
 })

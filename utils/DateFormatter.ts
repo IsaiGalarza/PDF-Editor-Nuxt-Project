@@ -27,11 +27,7 @@ class DateFormatterAbstraction {
 
     let displayHour: number | string = hours >= 12 ? hours % 12 : hours
 
-    if (Number(displayHour) < 10) {
-      displayHour = `0${displayHour}`
-    }
-
-    return `${displayHour}:${minutes} ${suffix}`
+    return `${`0${displayHour}`.slice(-2)}:${`0${minutes}`.slice(-2)} ${suffix}`
   } // end method getFormattedTime
 } // end class DateFormatterAbstraction
 

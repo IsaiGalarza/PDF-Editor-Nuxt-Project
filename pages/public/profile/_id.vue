@@ -21,7 +21,7 @@
               class=" mt-4 md:w-auto sm:w-[200px]" />
           <p class="text-center text-[22px] text-[#434242] text-md font-medium mt-4 mb-16">
             <span v-if="isAuthor">Upload files and create folders!</span>
-            <span v-else="isAuthor">Come back to see our files!</span>
+            <span v-else>Come back to see our files!</span>
           </p>
         </div>
       </div>
@@ -29,15 +29,23 @@
 
     <div class="mt-4" v-else>
       <!-- Start:: Folders -->
-      <div class="bg-white rounded-xl mb-4">
+      <div class="bg-white rounded-xl mb-4" :class="{'hidden sm:block': !showFolders}">
+        <div class="w-full p-4 pb-0 sm:hidden">
+          <div class="flex items-center bg-gray-100 rounded text-sm w-full">
+            <div class="flex items-center justify-center h-10 w-1/2 cursor-pointer" :class="{'text-white bg-gray-500 rounded': !showFolders}" 
+              @click="showFolders = false">Files</div>
+            <div class="flex items-center justify-center h-10 w-1/2 cursor-pointer" :class="{'text-white bg-gray-500 rounded': showFolders}" 
+              @click="showFolders = true">Folders</div>
+          </div>
+        </div>
         <header
           class="py-3 px-2 mx-4 border-b border-[#DCDCDC] text-paperdazgreen-400 flex flex-wrap items-center gap-2 justify-between">
-          <h4 class="text-xl font-medium">Folders</h4>
+          <h4 class="text-xl font-medium hidden sm:block">Folders</h4>
 
           <div @submit.prevent class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
-            <span class="el-dropdown-link" >
+            <span class="el-dropdown-link max-sm:flex-1" >
               <input type="text" placeholder="Search any folder..."
-                class="rounded-lg border !border-paperdazgreen-400 px-2 h-8 sm:w-[165px] md:w-48 placeholder:italic"
+                class="rounded-lg border !border-paperdazgreen-400 px-2 h-8 w-full sm:w-[165px] md:w-48 placeholder:italic"
                 v-model="searchFolderParam" />
             </span>
 
@@ -75,23 +83,31 @@
           </div>
           <!-- End:: Single row -->
         </div>
+        <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
       </div>
       <!-- End:: Folders -->
-      <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
 
 
 
 
 
       <!-- Start:: Files -->
-      <div class="bg-white rounded-xl pb-4">
+      <div class="bg-white rounded-xl pb-4" :class="{'hidden sm:block': showFolders}">
+        <div class="w-full p-4 pb-0 sm:hidden">
+          <div class="flex items-center bg-gray-100 rounded text-sm w-full">
+            <div class="flex items-center justify-center h-10 w-1/2 cursor-pointer" :class="{'text-white bg-gray-500 rounded': !showFolders}" 
+              @click="showFolders = false">Files</div>
+            <div class="flex items-center justify-center h-10 w-1/2 cursor-pointer" :class="{'text-white bg-gray-500 rounded': showFolders}" 
+              @click="showFolders = true">Folders</div>
+          </div>
+        </div>
         <header
           class="py-3 px-2 mx-4 border-b border-[#DCDCDC] text-paperdazgreen-400 flex flex-wrap items-center gap-2 justify-between">
-          <h4 class="text-xl font-medium">Files</h4>
+          <h4 class="text-xl font-medium hidden sm:block">Files</h4>
           <form @submit.prevent class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
-            <span class="el-dropdown-link">
+            <span class="el-dropdown-link max-sm:flex-1">
               <input type="text" placeholder="Search any file..."
-                class="rounded-lg border !border-paperdazgreen-400 px-2 h-8 sm:w-[165px] md:w-48  placeholder:italic"
+                class="rounded-lg border !border-paperdazgreen-400 px-2 h-8 w-full sm:w-[165px] md:w-48  placeholder:italic"
                 v-model="searchFileParam" />
             </span>
             <button @click="showFile = !showFile" type="button"
@@ -130,10 +146,10 @@
           </div>
           <!-- End:: Single row -->
         </div>
+        <FilePagination :totalFile="totalFile" @setPage="setFilePage" />
       </div>
       <!-- Start:: Files -->
 
-      <FilePagination :totalFile="totalFile" @setPage="setFilePage" />
     </div>
   </div>
 </template>
@@ -214,7 +230,8 @@ export default Vue.extend({
       fileSpinner: true,
       folderSpinner: true,
       checkWEmptyFileFolder: false,
-      userInfo: {}
+      userInfo: {},
+      showFolders: false,
     }
   },
   methods: {

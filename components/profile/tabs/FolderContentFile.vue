@@ -43,7 +43,7 @@
         </div>
         <div
           v-for="(file, index) in contentDisplay"
-          :key="file"
+          :key="index"
           class="folder-box-container justify-between"
         >
         <div class="flex items-center w-[100%] truncate">
@@ -60,7 +60,6 @@
         </div>
       </div>
       <!-- end: of folder content -->
-    </div>
   </section>
 </template>
 
@@ -93,7 +92,6 @@ export default mixins(login).extend({
   },
   data() {
     return {
-      header: this.header,
       flipContainer: true,
       fileSearch:'',
       showSearch:false,

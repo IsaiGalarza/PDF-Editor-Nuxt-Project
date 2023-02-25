@@ -38,17 +38,24 @@
       <!-- <empty-file-ledger class="min-h-[55vh]" v-if="pdfUser < 1" :isPaidUser= "isPaidUser"/> -->
       <div class="bg-white rounded h-full sm:rounded-3xl pb-4 text-[#272727] overflow-hidden">
         <div class="flex sm:hidden items-center justify-between px-4 py-3 border-b border-gray-100">
-          <div class="flex items-center bg-gray-100 rounded text-sm">
+          <div class="flex items-center bg-gray-100 rounded text-sm" v-if="!folderSelected">
             <div class="flex items-center justify-center h-8 w-24 cursor-pointer" :class="{'text-white bg-gray-500 rounded': !showFolders}" @click="showFolders = false">Files</div>
             <div class="flex items-center justify-center h-8 w-24 cursor-pointer" :class="{'text-white bg-gray-500 rounded': showFolders}" @click="showFolders = true">Folders</div>
           </div>
-          <button @click="showFolders ? showCreateCompanyFolderFunc() : showUploadModalFunction()"
+          <div v-else
+            class="font-medium flex items-center">
+            <div class="" @click="backFolder">
+              <arrow-down-icon class="h-2 w-3 rotate-90" />
+            </div>
+            <h2 class="font-bold pl-4">{{ FilesInFolerContent.name }}</h2>
+          </div>
+          <button @click="showFolders && !folderSelected ? showCreateCompanyFolderFunc() : showUploadModalFunction()"
             class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-xl text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
             <plus-icon />
           </button>
         </div>
         <!-- Start:: Folders -->
-        <div v-if="(folders.length > 0 && !folderSelected)" :class="{'hidden sm:block': !showFolders}">
+        <div v-if="(folders.length > 0 && !folderSelected)" class="hidden sm:block">
           <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 hidden sm:flex items-center">
             Folders
           </h4>
@@ -101,20 +108,62 @@
               </div>
             </div>
           </div>
+          <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
         </div>
-        <div v-else-if="!fileSpinner" class="sm:hidden text-center text-sm p-4" :class="{'hidden': !showFolders}">
-          No Folders
+        <!-- Mobile Folder -->
+        <div v-if="showFolders" class="sm:hidden">
+          <div v-if="folderSpinner"
+            class="absolute z-10 w-full h-full bg-white top-0 left-0 rounded-lg flex justify-center items-center">
+            <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
+          </div>
+          <table class="custom-table"  v-else-if="(folders.length > 0 && !folderSelected)">
+            <thead class="text-[#414142]">
+              <tr>
+                <th class="w-12 text-left fixed-col left">No</th>
+                <th class="text-left">Folder name</th>
+                <th class="text-center fixed-col right"></th>
+              </tr>
+            </thead>
+            <tbody class="text-[#505050]">
+              <tr v-for="(content, i) in folders" :key="i">
+                <td class="fixed-col left">{{ i + 1 }}</td>
+                <td class="text-left overflow-hidden">
+                  <div class="float-left flex items-center">
+                    <span class="border-none inline-block	float-left pt-[4px]">
+                      <img class="w-[24px]" src="~/assets/img/Vector.png" />
+                    </span>
+                    <p @click="showFolderFilesFunc(content)"
+                      class="text-sm text-center text-[#414142] truncate cursor-pointer inline-block ml-3">
+                      {{ content.name }}
+                    </p>
+                  </div>
+                </td>
+                <td class="fixed-col right w-4 sm:w-[50px]">
+                  <div class="w-full h-full grid place-items-center">
+                    <button class="w-8 h-8 cursor-pointer grid place-items-center rounded-full"
+                      :class="[createdByTeamMember(content.createdBy) && isTeam ? 'bg-paperdazgreen-300/20' : '']"
+                      @click="actionFolder = content">
+                      <ellipsis-icon-vertical-icon />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div v-else-if="!fileSpinner" class="sm:hidden text-center text-sm p-4" :class="{'hidden': !showFolders || folderSelected}">
+            No Folders
+          </div>
+          <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
         </div>
         <!-- End:: Folders -->
         <!-- Start:: Files -->
-        <div :class="{'hidden sm:block': showFolders}">
-          <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
+        <div :class="{'hidden sm:block': showFolders && !folderSelected}">
           <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 hidden sm:flex items-center"
             v-if="folders.length > 0 && !folderSelected">
             Files
           </h4>
           <div v-if="folderSelected"
-            class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 flex items-center">
+            class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 hidden sm:flex items-center">
             <button class="bg-paperdazgreen-400 p-2 text-white text-lg rounded-lg" @click="backFolder">Back</button>
             <h2 class="text-paperdazgreen-400 font-bold w-5/6 text-center">{{ FilesInFolerContent.name }}</h2>
           </div>
@@ -250,11 +299,11 @@
               </tbody>
             </table>
           </div>
+          <FilePagination :totalFile="totalFile" @setPage="setPage" />
         </div>
         <!-- End:: Files -->
       </div>
     </transition>
-    <FilePagination :totalFile="totalFile" @setPage="setPage" />
     <upload-document-modal @resetUserFolder="resetUserFolder" :folder="fileProps" v-model="showUploadDocumentModal" />
     <CreateCompanyFolder @refresh="setRefresh" :userFile="userFile" @resetUserFile="resetUserFile"
       v-model="showCreateCompanyFolder" />
@@ -277,13 +326,14 @@
     <QrcodeShare :userFile="userFile" v-model="showQrcodeFiles" />
     <MaxPaperlinkModal v-model="showMaxPaperlinkModal" :totalFile="totalFile" />
     <PdfCCFlowModal :file="userFile" v-model="showCCFlowModal" />
+    <!-- File Bottom Dialog -->
     <el-dialog :visible.sync="actionFile" :append-to-body="true" :show-close="false" center width="100%" top="100vh" custom-class="-translate-y-full sm:hidden bottom-sm-modal"
       class="bottom-0 overflow-hidden sm:hidden">
       <div class="w-full flex flex-col p-0 -mt-8 -mb-4" v-if="actionFile">
         <div class="flex flex-col items-center justify-center gap-1 pb-5">
           <div class="p-0.5 border border-paperdazgreen-400 w-20 h-20"
             :class="[
-              (actionFile.role == userType.PAID && $auth.user.id != actionFile.userId)
+              (actionFile.role == userType.PAID)
                 ? 'rounded-md'
                 : 'circle']"
           >
@@ -397,6 +447,30 @@
         </ul>
       </div>
     </el-dialog>
+    <!-- Folder Bottom Dialog -->
+    <el-dialog :visible.sync="actionFolder" :append-to-body="true" :show-close="false" center width="100%" top="100vh" custom-class="-translate-y-full sm:hidden bottom-sm-modal"
+      class="bottom-0 overflow-hidden sm:hidden">
+      <div class="w-full flex flex-col p-0 -mt-8 -mb-4" v-if="actionFolder">
+        <div class="no-access" v-if="!createdByTeamMember(actionFolder.createdBy)">no access right</div>
+        <ul v-else class="min-w-[150px]">
+          <li class="dropdown-item" @click="showEditCompanyFolderFunc(actionFolder)">
+            <div class="flex justify-center items-center w-full py-2 text-center">
+              <span>Edit</span>
+            </div>
+          </li>
+          <li class="dropdown-item" @click="showDeleteCompanyFolderFunc(actionFolder)">
+            <div class="flex justify-center items-center w-full border-t border-gray-200 py-2 text-center">
+              <span>Remove</span>
+            </div>
+          </li>
+          <li class="dropdown-item" @click="showAddCompanyFolderFunc(actionFolder)">
+            <div class="flex justify-center items-center w-full border-t border-gray-200 py-2 text-center">
+              <span>Add Files</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -480,7 +554,6 @@ export default Vue.extend({
     ShareFilesModal,
     QrcodeShare,
     FilePagination,
-    FilePagination,
     RequestModal,
     FilesInFolder,
     MaxPaperlinkModal,
@@ -528,6 +601,7 @@ export default Vue.extend({
       folderSelected: false,
       showFolders: false,
       actionFile: null,
+      actionFolder: null,
       FileAction,
     }
   },
@@ -591,6 +665,7 @@ export default Vue.extend({
     showEditCompanyFolderFunc(file) {
       this.fileProps = file
       this.showEditCompanyFolder = true
+      this.actionFolder = null
     },
     showEditCompanyFileFunc(file) {
       this.fileProps = file
@@ -605,10 +680,12 @@ export default Vue.extend({
     showDeleteCompanyFolderFunc(file) {
       this.fileProps = file
       this.showDeleteCompanyFolder = true
+      this.actionFolder = null
     },
     showAddCompanyFolderFunc(file) {
       this.fileProps = file
       this.showAddCompanyFiles = true
+      this.actionFolder = null
     },
     showRemoveCompanyFileFunc(file) {
       this.userFile = file

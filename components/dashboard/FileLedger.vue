@@ -18,7 +18,7 @@
             <img src="../../assets/img/users-icon.png" class="-ml-8" />
           </div>
         </div> -->
-        <h5 class="text-lg font-semibold text-[#272727] inline-flex items-center gap-2 sm:w-full" :class="[isPaidUser ? 'mb-2' : 'mb-0']">
+        <h5 class="text-lg font-semibold text-[#272727] hidden sm:inline-flex items-center gap-2 sm:w-full" :class="[isPaidUser ? 'mb-2' : 'mb-0']">
           {{ isPaidUser ? "File Ledger" : "Ledger" }}
           <a :href="`/public/profile/${mainUserLink}`" target="_blanck">
             <!-- <company-icon /> -->

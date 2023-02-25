@@ -14,7 +14,7 @@
 
     <ShareFilesModal :userFile="file" @qrLoad="showQrcodeFileFunc" v-model="showShareCompanyFiles" />
 
-    <RequestModal @refresh="setRefresh" :userFile="userFile" @qrLoad="showQrcodeFileFunc" v-model="showRequestModal" />
+    <RequestModal @refresh="setRefresh" :userFile="file" @qrLoad="showQrcodeFileFunc" v-model="showRequestModal" />
 
     <QrcodeShare :userFile="file" v-model="showQrcodeFiles" />
   </div>
@@ -48,6 +48,7 @@ export default {
       favouriteFileId: null,
       totalShared: null,
       showRequestModal: false,
+      refresh: false,
     }
   },
   props: {
@@ -83,14 +84,14 @@ export default {
       this.showRequestModal = true
     },
     getFavouriteFile() {
-      this.$axios.$get(`/favourites/?fileId=${this.file.id}&userId=${this.user.id}`)
+      this.$axios.$get(`/favourites/?fileId=${this.file?.id}&userId=${this.user?.id}`)
         .then((response) => {
           if (response.data.length > 0)
             this.fillHeartColor = '#77C360'
-          this.favouriteFileId = response.data[0].id
+          this.favouriteFileId = response.data[0]?.id
         })
 
-      this.$axios.$get(`/favourites/?fileId=${this.file.id}`)
+      this.$axios.$get(`/favourites/?fileId=${this.file?.id}`)
         .then((response) => {
           this.totalShared = Number(response.total)
         })
@@ -129,7 +130,10 @@ export default {
             this.getFavouriteFile()
           })
       }
-    }
+    },
+    setRefresh() {
+      this.refresh = !this.refresh
+    },
   },
 
   mounted() {

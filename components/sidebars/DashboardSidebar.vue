@@ -168,12 +168,6 @@ export default Vue.extend({
     },
     checkToRouteLinks() {
       if (this.$store.getters.userType === UserTypeEnum.PAID) {
-        // this.links.splice(1, 0, {
-        //   label: 'Team',
-        //   icon: 'HoldingHandsIcon',
-        //   link: '/team',
-        //   exact: false,
-        // })
         this.links.splice(1, 1);
         this.links.splice(1, 0, {
           label: 'Company Files',
@@ -181,7 +175,13 @@ export default Vue.extend({
           link: '/company-files',
           exact: false,
         })
-        this.links.splice(2, 1, {
+        this.links.splice(2, 0, {
+          label: 'Team',
+          icon: 'HoldingHandsIcon',
+          link: '/team',
+          exact: false,
+        })
+        this.links.splice(3, 1, {
           label: 'Billing',
           icon: 'NewsPaperIcon',
           link: '/settings?tab=billing',

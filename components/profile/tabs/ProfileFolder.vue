@@ -41,7 +41,7 @@
       >
         <div
           v-for="(folder, index) in contentFolder"
-          :key="folder.id"
+          :key="index"
           class="folder-box-container"
         >
           <img class="w-5" src="@/assets/recent-icons/OpenedFolder.svg" />

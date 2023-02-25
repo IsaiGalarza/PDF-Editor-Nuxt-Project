@@ -3,7 +3,7 @@
     <top-details-card-container v-model="activeTab" class="mb-5" :tabs="tabs" />
     <leaves-details-container class="mb-12" />
 
-    <div class="flex items-center flex-wrap gap-4 justify-between mb-6">
+    <div class="flex items-center flex-wrap gap-4 justify-between mb-6 max-sm:px-4">
       <h5 class="text-lg font-semibold text-[#272727]">Team Members</h5>
       <div class="text-white flex items-center">
         <form action="" class="w-full xs:max-w-[280px] text-xs font-medium flex items-center relative justify-end mr-2"

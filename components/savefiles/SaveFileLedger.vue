@@ -1,19 +1,19 @@
 <template>
   <div class="flex flex-col">
     <h3
-      class="text-paperdazgray-700 font-semibold text-xl flex flex-col gap-3 xs:flex-row xs:items-center justify-between whitespace-nowrap"
+      class="text-paperdazgray-700 font-semibold text-xl flex flex-col gap-3 xs:flex-row xs:items-center justify-between whitespace-nowrap max-sm:px-4"
       :class="isPaidUser ? '' : 'mb-4 mt-4'">
       <h5 class="text-lg font-semibold text-[#272727] inline-flex items-center gap-2 mr-12 float-left">
         Saved Files
       </h5>
-      <div class="w-full xs:max-w-[250px] text-xs font-medium flex justify-end  items-center relative float-right ">
-        <span class="el-dropdown-link left-roll mr-4">
+      <div class="w-full sm:max-w-[250px] text-xs font-medium flex justify-end  items-center relative float-right ">
+        <span class="el-dropdown-link sm:left-roll mr-4 w-full">
           <input type="text"
-            class="search-input h-10 transition pl-4 mr-2 bg-transparent flex-1 border-[1px] border-paperdazgreen-400 rounded-tl-lg rounded-bl-lg focus:border-paperdazgreen-700 outline-none"
+            class="search-input h-10 transition pl-4 mr-2 bg-transparent flex-1 border-[1px] border-paperdazgreen-400 rounded-tl-lg rounded-bl-lg focus:border-paperdazgreen-700 outline-none max-sm:w-full"
             placeholder="Search Files" v-model="searchParam" />
         </span>
         <button
-          class="circle circle-18 bg-paperdazgreen-400 text-white mr-2 hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
+          class="circle circle-18 bg-paperdazgreen-400 text-white mr-2 hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
           <search-icon width="16" height="16" currentcolor="white" />
         </button>
       </div>

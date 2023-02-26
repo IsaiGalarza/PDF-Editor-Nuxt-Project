@@ -607,15 +607,15 @@ export default mixins(PdfAuth).extend({
         },
         [TOOL_TYPE.star]: {
           identifier: { top: 20, left: 0 },
-          tool: { top: 20, left: 0 },
+          tool: { top: 23, left: 10 },
         },
         [TOOL_TYPE.appendSignature]: {
           identifier: { top: 20, left: 0 },
-          tool: { top: 20, left: 0 },
+          tool: { top: 23, left: 10 },
         },
         [TOOL_TYPE.appendInitial]: {
           identifier: { top: 20, left: 0 },
-          tool: { top: 20, left: 0 },
+          tool: { top: 23, left: 10 },
         },
       }
     },

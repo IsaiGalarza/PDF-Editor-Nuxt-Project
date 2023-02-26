@@ -7,7 +7,7 @@
       <img v-if="((pdfUser || []).length <= 0 && !spinner)" src="../../assets/img/dashboard-bg.png"
         class="position-absolute mt-24 md:left-[30%] md:w-auto sm:w-[200px]" />
       <h3
-        class="text-paperdazgray-700 font-semibold text-xl flex xs:items-center justify-between whitespace-nowrap px-3"
+        class="text-paperdazgray-700 font-semibold text-xl flex xs:items-center justify-between whitespace-nowrap px-3 mb-1"
         :class="[isPaidUser ? 'flex-col sm:flex-row' : 'flex-row gap-2']"
         v-if="!spinner"
       >

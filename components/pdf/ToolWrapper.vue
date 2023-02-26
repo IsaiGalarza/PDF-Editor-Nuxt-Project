@@ -213,7 +213,6 @@ export default {
       }
     },
     isActive() {
-      // console.log(this.tool)
       return this.id == this.activeToolId
     },
     isCreator() {

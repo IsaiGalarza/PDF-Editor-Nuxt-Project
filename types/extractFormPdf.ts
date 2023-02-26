@@ -332,6 +332,26 @@ export const ExtractFormPdf = ({
                         ),
                       })
                       break
+                    case 'INPUT':
+                      appendEditText({
+                        parent: pdfScrappedData,
+                        subParent: totalArray,
+                        axisY: [
+                          element.getBoundingClientRect().top,
+                          item.getBoundingClientRect().top - pdfOffset_y,
+                        ],
+
+                        axisX: [
+                          element.getBoundingClientRect().left,
+                          item.getBoundingClientRect().left - pdfOffset_x,
+                        ],
+                        tools: tools.children[0].value,
+                        elem: element,
+                        fontsize: (tools.children[0] as any).getAttribute(
+                          'style'
+                        ),
+                      })
+                      break
                     case 'IMG':
                       appendEditImage({
                         parent: pdfScrappedData,

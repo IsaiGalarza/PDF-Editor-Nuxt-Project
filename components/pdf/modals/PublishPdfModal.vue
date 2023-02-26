@@ -227,7 +227,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         })
     },
     appendConfirmSign() {
-      console.log(
+      console.log('appendConfirmSign',
         ExtractFormPdf({
           downloadLink: this.file.downloadLink,
           file: this.confirmAnnotation,

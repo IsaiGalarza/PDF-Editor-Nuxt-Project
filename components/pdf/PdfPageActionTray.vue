@@ -1,7 +1,9 @@
 <template>
   <div class="bg-paperdazgreen-300 sm:bg-transparent py-2 flex items-center text-black justify-between ml-[-2%] w-[104%]">
     <div class="flex items-center gap-lg-4 flex-1 justify-between px-lg-4 px-3 flex-wrap">
-      <span class="font-bold text-ellipsis whitespace-nowrap max-w-xs">{{ isCreator ? file.fileName.length > 12 ? `${file.fileName.substr(0, 8)}...` : file.fileName : file.fileName }}</span>
+      <span class="font-bold text-ellipsis whitespace-nowrap max-w-xs">
+        {{ isCreator ? file.fileName.length > 12 ? `${file.fileName.substr(0, 12)}...` : file.fileName : file.fileName }}
+      </span>
 
       <span class="hidden md:inline">
         <span class="circle circle-2 bg-[#757575]"></span>
@@ -64,6 +66,17 @@
       }}
       </span>
 
+      <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="$auth.loggedIn && isSign">
+        <button @click="saveChanges" :disabled="disablePublish"
+          class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed">
+          Publish
+        </button>
+        <button @click="cancelPublish"
+          class="text-xs text-red-500 bg-white border rounded px-3 h-7 disabled:cursor-not-allowed">
+          Cancel
+        </button>
+      </div>
+
       <el-dropdown trigger="click" class="font-medium" v-if="$auth.loggedIn && !isConfirm && 0"
         @command="handleCommand($event)">
         <span class="el-dropdown-link text-[#555454] px-1 flex items-center">
@@ -123,9 +136,12 @@
       <span class="sm:hidden cursor-pointer" @click="showPdfInfo = true">
         <img :src="require('~/assets/icons/info-circle.svg')" />
       </span>
+
+      <button v-if="userRole != 'free_user' || !isSign || isAgreedSign != -1"
+        class="bg-red-500 w-5 h-5 rounded-full text-xs text-white sm:hidden" @click="cancelPublish">x</button>
     </div>
 
-    <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="!isSign">
+    <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="$auth.loggedIn && !isSign">
 
       <button v-if="$auth.loggedIn && !(isConfirm && !isCreator)" @click="saveChanges" :disabled="disablePublish"
         class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed">

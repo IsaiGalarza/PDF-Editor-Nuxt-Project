@@ -22,7 +22,7 @@
           @click="signContinue">Start</button>
         <button class="bg-[#979797] px-2 rounded h-7 text-xs text-white" @click="signCancel">Cancel</button>
       </div> -->
-      <button class="bg-[#979797] px-2 rounded h-7 text-xs text-white lg:mr-4 mr-2 hidden sm:block" @click="signCancel">Cancel</button>
+      <!-- <button class="bg-[#979797] px-2 rounded h-7 text-xs text-white lg:mr-4 mr-2 hidden sm:block" @click="signCancel">Cancel</button> -->
       <button class="bg-red-500 w-4 h-4 rounded-full text-xs text-white lg:mr-4 mr-2 sm:hidden" @click="signCancel">x</button>
     </div>
     <div v-else-if="userRole == 'free_user' && isSign && isAgreedSign === 1"

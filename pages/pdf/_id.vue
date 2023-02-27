@@ -246,6 +246,21 @@
       >
         Confirm
       </button>
+      <button
+        class="
+          w-full
+          bg-paperdazgreen-400
+          py-2
+          text-white
+          overflow-hidden
+          duration-300
+          sm:hidden
+        "
+        v-if="$auth.loggedIn"
+        @click="showPublishModal = true"
+      >
+        {{ isSign ? 'Publish' : 'Done' }}
+      </button>
 
     </main>
     <!-- Mobile Page Action -->

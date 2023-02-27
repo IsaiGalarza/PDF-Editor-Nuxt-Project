@@ -6,7 +6,7 @@
       Free user will be asked to scroll to the bottom of last page to click Confirm. A copy with free user signature
       will be sent to all users.
     </div>
-    <div class="w-full py-1 pb-2 bg-gray-200 sm:bg-lime-200 flex items-center justify-between" v-if="isConfirm && !isScrollBottom && !isCreator">
+    <div class="w-full py-1 pb-2 bg-gray-200 sm:bg-lime-200 flex items-center justify-between" v-if="isConfirm && !isCreator && (!isConfirmChecked || !isScrollBottom)">
       <!-- <span class="float-left pt-2 px-2">Scroll to the bottom of file to confirm that you have read.</span> -->
       <span class="float-left py-1 px-2">Click here to start Confirm
         <input type="checkbox" class="ml-1" @change="confrimStart" />
@@ -358,6 +358,7 @@ export default {
     showInitialTray: false,
     showSignTray: false,
     showInsertTools: false,
+    isConfirmChecked: false,
   }),
   props: {
     file: {
@@ -372,7 +373,7 @@ export default {
     openTypeSignModal: Boolean,
     openTypeInitialModal: Boolean,
   },
-  emits: ['zoomOut', 'zoomIn', 'cancel'],
+  emits: ['zoomOut', 'zoomIn', 'cancel', 'confirmChecked'],
   computed: {
     TOOL_TYPE() {
       return TOOL_TYPE
@@ -544,8 +545,10 @@ export default {
     },
     confrimStart(e) {
       if (e.target.checked) {
-        this.$store.commit('SET_PDF_PAGE_BOTTOM')
+        // this.$store.commit('SET_PDF_PAGE_BOTTOM')
       }
+      this.isConfirmChecked = e.target.checked
+      this.$emit('confirmChecked', e.target.checked)
     },
   },
   watch: {

@@ -194,6 +194,9 @@ export const mutations: MutationTree<RootState> = {
   SET_PDF_PAGE_BOTTOM(state) {
     state.scrollPosition = true;
   },
+  SET_NOT_PDF_PAGE_BOTTOM(state) {
+    state.scrollPosition = false;
+  },
   SET_FILE(state, file) {
     state.file = file
   }

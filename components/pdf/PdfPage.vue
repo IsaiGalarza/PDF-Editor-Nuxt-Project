@@ -102,6 +102,9 @@ export default {
         this.$store.commit('SET_PDF_PAGE_BOTTOM')
         // !this.isCreator && this.confirmDone();
       }
+      // else {
+      //   this.$store.commit('SET_NOT_PDF_PAGE_BOTTOM')
+      // }
     }
   }
 }

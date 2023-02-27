@@ -61,6 +61,7 @@
         @cancel="canceled = true"
         @zoomIn="zoom *= 1.1"
         @zoomOut="zoom /= 1.1"
+        @confirmChecked="value => isConfirmChecked=value"
       />
       <div
         class="pdf-editor-view relative custom-scrollbar overflow-scroll w-full"
@@ -240,7 +241,7 @@
           overflow-hidden
           duration-300
         "
-        v-if="isScrollBottom && $auth.loggedIn && isConfirm && !isCreator"
+        v-if="isConfirmChecked && isScrollBottom && $auth.loggedIn && isConfirm && !isCreator"
         id="confirmButtton"
         @click="confirmDocument()"
       >
@@ -433,6 +434,7 @@ export default mixins(PdfAuth).extend({
     keepErrorCount: 0,
     hasDeleted: false,
     filteredAnnotationButton: [],
+    isConfirmChecked: false,
 
     lastPosX: 0,
     lastPosY: 0,
@@ -1457,8 +1459,17 @@ export default mixins(PdfAuth).extend({
 
       let pdfAsArray = this.convertDataURIToBinary(pdfAsDataUri)
       let doc = pdfJs.getDocument(pdfAsArray)
-      this.pdf = await doc.promise
-      this.propsNumPages = this.pdf._pdfInfo.numPages
+      doc.promise.then(pdf => {
+        this.pdf = pdf
+        this.propsNumPages = pdf._pdfInfo.numPages
+        console.log({ pdf })
+      }, error => {
+        console.log({ res, pdfAsDataUri, doc, error })
+        this.$notify.error({
+          title: 'Pdf',
+          message: error.message || 'Unable to fetch pdf, check connection',
+        })
+      })
     },
     convertDataURIToBinary(dataURI) {
       let BASE64_MARKER = ';base64,'
@@ -1471,7 +1482,6 @@ export default mixins(PdfAuth).extend({
       for (var i = 0; i < rawLength; i++) {
         array[i] = raw.charCodeAt(i)
       }
-
       return array
     },
     scalingHandler(e) {

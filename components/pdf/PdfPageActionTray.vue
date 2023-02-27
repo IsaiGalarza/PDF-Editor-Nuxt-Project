@@ -66,8 +66,7 @@
       }}
       </span>
 
-      <!-- <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="$auth.loggedIn && isSign"> -->
-      <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="$auth.loggedIn && isCreator">
+      <div class="hidden sm:flex items-center justify-end" v-if="$auth.loggedIn && isCreator">
         <button @click="saveChanges" :disabled="disablePublish"
           class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed">
           Publish
@@ -134,12 +133,14 @@
         </el-dropdown-menu>
       </el-dropdown>
 
-      <span class="sm:hidden cursor-pointer" @click="showPdfInfo = true">
-        <img :src="require('~/assets/icons/info-circle.svg')" />
-      </span>
+      <div class="flex items-center sm:hidden">
+        <span class="cursor-pointer" @click="showPdfInfo = true">
+          <img :src="require('~/assets/icons/info-circle.svg')" />
+        </span>
 
-      <button v-if="userRole != 'free_user' || !isSign || isAgreedSign != -1"
-        class="bg-red-500 w-5 h-5 rounded-full text-xs text-white sm:hidden" @click="cancelPublish">x</button>
+        <button v-if="(isCreator || isSign) && (userRole != 'free_user' || !isSign || isAgreedSign != -1)"
+          class="bg-red-500 w-5 h-5 rounded-full text-xs text-white ml-3" @click="cancelPublish">x</button>
+      </div>
     </div>
 
     <!-- <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="$auth.loggedIn && !isSign"> -->
@@ -151,7 +152,7 @@
         Done
       </button>
       <button v-if="$auth.loggedIn" @click="cancelPublish"
-        class="mr-2 text-xs text-red-500 bg-white border rounded px-3 h-7 disabled:cursor-not-allowed">
+        class="text-xs text-red-500 bg-white border rounded px-3 h-7 disabled:cursor-not-allowed">
         Cancel
       </button>
     </div>

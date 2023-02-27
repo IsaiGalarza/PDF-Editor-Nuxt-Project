@@ -237,51 +237,36 @@
       <button @click="undoFunction" class="rounded h-10 bg-white text-sm">UNDO</button>
     </div>
 
-    <div v-if="isComplete && isCreator" class="flex items-center py-1">
-      <div class="w-1/3 text-center flex justify-center">
-        <button class="rounded-full h-8 sm:h-10 flex items-center gap-2 py-1 px-3 tool-item text-sm"
-        :class="[activeTool == TOOL_TYPE.star ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onImageClick">
-          
-          <!-- <input type="file" ref="image" class="hidden" />
-          <star-icon /> -->
-          
-          Require
-          <img src="../../assets/img/require-icon.png" width="18" class="bg-slate-200 p-[2px]" />
-        </button>
-      </div>
-      <div class="w-1/3 text-center flex justify-center">
-        <button class="rounded-full h-8 sm:h-10 flex items-center gap-2 py-1 px-3 tool-item text-sm"
-        :class="[activeTool == TOOL_TYPE.appendSignature ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onSignClick">
-          Sign
-          <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
-        </button>
-      </div>
-      <div class="w-1/3 text-center flex justify-center">
-        <button class="rounded-full h-8 sm:h-10 flex items-center gap-2 py-1 px-3 tool-item text-sm"
-        :class="[activeTool == TOOL_TYPE.appendInitial ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onInitialsClick">
-          Initial
-          <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
-        </button>
-      </div>
+    <div v-if="isComplete && isCreator" class="flex items-center justify-between py-1">
+      <button class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 tool-item text-sm"
+      :class="[activeTool == TOOL_TYPE.star ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onImageClick">  
+        <img src="../../assets/img/require-icon.png" width="18" class="bg-slate-200 p-[2px]" />      
+        Require
+      </button>
+      <button class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 tool-item text-sm"
+      :class="[activeTool == TOOL_TYPE.appendSignature ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onSignClick">
+        <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
+        Sign
+      </button>
+      <button class="rounded-md h-8 sm:h-10 flex items-center gap-2 py-1 px-3 tool-item text-sm"
+      :class="[activeTool == TOOL_TYPE.appendInitial ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onInitialsClick">
+        <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
+        Initial
+      </button>
     </div>
 
-    <div v-if="isSign && isCreator" class="flex items-center py-1">
-      <div class="w-1/2 text-center">
-        <button v-if="isSign && isCreator" @click="onSignClick"
-          class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 text-white text-sm">
-          Sign
-          <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
-        </button>
-      </div>
-      <div class="w-1/2 text-center">
-        <button
-          class="cursor-pointer inline-flex items-center gap-2 bg-paperdazgreen-300 py-1 pr-1 pl-2 tool-item text-white text-sm"
-          @click="onInitialsClick">
-          Initial
-          <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
-        </button>
-      </div>
-
+    <div v-if="isSign && isCreator" class="flex items-center justify-around py-1">
+      <button v-if="isSign && isCreator" @click="onSignClick"
+        class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 tool-item text-sm bg-white">
+        <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
+        Sign
+      </button>
+      <button
+        class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 tool-item text-sm bg-white"
+        @click="onInitialsClick">
+        <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
+        Initial
+      </button>
     </div>
 
     <draw-or-type-modal v-model="showSignatureModal" :src="`${$auth?.user?.signatureURL}`"

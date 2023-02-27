@@ -257,16 +257,18 @@
           duration-300
           sm:hidden
         "
-        v-if="$auth.loggedIn"
+        v-if="$auth.loggedIn && isCreator"
         @click="showPublishModal = true"
       >
-        {{ isSign ? 'Publish' : 'Done' }}
+        <!-- {{ isSign ? 'Publish' : 'Done' }} -->
+        Publish
       </button>
 
     </main>
     <!-- Mobile Page Action -->
-    <div class="flex sm:hidden bg-zinc-200 flex-row-reverse justify-between items-center p-1" v-if="!isSign && !isConfirm">
-      <button v-if="$auth.loggedIn" @click="publishFileFunction" :disabled="filteredAnnotationButton.length > 0"
+    <!-- <div class="flex sm:hidden bg-zinc-200 flex-row-reverse justify-between items-center p-1" v-if="!isSign && !isConfirm"> -->
+    <div class="flex sm:hidden bg-zinc-200 flex-row-reverse justify-between items-center p-1" v-if="true">
+      <button v-if="$auth.loggedIn && !isConfirm && !isSign && !isCreator" @click="publishFileFunction"
         class="text-paperdazgreen-400 px-3 h-7 disabled:text-gray-400 disabled:cursor-not-allowed">
         Done
       </button>
@@ -275,7 +277,7 @@
       >
         {{ currentPage }} / {{ propsNumPages }}
       </div>
-      <button v-if="$auth.loggedIn" @click="canceled = true"
+      <button v-if="$auth.loggedIn && !isConfirm && !isSign && !isCreator" @click="canceled = true"
         class="text-red-500 px-3 h-7 disabled:cursor-not-allowed">
         Cancel
       </button>
@@ -1502,7 +1504,7 @@ export default mixins(PdfAuth).extend({
       })
     },
     filteredAnnotationButton (value, oldValue) {
-      if (value.length === 0 && oldValue.length > 0) {
+      if (value.length === 0 && oldValue.length > 0 && this.isSign) {
         this.$store.commit('SET_UPLOAD_STATE', false);
         this.saveFunction = 'saved'
         this.publishFileFunction()

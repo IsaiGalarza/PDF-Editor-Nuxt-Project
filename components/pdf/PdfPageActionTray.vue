@@ -66,7 +66,8 @@
       }}
       </span>
 
-      <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="$auth.loggedIn && isSign">
+      <!-- <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="$auth.loggedIn && isSign"> -->
+      <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="$auth.loggedIn && isCreator">
         <button @click="saveChanges" :disabled="disablePublish"
           class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed">
           Publish
@@ -141,9 +142,11 @@
         class="bg-red-500 w-5 h-5 rounded-full text-xs text-white sm:hidden" @click="cancelPublish">x</button>
     </div>
 
-    <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="$auth.loggedIn && !isSign">
+    <!-- <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="$auth.loggedIn && !isSign"> -->
+    <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="$auth.loggedIn && !isCreator">
 
-      <button v-if="$auth.loggedIn && !(isConfirm && !isCreator)" @click="saveChanges" :disabled="disablePublish"
+      <!-- <button v-if="$auth.loggedIn && !isCreator" @click="saveChanges" :disabled="disablePublish" -->
+      <button v-if="$auth.loggedIn && !(isConfirm && !isCreator) && !isSign" @click="saveChanges" :disabled="disablePublish"
         class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed">
         Done
       </button>

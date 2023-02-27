@@ -1,12 +1,12 @@
 <template>
   <div id="bottom-nav" class="bg-white flex items-center text-[#606060]">
     <span class="h-full flex items-center justify-center flex-1 px-3" v-show="isSearch">
-      <search-input @onBlurInput="isSearch = false" @onToggle="isSearch = false" />
+      <search-input @onBlurInput="isSearch = false" @onToggle="isSearch = false" :isSearch="isSearch" />
     </span>
     <span class="h-full flex items-center justify-center flex-1 px-1" v-show="!isSearch">
       <folder-icon class="w-4 h-4" />
     </span>
-    <a :href="`/public/profile/${mainUserLink}`" target="_blank"  class="h-full flex items-center justify-center flex-1 px-1">
+    <a :href="`/public/profile/${mainUserLink}`" target="_blank"  class="h-full flex items-center justify-center flex-1 px-1" v-show="!isSearch">
       <building-icon class="w-4 h-4" />
     </a>
     <button @click="openUserFiles" class="h-full flex items-center justify-center flex-1 px-1" v-show="!isSearch">

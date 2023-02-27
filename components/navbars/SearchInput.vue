@@ -61,10 +61,10 @@
                   <p class="text-sm text-black truncate font-semibold">
                     {{ item.fileName }}
                   </p>
-                  <p class="text-sm text-black mb-1 truncate font-semibold">
+                  <p class="text-xs text-black mb-1 truncate font-semibold">
                     {{ (item.user || {}).company_name }}
                   </p>
-                  <p class="text-[11px] mt-0.5 truncate">
+                  <p class="text-[11px] text-black mt-0.5 truncate">
                     {{ item.paperLink }}
                   </p>
                 </nuxt-link>
@@ -93,6 +93,12 @@ export default mixins(GlobalMixin, login).extend({
     SearchIcon,
     SearchWhiteIcon,
     SearchShare,
+  },
+  props: {
+    isSearch: {
+      type: Boolean,
+      default: false
+    }
   },
   emits: ['onBlurInput', 'onToggle'],
   data() {
@@ -132,6 +138,7 @@ export default mixins(GlobalMixin, login).extend({
         .then((response) => {
           const { data } = response.data
           this.topSearchContent = data
+          console.log({data})
         })
       // &$or[1][uploadedBy]={ team member id }&$or[2][uploadedBy]={ team member id 2 }
     },
@@ -148,6 +155,11 @@ export default mixins(GlobalMixin, login).extend({
     },
   },
   watch: {
+    isSearch: function (val) {
+      if (val) {
+        this.$refs['input'].focus()
+      }
+    },
     searchString: function (val) {
       this.getGeneralSearch(this.searchString)
     },

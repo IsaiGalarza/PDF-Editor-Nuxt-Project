@@ -1464,9 +1464,7 @@ export default mixins(PdfAuth).extend({
       doc.promise.then(pdf => {
         this.pdf = pdf
         this.propsNumPages = pdf._pdfInfo.numPages
-        console.log({ pdf })
       }, error => {
-        console.log({ res, pdfAsDataUri, doc, error })
         this.$notify.error({
           title: 'Pdf',
           message: error.message || 'Unable to fetch pdf, check connection',

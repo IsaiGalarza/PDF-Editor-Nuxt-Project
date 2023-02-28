@@ -1439,6 +1439,7 @@ export default mixins(PdfAuth).extend({
     async fetchPdf() {
       this.$store.commit('SET_LOADED_PDF', this.file)
       // let res = await fetch(demoPdf)
+      console.log({ file: this.file })
       let res = await fetch(this.file.downloadLink).catch((error) => {
         this.$notify.error({
           title: 'Pdf',

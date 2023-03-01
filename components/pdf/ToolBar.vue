@@ -238,22 +238,23 @@
     </div>
 
     <div v-if="isComplete && isCreator" class="flex items-center justify-between py-1">
-      <button class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 tool-item text-sm"
+      <button class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm"
       :class="[activeTool == TOOL_TYPE.star ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onImageClick">  
         <img src="../../assets/img/require-icon.png" width="18" class="bg-slate-200 p-[2px]" />      
         Require
       </button>
-      <button class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 tool-item text-sm"
+      <button class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm"
       :class="[activeTool == TOOL_TYPE.appendSignature ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onSignClick">
         <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         Sign
       </button>
-      <button class="rounded-md h-8 sm:h-10 flex items-center gap-2 py-1 px-3 tool-item text-sm"
+      <button class="rounded-md h-8 sm:h-10 flex items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm"
       :class="[activeTool == TOOL_TYPE.appendInitial ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onInitialsClick">
         <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         Initial
       </button>
-      <button @click="undoFunction" class="rounded-md h-8 sm:h-10 flex items-center gap-2 py-1 px-3 tool-item text-sm bg-white text-red-500">
+      <button @click="undoFunction"
+        class="rounded-md h-8 sm:h-10 flex items-center gap-1 py-1 px-3 max-sm:!px-1 tool-item text-sm bg-white text-red-500">
         <undo-icon />
         Undo
       </button>
@@ -261,19 +262,20 @@
 
     <div v-if="isSign && isCreator" class="flex items-center justify-between py-1">
       <button v-if="isSign && isCreator" @click="onSignClick"
-        class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 tool-item text-sm"
+        class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm"
         :class="[activeTool == TOOL_TYPE.appendSignature ? 'bg-paperdazgreen-300 text-white' : 'bg-white']">
         <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         Sign
       </button>
       <button
-        class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 tool-item text-sm"
+        class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm"
         :class="[activeTool == TOOL_TYPE.appendInitial ? 'bg-paperdazgreen-300 text-white' : 'bg-white']"
         @click="onInitialsClick">
         <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         Initial
       </button>
-      <button @click="undoFunction" class="rounded-md h-8 sm:h-10 flex items-center gap-2 py-1 px-3 tool-item text-sm bg-white text-red-500">
+      <button @click="undoFunction"
+        class="rounded-md h-8 sm:h-10 flex items-center gap-1 py-1 px-3 max-sm:!px-1 tool-item text-sm bg-white text-red-500">
         <undo-icon />
         Undo
       </button>

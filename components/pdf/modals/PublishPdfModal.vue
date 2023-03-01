@@ -193,7 +193,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   methods: {
     imageExportedLocal(image, isSignature) {
       this.$BUS.$emit('signature-update', image)
-      this.imageExported(image, 'signature-update')
+      // this.imageExported(image, 'signature-update')
+      this.imageExported(image, isSignature)
     },
     confirmCheckedTools() {
       return (

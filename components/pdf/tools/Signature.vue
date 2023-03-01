@@ -15,6 +15,7 @@ export default {
     tool: Object,
   },
   mounted() {
+    console.log({ tool: this.tool })
   },
   methods: {
 

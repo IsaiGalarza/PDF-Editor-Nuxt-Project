@@ -133,12 +133,11 @@ export default mixins(GlobalMixin, login).extend({
       await this.$axios
         .get(
           // `/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&$or[0][fileName][$like]=${topsearch}%&$or[1][companyName][$like]=${topsearch}%`
-          `/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&fileName[$like]=${topsearch}%`
+          `/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&fileName[$like]=%${topsearch}%`
         )
         .then((response) => {
           const { data } = response.data
           this.topSearchContent = data
-          console.log({data})
         })
       // &$or[1][uploadedBy]={ team member id }&$or[2][uploadedBy]={ team member id 2 }
     },

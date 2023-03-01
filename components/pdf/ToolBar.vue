@@ -54,7 +54,7 @@
     <div v-if="(!isLoading && !isCreator && isComplete)"
       class="tools-container-wrapper flex flex-wrap items-center justify-between w-full gap-x-1 gap-y-2 text-[#757575] text-base sm:text-2xl sm:hidden px-2"
       :class="[isConfirm ? 'py-0' : 'py-2']">
-      <template v-if="showInsertTools" class="overflow-x-auto">
+      <div v-if="showInsertTools" class="overflow-x-auto">
         <button class="rounded-full h-8 w-20 text-xs" :class="[activeTool == TOOL_TYPE.name ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
         isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.name)">
           <user-profile-solid-icon class="mr-1" /> Name
@@ -104,7 +104,7 @@
             </div>
           </div>
         </div>
-      </template>
+      </div>
       <template v-else>
         <button class="rounded h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.text ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
         isCreator ? 'opacity-40' : 'opacity-100']" @click="setSelectedType(TOOL_TYPE.text)">
@@ -253,19 +253,29 @@
         <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         Initial
       </button>
+      <button @click="undoFunction" class="rounded-md h-8 sm:h-10 flex items-center gap-2 py-1 px-3 tool-item text-sm bg-white text-red-500">
+        <undo-icon />
+        Undo
+      </button>
     </div>
 
-    <div v-if="isSign && isCreator" class="flex items-center justify-around py-1">
+    <div v-if="isSign && isCreator" class="flex items-center justify-between py-1">
       <button v-if="isSign && isCreator" @click="onSignClick"
-        class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 tool-item text-sm bg-white">
+        class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 tool-item text-sm"
+        :class="[activeTool == TOOL_TYPE.appendSignature ? 'bg-paperdazgreen-300 text-white' : 'bg-white']">
         <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         Sign
       </button>
       <button
-        class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 tool-item text-sm bg-white"
+        class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 tool-item text-sm"
+        :class="[activeTool == TOOL_TYPE.appendInitial ? 'bg-paperdazgreen-300 text-white' : 'bg-white']"
         @click="onInitialsClick">
         <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         Initial
+      </button>
+      <button @click="undoFunction" class="rounded-md h-8 sm:h-10 flex items-center gap-2 py-1 px-3 tool-item text-sm bg-white text-red-500">
+        <undo-icon />
+        Undo
       </button>
     </div>
 
@@ -305,6 +315,7 @@ import signatureURL from '~/assets/img/sign.png'
 import ZoomInOut from '@/components/pdf/ZoomInOut'
 import GroupTools from '../svg-icons/GroupTools.vue'
 import GroupInsert from '../svg-icons/GroupInsert.vue'
+import UndoIcon from '../svg-icons/UndoIcon.vue'
 
 export default {
   components: {
@@ -326,6 +337,7 @@ export default {
     ZoomInOut,
     GroupTools,
     GroupInsert,
+    UndoIcon,
   },
   mixins: [SaveSignatureInitialsMixin],
   data: () => ({

@@ -241,7 +241,7 @@
           overflow-hidden
           duration-300
         "
-        v-if="isConfirmChecked && isScrollBottom && $auth.loggedIn && isConfirm && !isCreator"
+        v-if="$auth.loggedIn && isConfirm && !isCreator"
         id="confirmButtton"
         @click="confirmDocument()"
       >

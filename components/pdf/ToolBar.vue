@@ -398,7 +398,7 @@ export default {
       return this.$store.state.scrollPosition;
     },
     userRole() {
-      return this.$auth.user.role;
+      return this.$auth?.user?.role || '';
     },
     isAgreedSign() {
       return this.$store.state.agreeSign;

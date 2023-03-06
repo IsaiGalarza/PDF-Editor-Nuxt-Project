@@ -4,7 +4,7 @@
     <header class="flex flex-col xs:flex-row xs:items-center justify-between whitespace-nowrap px-2 mt-3 mb-2">
       <h5 class="text-lg font-semibold text-[#272727] hidden sm:inline-flex w-full items-center gap-2 my-2">
         Company Files
-        <a :href="`/public/profile/${mainUserLink}`" target="_blanck">
+        <a :href="`/public/profile/${mainUserLink}`" target="_blank">
           <!-- <company-icon /> -->
           <img src="../../assets/img/company-icon.png" class="lg:w-[30px] w-[20px]" />
         </a>

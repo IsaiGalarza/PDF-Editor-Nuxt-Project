@@ -250,16 +250,16 @@ export default Vue.extend({
       this.returnedFolderPage = page
     },
     getTeamPublicInfo() {
+      const that = this;
       this.$axios.get(`users/?id=${this.$route.params.id}`)
         .then((response) => {
           const user = response.data.data
-          let userInfo = user[0];
-          this.userInfo = user[0]
+          that.userInfo = user[0]
           //  if(user.role != UserTypeEnum.PAID)
           //  this.$nuxt.$router.push('/dashboard')
         })
         .catch(() => {
-          this.$notify.error({
+          that.$notify.error({
             message: "Could not get user"
           })
         })

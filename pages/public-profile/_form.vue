@@ -1,6 +1,6 @@
 <template>
   <main>
-    <ProfileTopInfo v-if="isInfoReady" :userInfo="userInfo"/>
+    <ProfileTopInfo v-if="isInfoReady" :userInfo="userInfo" />
     <FolderContentFile :folderContent="files" :header="folderName" />
   </main>
 </template>
@@ -21,61 +21,62 @@ export default Vue.extend({
     return {
       folderName: this.$route.params,
       files: [],
-      filesPage:0,
-      userInfo:{},
+      filesPage: 0,
+      userInfo: {},
       isInfoReady: false,
-      folderName:'',
+      folderName: '',
     }
   },
-  auth:false,
+  auth: false,
   // middleware:['paid_user'],
-  computed:{
-     isMainUser(){
+  computed: {
+    isMainUser() {
       return (this.$auth.loggedIn && this.$route.params.form == (this.$auth.user).id)
-     }
+    }
   },
-  mounted(){
+  mounted() {
     this.getPublicFiles(this.filesPage)
-    this.files = this.folder; 
-    this.getTeamPublicInfo()
+    this.files = this.folder;
+    // this.getTeamPublicInfo()
   },
   layout: 'profile',
-  auth:false,
- methods:{
- 
-  async getTeamPublicInfo(val){
-    await this.$axios.get(`users/?id=${val}`)
-    .then((response)=>{
-      const user = response.data.data
-       let userInfo = user[0];
-       this.isInfoReady = true
+  auth: false,
+  methods: {
+    async getTeamPublicInfo(val) {
+      await this.$axios.get(`users/?id=${val}`)
+        .then((response) => {
+          const user = response.data.data
+          // let userInfo = user[0];
+          this.userInfo = user[0]
+          
+          this.isInfoReady = true
 
-      this.$auth.user.role == UserTypeEnum.TEAM ? this.getMainPaidUser(userInfo.id) :
-      this.userInfo = user[0]
-      //  if(user.role != UserTypeEnum.PAID)
-      //  this.$nuxt.$router.push('/dashboard')
-    })
-    .catch(()=>{
-      this.$notify.error({
-        message:"Could not get user"
-      })
-    })
-  },
-  async getPublicFiles(page){
-    await this.$axios 
-      .$get(`/folders/?id=${this.$route.params.form}&$skip=${page}`)
-      .then(async (response) => {
-        this.files = response.data[0].files
-        await this.getTeamPublicInfo(response.data[0].userId)
-        this.folderName = response.data[0].name
+          // this.$auth.user.role == UserTypeEnum.TEAM ? this.getMainPaidUser(userInfo.id) : this.userInfo = user[0]
+
+          //  if(user.role != UserTypeEnum.PAID)
+          //  this.$nuxt.$router.push('/dashboard')
         })
-      .catch((err) => {
-        this.$notify.error({
-        message: 'Could not get folder',
+        .catch((err) => {
+          this.$notify.error({
+            message: "Could not get user"
+          })
         })
-    })
+    },
+    async getPublicFiles(page) {
+      await this.$axios
+        .$get(`/folders/?id=${this.$route.params.form}&$skip=${page}`)
+        .then(async (response) => {
+          this.files = response.data[0].files
+          await this.getTeamPublicInfo(response.data[0].userId)
+          this.folderName = response.data[0].name
+        })
+        .catch((err) => {
+          this.$notify.error({
+            message: 'Could not get folder',
+          })
+        })
+    }
   }
- }
 
 })
 </script>

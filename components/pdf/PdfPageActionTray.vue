@@ -1,7 +1,7 @@
 <template>
   <div class="bg-paperdazgreen-300 sm:bg-transparent py-2 flex items-center text-black justify-between ml-[-2%] w-[104%]">
     <div class="flex items-center gap-lg-4 flex-1 justify-between px-lg-4 px-3 flex-wrap">
-      <span class="font-bold text-ellipsis whitespace-nowrap max-w-xs">
+      <span class="font-bold text-ellipsis whitespace-nowrap max-w-xs truncate">
         {{ isCreator ? file.fileName.length > 12 ? `${file.fileName.substr(0, 8)}...` : file.fileName : file.fileName }}
       </span>
 

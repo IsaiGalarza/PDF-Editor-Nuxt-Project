@@ -5,14 +5,7 @@
 
 <template>
   <div
-    class="
-      grid grid-cols-1
-      md:grid-cols-[max-content,1fr]
-      grid-rows-1
-      h-full
-      max-h-full
-      overflow-hidden
-    "
+    class="grid grid-cols-1 md:grid-cols-[max-content,1fr] grid-rows-1 h-full max-h-full overflow-hidden"
     id="pdf-page-vue"
   >
     <!-- pdf page aside has hidden md:grid -->
@@ -28,14 +21,7 @@
     />
     <main
       v-if="displayPDF"
-      class="
-        grid grid-rows-[max-content,max-content,1fr]
-        sm:gap-1
-        w-full
-        mx-auto
-        sm:px-[2%]
-        sm:pb-[2%]
-      "
+      class="grid grid-rows-[max-content,max-content,1fr] sm:gap-1 max-w-7xl mx-auto sm:px-[2%] sm:pb-[2%]"
     >
       <pdf-page-action-tray
         :file="file"
@@ -61,7 +47,7 @@
         @cancel="canceled = true"
         @zoomIn="zoom *= 1.1"
         @zoomOut="zoom /= 1.1"
-        @confirmChecked="value => isConfirmChecked=value"
+        @confirmChecked="(value) => (isConfirmChecked = value)"
       />
       <div
         class="pdf-editor-view relative custom-scrollbar overflow-scroll w-full"
@@ -75,7 +61,7 @@
           :limitZoom="1000"
           disableZoomControl="disable"
         >
-        <!-- <pinch-scroll-zoom
+          <!-- <pinch-scroll-zoom
           ref="zoomer"
           :width="$refs.scrollingElement?.offsetWidth -4 || 0"
           :height="$refs.PagesOuter?.offsetHeight || 0"
@@ -83,7 +69,7 @@
           @scaling="scalingHandler"
           style="overflow: hidden;"
         > -->
-          <div class="pdf-pages-outer pb-6 relative" ref="PagesOuter">
+          <div class="pdf-pages-outer relative" ref="PagesOuter">
             <div
               class="pdf-single-pages-outer w-full"
               ref="pdf-single-pages-outer"
@@ -115,27 +101,12 @@
                   :style="signAlaram"
                 >
                   <div
-                    class="
-                      bg-[#77B550]
-                      p-1
-                      text-white text-[12px]
-                      border-rounded-lg
-                    "
+                    class="bg-[#77B550] p-1 text-white text-[12px] border-rounded-lg"
                   >
                     {{ 'Sign ' + signNumber }}
                   </div>
                   <div
-                    class="
-                      w-0
-                      h-0
-                      border-t-[14px]
-                      -ml-[1px]
-                      border-b-[14px]
-                      border-t-transparent
-                      border-b-transparent
-                      border-l-[14px]
-                      border-l-[#77B550]
-                    "
+                    class="w-0 h-0 border-t-[14px] -ml-[1px] border-b-[14px] border-t-transparent border-b-transparent border-l-[14px] border-l-[#77B550]"
                   ></div>
                 </div>
                 <div
@@ -149,27 +120,12 @@
                   class="absolute flex"
                 >
                   <div
-                    class="
-                      bg-[#77B550]
-                      py-1
-                      text-white text-[12px]
-                      border-rounded-lg
-                    "
+                    class="bg-[#77B550] py-1 text-white text-[12px] border-rounded-lg"
                   >
                     {{ 'Initial ' + InitialNumber }}
                   </div>
                   <div
-                    class="
-                      w-0
-                      h-0
-                      border-t-[14px]
-                      -ml-[1px]
-                      border-b-[14px]
-                      border-t-transparent
-                      border-b-transparent
-                      border-l-[14px]
-                      border-l-[#77B550]
-                    "
+                    class="w-0 h-0 border-t-[14px] -ml-[1px] border-b-[14px] border-t-transparent border-b-transparent border-l-[14px] border-l-[#77B550]"
                   ></div>
                 </div>
                 <tool-wrapper
@@ -226,59 +182,51 @@
               </div>
             </div>
           </div>
-          
-        <!-- </pinch-scroll-zoom> -->
+
+          <!-- </pinch-scroll-zoom> -->
         </pinch-zoom>
         <!-- <button   @click="downloadPdf">download</button> -->
+        <button
+          class="w-full bg-paperdazgreen-400 py-2 text-white overflow-hidden duration-300"
+          v-if="$auth.loggedIn && !isCreator && isConfirmChecked"
+          id="confirmButtton"
+          @click="_scrollToConfirm()"
+        >
+          Confirm
+        </button>
         <div id="bottom"></div>
       </div>
+
       <button
-        class="
-          w-full
-          bg-paperdazgreen-400
-          py-2
-          text-white
-          overflow-hidden
-          duration-300
-        "
-        v-if="$auth.loggedIn && isConfirm && !isCreator"
-        id="confirmButtton"
-        @click="confirmDocument()"
-      >
-        Confirm
-      </button>
-      <button
-        class="
-          w-full
-          bg-paperdazgreen-400
-          py-2
-          text-white
-          overflow-hidden
-          duration-300
-          sm:hidden
-        "
+        class="w-full bg-paperdazgreen-400 py-2 text-white overflow-hidden duration-300 sm:hidden"
         v-if="$auth.loggedIn && isCreator"
         @click="showPublishModal = true"
       >
         <!-- {{ isSign ? 'Publish' : 'Done' }} -->
         Publish
       </button>
-
     </main>
     <!-- Mobile Page Action -->
     <!-- <div class="flex sm:hidden bg-zinc-200 flex-row-reverse justify-between items-center p-1" v-if="!isSign && !isConfirm"> -->
-    <div class="flex sm:hidden bg-zinc-200 flex-row-reverse justify-between items-center p-1" v-if="!isCreator && isComplete">
-      <button v-if="$auth.loggedIn && !isConfirm && !isSign && !isCreator" @click="publishFileFunction"
-        class="text-paperdazgreen-400 px-3 h-7 disabled:text-gray-400 disabled:cursor-not-allowed">
+    <div
+      class="flex sm:hidden bg-zinc-200 flex-row-reverse justify-between items-center p-1"
+      v-if="!isCreator && isComplete"
+    >
+      <button
+        v-if="$auth.loggedIn && !isConfirm && !isSign && !isCreator"
+        @click="publishFileFunction"
+        class="text-paperdazgreen-400 px-3 h-7 disabled:text-gray-400 disabled:cursor-not-allowed"
+      >
         Done
       </button>
-      <div
-        class="flex-1 grid place-items-center h-7 px-1 py-0.5"
-      >
+      <div class="flex-1 grid place-items-center h-7 px-1 py-0.5">
         {{ currentPage }} / {{ propsNumPages }}
       </div>
-      <button v-if="$auth.loggedIn && !isConfirm && !isSign && !isCreator" @click="canceled = true"
-        class="text-red-500 px-3 h-7 disabled:cursor-not-allowed">
+      <button
+        v-if="$auth.loggedIn && !isConfirm && !isSign && !isCreator"
+        @click="canceled = true"
+        class="text-red-500 px-3 h-7 disabled:cursor-not-allowed"
+      >
         Cancel
       </button>
     </div>
@@ -313,7 +261,7 @@ import * as worker from 'pdfjs-dist/build/pdf.worker.entry'
 pdfJs.GlobalWorkerOptions.workerSrc = worker
 
 import PinchZoom from 'vue-pinch-zoom'
-import PinchScrollZoom from "@coddicat/vue-pinch-scroll-zoom";
+import PinchScrollZoom from '@coddicat/vue-pinch-scroll-zoom'
 
 import jsPDF from 'jspdf'
 
@@ -359,8 +307,10 @@ import FilePrivacy from '~/models/FilePrivacy'
 import BlockDonotPostFile from '~/components/pdf/modals/BlockDonotPostFile.vue'
 import { mapState } from 'vuex'
 import AddToPageDrawOrType from '~/components/modals/AddToPageDrawOrType.vue'
+import GlobalMixin from '~/mixins/GlobalMixin'
 
 export default mixins(PdfAuth).extend({
+  mixins: [GlobalMixin],
   layout: 'pdf',
   name: 'SinglePdfPage',
   auth: false,
@@ -646,7 +596,7 @@ export default mixins(PdfAuth).extend({
     },
     panable() {
       return this.lineStart || this.drawingStart
-    }
+    },
   },
   methods: {
     onMouseDown: function () {
@@ -712,13 +662,14 @@ export default mixins(PdfAuth).extend({
         this.filteredAnnotationButton = Array.from(annotationButton).filter(
           (item, index) => !item.hasAttribute('elemFill')
         )
+        console.log(this.filteredAnnotationButton)
         // if (this.filteredAnnotationButton.length == 0 && this.isSign && type === "appendsigninitial") {
         //   this.showDoneModal = true;
         // }
         if (type == 'mounted' && this.filteredAnnotationButton.length > 0) {
-          let signNum = 0,
+            let signNum = 0,
             initialNum = 0
-          this.filteredAnnotationButton.map((val, ind) => {
+            this.filteredAnnotationButton.map((val, ind) => {
             let twrap = val.parentElement.parentElement.parentElement
             if (twrap.id.indexOf('sign') > -1) {
               signNum++
@@ -730,16 +681,17 @@ export default mixins(PdfAuth).extend({
           this.signNumber = signNum
           this.InitialNumber = initialNum
         }
-        if (this.filteredAnnotationButton[0]) {
+        if (this.filteredAnnotationButton.length) {
           this.filteredAnnotationButton[0].classList.add('pulse')
           window.selem = this.filteredAnnotationButton[0]
-          // this.filteredAnnotationButton[0].scrollIntoView({ block: 'center', behavior: 'smooth' })
+          this.filteredAnnotationButton[0].scrollIntoView({ block: 'center', behavior: 'smooth' })
           type !== 'mounted' &&
             !(
               (type === 'appendsign' || type === 'appendinitial') &&
               this.isComplete
             ) &&
-            this.filteredAnnotationButton[0].scrollIntoView({ block: 'center' })
+          this.filteredAnnotationButton[0].scrollIntoView({ block: 'center' })
+          
           let toolwrapper =
             this.filteredAnnotationButton[0].parentElement.parentElement
               .parentElement
@@ -1335,8 +1287,8 @@ export default mixins(PdfAuth).extend({
 
       let { x, y } = !initialPoint
         ? this.pointerPos(e, parent || this.$refs.scrollingElement)
-        // ? this.pointerPos(e, parent || this.$refs['pdf-single-page-outer'])
-        : initialPoint
+        : // ? this.pointerPos(e, parent || this.$refs['pdf-single-page-outer'])
+          initialPoint
       this.toolId = this.tools.length
       let obj = {
         type: this.TOOL_TYPE[this.selectedToolType],
@@ -1353,7 +1305,7 @@ export default mixins(PdfAuth).extend({
         user: this.$auth?.user?.id,
         justMounted: true,
         pdfWidth: parent.offsetWidth,
-        pdfHeight: parent.offsetHeight
+        pdfHeight: parent.offsetHeight,
       }
       if (this.selectedToolType == this.TOOL_TYPE.line) {
         obj.x1 = obj.left
@@ -1388,7 +1340,7 @@ export default mixins(PdfAuth).extend({
         let s = scrollingElem.clientWidth / pagesOuter.clientWidth
         if (s != this.scale) {
           this.scale = s
-          
+
           this.$forceUpdate()
         }
       }
@@ -1396,11 +1348,11 @@ export default mixins(PdfAuth).extend({
     pdfBoundingRect() {
       if (!this.pdf) return
       const canvasBoundingRects = []
-      for (let i=0; i<this.propsNumPages; i++) {
-        let el = this.$refs[`pdf-single-page-outer-${i+1}`]
+      for (let i = 0; i < this.propsNumPages; i++) {
+        let el = this.$refs[`pdf-single-page-outer-${i + 1}`]
         if (Array.isArray(el)) el = el[0]
         canvasBoundingRects.push({
-          pageNumber: i+1,
+          pageNumber: i + 1,
           width: el?.offsetWidth || 0,
           height: el?.offsetHeight || 0,
         })
@@ -1408,13 +1360,15 @@ export default mixins(PdfAuth).extend({
       this.renderScaledAnnotations(canvasBoundingRects)
     },
     renderScaledAnnotations(canvasBoundingRects) {
-      this.tools = this.tools.map(tool => {
+      this.tools = this.tools.map((tool) => {
         const obj = { ...tool }
-        const pdf = canvasBoundingRects.find(val => val.pageNumber === tool.pageNumber)
-        obj.top = obj._top * (pdf.height/obj.pdfHeight) // * 1.08
-        obj.left = obj._left * (pdf.width/obj.pdfWidth) // * 0.95
-        obj.pageScaleX = pdf.width/obj.pdfWidth
-        obj.pageScaleY = pdf.height/obj.pdfHeight
+        const pdf = canvasBoundingRects.find(
+          (val) => val.pageNumber === tool.pageNumber
+        )
+        obj.top = obj._top * (pdf.height / obj.pdfHeight) // * 1.08
+        obj.left = obj._left * (pdf.width / obj.pdfWidth) // * 0.95
+        obj.pageScaleX = pdf.width / obj.pdfWidth
+        obj.pageScaleY = pdf.height / obj.pdfHeight
 
         if (this.selectedToolType == this.TOOL_TYPE.line) {
           // obj.x1 = obj.left
@@ -1461,15 +1415,18 @@ export default mixins(PdfAuth).extend({
 
       let pdfAsArray = this.convertDataURIToBinary(pdfAsDataUri)
       let doc = pdfJs.getDocument(pdfAsArray)
-      doc.promise.then(pdf => {
-        this.pdf = pdf
-        this.propsNumPages = pdf._pdfInfo.numPages
-      }, error => {
-        this.$notify.error({
-          title: 'Pdf',
-          message: error.message || 'Unable to fetch pdf, check connection',
-        })
-      })
+      doc.promise.then(
+        (pdf) => {
+          this.pdf = pdf
+          this.propsNumPages = pdf._pdfInfo.numPages
+        },
+        (error) => {
+          this.$notify.error({
+            title: 'Pdf',
+            message: error.message || 'Unable to fetch pdf, check connection',
+          })
+        }
+      )
     },
     convertDataURIToBinary(dataURI) {
       let BASE64_MARKER = ';base64,'
@@ -1486,9 +1443,16 @@ export default mixins(PdfAuth).extend({
     },
     scalingHandler(e) {
       console.log(e)
-    }
+    },
   },
   watch: {
+    isConfirmChecked(val) {
+      $('.pdf-editor-view').animate(
+        { scrollTop: $('#bottom').offset().top },
+        200
+      )
+      this.isConfirm = true
+    },
     setContainerPage: function () {
       this.$refs.PagesOuter.style.width = this.setContainerPage + 'px'
     },
@@ -1501,9 +1465,9 @@ export default mixins(PdfAuth).extend({
         this.pdfBoundingRect()
       })
     },
-    filteredAnnotationButton (value, oldValue) {
+    filteredAnnotationButton(value, oldValue) {
       if (value.length === 0 && oldValue.length > 0 && this.isSign) {
-        this.$store.commit('SET_UPLOAD_STATE', false);
+        this.$store.commit('SET_UPLOAD_STATE', false)
         this.saveFunction = 'saved'
         this.publishFileFunction()
       }
@@ -1546,13 +1510,19 @@ export default mixins(PdfAuth).extend({
 
 .custom-scrollbar {
   /* Handle */
-  &::-webkit-scrollbar-thumb {
-    @apply bg-gray-500 bg-opacity-30;
-    border-radius: 3px;
+  &::-webkit-scrollbar {
+    width: 20px !important; /* adjust this value to change the width */
+    margin: 3px !important;
+  }
 
-    &:hover {
-      @apply bg-gray-700 bg-opacity-100 cursor-pointer;
-    }
+  &::-webkit-scrollbar-track {
+    @apply bg-gray-500;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @apply bg-white;
+    border-radius: 10px !important;
+    border: 5px solid rgb(107 114 128);
   }
 }
 </style>

@@ -300,9 +300,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       this.$axios
         .$post(`/request`, requestData)
         .then(response => {
-          this.successAction()
+          // this.successAction()
           this.$nuxt.refresh()
-          this.$store.commit('SET_PDF_EXIT', true)
+          // this.$store.commit('SET_PDF_EXIT', true)
           // window.location.assign('/dashboard')
         })
         .catch(err => {

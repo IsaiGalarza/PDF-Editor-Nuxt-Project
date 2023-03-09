@@ -202,7 +202,6 @@
         v-if="$auth.loggedIn && isCreator"
         @click="showPublishModal = true"
       >
-        <!-- {{ isSign ? 'Publish' : 'Done' }} -->
         Publish
       </button>
     </main>

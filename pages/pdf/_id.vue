@@ -55,12 +55,12 @@
         v-if="pdf"
         ref="scrollingElement"
       >
-        <pinch-zoom
+        <!-- <pinch-zoom
           ref="pinch"
           :limitPan="true"
           :limitZoom="1000"
           disableZoomControl="disable"
-        >
+        > -->
           <!-- <pinch-scroll-zoom
           ref="zoomer"
           :width="$refs.scrollingElement?.offsetWidth -4 || 0"
@@ -184,7 +184,7 @@
           </div>
 
           <!-- </pinch-scroll-zoom> -->
-        </pinch-zoom>
+        <!-- </pinch-zoom> -->
         <!-- <button   @click="downloadPdf">download</button> -->
         <button
           class="w-full bg-paperdazgreen-400 py-2 text-white overflow-hidden duration-300"
@@ -684,7 +684,7 @@ export default mixins(PdfAuth).extend({
         if (this.filteredAnnotationButton.length) {
           this.filteredAnnotationButton[0].classList.add('pulse')
           window.selem = this.filteredAnnotationButton[0]
-          this.filteredAnnotationButton[0].scrollIntoView({ block: 'center', behavior: 'smooth' })
+          this.filteredAnnotationButton[0].scrollIntoView({ block: 'center' })
           type !== 'mounted' &&
             !(
               (type === 'appendsign' || type === 'appendinitial') &&

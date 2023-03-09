@@ -113,7 +113,7 @@ export default {
   border:none;
   border-left: 1px solid #5FA348;
   border-bottom: 1px solid #5FA348;
-  background-color: transparent;
+  background: transparent;
 }
 
 .input-annotation:blur {

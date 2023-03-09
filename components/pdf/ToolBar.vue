@@ -405,6 +405,11 @@ export default {
     }
   },
   methods: {
+    handleKeyDown(event) {
+      if (event.ctrlKey && event.key === 'z') {
+       this.undoFunction()
+      }
+    },
     onImageClick() {
       if (this.isCreator) {
         this.setSelectedType(this.TOOL_TYPE.star)
@@ -480,6 +485,7 @@ export default {
       this.$BUS.$emit('download-pdf')
     },
     onSignClick() {
+      if(!this.isCreator) return;
       if (!this.$auth.loggedIn) {
         !this.$auth.loggedIn ? this.showPdfNotLoggedInUser = true : null
         return
@@ -503,6 +509,7 @@ export default {
       }
     },
     onInitialsClick() {
+      if(!this.isCreator) return;
       if (!this.$auth.loggedIn) {
         !this.$auth.loggedIn ? this.showPdfNotLoggedInUser = true : null
         return
@@ -577,7 +584,11 @@ export default {
   mounted: function () {
     // console.log(this.openTypeInitialModal);
     this.changeInitialToBase64()
-  }
+    document.addEventListener('keydown', this.handleKeyDown);
+  },
+  beforeDestroy() {
+    document.removeEventListener('keydown', this.handleKeyDown);
+  },
 }
 </script>
 

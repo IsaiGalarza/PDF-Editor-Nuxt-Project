@@ -15,36 +15,32 @@
           <span
             slot="suffix"
             class="grid place-items-center h-full w-full"
-            :class="{'focused-icon': isFocused}"
+            :class="{ 'focused-icon': isFocused }"
             @click="onClickSearchIcon"
-            >
-            <search-white-icon
-              v-if="isFocused"
-              width="16"
-              height="16"
-            />
-            <search-icon
-              v-else
-              width="14"
-              height="14"
-            />
+          >
+            <search-white-icon v-if="isFocused" width="16" height="16" />
+            <search-icon v-else width="14" height="14" />
           </span>
         </el-input>
       </div>
       <el-dropdown-menu
         slot="dropdown"
-        :class="topSearchContent.length > 0 ? '' : 'hidden'"
       >
+      <div v-if="!loading && !topSearchContent.length" class="flex justify-center items-center w-full min-h-[200px] opacity-50">
+        No Paperlink found
+      </div>
+       <div v-if="loading" class="flex justify-center items-center min-h-[200px] h-full bg-white/80 w-full absolute top-0 left-0 z-10">
+        <spinner-dotted-icon
+        height="20"
+        width="20"
+        class="animate-spin"
+        />
+       </div>
         <!-- Start:: dropdown -->
         <div class="bg-white rounded-lg whitespace-nowrap w-[90vw] lg:w-[40vw]">
           <div class="max-h-[60vh] custom-scrollbar overflow-y-auto p-2">
             <article
-              class="
-                py-4
-                text-[#9F9F9F]
-                grid grid-cols-[max-content,1fr,max-content]
-                gap-4
-              "
+              class="py-4 text-[#9F9F9F] grid grid-cols-[max-content,1fr,max-content] gap-4"
               v-for="item in topSearchContent"
               :key="item.id"
             >
@@ -86,6 +82,10 @@ import login from '@/mixins/login'
 import SearchIcon from '../svg-icons/SearchIcon.vue'
 import SearchWhiteIcon from '../svg-icons/SearchWhiteIcon.vue'
 import SearchShare from '../search-strips/component/SearchShare.vue'
+import ballloader from '~/components/loader/ballloader.vue'
+import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
+import debounce from '~/types/debounce'
+
 
 export default mixins(GlobalMixin, login).extend({
   name: 'SearchInput',
@@ -93,12 +93,14 @@ export default mixins(GlobalMixin, login).extend({
     SearchIcon,
     SearchWhiteIcon,
     SearchShare,
+    ballloader,
+    SpinnerDottedIcon
   },
   props: {
     isSearch: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: ['onBlurInput', 'onToggle'],
   data() {
@@ -106,6 +108,7 @@ export default mixins(GlobalMixin, login).extend({
       searchString: '',
       topSearchContent: [],
       isFocused: false,
+      loading: false
     }
   },
   computed: {
@@ -128,6 +131,7 @@ export default mixins(GlobalMixin, login).extend({
     },
     async getGeneralSearch(topsearch) {
       if (!topsearch.trim()) return
+      this.loading = true
 
       // await this.$axios.get(`/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&fileName[$like]=${topsearch}%`)
       await this.$axios
@@ -138,6 +142,7 @@ export default mixins(GlobalMixin, login).extend({
         .then((response) => {
           const { data } = response.data
           this.topSearchContent = data
+          this.loading = false
         })
       // &$or[1][uploadedBy]={ team member id }&$or[2][uploadedBy]={ team member id 2 }
     },
@@ -160,7 +165,10 @@ export default mixins(GlobalMixin, login).extend({
       }
     },
     searchString: function (val) {
-      this.getGeneralSearch(this.searchString)
+      clearTimeout(timeout)
+      let timeout = setTimeout(() => {
+        this.getGeneralSearch(this.searchString)
+      }, 1000);
     },
     ['topSearchContent.length']: function (val) {
       if (val > 0) {

@@ -190,7 +190,7 @@
           class="w-full bg-paperdazgreen-400 py-2 text-white overflow-hidden duration-300"
           v-if="$auth.loggedIn && !isCreator && isConfirmChecked"
           id="confirmButtton"
-          @click="_scrollToConfirm()"
+          @click="publishFileFunction"
         >
           Confirm
         </button>

@@ -254,7 +254,7 @@ export default Vue.extend({
       this.$axios.get(`users/?id=${this.$route.params.id}`)
         .then((response) => {
           const user = response.data.data
-          that.userInfo = user[0]
+          this.userInfo = user[0]
           //  if(user.role != UserTypeEnum.PAID)
           //  this.$nuxt.$router.push('/dashboard')
         })

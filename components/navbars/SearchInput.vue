@@ -38,19 +38,23 @@
        </div>
         <!-- Start:: dropdown -->
         <div class="bg-white rounded-lg whitespace-nowrap w-[90vw] lg:w-[40vw]">
-          <div class="max-h-[60vh] custom-scrollbar overflow-y-auto p-2">
+          <div class="max-h-[60vh] custom-scrollbar overflow-y-auto p-2 px-4">
             <article
-              class="py-4 text-[#9F9F9F] grid grid-cols-[max-content,1fr,max-content] gap-4"
+              class="py-4 text-[#9F9F9F] grid grid-cols-[max-content,1fr,max-content] gap-4 datalist"
               v-for="item in topSearchContent"
               :key="item.id"
             >
-              <img
+              <!-- <img
                 :src="
                   (item.user || {}).profile_picture ||
                   '/img/placeholder_picture.png'
                 "
                 alt=""
                 class="h-16 w-16 rounded-2 object-cover"
+              /> -->
+              <letter-avatar
+                class="h-16 w-16 rounded-1 object-cover"
+                :username="(item.user || {}).company_name"
               />
               <div class="overflow-hidden">
                 <nuxt-link :to="`/pdf/${item.paperLink}`">
@@ -61,7 +65,7 @@
                     {{ (item.user || {}).company_name }}
                   </p>
                   <p class="text-[11px] text-black mt-0.5 truncate">
-                    {{ item.paperLink }}
+                    {{ "---" }}
                   </p>
                 </nuxt-link>
               </div>
@@ -85,6 +89,7 @@ import SearchShare from '../search-strips/component/SearchShare.vue'
 import ballloader from '~/components/loader/ballloader.vue'
 import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
 import debounce from '~/types/debounce'
+import LetterAvatar from '../widgets/LetterAvatar.vue'
 
 
 export default mixins(GlobalMixin, login).extend({
@@ -94,7 +99,8 @@ export default mixins(GlobalMixin, login).extend({
     SearchWhiteIcon,
     SearchShare,
     ballloader,
-    SpinnerDottedIcon
+    SpinnerDottedIcon,
+    LetterAvatar
   },
   props: {
     isSearch: {
@@ -142,6 +148,7 @@ export default mixins(GlobalMixin, login).extend({
         .then((response) => {
           const { data } = response.data
           this.topSearchContent = data
+          console.log("hash", this.topSearchContent)
           this.loading = false
         })
       // &$or[1][uploadedBy]={ team member id }&$or[2][uploadedBy]={ team member id 2 }
@@ -197,5 +204,11 @@ export default mixins(GlobalMixin, login).extend({
   @apply bg-paperdazgreen-300;
   border-radius: 8px;
   width: 40px;
+}
+.datalist{
+  @apply border-b-2 border-b-gray-200
+}
+.datalist:nth-last-child(1){
+  @apply border-b-0 border-b-transparent
 }
 </style>

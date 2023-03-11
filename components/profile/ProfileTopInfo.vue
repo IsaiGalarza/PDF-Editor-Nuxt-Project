@@ -210,7 +210,7 @@ export default mixins(login).extend({
       return this.user?.id == this.userInfo?.id
     },
     profilePhoto() {
-      return this.$store.getters.profilePhoto || this.userInfo.profilePicture
+      return  this.userInfo.profilePicture
     },
   },
   watch: {

@@ -93,6 +93,7 @@ export default {
       return {
         // fontSize: `${this.fontSize || 11}px`,
         fontSize: `${(this.fontSize || 11)*(this.tool?.pageScaleX || 1)}px`,
+        background: 'transparent'
         // width: `${this.inputWidth}px`
       }
     },
@@ -100,7 +101,8 @@ export default {
       return {
         fontSize: `${this.fontSize || 11}px`,
         visibility: 'hidden',
-        position: 'absolute'
+        position: 'absolute',
+        background: 'transparent'
       }
     }
   }

@@ -18,7 +18,14 @@
                   v-show="errorMessage"
                   type="error"
                   class="mb-8"
-                />
+                > 
+                <template #action>      
+                  <p class="pt-1">
+                    Please <button @click="$nuxt.$router.push('/login')" class="opacity-50 hover:opacity-100">Sign in</button> 
+                  Click <button @click="$nuxt.$router.push('/forgot-password')" class="opacity-50 hover:opacity-100">here</button> if you forgot your password
+                  </p>
+                </template>
+              </message-alert-widget>
 
                   <div class="or-line">
                     <div class="text">Or</div>

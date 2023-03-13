@@ -302,8 +302,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         .then(response => {
           // this.successAction()
           this.$nuxt.refresh()
-          // this.$store.commit('SET_PDF_EXIT', true)
-          // window.location.assign('/dashboard')
+          this.$store.commit('SET_PDF_EXIT', true)
+          window.location.assign('/dashboard')
         })
         .catch(err => {
           this.$notify.error({
@@ -383,7 +383,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           })
           this.$store.commit('SET_PDF_EXIT', true)
           window.location.assign('/company-files')
-          // this.$nuxt.$router.push('/dashboard')
+          this.$nuxt.$router.push('/dashboard')
         })
         .catch(() => {
           this.$notify.error({
@@ -409,7 +409,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         })
         return
       }
-
+      
       if (
         !this.isCreator &&
         !this.$auth.user.signatureURL &&

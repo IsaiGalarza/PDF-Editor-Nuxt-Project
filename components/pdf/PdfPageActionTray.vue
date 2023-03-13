@@ -66,16 +66,6 @@
       }}
       </span>
 
-      <div class="hidden sm:flex items-center justify-end" v-if="$auth.loggedIn && isCreator">
-        <button @click="saveChanges" :disabled="disablePublish"
-          class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed">
-          Publish
-        </button>
-        <button @click="cancelPublish"
-          class="text-xs text-red-500 bg-white border rounded px-3 h-7 disabled:cursor-not-allowed">
-          Cancel
-        </button>
-      </div>
 
       <el-dropdown trigger="click" class="font-medium" v-if="$auth.loggedIn && !isConfirm && 0"
         @command="handleCommand($event)">
@@ -147,7 +137,7 @@
     <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="$auth.loggedIn && !isCreator">
 
       <!-- <button v-if="$auth.loggedIn && !isCreator" @click="saveChanges" :disabled="disablePublish" -->
-      <button v-if="$auth.loggedIn && !(isConfirm && !isCreator) && !isSign" @click="saveChanges" :disabled="disablePublish"
+      <button v-if="$auth.loggedIn && !(isConfirm && !isCreator) && !isSign" @click="saveChanges" 
         class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed">
         Done
       </button>

@@ -6,7 +6,7 @@
     <span class="h-full flex items-center justify-center flex-1 px-1" v-show="!isSearch">
       <folder-icon class="w-4 h-4" />
     </span>
-    <a :href="`/public/profile/${mainUserLink}`" target="_blank"  class="h-full flex items-center justify-center flex-1 px-1" v-show="!isSearch">
+    <a v-if="!appIsFreeUser" :href="`/public/profile/${mainUserLink}`" target="_blank"  class="h-full flex items-center justify-center flex-1 px-1" v-show="!isSearch">
       <building-icon class="w-4 h-4" />
     </a>
     <button @click="openUserFiles" class="h-full flex items-center justify-center flex-1 px-1" v-show="!isSearch">
@@ -29,8 +29,10 @@ import SearchIcon from '../svg-icons/SearchIcon.vue'
 import UserTypeEnum from '~/models/UserTypeEnum'
 import SearchInput from './SearchInput.vue'
 import BuildingIcon from '../svg-icons/BuildingIcon.vue'
+import AppMixins from '~/mixins/AppMixins'
+import mixins from 'vue-typed-mixins'
 
-export default Vue.extend({
+export default mixins(AppMixins).extend({
   name: 'BottomNav',
   components: { FolderIcon, FileIcon, HomeIcon, SearchIcon, SearchInput, BuildingIcon },
   computed:{

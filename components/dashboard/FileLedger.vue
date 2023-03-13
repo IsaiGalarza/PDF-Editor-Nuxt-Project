@@ -4,20 +4,13 @@
     <div class="bg-white rounded-2xl flex-1 min-h-[50vh] lg:min-h-[40vh] position-relative pt-4"
       >
       <!-- <transition name="fade" mode="out-in"> -->
-      <img v-if="((pdfUser || []).length <= 0 && !spinner)" src="../../assets/img/dashboard-bg.png"
-        class="position-absolute mt-24 md:left-[30%] md:w-auto sm:w-[200px]" />
+    
       <h3
         class="text-paperdazgray-700 font-semibold text-xl flex xs:items-center justify-between whitespace-nowrap px-3 mb-1"
         :class="[isPaidUser ? 'flex-col sm:flex-row' : 'flex-row gap-2']"
         v-if="!spinner"
       >
-        <!-- <div class="flex">
-          <span>{{ isPaidUser ? "File Ledger" : "Ledger" }}</span>
-          <div v-if="isPaidUser" class="flex">
-            <img src="../../assets/img/company-icon.png" />
-            <img src="../../assets/img/users-icon.png" class="-ml-8" />
-          </div>
-        </div> -->
+      
         <h5 class="text-lg font-semibold text-[#272727] hidden sm:inline-flex items-center gap-2 sm:w-full" :class="[isPaidUser ? 'mb-2' : 'mb-0']">
           {{ isPaidUser ? "File Ledger" : "Ledger" }}
           <a :href="`/public/profile/${mainUserLink}`" target="_blanck">
@@ -37,16 +30,7 @@
             class="circle  circle-16 sm:circle-18 bg-paperdazgreen-400 text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
             <search-icon width="16" height="16" currentcolor="white" />
           </button>
-          <!-- <div class="flex" v-if="isPaidUser">
-            <button @click="showCreateCompanyFolderFunc"
-              class="circle circle-18 bg-paperdazgreen-400 text-xl text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
-              <folder-plus-icon />
-            </button>
-            <button @click="showUploadModalFunction"
-              class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-white text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
-              <plus-icon />
-            </button>
-          </div> -->
+  
         </div>
       </h3>
       <div
@@ -74,7 +58,7 @@
               <th class="fixed-col right text-right"></th>
             </tr>
           </thead>
-          <tbody v-if="(pdfUser.length > 0)">
+          <tbody v-if="pdfUser.length && !spinner">
             <tr v-for="(file, i) in pdfUser" :key="file.id" :class="{ highlight: file.id == highlightedFileId }">
               <td class="text-left fixed-col left">{{ i + 1 + returnedDataPage }}</td>
               <td class="text-center">
@@ -144,21 +128,7 @@
               </td>
             </tr>
           </tbody>
-          <tbody v-else>
-            <tr v-for="i in 10" :key="i">
-              <td class="text-left fixed-col left">{{ i }}</td>
-              <td class="text-center">
-              </td>
-              <td class="text-center">
-              </td>
-              <td class="text-center">
-              </td>
-              <td class="text-center">
-              </td>
-              <td class="fixed-col right">
-              </td>
-            </tr>
-          </tbody>
+
         </table>
       </div>
       
@@ -335,7 +305,7 @@ export default Vue.extend({
               files.push(el);
             }
           })
-          this.files = files.length > 0 ? files : []
+          this.files = files.length ? files : []
           this.$store.commit('ADD_USER', files)
           this.totalFile = response.data.total
         })

@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import UserTypeEnum from '~/models/UserTypeEnum'
 
 export default{
   methods: {

@@ -1,15 +1,33 @@
 <template>
   <div>
-    <img v-if="completed" class="absolute-image" :src="completedImgData" :style="style" />
-    <img v-else-if="!initialimgDisplay" src="../../../assets/img/initial-icon.png" attr="initial"
-      :elemFill="uploaded && initialimgDisplay" :uploaded="uploaded" @click="setInitialImgDisplay" class="annot-button"
+    <img
+      v-if="completed"
+      class="absolute-image"
+      :src="completedImgData"
+      :style="style"
+    />
+    <img
+      v-else-if="!initialimgDisplay"
+      src="../../../assets/img/initial-icon.png"
+      attr="initial"
+      :elemFill="uploaded && initialimgDisplay"
+      :uploaded="uploaded"
+      @click="setInitialImgDisplay"
+      class="annot-button"
       :class="[
-        $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ', isAgreedSign !== 1 && isSign ? 'pointer-events-none' : ''
-      ]" :width="(tool?.pageScaleY || 1)*18" />
-    <img v-else-if="uploaded" class="absolute-image" :src="initial" :style="style" />
-    <img v-else class="absolute-image" src="../../../assets/img/initials.png"/>
+        $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
+        isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
+      ]"
+      :width="(tool?.pageScaleY || 1) * 18"
+    />
+    <img
+      v-else-if="uploaded"
+      class="absolute-image"
+      :src="initial"
+      :style="style"
+    />
+    <img v-else class="absolute-image" src="../../../assets/img/initials.png" />
   </div>
-
 </template>
 
 <script>
@@ -26,7 +44,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     scale: Number,
     file: Object,
     completed: String,
-    setInitialSignType:Function,
+    setInitialSignType: Function,
     tool: Object,
   },
   computed: {
@@ -42,7 +60,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       return String(this.file.fileAction).toLowerCase() === FileAction.SIGNED
     },
     isAgreedSign() {
-      return this.$store.state.agreeSign;
+      return this.$store.state.agreeSign
     },
     isComplete() {
       return String(this.file.fileAction).toLowerCase() === FileAction.COMPLETE
@@ -59,7 +77,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       return {
         width: 'auto',
         // height: `${(this.scale || 1) * 20}px`,
-        height: `${((this.tool?.pageScaleY || 1) * 20)}px`,
+        height: `${(this.tool?.pageScaleY || 1) * 20}px`,
       }
     },
   },
@@ -68,7 +86,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       showInitialModal: false,
       initial: null,
       initialimgDisplay: false,
-      completedImgData: null
+      completedImgData: null,
     }
   },
   components: { AddToPageDrawOrType, DrawOrTypeModal },
@@ -104,14 +122,14 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       // this.uploaded = true
     },
     popInitial() {
-      !this.isCreator && (this.initialimgDisplay = true);
+      !this.isCreator && (this.initialimgDisplay = true)
       if (this.isCreator || !this.$auth.loggedIn) return
       if (!this.uploaded) this.showInitialModal = true
     },
     setInitialImgDisplay() {
-      !this.isCreator && (this.initialimgDisplay = true);
+      !this.isCreator && (this.initialimgDisplay = true)
       this.$BUS.$emit('scrollToSignInitial', 'appendinitial')
-      !this.uploaded && this.setInitialSignType('initial');
+      !this.uploaded && this.setInitialSignType('initial')
     },
   },
   mounted() {

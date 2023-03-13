@@ -25,12 +25,16 @@ export const appendEditText = ({
   elem,
   axisX,
   axisY,
+  height,
   fontsize,
+  isLabel
 }: any) => {
   ; (parent.data as any).push({
     page_number: subParent.indexOf(elem),
     type: 'DrawText',
     text: tools,
+    isLabel: isLabel,
+    height: height,
     axisX: axisX[1] - axisX[0],
     axisY: axisY[1] > axisY[0] ? axisY[1] - axisY[0] : axisY[0] - axisY[1],
     size: formatStyleTop('font-size', fontsize),
@@ -320,7 +324,7 @@ export const ExtractFormPdf = ({
                           element.getBoundingClientRect().top,
                           item.getBoundingClientRect().top - pdfOffset_y,
                         ],
-
+                        height: tools.children[0].getBoundingClientRect().height ,
                         axisX: [
                           element.getBoundingClientRect().left,
                           item.getBoundingClientRect().left - pdfOffset_x,
@@ -387,6 +391,7 @@ export const ExtractFormPdf = ({
                           .height,
                       })
                       appendEditText({
+                        isLabel: true,
                         parent: pdfScrappedData,
                         subParent: totalArray,
                         axisY: [

@@ -174,7 +174,7 @@
               <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
             </div>
             <!-- END: spinner container -->
-            <empty-file-ledger class="min-h-[55vh]" v-if="pdfUser < 1" :isPaidUser="isPaidUser" />
+            <empty-file-ledger class="min-h-[55vh]" v-if="(pdfUser.length < 1) && !fileSpinner" :isPaidUser="isPaidUser" />
             <!--START: No files container-->
             <table class="custom-table" v-else>
               <thead class="text-[#414142]">

@@ -198,13 +198,14 @@
           <button
             class="rounded h-10 w-28 flex items-center gap-2 py-1 px-4 text-sm"
             :class="[activeTool == TOOL_TYPE.appendSignature ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-      isCreator ? 'opacity-40' : '']" @click="onSignClick">
+            isCreator ? 'opacity-40' : '']" @click="onSignClick">
+            <img src="../svg-icons/PdfSignTool.svg" width="18" />
             Sign
-            <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
-          </button>
-          <div class="absolute w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[70px] cursor-pointer"
+            <img
+            src="./assets/arrow_down.svg"
             id="signtraybtn"
-            @click="() => { showSignTray = !showSignTray; showSignTray && (showInitialTray = false); }"></div>
+            @click="() => { showSignTray = !showSignTray; showSignTray && (showInitialTray = false); }"/>
+          </button>
           <div v-if="(showSignTray)" v-click-outside="handleSignFocusOut"
             class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-10 mt-1 tray-mode">
             <img class="absolute-image border py-1 px-6 rounded h-[50px]" :src="signature" />
@@ -217,14 +218,15 @@
           <button
             class="rounded h-10 w-28 flex items-center gap-2 py-1 px-4 tool-item text-sm"
             :class="[activeTool == TOOL_TYPE.appendInitial ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-      isCreator ? 'opacity-40' : '']"  @click="onInitialsClick">
+            isCreator ? 'opacity-40' : '']"  @click="onInitialsClick">
+            <img src="../svg-icons/PdfinitialTool.svg" width="18" />
             Initial
-            <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
-          </button>
-          <div class="absolute w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[70px] cursor-pointer"
+            <img
+            src="./assets/arrow_down.svg"
             id="initialtraybtn"
-            @click="() => { showInitialTray = !showInitialTray; showInitialTray && (showSignTray = false); }">
-          </div>
+            @click="() => { showInitialTray = !showInitialTray; showInitialTray && (showSignTray = false); }"/>
+          </button>
+        
           <div v-if="showInitialTray" v-click-outside="handleInitialFocusOut"
             class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-10 mt-1 tray-mode">
             <img class="absolute-image border py-1 px-6 rounded h-[50px]" :src="initial" />
@@ -234,7 +236,9 @@
         </div>
       </div>
 
-      <button @click="undoFunction" class="rounded h-10 bg-white text-sm">UNDO</button>
+      <button @click="undoFunction" class="rounded h-10 bg-white text-sm">
+        <img src="../svg-icons/UndoIcon.svg" class="w-[15px] mr-2" />
+        UNDO</button>
     </div>
 
     <div v-if="isComplete && isCreator" class="flex items-center justify-between py-1">
@@ -318,6 +322,7 @@ import ZoomInOut from '@/components/pdf/ZoomInOut'
 import GroupTools from '../svg-icons/GroupTools.vue'
 import GroupInsert from '../svg-icons/GroupInsert.vue'
 import UndoIcon from '../svg-icons/UndoIcon.vue'
+
 
 export default {
   components: {
@@ -485,7 +490,6 @@ export default {
       this.$BUS.$emit('download-pdf')
     },
     onSignClick() {
-      if(!this.isCreator) return;
       if (!this.$auth.loggedIn) {
         !this.$auth.loggedIn ? this.showPdfNotLoggedInUser = true : null
         return
@@ -509,7 +513,6 @@ export default {
       }
     },
     onInitialsClick() {
-      if(!this.isCreator) return;
       if (!this.$auth.loggedIn) {
         !this.$auth.loggedIn ? this.showPdfNotLoggedInUser = true : null
         return

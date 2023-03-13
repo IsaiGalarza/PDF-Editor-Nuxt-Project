@@ -23,6 +23,7 @@
           </div>
         </div>
       </slot>
+      <slot name="action"></slot>
     </div>
   </div>
 </template>

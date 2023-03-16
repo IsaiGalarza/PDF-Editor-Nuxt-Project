@@ -92,7 +92,6 @@ export default {
     { src: '~/plugins/paginate.js'},
     { src: '~/plugins/outside-click.js' },
     { src: '~/plugins/html2pdf.js', ssr: false },
-    { src: '~/plugins/fontawesome.js', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

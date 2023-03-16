@@ -197,21 +197,15 @@
         </div>
 
         <div v-else class="h-full self-stretch flex items-center">
-            <button type="button" @click="showLandingPageSearchModal = true">
-                <search-icon width="15" />
-            </button>
-            <nuxt-link
-                v-if="!$auth.loggedIn"
-                to="/login"
-                class="text-paperdazgreen-300 mx-2"
-                >Sign in</nuxt-link
-            >
-            <nuxt-link
-                v-if="!$auth.loggedIn"
-                to="/register"
-                class="bg-paperdazgreen-300 text-white h-7 xs:h-8 rounded shadow px-2 sm:px-3 hidden sm:flex items-center justify-center whitespace-nowrap mx-2"
-                >Get Started</nuxt-link
-            >
+            <button
+                v-if="!$store.getters.getFillAsGuest"
+                @click="$store.getters.showGuestModal"
+                class="bg-paperdazgreen-300 text-white h-7 xs:h-8 rounded shadow px-4 sm:px-3 hidden sm:flex items-center justify-center whitespace-nowrap mx-2"
+                >Start</button>
+        </div>
+        <div v-if="$store.getters.getFillAsGuest" class="flex items-center">
+            <span class="mr-3">Guest</span>
+            <img src="/img/placeholder_picture.png" width="30" class="rounded-full mr-2"/>
         </div>
         <landing-page-search-modal v-model="showLandingPageSearchModal" />
     </nav>

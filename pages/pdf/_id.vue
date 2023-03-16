@@ -250,6 +250,7 @@
     <BlockDonotPostFile :file="file" v-model="showBlockDonotPost" />
     <SuccessFileModal :file="file" v-model="showSuccesshModal" />
     <DoneModal :file="file" v-model="showDoneModal" />
+    <GuestModal v-model="showGuestModal" />
   </div>
 </template>
 
@@ -287,6 +288,7 @@ import SignatureIdentifier from '@/components/pdf/tools_identifiers/Signature'
 import StarIdentifier from '@/components/pdf/tools_identifiers/Star'
 import AppendSignature from '~/components/pdf/tools_identifiers/AppendSignature.vue'
 import AppendInitial from '~/components/pdf/tools_identifiers/AppendInitial.vue'
+import GuestModal from  '~/components/pdf/modals/GuestModal.vue'
 
 import moment from 'moment'
 import $ from 'jquery'
@@ -342,8 +344,10 @@ export default mixins(PdfAuth).extend({
     DoneModal,
     PinchZoom,
     PinchScrollZoom,
+    GuestModal
   },
   data: () => ({
+    showGuestModal: false,
     pdf: null,
     tools: [],
     selectedToolType: null,
@@ -435,6 +439,8 @@ export default mixins(PdfAuth).extend({
       this.pdfBoundingRect()
     }
     this.checkFilePrivacyOnload()
+    this.$store.commit('SET_GUEST_MODAL_FUNCTION', this.showGuestModalFunc)
+    if(JSON.parse(localStorage.getItem('isGuest'))?.isGuest) localStorage.removeItem('isGuest')
   },
   destroyed() {
     document.removeEventListener('keyup', this.keyupHandler)
@@ -598,6 +604,9 @@ export default mixins(PdfAuth).extend({
     },
   },
   methods: {
+    showGuestModalFunc(){
+      this.showGuestModal = !this.showGuestModal
+    },
     onMouseDown: function () {
       this.mouseDown = true
       this.mouseUp = false

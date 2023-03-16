@@ -4,6 +4,10 @@ import UserTypeEnum from '~/models/UserTypeEnum'
 import FileAction from '~/models/FileAction'
 
 export const state = () => ({
+  guestModalFunc: () => {},
+  base64Signature: undefined,
+  base64Initial: undefined,
+  fillAsGuest: false,
   pageName: '',
   pdfPageName: {},
   pdfUser: [],
@@ -26,12 +30,24 @@ export const state = () => ({
   upload_state: false,
   showCongratulationsModal: false,
   agreeSign: -1,
-  file: {}
+  file: {},
 })
 
 export type RootState = ReturnType<typeof state>
 
 export const getters: GetterTree<RootState, RootState> = {
+  getUserSignature(state: any) {
+    return state.base64Signature
+  },
+  getFillAsGuest(state: any){
+    return state.fillAsGuest
+  },
+  getUserInitial(state: any) {
+    return state.base64Initial
+  },
+  showGuestModal(state: any) {
+    return state.guestModalFunc
+  },
   profilePhoto(state: any) {
     const user = state.auth.user
     if (!user) return ''
@@ -70,14 +86,26 @@ export const mutations: MutationTree<RootState> = {
   SET_PAGE_USER(state, user) {
     state.initialUser = user
   },
+  SET_FILL_AS_GUEST(state, payload) {
+    state.fillAsGuest = payload
+  },
+  SET_FILE_SIGNATURE(state, payload) {
+    state.base64Signature = payload
+  },
+  SET_FILE_INITIAL(state, payload) {
+    state.base64Initial = payload
+  },
+  SET_GUEST_MODAL_FUNCTION(state, callback) {
+    state.guestModalFunc = callback
+  },
   SET_CONGRAT_SUCCESS(state) {
     state.showCongratulationsModal = true
   },
   SET_AGREE_SIGN(state) {
-    state.agreeSign = 1;
+    state.agreeSign = 1
   },
   UN_SET_AGREE_SIGN(state) {
-    state.agreeSign = 0;
+    state.agreeSign = 0
   },
   // -- Setting the routed page name --
   SET_PAGE_NAME(state, { name }: { name: string }) {
@@ -129,16 +157,22 @@ export const mutations: MutationTree<RootState> = {
     state.pdfUser = state.originalPdfFiles
     switch (filter.toLowerCase()) {
       case FileAction.LEDGER:
-        (state.pdfUser as any) = state.pdfUser
-        break;
+        ;(state.pdfUser as any) = state.pdfUser
+        break
       case FileAction.SHARED:
-        (state.pdfUser as any) = (state.pdfUser as any).filter((e: any) => e.shared != null)
-        break;
+        ;(state.pdfUser as any) = (state.pdfUser as any).filter(
+          (e: any) => e.shared != null
+        )
+        break
       case FileAction.SAVED:
-        (state.pdfUser as any) = (state.pdfUser as any).filter((e: any) => e.favourites.length > 0)
-        break;
+        ;(state.pdfUser as any) = (state.pdfUser as any).filter(
+          (e: any) => e.favourites.length > 0
+        )
+        break
       default:
-        (state.pdfUser as any) = (state.pdfUser as any).filter((e: any) => e.fileAction == filter.toLowerCase())
+        ;(state.pdfUser as any) = (state.pdfUser as any).filter(
+          (e: any) => e.fileAction == filter.toLowerCase()
+        )
         break
     }
   },
@@ -147,16 +181,22 @@ export const mutations: MutationTree<RootState> = {
     state.savedFiles = state.originalPdfFiles
     switch (filter.toLowerCase()) {
       case FileAction.LEDGER:
-        (state.savedFiles as any) = state.savedFiles
-        break;
+        ;(state.savedFiles as any) = state.savedFiles
+        break
       case FileAction.SHARED:
-        (state.savedFiles as any) = (state.savedFiles as any).filter((e: any) => e.shared != null)
-        break;
+        ;(state.savedFiles as any) = (state.savedFiles as any).filter(
+          (e: any) => e.shared != null
+        )
+        break
       case FileAction.SAVED:
-        (state.savedFiles as any) = (state.savedFiles as any).filter((e: any) => e.favourites.length > 0)
-        break;
+        ;(state.savedFiles as any) = (state.savedFiles as any).filter(
+          (e: any) => e.favourites.length > 0
+        )
+        break
       default:
-        (state.savedFiles as any) = (state.savedFiles as any).filter((e: any) => e.fileAction == filter.toLowerCase())
+        ;(state.savedFiles as any) = (state.savedFiles as any).filter(
+          (e: any) => e.fileAction == filter.toLowerCase()
+        )
         break
     }
   },
@@ -171,13 +211,13 @@ export const mutations: MutationTree<RootState> = {
     state.originalPdfFiles = pdfFiles
   },
   SEARCH_SAVED_FILES(state, search) {
-    let ary = [{ favourite: 0 }];
+    let ary = [{ favourite: 0 }]
     if (search == '') {
       state.savedFiles = state.originalPdfFiles
     } else {
-      ary.pop();
+      ary.pop()
       state.originalPdfFiles.map((val: any) => {
-        val['fileName'].toLowerCase().indexOf(search) != -1 && ary.push(val);
+        val['fileName'].toLowerCase().indexOf(search) != -1 && ary.push(val)
       })
       state.savedFiles = [...ary]
     }
@@ -192,14 +232,14 @@ export const mutations: MutationTree<RootState> = {
     state.upload_state = val
   },
   SET_PDF_PAGE_BOTTOM(state) {
-    state.scrollPosition = true;
+    state.scrollPosition = true
   },
   SET_NOT_PDF_PAGE_BOTTOM(state) {
-    state.scrollPosition = false;
+    state.scrollPosition = false
   },
   SET_FILE(state, file) {
     state.file = file
-  }
+  },
 }
 
 export const actions: ActionTree<RootState, RootState> = {}

@@ -49,6 +49,7 @@
     <!-- Start:: Body -->
 
     <p
+    v-if="files.length"
       class="text-centerfont-medium flex justify-center items-center w-[] mx-auto mb-6 whitespace-none"
     >
       <input

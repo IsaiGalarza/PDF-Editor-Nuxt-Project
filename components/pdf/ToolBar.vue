@@ -461,7 +461,7 @@ export default {
 
     },
     undoFunction() {
-      if (!this.$auth.loggedIn) {
+      if (!this.$auth.loggedIn && !this.$store.getters?.getFillAsGuest) {
         !this.$auth.loggedIn ? this.showPdfNotLoggedInUser = true : null
         return
       }
@@ -475,7 +475,7 @@ export default {
       this.imageExported(image, isSignature)
     },
     setSelectedType(type) {
-      if (!this.$auth.loggedIn) {
+      if (!this.$auth.loggedIn && !this.$store.getters?.getFillAsGuest) {
         !this.$auth.loggedIn ? this.showPdfNotLoggedInUser = true : null
         return
       }
@@ -490,16 +490,11 @@ export default {
       this.$BUS.$emit('download-pdf')
     },
     onSignClick() {
-      if (!this.$auth.loggedIn) {
+      if (!this.$auth.loggedIn && !this.$store.getters?.getFillAsGuest) {
         !this.$auth.loggedIn ? this.showPdfNotLoggedInUser = true : null
         return
       }
-      // if (!this.isCreator) {
-      //   this.setSelectedType(this.TOOL_TYPE.signature)
-      // }
-      // else {
-      //   this.setSelectedType(this.TOOL_TYPE.appendSignature)
-      // }
+ 
       this.setSelectedType(this.TOOL_TYPE.appendSignature)
     },
     openSignModal() {
@@ -513,16 +508,11 @@ export default {
       }
     },
     onInitialsClick() {
-      if (!this.$auth.loggedIn) {
+      if (!this.$auth.loggedIn && !this.$store.getters?.getFillAsGuest) {
         !this.$auth.loggedIn ? this.showPdfNotLoggedInUser = true : null
         return
       }
-      // if (!this.isCreator) {
-      //   this.setSelectedType(this.TOOL_TYPE.initial)
-      // }
-      // else {
-      //   this.setSelectedType(this.TOOL_TYPE.appendInitial)
-      // }
+ 
       this.setSelectedType(this.TOOL_TYPE.appendInitial)
     },
     cancelConfrim() {

@@ -84,9 +84,9 @@ export default {
   computed: {
     isCreator () {
       return (
-        this.file.userId == this.$auth.user.id ||
-        (this.$auth.user.teamAccess == TeamAccess.COMPANY_FILE &&
-          this.$auth.user.teamId == this.file.userId)
+        this.file.userId == this.$auth?.user?.id ||
+        (this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE &&
+          this.$auth?.user?.teamId == this.file.userId)
       )
     },
     style () {

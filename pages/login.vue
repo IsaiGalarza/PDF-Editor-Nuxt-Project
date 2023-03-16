@@ -401,7 +401,13 @@ export default Vue.extend({
           // }
 
           setTimeout(() => {
-            this.$nuxt.$router.push('/dashboard')
+            let fromFileManger = JSON.parse(localStorage.getItem('isGuest') as string)
+            console.log(fromFileManger)
+            if(fromFileManger?.isGuest){
+              this.$nuxt.$router.push(fromFileManger.path)
+            } else {
+            this.$nuxt.$router.push('/dashboard') 
+          }
           }, 2000)
         })
         .catch(({ response } : any) => {

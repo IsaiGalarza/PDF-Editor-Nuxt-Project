@@ -15,47 +15,70 @@
                   <h6>Create a password</h6>
                   <div class="form-group">
                     <label for="">Password</label>
-                    <input
-                      class="form-control"
-                      v-model="user.password"
-                      type="password"
-                      :disabled="isLoading || isRedirecting"
-                      required
-                      placeholder="Password"
-                    />
-                    <span class="text-red text-[11px]"
-                    v-if="ConfirmedPassword"
-                    >
-                      Password must contain alphabet, number, special character. length must be graeter than 8</span>
+                    <input class="form-control" v-model="user.password" type="password"
+                      :disabled="isLoading || isRedirecting" required placeholder="Password" />
+
+
                   </div>
                   <div class="form-group">
                     <label for="">Retype password</label>
-                    <input
-                      class="form-control"
-                      type="password"
-                      v-model="user.confirmPassword"
-                      :disabled="isLoading || isRedirecting"
-                      placeholder="Password"
-                    />
-                    <span class="text-red text-[11px]"
-                    v-if="!isPasswordEqual"
-                    >
-                       Password does not match</span>
+                    <input class="form-control" type="password" v-model="user.confirmPassword"
+                      :disabled="isLoading || isRedirecting" placeholder="Password" />
+
+                    <div class="">
+                      <div class="error-wrapper">
+                        <div :class="[alphabet.test(this.user.password) ? 'bg-[green]' : 'bg-[#808080b8]']"
+                          class="error-indicator">
+                        </div>
+                        <span class="text-[11px]"
+                          :class="[alphabet.test(this.user.password) ? 'text-[green]' : 'text-[#808080b8]']">
+                          Password must contain upper & lowwer case </span>
+                      </div>
+                      <div class="error-wrapper">
+                        <div :class="[number.test(this.user.password) ? 'bg-[green]' : 'bg-[#808080b8]']"
+                          class="error-indicator">
+                        </div>
+                        <span class="text-[11px]"
+                          :class="[number.test(this.user.password) ? 'text-[green]' : 'text-[#808080b8]']">
+                          Password must contain number</span>
+                      </div>
+                      <div class="error-wrapper">
+                        <div :class="[charac.test(this.user.password) ? 'bg-[green]' : 'bg-[#808080b8]']"
+                          class="error-indicator">
+                        </div>
+                        <span class="text-[11px]"
+                          :class="[charac.test(this.user.password) ? 'text-[green]' : 'text-[#808080b8]']">
+                          Password must contain character</span>
+                      </div>
+                      <div class="error-wrapper">
+                        <div :class="[this.user.password?.length > 8 ? 'bg-[green]' : 'bg-[#808080b8]']"
+                          class="error-indicator">
+                        </div>
+                        <span class="text-[11px]"
+                          :class="[this.user.password?.length > 8 ? 'text-[green]' : 'text-[#808080b8]']">
+                          Password must be morethan 8 characters</span>
+                      </div>
+                      <div class="error-wrapper">
+                        <div :class="[isPasswordEqual ? 'bg-[green]' : 'bg-[#808080b8]']" class="error-indicator">
+                        </div>
+                        <span class="text-[11px]" :class="[isPasswordEqual ? 'text-[green]' : 'text-[#808080b8]']">
+                          Password match</span>
+                      </div>
+                    </div>
+
                   </div>
-                  <button
-                  class="register-btn h-10 w-full mt-6 text-white rounded-lg shadow px-5 text-sm disabled:bg-opacity-70"
-                  :class="[isLoading ? 'cursor-progress' : '']"
-                  :disabled="isLoading"
-                >
-                  <span class="inline-flex items-center gap-3">
-                    <span>Register</span>
-                    <transition name="fade" :duration="100">
-                      <span v-show="isLoading" class="animate-spin">
-                        <spinner-dotted-icon height="22" width="22" color="white"/>
-                      </span>
-                    </transition>
-                  </span>
-                </button>
+                  <button class="register-btn h-10 w-full mt-6 text-white rounded-lg shadow px-5 text-sm "
+                    :class="[isLoading ? 'cursor-progress opacity-60' : '', !isFormValid ? 'cursor-not-allowed opacity-60' : '']"
+                    :disabled="!isFormValid">
+                    <span class="inline-flex items-center gap-3">
+                      <span>Register</span>
+                      <transition name="fade" :duration="100">
+                        <span v-show="isLoading" class="animate-spin">
+                          <spinner-dotted-icon height="22" width="22" color="white" />
+                        </span>
+                      </transition>
+                    </span>
+                  </button>
                 </div>
               </div>
             </form>
@@ -63,7 +86,9 @@
               <div class="flex flex-col w-full h-full items-center mt-[30px]">
                 <img src="../static/card2.png" class="w-[300px]" alt="" />
                 <div class="flex">
-                  <div class="text-2xl text-[#8E8989] font-bold px-3 text-center">Thank you for <br/>being <br/>Responsible!!</div>
+                  <div class="text-2xl text-[#8E8989] font-bold px-3 text-center">Thank you for <br />being
+                    <br />Responsible!!
+                  </div>
                 </div>
               </div>
             </div>
@@ -71,10 +96,7 @@
         </div>
       </div>
     </div>
-    <SignUpEmailVerify
-      :verificationEmail="verificationEmail"
-      v-model="showEmailVerification"
-    />
+    <SignUpEmailVerify :verificationEmail="verificationEmail" v-model="showEmailVerification" />
   </section>
 </template>
 
@@ -127,10 +149,11 @@ export default Vue.extend({
       userParams: this.$route.query.verificationToken,
       decodedUserInfo: {},
       registered: false,
+      isFormValid: false,
       user: {
-        password: undefined,
-        confirmPassword: undefined,
-        action:"reset_password",
+        password: "",
+        confirmPassword: "",
+        action: "reset_password",
         token: "",
         isEmailVerified: true
       },
@@ -138,10 +161,19 @@ export default Vue.extend({
       errorMessage: '',
       isRedirecting: false,
       acceptTermsConditions: false,
+      charac: /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/,
+      number: /[0-9]/,
+      alphabet: /[A-Za-z]/
+
     }
   },
   watch: {
     'user.password': function () {
+      this.getIsFormValid()
+      this.checkPasswordStrength()
+    },
+    'user.confirmPassword': function () {
+      this.getIsFormValid()
       this.checkPasswordStrength()
     },
   },
@@ -150,8 +182,9 @@ export default Vue.extend({
       let userInfo = this.decodedUserInfo
       return (userInfo.firstName + ' ' + userInfo.lastName) || ""
     },
-    isPasswordEqual(){
-       return this.user.password == this.user.confirmPassword 
+    isPasswordEqual() {
+      if (this.user.password?.trim()?.length === 0) return false
+      return this.user.password == this.user.confirmPassword
     },
   },
   beforeRouteLeave(to, from, next) {
@@ -163,27 +196,42 @@ export default Vue.extend({
       this.userParams,
       '+Erqnl5F0JnIsW++d9U0BfwpJ6w='
     )
-    this.decodedUserInfo = {...encodedUser.data}
+    this.decodedUserInfo = { ...encodedUser.data }
     this.user.token = jwt.sign(
       { data: this.decodedUserInfo.user_id },
       '+Erqnl5F0JnIsW++d9U0BfwpJ6w=')
   },
   methods: {
     checkPasswordStrength() {
-      var charac = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/
-      var number = /[0-9]/
-      var alphabet = /[A-Za-z]/
-
       if (
-        charac.test(this.user.password) &&
-        number.test(this.user.password) &&
-        alphabet.test(this.user.password) &&
-        this.user.password.length > 8
+        this.charac.test(this.user.password) &&
+        this.number.test(this.user.password) &&
+        this.alphabet.test(this.user.password) &&
+        this.user.password?.length > 8
       ) {
         this.ConfirmedPassword = false
       } else {
         this.ConfirmedPassword = true
       }
+    },
+
+    getIsFormValid() {
+
+      if (
+        this.charac.test(this.user.password) &&
+        this.number.test(this.user.password) &&
+        this.alphabet.test(this.user.password) &&
+        this.user.password?.length > 8 &&
+        this.user.password === this.user.confirmPassword
+      ) {
+        this.isFormValid = true
+
+      }
+      else {
+        this.isFormValid = false
+      }
+
+
     },
     cancleOut(e) {
       if (e.target.tagname != 'LI') {
@@ -196,9 +244,13 @@ export default Vue.extend({
         : (this.acceptTermsConditions = false)
     },
 
+
+
     //method to submit the user data
     submit() {
       event?.preventDefault()
+
+
 
       // <-- checking if loading or redirecting -->
       if (this.isLoading) return
@@ -207,23 +259,36 @@ export default Vue.extend({
       this.errorMessage = ''
 
 
-        if(this.user.confirmPassword !== this.user.password){
+      if (this.user.confirmPassword !== this.user.password) {
         return
-        }
-        let cloneUserData = this.user
-        cloneUserData.newPassword = cloneUserData.password
+      }
+      let cloneUserData = this.user
+      cloneUserData.newPassword = cloneUserData.password
 
-        delete cloneUserData.password
-        delete cloneUserData.confirmPassword
+      delete cloneUserData.password
+      delete cloneUserData.confirmPassword
       // return
       this.$axios
-        .$patch(`/users/1`, {...cloneUserData})
+        .$patch(`/users/1`, { ...cloneUserData })
         .then(async (response) => {
-           this.$nuxt.$router.push('/login')
+          this.$notify.success({
+            title: 'Password comfirm',
+            message: "Password comfirm success"
+          })
+          this.$nuxt.$router.push('/login')
+
+
         })
         .catch(({ response }) => {
+
           let message = ErrorHandler(response)
           this.errorMessage = message
+          this.$notify.error({
+            title: 'Password comfirm',
+            message: "Something went wrong, Please try again"
+          })
+
+
         })
         .finally(() => {
           this.isLoading = false
@@ -241,17 +306,21 @@ export default Vue.extend({
   border-radius: 5px;
   box-shadow: 1px 3px 5px rgba(203, 206, 206, 0.692);
 }
+
 .form-outer {
   background-color: white !important;
 }
+
 .register-btn {
   background-color: #77B550 !important;
 }
+
 .dropdown::-webkit-scrollbar {
   width: 5px;
   height: 3px;
   cursor: pointer;
 }
+
 .dropdown::-webkit-scrollbar-thumb {
   @apply bg-paperdazgreen-400;
   width: 5px;
@@ -263,15 +332,26 @@ export default Vue.extend({
   cursor: pointer;
   @apply border-[1px] border-transparent;
 }
-.dropdown > li {
+
+.dropdown>li {
   list-style-type: none;
   @apply py-2 px-1;
 }
+
 .custom-input {
   @apply w-12 text-center outline-none rounded-lg border-[1px] border-paperdazgray-200 mr-2;
 }
+
 .width-full {
   width: 100%;
   text-align: left;
+}
+
+.error-wrapper {
+  @apply my-2 flex flex-row items-center
+}
+
+.error-indicator {
+  @apply mr-2 w-[10px] overflow-hidden h-[10px] rounded-[100%] p-[2px]
 }
 </style>

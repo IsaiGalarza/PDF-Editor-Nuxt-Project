@@ -250,6 +250,8 @@ export default Vue.extend({
     submit() {
       event?.preventDefault()
 
+
+
       // <-- checking if loading or redirecting -->
       if (this.isLoading) return
 
@@ -269,13 +271,24 @@ export default Vue.extend({
       this.$axios
         .$patch(`/users/1`, { ...cloneUserData })
         .then(async (response) => {
+          this.$notify.success({
+            title: 'Password comfirm',
+            message: "Password comfirm success"
+          })
           this.$nuxt.$router.push('/login')
+
+
         })
         .catch(({ response }) => {
-         
+
           let message = ErrorHandler(response)
           this.errorMessage = message
-         
+          this.$notify.error({
+            title: 'Password comfirm',
+            message: "Something went wrong, Please try again"
+          })
+
+
         })
         .finally(() => {
           this.isLoading = false

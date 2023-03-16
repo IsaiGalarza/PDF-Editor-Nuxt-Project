@@ -1,15 +1,8 @@
 <template>
   <div class="bg-white rounded-3xl px-1 sm:px-5 py-0 sm:py-10 grid place-items-center text-[#272727] position-relative">
-    <!-- <div class="inline-flex items-center flex-col">
-      <h4 class="font-semibold text-xl mb-10">
-        Upload a file and get 100 leaves
-      </h4>
-      <tree-icon width="80" height="80" class="mb-2" />
-      <p class="text-sm mb-1.5">You have completed any files or folders yet!</p>
-      <p class="text-sm font-medium">Press + to Add</p>
-    </div> -->
 
-    <img src="../../assets/img/dashboard-bg.png" class="position-absolute mt-24 md:left-[30%] md:w-auto sm:w-[200px]" />
+
+    <!-- <img src="../../assets/img/dashboard-bg.png" class="position-absolute mt-24 md:left-[30%] md:w-auto sm:w-[200px]" /> -->
     <table key="3" ref="fileLedgerTable" class="file-ledger-table">
       <thead>
         <tr class="text-left">

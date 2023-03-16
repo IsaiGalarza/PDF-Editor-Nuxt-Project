@@ -47,16 +47,19 @@ export default {
       else if(this.dataURIToBlob(image).size == this.fetchDataInitial.size) return
       // console.log(this.dataURIToBlob(image).size, this.fetchDataSign.size)
       const formData = new FormData()
+      console.log(image)
       //@ts-ignore
       formData.append('upload', this.dataURIToBlob(image))
       formData.append('type', isSignature ? 'signature' : 'initial')
       // formData.append('type', 'image')
       //@ts-ignore
       formData.append('userId', (this.$auth|| {})?.user?.id)
-      
-         //@ts-ignore
-        //  console.log(this.dataURIToBlob(image))
-        //  return
+      //@ts-ignore
+      isSignature ? this.$store.commit('SET_FILE_SIGNATURE', image) : this.$store.commit('SET_FILE_INITIAL', image)
+      console.log("mixins", image)
+      //@ts-ignore
+       if(!this.$auth.loggedIn) return
+
       //@ts-ignore
       this.$axios.$post('/files', formData)
         .then(async () => {

@@ -21,9 +21,9 @@
       :width="(tool?.pageScaleY || 1) * 18"
     />
     <img
-      v-else-if="uploaded"
+      v-else-if="theInitial"
       class="absolute-image"
-      :src="initial"
+      :src="theInitial"
       :style="style"
     />
     <img v-else class="absolute-image" src="../../../assets/img/initials.png" />
@@ -55,6 +55,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         (this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE &&
           this.$auth?.user?.teamId == this.file.userId)
       )
+    },
+    theInitial(){
+       return this.$store.getters?.getUserInitial || this.initial
     },
     isSign() {
       return String(this.file.fileAction).toLowerCase() === FileAction.SIGNED
@@ -127,6 +130,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       if (!this.uploaded) this.showInitialModal = true
     },
     setInitialImgDisplay() {
+      if(!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest) return
       !this.isCreator && (this.initialimgDisplay = true)
       this.$BUS.$emit('scrollToSignInitial', 'appendinitial')
       !this.uploaded && this.setInitialSignType('initial')

@@ -272,7 +272,7 @@
                                 <span class="ml-1">Edit</span>
                               </div>
                             </li>
-                            <li class="dropdown-item" @click="showMoveCompanyFileFunc(file)">
+                            <li v-if="folders.length"  class="dropdown-item" @click="showMoveCompanyFileFunc(file)">
                               <div class="flex justify-between w-full border-t border-gray-200">
                                 <MoveIcon width="16" height="16" class="inline-block float-left" />
                                 <span class="ml-1">Move</span>

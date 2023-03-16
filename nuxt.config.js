@@ -144,8 +144,8 @@ export default {
     ],
   ],
   axios: {
-    // baseURL: process.env.NEW_API_URL,
-    baseURL: 'http://localhost:3030',
+    baseURL: process.env.NEW_API_URL,
+    // baseURL: 'http://localhost:3030',
     // baseURL:'http://c477-197-211-58-30.ngrok.io/',
   },
   auth: {

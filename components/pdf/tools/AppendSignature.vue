@@ -21,9 +21,9 @@
       :width="(tool?.pageScaleY || 1) * 18"
     />
     <img
-      v-else-if="uploaded"
+      v-else-if="theSignature"
       class="absolute-image"
-      :src="signature"
+      :src="theSignature"
       :style="style"
     />
     <img v-else class="absolute-image" src="../../../assets/img/sign.png" />
@@ -68,6 +68,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         case false:
           return false
       }
+    },
+    theSignature(){
+       return this.$store.getters?.getUserSignature || this.signature
     },
     isSign() {
       return String(this.file.fileAction).toLowerCase() === FileAction.SIGNED
@@ -131,6 +134,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       if (!this.uploaded) this.showSignatureModal = true
     },
     setInitialImgDisplay() {
+      if(!this.$auth.loggedIn && !this.$store.getters?.getFillAsGuest) return
       !this.isCreator && (this.initialimgDisplay = true)
       this.$BUS.$emit('scrollToSignInitial', 'appendsign')
       !this.uploaded && this.setInitialSignType('sign')

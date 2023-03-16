@@ -40,14 +40,14 @@
         <button
           class="disabled:bg-opacity-50 disabled:cursor-not-allowed h-10 text-xs w-[150px] max-w-[50%] text-paperdazgreen-500 border border-paperdazgreen-500 rounded-lg shadow bg-white"
           type="button"
-          @click="$nuxt.$router.push('/login')"
+          @click="login"
         >
           Login
         </button>
         <button
           class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-paperdazgreen-500 border border-paperdazgreen-500 rounded-lg shadow bg-white"
           :disabled="loading"
-          @click="$nuxt.$router.push('/register')"
+          @click="register"
         >
             register
         </button>
@@ -96,6 +96,14 @@
       this.showModal = this.visible
     },
     methods: {
+      login(){
+        this.$store.commit('SET_PDF_EXIT', true)
+        this.$nuxt.$router.push('/login')
+      },
+      register(){
+        this.$store.commit('SET_PDF_EXIT', true)
+        this.$nuxt.$router.push('/register')
+      },
       closeModal() {
         this.$emit('updateVisibility', false)
         this.$emit('confirmExistFileManager', false)

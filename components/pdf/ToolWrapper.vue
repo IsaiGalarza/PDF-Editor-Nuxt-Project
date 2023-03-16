@@ -3,7 +3,7 @@
     <!-- <div class="tool-wrapper" :style="wrpStyle" ref="Wrp" :id="getToolWrapperId"> -->
     <div
       class="h-8 border text-black inline-flex items-center gap-1.5 px-1 backdrop-blur-sm bg-white/30 absolute tool-menu"
-      v-show="isActive" ref="toolMenu" v-if="isCreator" v-hammer:pan="handleDrag">
+      v-show="isActive" ref="toolMenu" v-if="isCreator || $store.getters?.getFillAsGuest" v-hammer:pan="handleDrag">
       <!-- <button class="h-full cursor-move" v-hammer:pan="handleDrag">
         <move-icon />
       </button> -->

@@ -16,7 +16,7 @@ export default {
   // }),
   computed: {
     text() {
-      return `${this.$auth.user.firstName} ${this.$auth.user.lastName}`
+      return `${this.$auth?.user?.firstName || 'No name'} ${this.$auth?.user?.lastName || ""}`
     },
     style() {
       return {

@@ -32,7 +32,7 @@
                         </div>
                         <span class="text-[11px]"
                           :class="[alphabet.test(this.user.password) ? 'text-[green]' : 'text-[#808080b8]']">
-                          Password must contain upper & lowwer case </span>
+                          Password must contain upper</span>
                       </div>
                       <div class="error-wrapper">
                         <div :class="[number.test(this.user.password) ? 'bg-[green]' : 'bg-[#808080b8]']"
@@ -48,7 +48,7 @@
                         </div>
                         <span class="text-[11px]"
                           :class="[charac.test(this.user.password) ? 'text-[green]' : 'text-[#808080b8]']">
-                          Password must contain character</span>
+                          Password must contain symbol</span>
                       </div>
                       <div class="error-wrapper">
                         <div :class="[this.user.password?.length > 8 ? 'bg-[green]' : 'bg-[#808080b8]']"

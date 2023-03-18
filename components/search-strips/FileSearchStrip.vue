@@ -22,7 +22,7 @@
       <p class="text-sm text-black mb-1 truncate w-[100%]">{{record.fileName.replace(/.pdf/g, '') }}</p>
       <p class="text-sm text-[#222] truncate">{{(record.user || {}).company_name}}</p>
       <!-- <p class="text-[11px] mt-0.5 truncate">{{(record.user || {}).firstName + " " + (record.user || {}).lastName}}</p> -->
-      <p class="text-[11px] mt-0.5 truncate">{{record.paperLink}}</p>
+      <p class="text-[11px] mt-0.5 truncate opacity-50">{{ splittags(record.tags)}}</p>
     </div>
     </nuxt-link>
     <SearchShare :showShareIcon="true" :file="record" :link="link"/>
@@ -40,6 +40,11 @@ import LetterAvatar from '../widgets/LetterAvatar.vue'
 export default Vue.extend({
   components: { SearchShare, LockFillIcon, EyeSlashedIcon, LetterAvatar },
   name: 'FileSearchStrip',
+  methods: {
+    splittags(val){
+        return val.split(",").map((item)=> {return `#${item} ` }).join()
+    },
+  },
   computed:{
     isPrivate(){
       return (this.record || {}).filePrivacy == FilePrivacy.PRIVATE

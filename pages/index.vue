@@ -78,11 +78,11 @@ export default class LandingPage extends Vue {
             this.motionPluginLoaded = true
           },
         },
-        {
-          hid: 'tawk.to',
-          src: 'https://embed.tawk.to/61ee08389bd1f31184d8e4d8/1fq4t07bg',
-          defer: true,
-        },
+        // {
+        //   hid: 'tawk.to',
+        //   src: 'https://embed.tawk.to/61ee08389bd1f31184d8e4d8/1fq4t07bg',
+        //   defer: true,
+        // },
       ],
     }
   } // end head method

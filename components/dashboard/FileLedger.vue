@@ -116,7 +116,7 @@
                 }}
               </td>
               <td class="text-center" v-if="isPaidUser">
-                {{ file.user.firstName + " " + file.user.lastName }}
+                {{ file.user?.firstName + " " + file.user?.lastName }}
               </td>
               <td class="text-center whitespace-normal px-1">
                 {{ formatDateTime(file.updatedAt) }}
@@ -301,7 +301,7 @@ export default Vue.extend({
               el.shared = null;
               el.fileAction = el.action;
               el.paperLink = (el.file || {}).paperLink;
-              el.userName = el.fileOwner.firstName + " " + el.fileOwner.lastName;
+              el.userName = el.fileOwner?.firstName + " " + el.fileOwner?.lastName;
               files.push(el);
             }
           })

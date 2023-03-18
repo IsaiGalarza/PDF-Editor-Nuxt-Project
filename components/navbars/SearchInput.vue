@@ -64,8 +64,8 @@
                   <p class="text-xs text-black mb-1 truncate font-semibold">
                     {{ (item.user || {}).company_name }}
                   </p>
-                  <p class="text-[11px] text-black mt-0.5 truncate">
-                    {{ "---" }}
+                  <p class="text-[11px] text-black mt-0.5 truncate opacity-50">
+                    {{ splittags(item.tags) }}
                   </p>
                 </nuxt-link>
               </div>
@@ -132,6 +132,9 @@ export default mixins(GlobalMixin, login).extend({
     },
   },
   methods: {
+    splittags(val){
+        return val.split(",").map((item)=> {return `#${item} ` }).join()
+    },
     querySearch(_queryString, cb) {
       cb(this.searchResult)
     },
@@ -142,8 +145,7 @@ export default mixins(GlobalMixin, login).extend({
       // await this.$axios.get(`/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&fileName[$like]=${topsearch}%`)
       await this.$axios
         .get(
-          // `/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&$or[0][fileName][$like]=${topsearch}%&$or[1][companyName][$like]=${topsearch}%`
-          `/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&fileName[$like]=%${topsearch}%`
+          `/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&$or[0][fileName][$like]=${topsearch}%&$or[1][tags][$like]=%${topsearch}%`
         )
         .then((response) => {
           const { data } = response.data

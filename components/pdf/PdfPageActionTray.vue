@@ -134,16 +134,16 @@
     </div>
 
     <!-- <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="$auth.loggedIn && !isSign"> -->
-    <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="$auth.loggedIn && !isCreator">
+    <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="($auth.loggedIn && !isCreator) || $store.getters?.getFillAsGuest">
 
       <!-- <button v-if="$auth.loggedIn && !isCreator" @click="saveChanges" :disabled="disablePublish" -->
-      <button v-if="$auth.loggedIn && !(isConfirm && !isCreator) && !isSign" @click="saveChanges" 
+      <button v-if="($auth.loggedIn || $store.getters?.getFillAsGuest) && !(isConfirm && !isCreator) && !isSign" @click="saveChanges" 
         class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed">
         Done
       </button>
-      <button v-if="$auth.loggedIn" @click="cancelPublish"
+      <button  @click="cancelPublish"
         class="text-xs text-red-500 bg-white border rounded px-3 h-7 disabled:cursor-not-allowed">
-        Cancel
+        Cancel  
       </button>
     </div>
 

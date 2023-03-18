@@ -4,6 +4,7 @@ import UserTypeEnum from '~/models/UserTypeEnum'
 import FileAction from '~/models/FileAction'
 
 export const state = () => ({
+  saveEmailExist: "",
   guestModalFunc: () => {},
   base64Signature: undefined,
   base64Initial: undefined,
@@ -36,6 +37,9 @@ export const state = () => ({
 export type RootState = ReturnType<typeof state>
 
 export const getters: GetterTree<RootState, RootState> = {
+  getSaveEmailExist(state: any){
+    return state.saveEmailExist
+  },
   getUserSignature(state: any) {
     return state.base64Signature
   },
@@ -85,6 +89,9 @@ export const mutations: MutationTree<RootState> = {
   // -- Setting the user --
   SET_PAGE_USER(state, user) {
     state.initialUser = user
+  },
+  SET_SAVE_EMAIL_EXIST(state, payload) {
+    state.saveEmailExist = payload
   },
   SET_FILL_AS_GUEST(state, payload) {
     state.fillAsGuest = payload

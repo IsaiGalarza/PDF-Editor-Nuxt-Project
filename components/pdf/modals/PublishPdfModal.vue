@@ -97,10 +97,10 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   },
   computed: {
     signature() {
-      return this.$auth.user.signatureURL || signatureURL
+      return this.$auth.user?.signatureURL || signatureURL
     },
     initial() {
-      return this.$auth.user.initialURL || initialURL
+      return this.$auth.user?.initialURL || initialURL
     },
     pdfOffsetY() {
       return this.$store.state.pdfOffset_y * this.$store.state.pdfScale
@@ -110,12 +110,12 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     ledgerInfo() {
       return {
-        userId: this.$auth?.user?.id,
-        fileName: this.file.fileName,
-        action: this.file.fileAction,
-        fileId: this.file.id,
-        fileOwnerId: this.file.userId,
-        fileOwner: 0,
+        userId: this.$auth?.user?.id ?? 0,
+        fileName: this.file?.fileName,
+        action: this.file?.fileAction,
+        fileId: this.file?.id,
+        fileOwnerId: this.file?.userId,
+        fileOwner: 0
       }
     },
     isSign() {
@@ -143,7 +143,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         date.getUTCHours()
       )}${this.convertToDoubleString(
         date.getUTCMinutes()
-      )}${this.$auth.user.firstName.charAt(0)}${this.$auth.user.lastName.charAt(
+      )}${this.$auth.user?.firstName.charAt(0)}${this.$auth.user?.lastName.charAt(
         0
       )}`.toUpperCase()
     },
@@ -159,9 +159,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           date.getUTCHours()
         )}${this.convertToDoubleString(
           date.getUTCMinutes()
-        )}${this.$auth.user.firstName.charAt(
+        )}${this.$auth.user?.firstName.charAt(
           0
-        )}${this.$auth.user.lastName.charAt(0)}`.toUpperCase(),
+        )}${this.$auth.user?.lastName.charAt(0)}`.toUpperCase(),
         fileAction: this.file.fileAction
       }
     }
@@ -216,7 +216,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     addToLedger() {
       this.$axios
-        .post(`/ledger?userId=${this.$auth?.user?.id}`, { ...this.ledgerInfo })
+        .post(`/ledger`, { ...this.ledgerInfo })
         .then(() => {
           this.proceedToSendEmail = true
           this.publishAsGuest()
@@ -238,10 +238,10 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       )
     },
     confirmAllSignAndInitials() {
-      if (this.$auth.user.id == this.file.userId) return true
+      if (this.$auth?.user?.id == this.file?.userId) return true
       else
         return (
-          ExtractFormPdf(this.file.downloadLink)[0].data.filter(
+          ExtractFormPdf(this.file?.downloadLink)[0].data.filter(
             item => item.hasOwnProperty('uploaded') && item.uploaded == null
           ).length < 1
         )
@@ -250,7 +250,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       await this.$axios
         .post('/pdf-generator', {
           ...ExtractFormPdf({
-            downloadLink: this.file.downloadLink,
+            downloadLink: this.file?.downloadLink,
             file: this.confirmAnnotation,
             pdfOffset_y: this.pdfOffsetY,
             pdfOffset_x: this.pdfOffsetX,
@@ -270,7 +270,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       await this.$axios
         .post('/pdf-generator', {
           ...ExtractFormPdf({
-            downloadLink: this.file.downloadLink,
+            downloadLink: this.file?.downloadLink,
             pdfOffset_y: this.pdfOffsetY,
             pdfOffset_x: this.pdfOffsetX,
             signLabel: this.signLabel
@@ -292,9 +292,10 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     sendPdfToEmail() {
       let requestData = {
-        action: this.file.fileAction,
-        link: this.generatedPdf.downloadLink,
-        fileId: this.file.id
+        action: this.file?.fileAction,
+        userId: this.$auth?.user?.id ?? 0,
+        link: this.generatedPdf?.downloadLink,
+        fileId: this.file?.id
       }
       //   // return
       this.$axios
@@ -352,7 +353,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       //   .finally(() => { })
 
       if (!this.proceedToSendEmail) {
-        switch (this.file.fileAction) {
+        switch (this.file?.fileAction) {
           case FileAction.CONFIRM:
             await this.confirmRequest()
             // await this.otherRequest()
@@ -372,8 +373,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       let filteredTools = this.tools.filter(e => e.isDeleted != true)
 
       this.$axios
-        .patch(`/files/${this.file.id}`, {
-          fileAction: this.file.fileAction,
+        .patch(`/files/${this.file?.id}`, {
+          fileAction: this.file?.fileAction,
           annotaions: JSON.stringify(filteredTools)
         })
         .then(() => {
@@ -412,8 +413,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       
       if (
         !this.isCreator &&
-        !this.$auth.user.signatureURL &&
-        this.file.fileAction == FileAction.CONFIRM
+        !this.$auth.user?.signatureURL &&
+        this.file?.fileAction == FileAction.CONFIRM
       ) {
         this.showInitialModal = true
         return

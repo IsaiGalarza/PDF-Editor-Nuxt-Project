@@ -43,7 +43,7 @@
           v-model="formData.email"
           required
           type="email"
-          :disabled="!editingDetails"
+          :disabled="true"
         />
       </div>
       <div>

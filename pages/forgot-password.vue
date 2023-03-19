@@ -2,7 +2,7 @@
   <section class="bg-gradient-to-t from-white to-transparent">
     <div class="container py-20">
       <div class="w-full max-w-lg mx-auto bg-white shadow-2xl rounded-xl px-6 py-10">
-        <h4 class="text-[24px] font-medium mb-2">Forgot your password</h4>
+        <h4 class="text-[24px] font-medium mb-2">Forgot your password?</h4>
 
         <p class="text-gray-500 text-[14px] mb-8">
           Fear not. We'll email you instructions to reset your password.
@@ -17,9 +17,6 @@
               required />
           </div>
 
-          <p class="text-gray-500 text-[14px] mb-10">
-            Enter the email associated with your account
-          </p>
           <!-- <recaptcha /> -->
 
           <div class="flex flex-col items-center">
@@ -79,16 +76,9 @@ export default Vue.extend({
       },
     }
   },
-  // async mounted() {
-  //   try {
-  //     await this.$recaptcha.init()
-  //   } catch (e) {
-  //     console.error(e)
-  //   }
-  // },
-  // beforeDestroy() {
-  //   this.$recaptcha.destroy()
-  // },
+  mounted() {
+    this.user.email = this.$store.getters.getSaveEmailExist
+  },
   methods: {
     onSubmit() {
       event?.preventDefault()

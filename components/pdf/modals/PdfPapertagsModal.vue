@@ -127,6 +127,9 @@ export default Vue.extend({
         showModal(val) {
             this.$emit("updateVisibility", val);
         },
+        file(val){
+          this.tags = this.file?.tags?.split(",") ?? []
+        }
     },
     mounted() {
         this.showModal = this.visible;
@@ -138,9 +141,9 @@ export default Vue.extend({
 
            this.isLoading = true
 
-            this.$axios.post("/filetags", {
-                tags: [...this.tags],
-                fileId: this.file.id
+            this.$axios.patch(`/files/${this.file?.id}`, {            
+                  action:"update_tag",
+                  tags:[ ...this.tags ]
                 })
                 .then(() => {
                 this.$notify.success({
@@ -170,7 +173,7 @@ export default Vue.extend({
             const index = this.tags.findIndex((el) => el == this.tag);
             if (index >= 0 || !this.tag)
                 return;
-            this.tag = String(this.tag).replace(/^#*(.+)/, "#$1");
+            this.tag = String(this.tag).replace(/^#*(.+)/, "$1");
             this.tags.push(this.tag);
             this.tag = "";
         },

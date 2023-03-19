@@ -7,6 +7,7 @@ export default {
     color: 'black',
     background: 'white',
   },
+  loading: false,
   target: 'static',
   ssr: false,
   generate: {
@@ -14,7 +15,7 @@ export default {
   },
   server: {
     host: '0.0.0.0',
-    // port: 3000,
+    port: 3000,
     plugins: ['~/plugins/masked-input.js'],
   },
   privateRuntimeConfig: {
@@ -146,7 +147,7 @@ export default {
   axios: {
     baseURL: process.env.NEW_API_URL,
     // baseURL: 'http://localhost:3030',
-    // baseURL:'http://c477-197-211-58-30.ngrok.io/',
+    // baseURL:'https://daa4-105-112-150-229.ngrok.io',
   },
   auth: {
     watchLoggedIn: false,

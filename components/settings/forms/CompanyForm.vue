@@ -5,7 +5,7 @@
     <div class="flex justify-between w-full">
       <div class="mx-2 w-1/2">
         <label for="">Email</label>
-        <el-input placeholder="email" v-model="formData.email" type="text" :disabled="!editingDetails" />
+        <el-input placeholder="email" v-model="formData.email" type="text" :disabled="true" />
       </div>
       <div class="mx-2 w-1/2">
         <label for="">Phone</label>

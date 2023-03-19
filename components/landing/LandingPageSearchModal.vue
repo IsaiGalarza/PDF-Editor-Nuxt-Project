@@ -146,7 +146,7 @@ export default Vue.extend({
     },
     remoteSearch() {
       // this.loadingArray.push(true)
-      let files = this.$axios.$get(`/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&fileName[$like]=${this.queryString}%`,{
+      let files = this.$axios.$get(`/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&$or[0][fileName][$like]=${this.queryString}%&$or[1][tags][$like]=%${this.queryString}%`,{
         params:{
           isEditing: 0
         }

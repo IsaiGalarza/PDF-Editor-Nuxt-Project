@@ -241,6 +241,7 @@ export default Vue.extend({
     //@ts-ignore
     this.socialLogin()
     this.confirmIsEmailVerified()
+    this.user.email = this.$store.getters.getSaveEmailExist
   },
 
   methods: {

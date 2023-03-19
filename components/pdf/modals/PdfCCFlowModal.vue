@@ -131,6 +131,9 @@ export default Vue.extend({
         showModal(val) {
             this.$emit("updateVisibility", val);
         },
+        file(val){
+           this.emails = this.file?.cc?.split(",") ?? [];
+        }
     },
     mounted() {
         this.showModal = this.visible;
@@ -141,8 +144,11 @@ export default Vue.extend({
 
           this.loading = true
 
-          await this.$axios.patch(`/files/${this.file.id}`,
-          { cc:this.emails.join(",") }
+          await this.$axios.patch(`/files/${this.file?.id}`,
+           {
+            action: "update_cc",
+            cc:[ ...this.emails ]
+           }
           )
           .then((response) => {
            this.$notify.success({

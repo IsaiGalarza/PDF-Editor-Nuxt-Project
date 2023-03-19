@@ -1,18 +1,21 @@
-export default function ({$axios , redirect}){
-    $axios.onRequest(config=>{
-       // const token = localStorage.getItem('auth._token.local')
-            // if(token) {
-            //     config.headers.Authorization = `Bearer ${token}`;
-            //     return config;
-            // } else {
-            //     return config;
-            // }
-    })
+export default function ({ $axios, redirect }) {
+  $axios.onRequest((config) => {
+    const token = localStorage.getItem('auth._token.local')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+      return config
+    } else {
+      return config
+    }
+  })
 
-    $axios.onError(error=>{
-        const code = parseInt(error.response && error.response.status)
-          if(code >= 500){
-            //   redirect("/")
-          }
-    })
+  $axios.onError(async (error) => {
+    const code = parseInt(error?.response?.status)
+   
+    if (code === 401) {
+    //   redirect('/login')
+    //   await this.logout()
+    //   await this.$fire.auth.signOut()
+    }
+  })
 }

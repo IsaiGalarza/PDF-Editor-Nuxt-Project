@@ -21,8 +21,8 @@
                 > 
                 <template #action>      
                   <p class="pt-1">
-                    Please <button @click="$nuxt.$router.push('/login')" class="opacity-50 hover:opacity-100">Sign in</button> 
-                  Click <button @click="$nuxt.$router.push('/forgot-password')" class="opacity-50 hover:opacity-100">here</button> if you forgot your password
+                    Please <button @click="routeLogin" class="opacity-50 hover:opacity-100">Sign in</button> 
+                  Click <button @click="routeForgotPassword" class="opacity-50 hover:opacity-100">here</button> if you forgot your password
                   </p>
                 </template>
               </message-alert-widget>
@@ -187,6 +187,14 @@ export default Vue.extend({
     this.setTeamIdFromQuery()
   },
   methods: {
+    routeLogin(){
+      this.$store.commit("SET_SAVE_EMAIL_EXIST", this.user.email)
+      this.$nuxt.$router.push('/login')  
+    },
+    routeForgotPassword(){
+      this.$store.commit("SET_SAVE_EMAIL_EXIST", this.user.email)
+      this.$nuxt.$router.push('/forgot-password')  
+    },
     setTeamIdFromQuery() {
       if (Object.keys(this.$route.query).some((e) => e == 'teamId')) {
         localStorage.setItem(

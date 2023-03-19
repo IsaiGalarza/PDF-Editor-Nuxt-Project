@@ -25,6 +25,7 @@ import login from '~/mixins/login';
 
 export default mixins(login).extend({
   components: { AppBar, AppFooter, CookiesPop },
+  loading: false,
   async created(){
     await this.filterUsers()
   }

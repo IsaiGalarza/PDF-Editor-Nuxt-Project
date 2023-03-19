@@ -82,11 +82,11 @@ export default mixins(GlobalMixin).extend({
     return {
       script: [
         // ...
-        {
-          hid: 'tawk.to',
-          src: 'https://embed.tawk.to/61ee08389bd1f31184d8e4d8/1fq4t07bg',
-          defer: true,
-        },
+        // {
+        //   hid: 'tawk.to',
+        //   src: 'https://embed.tawk.to/61ee08389bd1f31184d8e4d8/1fq4t07bg',
+        //   defer: true,
+        // },
       ],
     }
   },
@@ -172,7 +172,7 @@ export default mixins(GlobalMixin).extend({
         return
       }
       this.$router.push({
-        path: '/default-package',
+        path: '/packages',
         query: { type: 'default' },
       })
     },

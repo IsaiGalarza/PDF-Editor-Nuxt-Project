@@ -116,7 +116,7 @@
                 }}
               </td>
               <td class="text-center" v-if="isPaidUser">
-                {{ file.user.firstName + " " + file.user.lastName }}
+                {{ file.user?.firstName + " " + file.user?.lastName }}
               </td>
               <td class="text-center whitespace-normal px-1">
                 {{ formatDateTime(file.updatedAt) }}

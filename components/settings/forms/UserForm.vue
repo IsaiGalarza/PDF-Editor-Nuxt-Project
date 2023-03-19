@@ -55,74 +55,45 @@
         />
       </div>
     </div>
-    <div
-      class="grid gap-y-3 sm:gap-5"
-      style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));"
-    >
-      <div class="relative">
-        <label for="" class="mb block">Country</label>
-        <input
-          ref="countryInitial"
-          class="custom-input py-2 px-2 text-[14px] width-full pl-4 text-paperdazgray-300"
-          :class="[
-            editingDetails == true ? 'text-black' : 'text-paperdazgray-300',
-          ]"
-          v-model="country"
-          :disabled="!editingDetails"
-          @input="displayCountry"
-          type="text"
-          placeholder="country"
-        />
-        <div v-if="setDropDown" class="dropdown cursor-pointer z-10">
-          <div
-            v-for="(country, i) in dropDownContent"
-            class="flex items-center my-2 px-1" :key="i"
-          >
-            <img
-              :src="country.flags.png"
-              class="w-8 h-6 rounded-md mr-2 dd-image"
-            />
-            <li @click="setCountryInfo" :id="country.dial_code">
-              {{ country.name.common }}
-            </li>
-          </div>
-        </div>
-      </div>
-      <div>
-        <label for="">State</label>
+   
 
-        <el-input
-          placeholder="State"
-          class="w-full"
-          filterable
-          v-model="state"
-          :disabled="!editingDetails || !country"
-        />
-      </div>
-    </div>
+    <span class="inline-flex items-center gap-3">
+      <span  v-show="!this.isLocationError" class="text-[12px]">Click on icon to  pin your location for us to get your timezone, city and country.   </span>
+      <span  v-show="this.isLocationError" class="text-[12px] text-red-600">Error occure while trying to get your location, please try again  </span>
+      <span class="cursor-pointer" @click="fetchUserCountryDetail" v-show="!this.isLocationFetching">
+        <location-icon />
+      </span>
+      <transition name="fade" :duration="100">
+        <span v-show="this.isLocationFetching" class="animate-spin">
+          <spinner-dotted-icon height="22" width="22" />
+        </span>
+      </transition>
+    </span>
+
+
     <div
+      v-show="this.isLocationFetched"
       class="grid gap-y-3 sm:gap-5"
       style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));"
     >
-      <div>
-        <label for="">Timezone</label>
-        <el-select
-          placeholder="Timezone"
-          class="w-full"
-          filterable
+      <div class="flex items-center">
+        <label class="mr-2" for="">Timezone:</label>
+        <el-input
+          placeholder="Enter timezone"
           v-model="formData.timezone"
           :disabled="!editingDetails"
-        >
-          <el-option
-            :value="timezone"
-            :label="timezone"
-            v-for="(timezone, i) in timezones"
-            :key="i"
-          />
-        </el-select>
+        />
       </div>
-      <div></div>
+      <div class="flex items-center">
+        <label class="mr-2" for="">Location:</label>
+        <el-input
+          placeholder="Enter country ..."
+          v-model="formData.country"
+          :disabled="!editingDetails"
+        />
+      </div>
     </div>
+
     <transition name="fade">
       <div
         class="flex items-center justify-center mt-2"
@@ -159,10 +130,12 @@ import { countryCode } from '~/assets/json/countryCode'
 import { countryList } from '~/assets/json/coutry'
 import { ErrorHandler } from '~/types/ErrorFunction'
 import mixins from 'vue-typed-mixins'
+import LocationIcon from '../../svg-icons/LocationIconblack.vue'
+
 
 export default mixins(login).extend({
   name: 'UserForm',
-  components: { InputField, MessageAlertWidget, SpinnerDottedIcon },
+  components: { InputField, MessageAlertWidget,  LocationIcon, SpinnerDottedIcon },
   data() {
     return {
       dropDownContent: [],
@@ -182,6 +155,9 @@ export default mixins(login).extend({
       timezones,
       loading: false,
       errorMessage: '',
+      isLocationFetching:false,
+      isLocationError: false,
+      isLocationFetched: false
     }
   },
   computed: {
@@ -207,6 +183,31 @@ export default mixins(login).extend({
     this.state = this.$auth.user.state
   },
   methods: {
+
+    async fetchUserCountryDetail() {
+      this.isLocationFetching = true
+      fetch('https://api.ipify.org/?format=json')
+      .then(response => response.json())
+      .then(data => {
+        fetch(`http://ip-api.com/json/${data.ip}`)
+        .then(response => response.json())
+        .then(IpDetail => {
+          this.isLocationFetching = false
+          this.isLocationFetched = true
+          this.formData.country = IpDetail.country
+          this.formData.timezone = IpDetail.timezone
+          this.formData.state = IpDetail.city
+          console.log(IpDetail)
+        }).catch(() => {
+          this.isLocationFetching = false
+          this.isLocationError = false
+        })
+      }).catch(() => {
+        this.isLocationFetching = false
+        this.isLocationError = false
+
+      })
+    },
     inputValid(val,title){
       let valid = true
       let format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~0-9]/

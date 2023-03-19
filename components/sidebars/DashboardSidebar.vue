@@ -113,7 +113,7 @@ export default Vue.extend({
         {
           label: 'Settings',
           icon: 'GearLightIcon',
-          link: '/settings',
+          link: '/settings?tab=account',
           exact: false,
         },
       ],

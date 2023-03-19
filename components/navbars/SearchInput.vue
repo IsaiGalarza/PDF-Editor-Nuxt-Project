@@ -23,19 +23,19 @@
           </span>
         </el-input>
       </div>
-      <el-dropdown-menu
-        slot="dropdown"
-      >
-      <div v-if="!loading && !topSearchContent.length" class="flex justify-center items-center w-full min-h-[200px] opacity-50">
-        No Paperlink found
-      </div>
-       <div v-if="loading" class="flex justify-center items-center min-h-[200px] h-full bg-white/80 w-full absolute top-0 left-0 z-10">
-        <spinner-dotted-icon
-        height="20"
-        width="20"
-        class="animate-spin"
-        />
-       </div>
+      <el-dropdown-menu slot="dropdown">
+        <div
+          v-if="!loading && !topSearchContent.length"
+          class="flex justify-center items-center w-full min-h-[200px] opacity-50"
+        >
+          No Paperlink found
+        </div>
+        <div
+          v-if="loading"
+          class="flex justify-center items-center min-h-[200px] h-full bg-white/80 w-full absolute top-0 left-0 z-10"
+        >
+          <spinner-dotted-icon height="20" width="20" class="animate-spin" />
+        </div>
         <!-- Start:: dropdown -->
         <div class="bg-white rounded-lg whitespace-nowrap w-[90vw] lg:w-[40vw]">
           <div class="max-h-[60vh] custom-scrollbar overflow-y-auto p-2 px-4">
@@ -53,9 +53,16 @@
                 class="h-16 w-16 rounded-2 object-cover"
               /> -->
               <letter-avatar
+                v-if="!item.user.profile_picture"
                 class="h-16 w-16 rounded-1 object-cover"
                 :username="(item.user || {}).company_name"
               />
+              <img
+                v-else
+                class="h-14 w-14 rounded-1 object-cover"
+                :src="(item.user || {}).profile_picture"
+              />
+
               <div class="overflow-hidden">
                 <nuxt-link :to="`/pdf/${item.paperLink}`">
                   <p class="text-sm text-black truncate font-semibold">
@@ -91,7 +98,6 @@ import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
 import debounce from '~/types/debounce'
 import LetterAvatar from '../widgets/LetterAvatar.vue'
 
-
 export default mixins(GlobalMixin, login).extend({
   name: 'SearchInput',
   components: {
@@ -100,7 +106,7 @@ export default mixins(GlobalMixin, login).extend({
     SearchShare,
     ballloader,
     SpinnerDottedIcon,
-    LetterAvatar
+    LetterAvatar,
   },
   props: {
     isSearch: {
@@ -114,7 +120,7 @@ export default mixins(GlobalMixin, login).extend({
       searchString: '',
       topSearchContent: [],
       isFocused: false,
-      loading: false
+      loading: false,
     }
   },
   computed: {
@@ -132,8 +138,13 @@ export default mixins(GlobalMixin, login).extend({
     },
   },
   methods: {
-    splittags(val){
-        return val.split(",").map((item)=> {return `#${item} ` }).join()
+    splittags(val) {
+      return val
+        .split(',')
+        .map((item) => {
+          return `#${item} `
+        })
+        .join()
     },
     querySearch(_queryString, cb) {
       cb(this.searchResult)
@@ -150,7 +161,7 @@ export default mixins(GlobalMixin, login).extend({
         .then((response) => {
           const { data } = response.data
           this.topSearchContent = data
-          console.log("hash", this.topSearchContent)
+          console.log('hash', this.topSearchContent)
           this.loading = false
         })
       // &$or[1][uploadedBy]={ team member id }&$or[2][uploadedBy]={ team member id 2 }
@@ -177,7 +188,10 @@ export default mixins(GlobalMixin, login).extend({
       clearTimeout(timeout)
       let timeout = setTimeout(() => {
         this.getGeneralSearch(this.searchString)
-      }, 1000);
+      }, 1000)
+    },
+    item(val) {
+      console.log(val)
     },
     ['topSearchContent.length']: function (val) {
       if (val > 0) {
@@ -207,10 +221,10 @@ export default mixins(GlobalMixin, login).extend({
   border-radius: 8px;
   width: 40px;
 }
-.datalist{
-  @apply border-b-2 border-b-gray-200
+.datalist {
+  @apply border-b-2 border-b-gray-200;
 }
-.datalist:nth-last-child(1){
-  @apply border-b-0 border-b-transparent
+.datalist:nth-last-child(1) {
+  @apply border-b-0 border-b-transparent;
 }
 </style>

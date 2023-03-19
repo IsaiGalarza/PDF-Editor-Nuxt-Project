@@ -172,7 +172,7 @@ export default mixins(GlobalMixin).extend({
         return
       }
       this.$router.push({
-        path: '/default-package',
+        path: '/packages',
         query: { type: 'default' },
       })
     },

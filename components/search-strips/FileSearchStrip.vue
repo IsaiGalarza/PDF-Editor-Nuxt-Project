@@ -7,10 +7,10 @@
   class="absolute top-[calc(25%-12px)] left-0 bg-white p-1 rounded-full">
     <EyeSlashedIcon width="20px" height="20px" color="rgb(98,164,78)"/></div>
     <img
-      v-if="record.profilePicture "
-     :src="record.profilePicture"
+      v-if="record.user.profile_picture"
+     :src="record.user.profile_picture"
       alt=""
-      class="h-16 w-16 rounded-lg object-cover"
+      class="h-14 w-14 rounded-lg object-cover"
     />
     <letter-avatar
       v-else
@@ -19,7 +19,7 @@
     />
     <nuxt-link  class="overflow-hidden w-[100%]" :to="`/pdf/${record.paperLink}`">
     <div class="overflow-hidden w-[80%]">
-      <p class="text-sm text-black mb-1 truncate w-[100%]">{{record.fileName.replace(/.pdf/g, '') }}</p>
+      <p class="text-sm text-black truncate w-[100%]">{{record.fileName.replace(/.pdf/g, '') }}</p>
       <p class="text-sm text-[#222] truncate">{{(record.user || {}).company_name}}</p>
       <!-- <p class="text-[11px] mt-0.5 truncate">{{(record.user || {}).firstName + " " + (record.user || {}).lastName}}</p> -->
       <p class="text-[11px] mt-0.5 truncate opacity-50">{{ splittags(record.tags)}}</p>

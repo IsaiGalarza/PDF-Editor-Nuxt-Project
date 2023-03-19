@@ -28,7 +28,7 @@
                   ? 'w-[45px] h-[45px] rounded-md'
                   : 'circle-20 rounded-full'
               ]">
-                <img :src="profilePhoto" class="w-full h-full profilePhoto" alt=""
+                <img :src="profilePhoto" class="w-[45px] h-full profilePhoto" alt=""
                   :class="[isPaidUser ? 'rounded-md' : 'rounded-full']" />
               </span>
               <span class="text-gray-500"><arrow-down-icon class="h-1 w-1.5 sm:h-2.5 sm:w-4" /></span>

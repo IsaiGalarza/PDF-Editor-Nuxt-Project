@@ -61,7 +61,7 @@
           <tbody v-if="pdfUser.length && !spinner">
             <tr v-for="(file, i) in pdfUser" :key="file.id" :class="{ highlight: file.id == highlightedFileId }">
               <td class="text-left fixed-col left">{{ i + 1 + returnedDataPage }}</td>
-              <td class="text-center">
+              <td class="text-center !pl-5 sm:!pl-16">
                 <div class="flex items-center gap-1.5">
                   <div class="border !border-paperdazgreen-300 p-0.5 hidden"
                     :class="[

@@ -155,7 +155,7 @@ export default Vue.extend({
   props: ['searchContect'],
   filters: {
     removeExtension(filename) {
-      return filename.replace(/\.[^\/.]+$/, '');
+      return filename?.replace(/\.[^\/.]+$/, '') ?? "";
     }
   },
   async fetch() { },

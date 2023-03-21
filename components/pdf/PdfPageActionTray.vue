@@ -1,8 +1,8 @@
 <template>
   <div class="bg-paperdazgreen-300 sm:bg-transparent py-2 flex items-center text-black justify-between ml-[-2%] w-[104%]">
     <div class="flex items-center gap-lg-4 flex-1 justify-between px-lg-4 px-3 flex-wrap">
-      <span class="font-bold text-ellipsis whitespace-nowrap max-w-xs truncate">
-        {{ isCreator ? file.fileName.length > 12 ? `${file.fileName.substr(0, 8)}...` : file.fileName : file.fileName }}
+      <span class="font-normal max-w-[12%] truncate">
+        {{ file.fileName ?? "" }}
       </span>
 
       <span class="hidden md:inline">
@@ -67,61 +67,6 @@
       </span>
 
 
-      <el-dropdown trigger="click" class="font-medium" v-if="$auth.loggedIn && !isConfirm && 0"
-        @command="handleCommand($event)">
-        <span class="el-dropdown-link text-[#555454] px-1 flex items-center">
-          <ellipsis-icon-vertical-icon />
-        </span>
-        <el-dropdown-menu slot="dropdown" class="text-black">
-          <el-dropdown-item command="save">
-            <button v-if="!isConfirm && $auth.loggedIn"
-              class="text-xs text-white bg-paperdazgreen-400 rounded px-5 h-7 w-[130px]">
-              Publish
-            </button>
-          </el-dropdown-item>
-          <el-dropdown-item>
-            <button v-if="!isConfirm && $auth.loggedIn" @click="cancelPublish"
-              class="text-xs text-white bg-zinc-400 border rounded px-5 h-7 w-[130px]">
-              Cancel
-            </button>
-          </el-dropdown-item>
-          <el-dropdown-item>
-            <!-- <button
-            @click="$router.back()"
-              class="px-2 w-[130px] rounded flex items-center justify-center bg-gray-600 py-1.5 text-white"
-            >
-              <export-icon />
-            </button> -->
-          </el-dropdown-item>
-          <el-dropdown-item divided></el-dropdown-item>
-          <el-dropdown-item command="share" divided>
-            <div class="flex items-center gap-2">
-              <share-icon width="16" height="16" /> Share
-            </div>
-          </el-dropdown-item>
-          <el-dropdown-item command="request" v-if="(isPaid || isTeam) && (isCreator || teamAccess)">
-            <div class="flex items-center gap-2">
-              <request-icon width="16" height="16" /> Request
-            </div>
-          </el-dropdown-item>
-          <el-dropdown-item command="papertag" v-if="(isPaid || isTeam) && (isCreator || teamAccess)">
-            <div class="flex items-center gap-2">
-              <span class="font-medium">#</span>
-              Paper tag
-            </div>
-          </el-dropdown-item>
-          <el-dropdown-item command="carbon-copy" v-if="(isPaid || isTeam) && (isCreator || teamAccess)">
-            <div class="flex items-center gap-2">
-              <copy-icon width="16" height="16" /> Carbon Copy
-            </div>
-          </el-dropdown-item>
-          <el-dropdown-item command="remove" v-if="(isPaid || isTeam) && (isCreator || teamAccess)">
-            <div class="flex items-center gap-2">
-              <trash-can-icon width="16" height="16" /> Remove
-            </div>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
 
       <div class="flex items-center sm:hidden">
         <span class="cursor-pointer" @click="showPdfInfo = true">
@@ -134,10 +79,13 @@
     </div>
 
     <!-- <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="$auth.loggedIn && !isSign"> -->
-    <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="($auth.loggedIn && !isCreator) || $store.getters?.getFillAsGuest">
+    <div class="hidden sm:flex items-center justify-end pe-lg-4">
 
-      <!-- <button v-if="$auth.loggedIn && !isCreator" @click="saveChanges" :disabled="disablePublish" -->
-      <button v-if="($auth.loggedIn || $store.getters?.getFillAsGuest) && !(isConfirm && !isCreator) && !isSign" @click="saveChanges" 
+      <button v-if="($auth.loggedIn || $store.getters?.getFillAsGuest) && isCreator" @click="saveChanges" 
+        class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed">
+        Publish
+      </button>
+      <button v-if="($auth.loggedIn || $store.getters?.getFillAsGuest) && !isCreator && !isConfirm" @click="saveChanges" 
         class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed">
         Done
       </button>

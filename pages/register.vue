@@ -256,11 +256,11 @@ export default Vue.extend({
       this.$axios
         .post('/users', data)
         .then(async (response) => {
-          this.showEmailVerification = true
           this.verificationInfo = { 
             email : response.data.email, 
             package: this.packageparams 
           } 
+          this.showEmailVerification = true
           // this.isRedirecting = true
         })
         .catch(({ response }) => {

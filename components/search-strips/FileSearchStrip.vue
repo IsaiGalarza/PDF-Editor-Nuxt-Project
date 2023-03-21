@@ -42,7 +42,7 @@ export default Vue.extend({
   name: 'FileSearchStrip',
   methods: {
     splittags(val){
-        return val.split(",").map((item)=> {return `#${item} ` }).join()
+        return val?.split(",").map((item)=> {return `#${item} ` }).join()
     },
   },
   computed:{

@@ -143,7 +143,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         date.getUTCHours()
       )}${this.convertToDoubleString(
         date.getUTCMinutes()
-      )}${this.$auth.user?.firstName.charAt(0)}${this.$auth.user?.lastName.charAt(
+      )}${this.$auth.user?.firstName?.charAt(0)}${this.$auth.user?.lastName.charAt(
         0
       )}`.toUpperCase()
     },
@@ -159,10 +159,10 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           date.getUTCHours()
         )}${this.convertToDoubleString(
           date.getUTCMinutes()
-        )}${this.$auth.user?.firstName.charAt(
+        )}${this.$auth.user?.firstName?.charAt(
           0
-        )}${this.$auth.user?.lastName.charAt(0)}`.toUpperCase(),
-        fileAction: this.file.fileAction
+        )}${this.$auth.user?.lastName?.charAt(0)}`.toUpperCase(),
+        fileAction: this.file?.fileAction
       }
     }
   },
@@ -305,7 +305,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.$nuxt.refresh()
           this.$store.commit('SET_PDF_EXIT', true)
           this.$store.commit('SET_SAVE_SEND_AS_GUEST', true)
-          this.$auth.loggedIn ? this.$router.push('/dashboard') : this.$router.push('/')
+          // this.$auth.loggedIn ? this.$router.push('/dashboard') : this.$router.push('/')
         })
         .catch(err => {
           this.$notify.error({
@@ -384,8 +384,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
             message: 'File publish successfully'
           })
           this.$store.commit('SET_PDF_EXIT', true)
-          window.location.assign('/company-files')
-          this.$nuxt.$router.push('/dashboard')
+          this.$nuxt.$router.push('/company-files')
         })
         .catch(() => {
           this.$notify.error({

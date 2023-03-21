@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="bg-[#F4F906] text-[#EE1B1B] text-base px-6 py-2 flex items-center"
+    <div class="text-base px-6 py-2 flex items-center bg-paperdazgreen-500 text-white"
       v-if="isConfirm && !isLoading && $auth.loggedIn && isCreator">
       <!-- <exclamation-icon class="text-white mr-2" /> -->
       Free user will be asked to scroll to the bottom of last page to click Confirm. A copy with free user signature

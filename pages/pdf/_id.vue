@@ -1546,6 +1546,7 @@ export default mixins(PdfAuth).extend({
 }
 
 .custom-scrollbar {
+
   /* Handle */
   &::-webkit-scrollbar {
     width: 20px !important; /* adjust this value to change the width */

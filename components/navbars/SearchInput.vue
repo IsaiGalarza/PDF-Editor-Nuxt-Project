@@ -139,8 +139,7 @@ export default mixins(GlobalMixin, login).extend({
   },
   methods: {
     splittags(val) {
-      return val
-        .split(',')
+      return val?.split(',')
         .map((item) => {
           return `#${item} `
         })

@@ -1,15 +1,15 @@
 <template>
-    <el-dialog
-        :visible.sync="showModal"
-        :append-to-body="false"
-        style=""
-        :show-close="false"
-        center
-        class="relative text-[#414042]"
-    >
-        <!--Start:: Close Button -->
-        <div class="absolute -top-3 -right-3" style="padding: inherit">
-            <!-- <span
+  <el-dialog
+    :visible.sync="showModal"
+    :append-to-body="false"
+    style=""
+    :show-close="false"
+    center
+    class="relative text-[#414042]"
+  >
+    <!--Start:: Close Button -->
+    <div class="absolute -top-3 -right-3" style="padding: inherit">
+      <!-- <span
           class="circle circle-12 bg-white cursor-pointer text-red-600"
           @click="closeModal()"
         >
@@ -28,39 +28,36 @@
             />
           </svg>
         </span> -->
-        </div>
-        <!--End:: Close Button -->
-        <template #title>
-            <h1 class="text-center font-semibold text-xl">Sign up</h1>
-        </template>
-        <!-- Start:: Body -->
+    </div>
+    <!--End:: Close Button -->
+    <template #title>
+      <h1 class="text-center font-semibold text-xl">Sign up</h1>
+    </template>
+    <!-- Start:: Body -->
 
-        <p
-            class="w-[90%] ml-[5%] text-[17px] text-center pb-8 break-normal font-semibold"
-        >
-            Verify your email address
-        </p>
-        <p class="w-[90%] ml-[5%] text-center pb-8 break-normal">
-            A verification email has been sent to<br />
-            <b class="font-semibold text-paperdazgreen-400">{{
-                verificationEmail
-            }}</b
-            ><br />
-            Please follow the instructions in the email to complete
-            registration<br />
-            If you did not see the email
-            <button
-                class="text-paperdazgreen-400 font-semibold"
-                @click="reSendVerification"
-            >
-                click here
-            </button>
-            and we will resend it
-        </p>
-        <!-- end :: body -->
-    </el-dialog>
+    <p
+      class="w-[90%] ml-[5%] text-[17px] text-center pb-8 break-normal font-semibold"
+    >
+      Verify your email address
+    </p>
+    <p class="w-[90%] ml-[5%] text-center pb-8 break-normal">
+      A verification email has been sent to<br />
+      <b class="font-semibold text-paperdazgreen-400">{{ verificationEmail }}</b
+      ><br />
+      Please follow the instructions in the email to complete registration<br />
+      If you did not see the email
+      <button
+        class="text-paperdazgreen-400 font-semibold"
+        @click="reSendVerification"
+      >
+        click here
+      </button>
+      and we will resend it
+    </p>
+    <!-- end :: body -->
+  </el-dialog>
 </template>
-  
+
 <script>
 import Vue from 'vue'
 import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
@@ -69,97 +66,95 @@ import CheckedFillIcon from '../../svg-icons/CheckedFillIcon.vue'
 import jwt, { decode, JsonWebTokenError } from 'jsonwebtoken'
 
 export default Vue.extend({
-    name: 'SuccessFileModal',
-    components: { SpinnerDottedIcon, CheckedFillIcon },
-    model: {
-        prop: 'visible',
-        event: 'updateVisibility',
+  name: 'SuccessFileModal',
+  components: { SpinnerDottedIcon, CheckedFillIcon },
+  model: {
+    prop: 'visible',
+    event: 'updateVisibility',
+  },
+  props: {
+    visible: {
+      type: Boolean,
+      default: false,
     },
-    props: {
-        visible: {
-            type: Boolean,
-            default: false,
-        },
-        verificationInfo: {
-            type: Object,
-        },
-        verificationEmail: {
-            type: String,
-            default: '',
-        },
+    verificationInfo: {
+      type: Object,
     },
+    verificationEmail: {
+      type: String,
+      default: '',
+    },
+  },
 
-    data() {
-        return {
-            showModal: false,
-            isLoading: false,
-            newSaveData: {},
-            file: {},
-            sendAction: null,
-            refuse: true,
-        }
+  data() {
+    return {
+      showModal: false,
+      isLoading: false,
+      newSaveData: {},
+      file: {},
+      sendAction: null,
+      refuse: true,
+    }
+  },
+  watch: {
+    visible(val) {
+      this.showModal = val
     },
-    watch: {
-        visible(val) {
-            this.showModal = val
-        },
+  },
+  mounted() {
+    this.showModal = this.visible
+  },
+  methods: {
+    closeModal() {
+      this.$emit('updateVisibility', false)
     },
-    mounted() {
-        this.showModal = this.visible
+    reSendVerification() {
+      this.$axios.$post(`/verify`, {
+          action: 'resendToken',
+          ...this.verificationInfo,
+        })
+        .then((response) => {
+          this.$notify.success({
+            message: 'Message sent to email successfully',
+          })
+          this.closeModal()
+        })
+        .catch(() => {
+          this.$notify.error({
+            message: 'Failed to send',
+          })
+        })
     },
-    methods: {
-        closeModal() {
-            this.$emit('updateVisibility', false)
-        },
-        reSendVerification() {
-            this.$axios
-                .$post(`/verify`, {
-                    action: 'resendToken',
-                    ...verificationInfo,
-                })
-                .then((response) => {
-                    this.$notify.success({
-                        message: 'Message sent to email successfully',
-                    })
-                    this.closeModal()
-                })
-                .catch(() => {
-                    this.$notify.error({
-                        message: 'Failed to send',
-                    })
-                })
-        },
-    },
+  },
 })
 </script>
-  
+
 <style scoped>
 * >>> .el-dialog {
-    width: 416px !important;
-    max-width: 95% !important;
-    border-radius: 20px !important;
-    border-radius: 8px !important;
-    position: relative !important;
-    overflow: hidden;
+  width: 416px !important;
+  max-width: 95% !important;
+  border-radius: 20px !important;
+  border-radius: 8px !important;
+  position: relative !important;
+  overflow: hidden;
 }
 * >>> .el-dialog__header {
-    padding-bottom: 20px;
+  padding-bottom: 20px;
 }
 
 * >>> .el-dialog__header,
 * >>> .el-dialog__footer {
-    text-align: left !important;
+  text-align: left !important;
 }
 
 * >>> .el-dialog__body {
-    /* padding-top: 0 !important;
+  /* padding-top: 0 !important;
     padding-bottom: 0 !important; */
-    background: #fcfcfd;
+  background: #fcfcfd;
 }
 
 * >>> .el-select .el-input__inner {
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 </style>
-  

@@ -25,9 +25,8 @@
     </svg> -->
     <img
       v-if="!confirmStar"
-      :style="style"
+      style="width: 18px"
       src="../../../assets/img/require-icon.png"
-      width="16"
     />
     <!-- <div v-if="!isCreator && isModalActive && !confirmStar"
       class="w-[240px] h-[26px] z-10 bg-white rounded-[12px] text-[12px] absolute border-[2px] border-[#84C870] px-2 ml-[-16px] mt-[-50px]">

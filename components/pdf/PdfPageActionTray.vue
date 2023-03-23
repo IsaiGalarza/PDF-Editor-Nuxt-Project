@@ -268,18 +268,21 @@ export default Vue.extend({
     cancelPublish() {
       // Toolbar function - cancelConfrim
       if (this.isConfirm) {
-        window.location.assign('/dashboard')
+        this.$store.commit('SET_PDF_EXIT', true)
+        this.$router.push('/dashboard')
         return;
       }
       if (this.upload_state) {
         this.$axios.delete(`/files/${this.file?.id}`)
           .then(() => {
             this.$store.commit('SET_UPLOAD_STATE', false);
-            window.location.assign('/dashboard')
+            this.$store.commit('SET_PDF_EXIT', true)
+            this.$router.push('/dashboard')
           })
       } else {
         this.$store.commit('SET_UPLOAD_STATE', false);
-        window.location.assign('/dashboard')
+        this.$store.commit('SET_PDF_EXIT', true)
+        this.$router.push('/dashboard')
       }
     },
     showQrcodeFileFunc() {

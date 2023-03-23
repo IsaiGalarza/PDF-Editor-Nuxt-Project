@@ -17,12 +17,6 @@
     <div class="flex justify-between items-center h-full bg-gray-200" v-if="userRole == 'free_user' && isSign && isAgreedSign === -1">
       <span class="float-left m-2 text-[10px] lg:text-sm font-bold d-flex">I agree to apply my electronic signature/initials.
         <input type="checkbox" class="ml-1" @change="checkBoxChange" /></span>
-      <!-- <div class="float-right lg:mr-4 mr-2 flex align-items-center">
-        <button class="bg-paperdazgreen-400 h-7 px-2 rounded mr-1 text-xs text-white"
-          @click="signContinue">Start</button>
-        <button class="bg-[#979797] px-2 rounded h-7 text-xs text-white" @click="signCancel">Cancel</button>
-      </div> -->
-      <!-- <button class="bg-[#979797] px-2 rounded h-7 text-xs text-white lg:mr-4 mr-2 hidden sm:block" @click="signCancel">Cancel</button> -->
       <button class="bg-red-500 w-4 h-4 rounded-full text-xs text-white lg:mr-4 mr-2 sm:hidden" @click="signCancel">x</button>
     </div>
     <div v-else-if="userRole == 'free_user' && isSign && isAgreedSign === 1"
@@ -433,6 +427,7 @@ export default {
     signContinue() {
       if (this.signAgreeChecked) {
         this.$store.commit('SET_AGREE_SIGN');
+        this.$emit('check-active-tools')
       } else {
         this.showAlert = true;
       }

@@ -36,6 +36,7 @@
       />
 
       <tool-bar
+        @check-active-tools="scrollToSignInitial"
         :file="file"
         @tool-change="onToolChange"
         :selectedToolType="selectedToolType"

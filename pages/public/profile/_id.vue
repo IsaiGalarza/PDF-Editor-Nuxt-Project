@@ -173,7 +173,6 @@ import FilePagination from '~/components/pagination/FilePagination.vue'
 import ShareFileOptions from '~/components/profile/components/ShareFileOptions.vue'
 import SearchShare from '~/components/search-strips/component/SearchShare.vue'
 import ShareFolder from '~/components/search-strips/component/ShareFolder.vue'
-
 export default Vue.extend({
   components: {
     PenIcon,
@@ -265,7 +264,6 @@ export default Vue.extend({
         })
     },
     async getUserFolders(page, search) {
-
       await this.$axios
         .$get(`/folders/?userId=${this.$route.params.id}&name[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`)
         .then((response) => {
@@ -295,7 +293,6 @@ export default Vue.extend({
           this.totalFile = response.total
         })
     },
-
     async generateQR() {
       QRCode.toCanvas(this.$refs.qrcancas, location.href, function () { })
       await this.$nextTick()
@@ -325,7 +322,6 @@ export default Vue.extend({
   },
 })
 </script>
-
 <style>
 .el-notification{
     z-index: 999999 !important;

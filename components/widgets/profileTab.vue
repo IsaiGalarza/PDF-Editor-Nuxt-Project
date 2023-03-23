@@ -13,7 +13,7 @@
           <span class="circle circle-15 bg-paperdazgray-100 cursor-pointer" @click="collapsed = false">&times;</span>
         </div>
 
-        <div class="h-px bg-paperdazgray-300 w-full lg:hidden" v-if="!$auth.loggedIn"></div>
+
         <div class="flex flex-col items-center gap-4 lg:hidden" v-if="!$auth.loggedIn">
           <nuxt-link to="/login" class="text-paperdazgreen-300 mt-5">Sign in</nuxt-link>
           <nuxt-link to="/register"
@@ -58,13 +58,17 @@
         </div>
       </div>
       <div class="flex items-center gap-1.5 xs:gap-3 sm:gap-5 text-xs xs:text-sm sm:text-base md:text-ls">
-        <!-- <button type="button" @click="showLandingPageSearchModal = true">
-          <search-icon width="15" />
-        </button> -->
-        <nuxt-link v-if="!$auth.loggedIn" to="/login" class="text-paperdazgreen-300">Sign in</nuxt-link>
-        <nuxt-link v-if="!$auth.loggedIn" to="/register"
-          class="bg-paperdazgreen-300 text-white h-7 xs:h-8 rounded shadow px-2 xs:px-3 flex items-center justify-center whitespace-nowrap">Get
-          Started</nuxt-link>
+        <button
+          v-if="!$store.getters.getFillAsGuest && !$auth.loggedIn"
+          @click="showGuestModal = true"
+          class="bg-paperdazgreen-300 text-white h-7 xs:h-8 rounded shadow px-4 sm:px-3 hidden sm:flex items-center justify-center whitespace-nowrap mx-2"
+          >Start</button>
+
+          <div v-if="$store.getters.getFillAsGuest && !$auth.loggedIn" class="flex items-center">
+            <span class="mr-3">Guest</span>
+            <img src="https://paperdaz.com/img/placeholder_picture.png" class="rounded-full mr-2 w-[30px]"/>
+        </div>
+       
         <el-dropdown trigger="click" @command="handleCommand" v-if="$auth.loggedIn">
           <span class="flex items-center el-dropdown-link">
             <div class="mr-2">
@@ -115,6 +119,7 @@
     </nav>
 
     <landing-page-search-modal v-model="showLandingPageSearchModal" />
+    <GuestModal v-model="showGuestModal" />
   </div>
 </template>
 
@@ -128,6 +133,7 @@ import mixins from 'vue-typed-mixins'
 import GlobalMixin from '~/mixins/GlobalMixin'
 import LandingPageSearchModal from '../landing/LandingPageSearchModal.vue'
 import UserTypeEnum from '~/models/UserTypeEnum'
+import GuestModal from '../pdf/modals/GuestModal.vue'
 
 export default mixins(GlobalMixin).extend({
   name: 'ProfileTab',
@@ -137,14 +143,16 @@ export default mixins(GlobalMixin).extend({
     GearIcon,
     SignOutIcon,
     UserProfileSolidIcon,
-    LandingPageSearchModal
+    LandingPageSearchModal,
+    GuestModal
   },
   data() {
     return {
       scrolled: false,
       collapsed: false,
       showLandingPageSearchModal: false,
-      userInfo: {}
+      userInfo: {},
+      showGuestModal: false
     }
   },
   watch: {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-show="isFocused" class="overlay bg-dark opacity-[0.5]" />
-    <el-dropdown trigger="click" class="w-full z-[22]" placement="bottom">
+    <div class="z-[22] w-full relative">
       <div class="el-dropdown-link flex align-center">
         <el-input
           placeholder=""
@@ -23,21 +23,24 @@
           </span>
         </el-input>
       </div>
-      <el-dropdown-menu slot="dropdown">
-        <div
+    </div>
+
+
+    <div  v-show="isFocused" class="absolute top-[100%] z-[22]">
+       <div
           v-if="!loading && !topSearchContent.length"
-          class="flex justify-center items-center w-full min-h-[200px] opacity-50"
+          class="w-[90vw] lg:w-[40vw] flex justify-center items-center min-h-[200px] bg-white"
         >
           No Paperlink found
         </div>
         <div
           v-if="loading"
-          class="flex justify-center items-center min-h-[200px] h-full bg-white/80 w-full absolute top-0 left-0 z-10"
+          class="w-[90vw] lg:w-[40vw] flex justify-center items-center min-h-[200px] h-full bg-white/80 absolute top-0 left-0 z-10"
         >
           <spinner-dotted-icon height="20" width="20" class="animate-spin" />
         </div>
         <!-- Start:: dropdown -->
-        <div class="bg-white rounded-lg whitespace-nowrap w-[90vw] lg:w-[40vw]">
+        <div  v-if="!loading && topSearchContent.length" class="bg-white rounded-lg whitespace-nowrap w-[90vw] lg:w-[40vw]">
           <div class="max-h-[60vh] custom-scrollbar overflow-y-auto p-2 px-4">
             <article
               class="py-4 text-[#9F9F9F] grid grid-cols-[max-content,1fr,max-content] gap-4 datalist"
@@ -80,9 +83,7 @@
             </article>
           </div>
         </div>
-        <!-- End:: dropdown -->
-      </el-dropdown-menu>
-    </el-dropdown>
+    </div>
   </div>
 </template>
 
@@ -166,8 +167,10 @@ export default mixins(GlobalMixin, login).extend({
       // &$or[1][uploadedBy]={ team member id }&$or[2][uploadedBy]={ team member id 2 }
     },
     onBlurHandle() {
-      this.isFocused = false
+      setTimeout(() => {
+        this.isFocused = false
       this.$emit('onBlurInput')
+      }, 500);
     },
     onClickHandle() {
       this.isFocused = true

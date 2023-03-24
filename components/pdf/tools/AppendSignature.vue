@@ -1,13 +1,13 @@
 <template>
   <div>
     <img
-      v-if="completed"
-      class="absolute-image"
-      :src="completedImgData"
-      :style="style"
-    />
+    v-if="completed"
+    class="absolute-image"
+    :src="completedImgData"
+    :style="style"
+  />
     <img
-      v-else-if="!initialimgDisplay"
+      v-else-if="!initialimgDisplay && isCreator"
       src="../../../assets/img/sign-icon.png"
       attr="sign"
       :elemFill="uploaded && initialimgDisplay"
@@ -111,11 +111,11 @@ export default mixins(SaveSignatureInitialsMixin).extend({
               })
           )
       if (com) {
-        toDataURL(com).then((dataUrl) => {
+        this.$auth?.user?.signatureURL && toDataURL(com).then((dataUrl) => {
           this.completedImgData = dataUrl
         })
       }
-      toDataURL(this.$auth?.user?.signatureURL).then((dataUrl) => {
+      this.$auth?.user?.signatureURL && toDataURL(this.$auth?.user?.signatureURL).then((dataUrl) => {
         this.signature = dataUrl
       })
     },

@@ -1,13 +1,13 @@
 <template>
   <div>
     <img
-      v-if="completed"
-      class="absolute-image"
-      :src="completedImgData"
-      :style="style"
-    />
+    v-if="completed"
+    class="absolute-image"
+    :src="completedImgData"
+    :style="style"
+  />
     <img
-      v-else-if="!initialimgDisplay"
+      v-else-if="!initialimgDisplay && isCreator"
       src="../../../assets/img/initial-icon.png"
       attr="initial"
       :elemFill="uploaded && initialimgDisplay"
@@ -108,12 +108,13 @@ export default mixins(SaveSignatureInitialsMixin).extend({
               })
           )
       if (com) {
-        toDataURL(com).then((dataUrl) => {
+        this.$auth?.user?.initialURL && toDataURL(com).then((dataUrl) => {
           this.completedImgData = dataUrl
         })
       }
-      toDataURL(this.$auth?.user?.initialURL).then((dataUrl) => {
+      this.$auth?.user?.initialURL && toDataURL(this.$auth?.user?.initialURL).then((dataUrl) => {
         this.initial = dataUrl
+        console.log("alert",this.initial)
       })
     },
     imageExportedLocal(image, isSignature) {
@@ -139,6 +140,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   mounted() {
     this.changeInitialToBase64()
     this.completed && this.changeInitialToBase64(this.completed)
+    console.log(this.theInitial, this.$auth.user)
   },
   watch: {
     '$auth.user.initialURL': async function () {

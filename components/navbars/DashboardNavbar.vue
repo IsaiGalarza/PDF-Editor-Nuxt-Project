@@ -4,7 +4,7 @@
     <p class="capitalize inline-flex items-center gap-3"
       :class="[compact ? 'text-sm sm:text-base' : 'text-base sm:text-xl']">
       <span class="inline-block lg:hidden mr-3 sm:mr-4 cursor-pointer"
-        @click="$emit('open-sidebar')"><hamburger-icon /></span>{{ title || routeName }}
+        @click="$emit('open-sidebar')"><hamburger-icon class="hidden md:inline-block"/></span>{{ title || routeName }}
     </p>
     <div class="hidden lg:inline-block text-[#BBBBBB] pr-4 border-r mr-2 w-[50%]">
       <!-- <div class="text-[#BBBBBB] mr-4"> -->

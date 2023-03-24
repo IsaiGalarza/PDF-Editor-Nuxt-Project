@@ -456,10 +456,6 @@ export default {
 
     },
     undoFunction() {
-      if (!this.$auth.loggedIn && !this.$store.getters?.getFillAsGuest) {
-        !this.$auth.loggedIn ? this.showPdfNotLoggedInUser = true : null
-        return
-      }
       this.$emit('undo')
     },
     imageExportedLocal(image, isSignature) {
@@ -471,7 +467,7 @@ export default {
     },
     setSelectedType(type) {
       if (!this.$auth.loggedIn && !this.$store.getters?.getFillAsGuest) {
-        !this.$auth.loggedIn ? this.showPdfNotLoggedInUser = true : null
+        !this.$auth.loggedIn ? this.$store.getters.showGuestModal() : null
         return
       }
       if (!this.allowAnnotationsSign_Initial(type)) return
@@ -486,7 +482,7 @@ export default {
     },
     onSignClick() {
       if (!this.$auth.loggedIn && !this.$store.getters?.getFillAsGuest) {
-        !this.$auth.loggedIn ? this.showPdfNotLoggedInUser = true : null
+        !this.$auth.loggedIn ? this.$store.getters.showGuestModal() : null
         return
       }
  
@@ -504,7 +500,7 @@ export default {
     },
     onInitialsClick() {
       if (!this.$auth.loggedIn && !this.$store.getters?.getFillAsGuest) {
-        !this.$auth.loggedIn ? this.showPdfNotLoggedInUser = true : null
+        !this.$auth.loggedIn ? this.$store.getters.showGuestModal() : null
         return
       }
  

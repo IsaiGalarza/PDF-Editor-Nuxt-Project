@@ -16,9 +16,6 @@
 
         <div class="flex flex-col items-center gap-4 lg:hidden" v-if="!$auth.loggedIn">
           <nuxt-link to="/login" class="text-paperdazgreen-300 mt-5">Sign in</nuxt-link>
-          <nuxt-link to="/register"
-            class="bg-paperdazgreen-300 text-white h-8 rounded shadow px-3 flex items-center justify-center whitespace-nowrap">Get
-            Started</nuxt-link>
         </div>
         <div class="grid w-full place-items-center lg:hidden">
           <el-dropdown trigger="click" @command="handleCommand" v-if="$auth.loggedIn">

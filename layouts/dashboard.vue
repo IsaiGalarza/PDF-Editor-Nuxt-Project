@@ -19,6 +19,7 @@
       <Nuxt class="py-4 flex-1 px-sm-4 px-lg-0 lg:pb-10" />
     </div>
     <bottom-nav
+      @open-sidebar="collapseSidebar = true"
       id="bottom-nav"
       class="sticky left-0 right-0 h-12 bottom-0 mt-3 lg:hidden"
     />

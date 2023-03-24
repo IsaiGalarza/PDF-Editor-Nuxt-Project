@@ -77,13 +77,6 @@
           <nuxt-link to="/login" class="text-paperdazgreen-300 mt-5"
             >Sign in</nuxt-link
           >
-          <div class="getstart-btn">
-            <nuxt-link
-              to="/register"
-              class="bg-paperdazgreen-300 hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150 text-white h-9 w-28 rounded shadow px-3 flex items-center justify-center whitespace-nowrap"
-              >Get Started</nuxt-link
-            >
-          </div>
         </div>
         <div class="grid w-full place-items-center lg:hidden">
           <el-dropdown
@@ -144,14 +137,7 @@
           class="text-paperdazgreen-300"
           >Sign in</nuxt-link
         >
-        <div class="getstart-btn">
-          <nuxt-link
-            v-if="!$auth.loggedIn"
-            to="/register"
-            class="bg-paperdazgreen-300 hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 text-white h-9 sm:w-24 md:w-28 xs:h-9 rounded shadow px-2 xs:px-3 flex items-center justify-center whitespace-nowrap"
-            >Get Started</nuxt-link
-          >
-        </div>
+
         <el-dropdown
           trigger="click"
           @command="handleCommand"

@@ -6,8 +6,8 @@ import FileAction from '~/models/FileAction'
 export const state = () => ({
   saveEmailExist: "",
   guestModalFunc: () => {},
-  base64Signature: undefined,
-  base64Initial: undefined,
+  base64Signature: null,
+  base64Initial: null,
   fillAsGuest: false,
   sendAsGuest: false,
   pageName: '',

@@ -1,13 +1,13 @@
 <template>
   <div>
     <img
-      v-if="completed"
-      class="absolute-image"
-      :src="completedImgData"
-      :style="style"
-    />
+    v-if="completed"
+    class="absolute-image"
+    :src="completedImgData"
+    :style="style"
+  />
     <img
-      v-else-if="!initialimgDisplay"
+      v-if="!initialimgDisplay && isCreator"
       src="../../../assets/img/initial-icon.png"
       attr="initial"
       :elemFill="uploaded && initialimgDisplay"
@@ -20,6 +20,7 @@
       ]"
       :width="(tool?.pageScaleY || 1) * 18"
     />
+  
     <img
       v-else-if="theInitial"
       class="absolute-image"
@@ -50,11 +51,15 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   computed: {
     ...mapState(['loadedPdfFile']),
     isCreator() {
+      if(!this.tool?.user) return false
       return (
-        this.file.userId == this.$auth?.user?.id ||
+        this.tool?.user == this.file?.userId ||
         (this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE &&
           this.$auth?.user?.teamId == this.file.userId)
       )
+    },
+    isOwner(){
+       return this.file.userId == this.$auth?.user?.id  
     },
     theInitial(){
        return this.$store.getters?.getUserInitial || this.initial
@@ -108,12 +113,13 @@ export default mixins(SaveSignatureInitialsMixin).extend({
               })
           )
       if (com) {
-        toDataURL(com).then((dataUrl) => {
+        this.$auth?.user?.initialURL && toDataURL(com).then((dataUrl) => {
           this.completedImgData = dataUrl
         })
       }
-      toDataURL(this.$auth?.user?.initialURL).then((dataUrl) => {
+      this.$auth?.user?.initialURL && toDataURL(this.$auth?.user?.initialURL).then((dataUrl) => {
         this.initial = dataUrl
+        console.log("alert",this.initial)
       })
     },
     imageExportedLocal(image, isSignature) {
@@ -131,14 +137,15 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     setInitialImgDisplay() {
       if(!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest) return
-      !this.isCreator && (this.initialimgDisplay = true)
+      !this.isOwner && (this.initialimgDisplay = true)
       this.$BUS.$emit('scrollToSignInitial', 'appendinitial')
-      !this.uploaded && this.setInitialSignType('initial')
+      !this.uploaded && !this.theInitial && this.setInitialSignType('initial')
     },
   },
   mounted() {
     this.changeInitialToBase64()
     this.completed && this.changeInitialToBase64(this.completed)
+    console.log(this.theInitial, this.isCreator, this.tool?.user )
   },
   watch: {
     '$auth.user.initialURL': async function () {

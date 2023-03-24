@@ -164,6 +164,7 @@
                 @toolWrapperBeforeChecked="toolWrapperBeforeChecked"
                 @toolWrapperAfterChecked="toolWrapperAfterChecked"
                 v-model="tool.value"
+                :userId="tool.user"
                 :setInitialSignType="setInitialSignType"
               />
               <!-- </div> -->
@@ -690,9 +691,9 @@ export default mixins(PdfAuth).extend({
     },
 
     scrollToSignInitial(type = '') {
-      if (this.isCreator || !this.$auth.loggedIn) return
+      if (this.isCreator || (!this.$auth.loggedIn && !this.$store.getters?.getFillAsGuest)) return
 
-      setTimeout(() => {
+
         let annotationButton = document.querySelectorAll('.annot-button')
         Array.from(annotationButton).forEach((element) => {
           if (element) element.classList.remove('pulse')
@@ -739,7 +740,7 @@ export default mixins(PdfAuth).extend({
           type === 'appendinitial' && this.InitialNumber--
           // this.signAlaram.left = this.filteredAnnotationButton[0].parentElement.parentElement.parentElement.style.left
         }
-      }, 100)
+
     },
     isDeletedFunc() {
       this.hasDeleted = true

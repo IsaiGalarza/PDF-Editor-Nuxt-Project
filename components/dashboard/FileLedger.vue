@@ -68,11 +68,9 @@
                       (file.role == userType.PAID || $auth.user.role == userType.FREE) ? 'sm:block rounded-md w-9 h-9' : 'sm:circle sm:circle-17'
                     ]">
                     <img
-                      v-if="(file.fileOwner || {}).profile_picture"
-                    :src="
-                      (file.fileOwner || {}).profile_picture ||
-                      '/img/placeholder_picture.png'
-                    " alt=""
+                      v-if="(file.user || {}).profile_picture"
+                    :src="(file.user || {}).profile_picture || '/img/placeholder_picture.png'"
+                     alt=""
                       :class="[
                         (file.role == userType.PAID || $auth.user.role == userType.FREE) ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']"
                       />
@@ -82,10 +80,14 @@
                   </div>
                   <div class="max-sm:w-24">
                     <p class="max-sm:truncate max-sm:text-xs sm:text-base font-medium text-left sm:ml-1">
-                      <nuxt-link :to="`/pdf/${file.paperLink}`">
+                      <nuxt-link :to="`/pdf/${file.paperLink}`" class="w-full block">
                         <!-- {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName  }} -->
                         {{ file.fileName | removeExtension }}
                       </nuxt-link>
+                      <span class="w-full block opacity-50 text-sm font-[300]">
+                        <!-- {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName  }} -->
+                        {{ `${file.user?.firstName } ${file.user?.lastName}` }}
+                      </span>
                     </p>
                     <div class="hidden sm:block">
                       <a
@@ -226,6 +228,7 @@ export default Vue.extend({
     this.handleShowingLedger()
     this.tableScrollObserver()
     this.fetchFiles(this.returnedDataPage, this.searchValue)
+    console.log(this.pdfUser)
   },
   methods: {
     formatFileAction(fileAction, action) {

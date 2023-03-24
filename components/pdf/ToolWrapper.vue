@@ -444,7 +444,6 @@ export default {
     },
   },
   mounted: function () {
-    console.log("++++++++++++", this.tool)
   }
 }
 </script>

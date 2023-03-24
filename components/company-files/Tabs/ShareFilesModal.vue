@@ -14,6 +14,7 @@
     <!--End:: Close Button -->
     <template #title>
       <h4 class="text-center font-semibold text-xl">Share</h4>
+      <div class="w-full text-center font-semibold py-2 pt-3 text-paperdazgreen-250">{{ userFile.fileName }}</div>
     </template>
     <!-- Start:: Body -->
     <form ref="form" @submit.prevent="onSubmit">
@@ -35,8 +36,8 @@
           placeholder="Note..."></textarea>
       </p>
       <div class="flex justify-around">
-        <button class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[900%] 
-         text-white rounded-xl shadow bg-paperdazgreen-400" :disabled="loading">
+        <button class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] 
+         text-white rounded shadow bg-paperdazgreen-400" :disabled="loading">
           <span class="inline-flex gap-1 items-center text-[16px]">
             Send
             <spinner-dotted-icon v-show="loading" height="20" width="20" class="animate-spin" />
@@ -50,20 +51,12 @@
         <link-icon width="24" height="24" color="rgb(96,98,102)" class="cursor-pointer" />
       </button>
 
-      <button @click="showQrcodeFileFuncEmit" v-if="emailWithLink">
-        <qrcode-icon width="24" height="24" color="rgb(96,98,102)" class="cursor-pointer" />
-      </button>
-
       <button @click="setFacebookShare">
         <facebook-icon height="24" class="cursor-pointer" />
       </button>
 
       <button @click="setTwitterShare">
         <twitter-icon height="24" class="cursor-pointer" />
-      </button>
-
-      <button>
-        <envelope-icon-share width="24" height="24" color="rgb(96,98,102)" class="cursor-pointer" />
       </button>
 
     </div>
@@ -165,7 +158,7 @@ export default Vue.extend({
     },
     async _generatePdf(val) {
       val.pdf_url = `${window.location.origin}/pdf/${this.userFile.paperLink}`;
-      val.pdf_url = this.userFile?.downloadLink;
+      val.pdf_url = this.userFile?.downloadLink ?? '';
       if (val.data.length < 1 && !this.userFile) return
 
       await this.$axios.$post(`/pdf-generator`, { ...val })
@@ -241,7 +234,7 @@ export default Vue.extend({
       //<---------END: looping through the form data elements --------->>
 
       //<---------START: generating edited Pdf --------->>
-      await this._generatePdf(ExtractFormPdf(this.userFile?.downloadLink)[0])     //this issue
+      await this._generatePdf(ExtractFormPdf(this.userFile?.downloadLink || [])[0])     //this issue
 
       // await this.uploadGeneratedFile(this.generateFileProperty)
       //<---------END: generating edited Pdf --------->>

@@ -164,6 +164,7 @@
                 @toolWrapperBeforeChecked="toolWrapperBeforeChecked"
                 @toolWrapperAfterChecked="toolWrapperAfterChecked"
                 v-model="tool.value"
+                :userId="tool.user"
                 :setInitialSignType="setInitialSignType"
               />
               <!-- </div> -->

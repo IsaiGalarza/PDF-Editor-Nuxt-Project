@@ -69,6 +69,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           return false
       }
     },
+    isOwner(){
+       return this.file.userId == this.$auth?.user?.id  
+    },
     theSignature(){
        return this.$store.getters?.getUserSignature || this.signature
     },
@@ -82,8 +85,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       return this.$store.state.agreeSign
     },
     isCreator() {
+      if(!this.tool?.user) return false
       return (
-        this.file.userId == this.$auth?.user?.id ||
+        this.tool?.user == this.file?.userId ||
         (this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE &&
           this.$auth?.user?.teamId == this.file.userId)
       )
@@ -134,10 +138,11 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       if (!this.uploaded) this.showSignatureModal = true
     },
     setInitialImgDisplay() {
+      console.log(this.isCreator)
       if(!this.$auth.loggedIn && !this.$store.getters?.getFillAsGuest) return
-      !this.isCreator && (this.initialimgDisplay = true)
+      !this.isOwner && (this.initialimgDisplay = true)
       this.$BUS.$emit('scrollToSignInitial', 'appendsign')
-      !this.uploaded && this.setInitialSignType('sign')
+      !this.uploaded &&  !this.theSignature && this.setInitialSignType('sign')
     },
   },
   components: { DrawOrTypeModal },

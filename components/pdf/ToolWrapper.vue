@@ -113,7 +113,8 @@ export default {
     drawingStart: Boolean,
     value: undefined,
     lineStart: Boolean,
-    toolLength: Number
+    toolLength: Number,
+    userId: Number
   },
   components: {
     TextTool,
@@ -443,6 +444,7 @@ export default {
     },
   },
   mounted: function () {
+    console.log("++++++++++++", this.tool)
   }
 }
 </script>

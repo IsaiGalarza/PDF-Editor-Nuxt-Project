@@ -93,6 +93,24 @@
         />
       </div>
     </div>
+    <div
+      v-show="this.isLocationFetched"
+      class="grid gap-y-3 sm:gap-5"
+      style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));"
+    >
+      <div class="flex items-center">
+        <label class="mr-2" for="">State:</label>
+        <el-input
+          placeholder="Enter state"
+          v-model="formData.city"
+          :disabled="!editingDetails"
+        />
+      </div>
+      <div class="flex items-center">
+       
+      </div>
+      
+    </div>
 
     <transition name="fade">
       <div
@@ -148,6 +166,7 @@ export default mixins(login).extend({
         timezone: '',
         country: '',
         state: '',
+        city: ''
       },
       country: '',
       state: '',
@@ -196,8 +215,7 @@ export default mixins(login).extend({
           this.isLocationFetched = true
           this.formData.country = IpDetail.country
           this.formData.timezone = IpDetail.timezone
-          this.formData.state = IpDetail.city
-          console.log(IpDetail)
+          this.formData.city = IpDetail.city
         }).catch(() => {
           this.isLocationFetching = false
           this.isLocationError = false
@@ -311,7 +329,7 @@ export default mixins(login).extend({
      this.inputValid(this.formData.lastName, 'last name') &&
      this.inputValid(this.formData.briefIntro, 'Brief introduction') &&
      this.inputValid(this.country, 'country') &&
-     this.inputValid(this.state, 'state') &&
+     this.inputValid(this.city, 'state') &&
      this.inputPhone(this.formData.phone, 'Phone'))){
      this.$refs.form.scrollIntoView()
      return

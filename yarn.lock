@@ -12825,6 +12825,11 @@ vue-eslint-parser@^7.1.1, vue-eslint-parser@^7.10.0:
     lodash "^4.17.21"
     semver "^6.3.0"
 
+vue-google-autocomplete@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/vue-google-autocomplete/-/vue-google-autocomplete-1.1.4.tgz#d735650c37c710328d98f135815945fc299079b0"
+  integrity sha512-a1aRG+F0A8crf/RnWW1EXxA/aaFh/Qpu6GSxOjfpWPNgvReNttYgAcwft1I+XvULuNjFc6YNciv/tHUHxxt0Qg==
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"

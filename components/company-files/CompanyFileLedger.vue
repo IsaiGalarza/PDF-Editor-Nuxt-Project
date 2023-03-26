@@ -66,8 +66,8 @@
               <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
             </div>
             <div
-              class="my-12 grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] md:grid-cols-4 sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-x-2 sm:gap-x-[3.5rem] gap-y-6 px-[3rem]">
-              <div class="items-center border-2 py-[15px] pl-[15px] rounded-[16px] border-[#909090]"
+              class="my-12 flex items-center px-[3rem]">
+              <div class="items-center border-2 py-[15px] pl-[15px] rounded-[16px] mr-5 border-[#909090] w-6/12 sm:w-4/12 min-w-[250px]"
                 v-for="(content, i) in folders" :key="i">
                 <div class="overflow-hidden px-[10px] flex justify-between">
                   <div class="float-left flex">

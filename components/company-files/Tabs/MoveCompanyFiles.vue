@@ -60,12 +60,12 @@
       <button class="circle circle-18 bg-paperdazgreen-400 text-white ml-2">
         <SearchIcon width="16" height="16" currentcolor="white" />
       </button>
-        <button
+        <!-- <button
            @click="popUpFolderCreate"
           class="ml-2 circle circle-18 bg-paperdazgreen-400 text-xl text-white"
         >
           <folder-plus-icon />
-        </button>
+        </button> -->
     </p>
 
     <div class="w-[100%] md:w-[90%] md:ml-[5%] relative">
@@ -95,8 +95,8 @@
           <button class="w-[60px] ml-2 flex items-center">
             <img
               @click="transferFileFunction(file)"
-              class="w-[40px]"
-              src="~/assets/img/Arrow right alt.png"
+              class="w-[33px]"
+              src="~/assets/icons/file-move-icon.svg"
             />
           </button>
         </li>

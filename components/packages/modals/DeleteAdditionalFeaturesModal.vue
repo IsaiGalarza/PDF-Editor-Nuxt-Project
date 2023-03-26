@@ -35,7 +35,7 @@
     </template>
     <!-- Start:: Body -->
     <p
-      class="text-center block font-medium max-w-[290px] mx-auto mb-6 whitespace-none"
+      class="text-center block font-medium max-w-[290px] mx-auto mb-6 whitespace-none break-normal"
     >
       Do you want to delete your aditional features from
       <span class="font-semibold text-paperdazgreen-500 uppercase"

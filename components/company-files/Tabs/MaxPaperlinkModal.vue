@@ -12,7 +12,7 @@
         <h4 class="text-center font-semibold text-xl">Oops</h4>
       </template>
       <p
-        class="text-center block font-medium max-w-[290px] mx-auto mb-6 break-normal"
+        class="text-center block font-medium max-w-[290px] mx-auto mb-6 break-normal break-normal"
       >
         You have reached
         <span class="font-semibold text-paperdazgreen-500 uppercase"

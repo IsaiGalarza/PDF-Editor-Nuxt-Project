@@ -9,7 +9,7 @@
   >
     <!-- Start:: Body -->
     <p
-      class="text-center block font-medium max-w-[290px] mx-auto mb-6 whitespace-none"
+      class="text-center block font-medium max-w-[290px] mx-auto mb-6 whitespace-none break-normal"
     >
       You have reached
       <span class="font-semibold text-paperdazgreen-500 uppercase"

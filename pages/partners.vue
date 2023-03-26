@@ -4,7 +4,7 @@
       <h4
         class="px-5 text-4xl lg:text-5xl text-black font-semibold absolute inline-block transform top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 whitespace-nowrap"
       >
-        <span class="text-paperdazgreen-400">Let`s Be</span> Partners
+        <span class="text-paperdazgreen-400">Let's Be</span> Partners
       </h4>
       <img
         src="~/assets/img/world_map.svg"
@@ -16,7 +16,7 @@
     <!-- lets be partners content -->
     <section class="px-4">
       <div class="w-full text-[1.3rem] font-bold text-center px-2 py-8">
-        Let’s make a difference together!
+        Let's make a difference together!
       </div>
 
       <div class="flex flex-wrap justify-center items-center">
@@ -199,5 +199,8 @@ export default {
 }
 .font-family {
   font-family: inherit !important;
+}
+.no-app-font{
+  font-family: Arial, Helvetica, sans-serif !important;
 }
 </style>

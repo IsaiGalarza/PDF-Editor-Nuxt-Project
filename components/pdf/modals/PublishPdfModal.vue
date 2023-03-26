@@ -23,7 +23,7 @@
     </div>
     <!-- <span v-if="!isCreator">Do you want these file to be saved as
       {{ `${(file.fileAction + 'ed').replace('ee', 'e')}` }}?</span> -->
-    <span v-if="isCreator" class="w-full text-center block py-0 px-2 pb-8 text-[16px]">Do you want publish the file as
+    <span v-if="isCreator" class="w-full text-center block py-0 px-2 pb-8 text-[16px] break-normal">Do you want publish the file as
       <span class="capitalize">
         {{
             file.fileAction + ' & ' + file.filePrivacy.replace('p', 'P') + '?'

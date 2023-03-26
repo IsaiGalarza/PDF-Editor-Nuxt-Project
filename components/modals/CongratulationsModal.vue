@@ -4,15 +4,14 @@
 
     <template #title>
       <div class="text-center font-semibold text-xl">
-        Congratulations
+        Congratulations!
       </div>
     </template>
     <!-- Start:: Body -->
-    <p class="w-full text-center block py-0 px-2 pb-8 break-normal">
-      Your business page has been
-      created. You can switch accounts
-      by changing your profile. Take that out</p>
     <!-- end :: body -->
+    <p class="pb-3">Your business account has been created.</p>
+
+    <p> To switch between multiple accounts, simply click on your profile icon in the top right hand corner.</p>
   </el-dialog>
 </template>
 

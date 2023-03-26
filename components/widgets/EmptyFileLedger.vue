@@ -3,7 +3,7 @@
 
 
     <!-- <img src="../../assets/img/dashboard-bg.png" class="position-absolute mt-24 md:left-[30%] md:w-auto sm:w-[200px]" /> -->
-    <table key="3" ref="fileLedgerTable" class="file-ledger-table">
+    <!-- <table key="3" ref="fileLedgerTable" class="file-ledger-table">
       <thead>
         <tr class="text-left">
           <th class="text-left fixed-col left">No</th>
@@ -32,7 +32,10 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
+    <span class="block w-full text-center py-4">
+       No file found
+    </span>
   </div>
 </template>
 

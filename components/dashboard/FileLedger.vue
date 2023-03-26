@@ -13,7 +13,7 @@
       
         <h5 class="text-lg font-semibold text-[#272727] hidden sm:inline-flex items-center gap-2 sm:w-full" :class="[isPaidUser ? 'mb-2' : 'mb-0']">
           {{ isPaidUser ? "File Ledger" : "Ledger" }}
-          <a :href="`/public/profile/${mainUserLink}`" target="_blanck">
+          <a :href="`/public/profile/${mainUserLink}`" target="_blank">
             <!-- <company-icon /> -->
             <img src="../../assets/img/company-icon.png" class="lg:w-[30px] w-[20px]" v-if="isPaidUser" />
           </a>
@@ -84,10 +84,6 @@
                         <!-- {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName  }} -->
                         {{ file.fileName | removeExtension }}
                       </nuxt-link>
-                      <span class="w-full block opacity-50 text-sm font-[300]">
-                        <!-- {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName  }} -->
-                        {{ `${file.user?.firstName } ${file.user?.lastName}` }}
-                      </span>
                     </p>
                     <div class="hidden sm:block">
                       <a
@@ -96,7 +92,7 @@
                         target="_blank"
                       >
                         <p class="ml-1 max-sm:text-xs sm:text-base">
-                          {{ (file.fileOwner || {}).company_name }}
+                          {{ (file.user || {}).company_name }}
                         </p>
                       </a>
                       <p v-else class="ml-1 max-sm:text-xs sm:text-base flex">

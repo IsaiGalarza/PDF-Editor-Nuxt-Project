@@ -4,13 +4,13 @@
   >
     <form class="w-full max-w-2xl mx-auto" @submit.prevent="submit">
       <h3
-        class="flex justify-center text-paperdazgreen-300 border-b-2 border-paperdazgreen-300 font-semibold text-2xl gap-2 pb-1 relative mb-12"
+        class="flex justify-center items-center text-paperdazgreen-300 border-b-2 border-paperdazgreen-300 font-semibold text-2xl gap-2 pb-1 relative mb-12"
       >
         <span>Change Your Password</span>
         <button
           type="button"
           @click="editingDetails = !editingDetails"
-          class="absolute right-0 top-1/2 transform -translate-y-1/2 px-2 py-1"
+          class="px-2 py-1"
         >
           <pen-icon v-show="!editingDetails" />
           <times-icon v-show="editingDetails" width="16" height="16" />

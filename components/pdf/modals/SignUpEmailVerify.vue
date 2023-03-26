@@ -45,7 +45,7 @@
       <b class="font-semibold text-paperdazgreen-400">{{ verificationEmail }}</b
       ><br />
       Please follow the instructions in the email to complete registration<br />
-      If you did not see the email
+      If you did not see the email, <br/>
       <button
         class="text-paperdazgreen-400 font-semibold"
         @click="reSendVerification"

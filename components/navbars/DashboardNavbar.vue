@@ -159,7 +159,7 @@
               </span>
               <div class="w-[calc(100%-1.75rem)] pl-2 leading-[12px] relative flex flex-wrap items-center">
                 <span class="text-[12px] truncate font-[500] capitalize inline-block my-0 w-full">{{ (account.teamName
-                  || account.companyName || account.firstName || '')
+                  || account?.companyName || account?.firstName || '')
                 }}</span>
                 <span class="text-[9px] truncate font-[500] capitalize inline-block my-0 w-full">
                   {{ account.status }}
@@ -297,13 +297,13 @@ export default mixins(GlobalMixin, login).extend({
 
     userFullName() {
       return this.isPaidUser
-        ? (this.user || {}).firstName
-        : (this.user || {}).email
+        ? (this.user || {})?.firstName
+        : (this.user || {})?.email
     },
     userCompanyName() {
       return this.isPaidUser
-        ? (this.user || {}).companyName
-        : (this.user || {}).firstName
+        ? (this.user || {})?.companyName
+        : (this.user || {})?.firstName
     },
     login() {
       return this.$auth?.loggedIn
@@ -363,7 +363,7 @@ export default mixins(GlobalMixin, login).extend({
             if ((element.role == UserTypeEnum.PAID && this.$auth.user.role == UserTypeEnum.FREE)) return
 
             if (element.role == UserTypeEnum.TEAM) {
-              element.teamName = response.data.companyName || response.data.firstName;
+              element.teamName = response.data?.companyName || response.data?.firstName;
               element.teampicture = response.data.profilePicture
             }
             // fetchUserArray.push(element)

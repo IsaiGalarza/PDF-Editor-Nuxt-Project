@@ -1,6 +1,20 @@
 <template>
-  <div class="rounded-2xl px-6 flex items-center justify-center">
+  <div class="bg-white rounded-2xl px-6 flex items-center justify-center">
     <div class="flex flex-col items-center">
+
+      <p
+        class="
+          text-black
+          text-center
+          text-sm
+          px-3.5
+          py-1.5
+          rounded-full
+          mb-3
+        "
+      >
+        Free Account
+      </p>
       <div
         class="
           circle
@@ -14,6 +28,8 @@
           profile-avatar
         "
       >
+
+    
         <img
           :src="profilePhoto"
           class="circle w-full h-full profilePhoto"
@@ -26,7 +42,7 @@
       <p class="text-xl mb-1 capitalize">
         {{ `${user.firstName} ${user.lastName}` }}
       </p>
-      <p
+      <!-- <p
         class="
           text-paperdazpurple-100
           text-center
@@ -40,8 +56,8 @@
         "
       >
         Free Account
-      </p>
-      <p class="flex items-center gap-2 cursor-pointer">
+      </p> -->
+      <!-- <p class="flex items-center gap-2 cursor-pointer">
         <span>
           <location-icon />
         </span>
@@ -54,7 +70,7 @@
           >
           Click on icon to pin location
         </span>
-      </p>
+      </p> -->
       <!-- <div
         class="border border-paperdazgray-100 inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-full"
       >
@@ -139,12 +155,13 @@ export default mixins(login).extend({
   position: relative;
 }
 .profile-avatar::before {
+  @apply bg-paperdazgreen-400;
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 50%; 
   padding: 2px; 
-  background:linear-gradient(45deg,#98CAE9,#FFB0F4); 
+  /* background:linear-gradient(45deg,#98CAE9,#FFB0F4);  */
   -webkit-mask: 
      linear-gradient(#fff 0 0) content-box, 
      linear-gradient(#fff 0 0);

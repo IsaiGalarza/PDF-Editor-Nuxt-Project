@@ -59,6 +59,7 @@
     "v-mask": "^2.3.0",
     "vue-advanced-cropper": "^1.11.5",
     "vue-carousel": "^0.18.0",
+    "vue-google-autocomplete": "^1.1.4",
     "vue-image-crop-upload": "^3.0.3",
     "vue-masked-input": "^0.5.2",
     "vue-pinch-zoom": "^1.0.1",

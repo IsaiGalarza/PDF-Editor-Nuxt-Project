@@ -32,7 +32,7 @@
           v-if="this.queryString"
           class="px-4 flex h-12 text-sm border-b border-gray-100 font-medium"
         > -->
-          <!-- <button
+        <!-- <button
             class="tab-button"
             :class="{ active: key == activeTab }"
             v-for="key in Object.keys(searchResult || {})"
@@ -42,7 +42,7 @@
           >
             {{ key }} ({{ searchResult[key].total }})
           </button> -->
-          <!-- <h4
+        <!-- <h4
             class="tab-button"
             v-for="key in Object.keys(searchResult || {})"
             :key="key"
@@ -112,21 +112,27 @@ export default Vue.extend({
     return {
       queryString: '',
       activeTab: '',
-      fileSearchStrip:[],
+      fileSearchStrip: [],
       searchResult: {}, //as { [key: string]: Array<any> }
-      loadingArray: [] , //as Array<boolean>
-      tabs:{
-        file:'files',
-        companies:'companies',
-        users:'users'
-      }
+      loadingArray: [], //as Array<boolean>
+      tabs: {
+        file: 'files',
+        companies: 'companies',
+        users: 'users',
+      },
     }
   },
   created() {
-    this.remoteSearch = _.debounce(this.remoteSearch, 200) 
+    this.remoteSearch = _.debounce(this.remoteSearch, 200)
   },
   computed: {
-    displayingResults(){
+    payload() {
+      return {
+        action: 'searchFile',
+        query: this.queryString,
+      }
+    },
+    displayingResults() {
       return (this.searchResult || {})[this.activeTab] || []
     },
     searchStripComponent() {
@@ -146,48 +152,50 @@ export default Vue.extend({
     },
     remoteSearch() {
       // this.loadingArray.push(true)
-      let files = this.$axios.$get(`/files?$sort[createdAt]=-1&filePrivacy[$ne]=doNotPost&$or[0][fileName][$like]=${this.queryString}%&$or[1][tags][$like]=%${this.queryString}%`,{
-        params:{
-          isEditing: 0
+      let files = this.$axios.$post(
+        `/files`,
+        {
+          ...this.payload,
         }
-      })
-      let company = this.$axios.$get(`/users?$sort[createdAt]=-1&role=paid_user&companyName[$like]=${this.queryString}%`)
-      let user = this.$axios.$get(`/users?firstName[$like]=${this.queryString}%`)
-      
+      )
+      let company = this.$axios.$get(
+        `/users?$sort[createdAt]=-1&role=paid_user&companyName[$like]=${this.queryString}%`
+      )
+      let user = this.$axios.$get(
+        `/users?firstName[$like]=${this.queryString}%`
+      )
+
       let displayFormat = {}
 
-      Promise.all([files, company, user])
-      .then((response)=>{
-          displayFormat.files = response[0]
-          // displayFormat.companies = response[1]
-          // displayFormat.users = response[2]
-         this.searchResult = displayFormat;
+      Promise.all([files, company, user]).then((response) => {
+        displayFormat.files = response[0]
+        // displayFormat.companies = response[1]
+        // displayFormat.users = response[2]
+        this.searchResult = displayFormat
 
-         if (!this.activeTab)
-         this.activeTab = Object.keys(this.tabs || {}).length
-          ? Object.values(this.tabs || {})[0]
-          : ''
-     
+        if (!this.activeTab)
+          this.activeTab = Object.keys(this.tabs || {}).length
+            ? Object.values(this.tabs || {})[0]
+            : ''
       })
-        // .then((response) => {
-        //   const temp = response
-        //   if (this.queryString) {
-        //     this.searchResult = response
-        //   } else {
-        //     for (const key in temp) {
-        //       temp[key] = []
-        //     }
-        //     this.searchResult = temp
-        //   }
+      // .then((response) => {
+      //   const temp = response
+      //   if (this.queryString) {
+      //     this.searchResult = response
+      //   } else {
+      //     for (const key in temp) {
+      //       temp[key] = []
+      //     }
+      //     this.searchResult = temp
+      //   }
 
-        //   if (!this.activeTab)
-        //     this.activeTab = Object.keys(this.tabs || {}).length
-        //       ? Object.keys(this.tabs || {})[0]
-        //       : ''
-        // })
-        // .catch((error) => {
-        //   debugger
-     
+      //   if (!this.activeTab)
+      //     this.activeTab = Object.keys(this.tabs || {}).length
+      //       ? Object.keys(this.tabs || {})[0]
+      //       : ''
+      // })
+      // .catch((error) => {
+      //   debugger
     },
   },
   watch: {
@@ -197,7 +205,7 @@ export default Vue.extend({
     queryString: {
       immediate: true,
       handler() {
-        this.remoteSearch()
+         this.remoteSearch()
       },
     },
   },

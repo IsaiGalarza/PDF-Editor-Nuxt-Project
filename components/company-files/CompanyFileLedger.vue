@@ -311,7 +311,7 @@
     <EditCompanyFile @refresh="setRefresh" :file="fileProps" v-model="showEditCompanyFile" />
     <QrCode @refresh="setRefresh" :file="fileProps" v-model="showQrCode" />
     <DeleteCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showDeleteCompanyFolder" />
-    <CreateTeam @refresh="setRefresh" v-model="showCreateTeam" />
+    <CreateTeam @refresh="setRefresh" @showMaxInviteTeam="showMaxInviteTeam" v-model="showCreateTeam" />
     <DeleteCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showDeleteCompanyFolder" />
     <RemoveCompanyFile @refresh="setRefresh" :userFile="userFile" v-model="showRemoveCompanyFiles" />
     <PdfPapertagsModal @refresh="setRefresh" :file="userFile" v-model="showPapertagsModal" />
@@ -326,6 +326,8 @@
     <QrcodeShare :userFile="userFile" v-model="showQrcodeFiles" />
     <MaxPaperlinkModal v-model="showMaxPaperlinkModal" :totalFile="totalFile" />
     <PdfCCFlowModal :file="userFile" v-model="showCCFlowModal" />
+    <MaxInviteModal v-model="maxInviteTeam"/>
+    
     <!-- File Bottom Dialog -->
     <el-dialog :visible.sync="actionFile" :append-to-body="true" :show-close="false" center width="100%" top="100vh" custom-class="-translate-y-full sm:hidden bottom-sm-modal"
       class="bottom-0 overflow-hidden sm:hidden">
@@ -519,6 +521,7 @@ import MaxPaperlinkModal from './Tabs/MaxPaperlinkModal.vue'
 import FileAction from '~/models/FileAction'
 import ArrowDownIcon from '../svg-icons/ArrowDownIcon.vue'
 import EyeIcon from '../svg-icons/EyeIcon.vue'
+import MaxInviteModal from '../teams/MaxInviteModal.vue'
 export default Vue.extend({
   components: {
     EmptyFileLedger,
@@ -560,6 +563,7 @@ export default Vue.extend({
     QrcodeIcon,
     ArrowDownIcon,
     EyeIcon,
+    MaxInviteModal
   },
   name: 'CompanyFileLedger',
   data() {
@@ -603,7 +607,8 @@ export default Vue.extend({
       actionFile: null,
       actionFolder: null,
       FileAction,
-      debounceTimeout: null
+      debounceTimeout: null,
+      maxInviteTeam: false
     }
   },
   methods: {
@@ -662,6 +667,9 @@ export default Vue.extend({
     },
     showCreateTeamFunc() {
       this.showCreateTeam = true
+    },
+    showMaxInviteTeam() {
+      this.maxInviteTeam = true
     },
     showEditCompanyFolderFunc(file) {
       this.fileProps = file

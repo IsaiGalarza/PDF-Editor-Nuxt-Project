@@ -254,7 +254,12 @@ export default Vue.extend({
       }
 
       // return
-      axios.post('/users', data)
+      // axios.post('https://backend.paperdaz.com/users', data)
+        fetch('https://backend.paperdaz.com/users', {
+          method: "POST",
+          body: JSON.stringify(data)
+        })
+        .then((res)=> res.json())
         .then(async (response) => {
           console.log("then---", response)
           this.verificationInfo = { 
@@ -265,7 +270,7 @@ export default Vue.extend({
           // this.isRedirecting = true
         })
         .catch(( error) => {
-          console.log("catch-error", error)
+          console.log("catch-error-----------------", error?.errors)
           // let message = ErrorHandler(response)
           // this.errorMessage = message
           // this.isRedirecting = false

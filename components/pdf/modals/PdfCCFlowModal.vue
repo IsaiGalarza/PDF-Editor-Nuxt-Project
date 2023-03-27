@@ -51,27 +51,25 @@
         </div>
       </form>
 
-      <div
-        class="rounded-lg border border-gray-300 min-h-[200px] text-gray-700"
-      >
         <div
-          class="p-4 flex items-center h-12 justify-between"
+          class="p-4 my-2 flex items-center h-12 justify-between border-[1px] border-gray-500 rounded px-3 py-2"
           v-show="emails.length > 0"
           v-for="em in emails"
           :key="em"
         >
-          {{ em }}
+         <label class="w-full block"> {{ em }}</label>
+         <abbr>
           <button
-            class="p-2 text-red-500 text-xl font-medium"
-            @click="removeItem(em)"
-          >
-            &times;
-          </button>
+          class="w-9 h-9 rounded-full justify-center items-center text-white text-3xl font-[100] bg-red-600"
+          @click="removeItem(em)"
+        >
+          &times;
+        </button>
+         </abbr>
         </div>
         <div v-show="emails.length == 0" class="p-4 text-gray-400">
           Add emails above
         </div>
-      </div>
 
       <button
       :disabled="loading"
@@ -155,6 +153,7 @@ export default Vue.extend({
             title:"file",
             message:'carbon copy successful'
            })
+           this. closeModal()
         })
         .catch((err) => {  this.$notify.error({
             title:"file",

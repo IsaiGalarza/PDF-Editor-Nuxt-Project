@@ -164,6 +164,7 @@ import UploadDocumentModal from './UploadDocumentModal.vue'
 import CreateTeam from '../company-files/Tabs/CreateTeam.vue'
 import EmptyFileLedger from '../widgets/EmptyFileLedger.vue'
 import FileAction from '~/models/FileAction'
+import _ from 'lodash'
 export default Vue.extend({
   components: {
     TreeIcon,
@@ -217,6 +218,7 @@ export default Vue.extend({
       showCreateCompanyFolder: false,
       showCreateTeam: false,
       FileAction,
+      debounceTimeout: null,
     }
   },
   mounted() {
@@ -454,18 +456,25 @@ export default Vue.extend({
   },
   watch: {
     '$auth.user': function () {
+      if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
+      this.debounceTimeout = setTimeout(() => {
+      this.spinner = true;
       this.fetchFiles(this.returnedDataPage, this.searchParam)
+      }, 500);
     },
     'returnedDataPage': function () {
+      if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
+      this.debounceTimeout = setTimeout(() => {
       this.spinner = true;
       this.fetchFiles(this.returnedDataPage, this.searchParam)
+      }, 500);
     },
     'searchParam': function () {
+      if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
+      this.debounceTimeout = setTimeout(() => {
       this.spinner = true;
       this.fetchFiles(this.returnedDataPage, this.searchParam)
-    },
-    pdfUser: function () {
-      // console.log('ppp', this.pdfUser);
+      }, 500); // delay for half second
     },
     refresh: function () {
       this.$nuxt.refresh()

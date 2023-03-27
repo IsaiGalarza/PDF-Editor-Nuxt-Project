@@ -20,7 +20,7 @@
     <form ref="form" @submit.prevent="onSubmit">
       <div class="text-centerfont-medium flex justify-between item mx-auto mb-4 whitespace-none">
         <p class="w-[87%]">
-          <input v-for="input in inputs" :key="input" required type="email"
+          <input v-for="input in inputs" :key="input" type="email"
             class="py-2 focus:border-paperdazgray-500 px-4 w-full mb-2 rounded-md border-[1px] border-paperdazgray-500"
             placeholder="E-mail" />
         </p>
@@ -31,7 +31,7 @@
       </div>
 
       <p v-if="link == undefined" class="text-center block font-medium  mx-auto mb-4 whitespace-none">
-        <textarea required v-model="folderTextareaData"
+        <textarea v-model="folderTextareaData"
           class="w-full py-2 px-4 focus:border-paperdazgray-500 outline-none rounded-md h-28 resize-none border-[1px] border-paperdazgray-500"
           placeholder="Note..."></textarea>
       </p>

@@ -59,15 +59,15 @@
           <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 hidden sm:flex items-center">
             Folders
           </h4>
-          <div class="overflow-x-auto custom-scrollbar relative">
+          <div class="custom-scrollbar relative">
             <!-- START: spinner container -->
             <div v-if="folderSpinner"
               class="absolute z-10 w-full h-full bg-white top-0 left-0 rounded-lg flex justify-center items-center">
               <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
             </div>
             <div
-              class="my-12 flex items-center px-[3rem]">
-              <div class="items-center border-2 py-[15px] pl-[15px] rounded-[16px] mr-5 border-[#909090] w-6/12 sm:w-4/12 min-w-[250px]"
+              class="my-12 flex items-center flex-wrap px-[3rem]">
+              <div class="items-center mb-3 border-2 py-[15px] pl-[15px] rounded-[16px] mr-[15px] border-[#909090] w-[calc(50%-15px)] sm:w-[calc(33.333333%-15px)] md:w-[calc(25%-15px)] min-w-[250px]"
                 v-for="(content, i) in folders" :key="i">
                 <div class="overflow-hidden px-[10px] flex justify-between">
                   <div class="float-left flex">

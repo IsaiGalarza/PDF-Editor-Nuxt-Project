@@ -603,6 +603,7 @@ export default Vue.extend({
       actionFile: null,
       actionFolder: null,
       FileAction,
+      debounceTimeout: null
     }
   },
   methods: {
@@ -836,10 +837,13 @@ export default Vue.extend({
       this.fetchFolder(this.returnedFolderPage, this.folderSearch)
     },
     folderSearch: function () {
+      if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
+      this.debounceTimeout = setTimeout(() => {
       this.folderSpinner = true
       this.fetchFolder(this.returnedFolderPage, this.folderSearch)
       this.fileSpinner = true
       this.fetchFiles(this.returnedDataPage, this.folderSearch)
+      }, 500);
     },
     "$auth.user": function () {
       this.fetchFiles(this.returnedDataPage, this.folderSearch)

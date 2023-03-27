@@ -56,7 +56,7 @@ export default {
       formData.append('userId', (this.$auth|| {})?.user?.id)
       //@ts-ignore
       isSignature ? this.$store.commit('SET_FILE_SIGNATURE', image) : this.$store.commit('SET_FILE_INITIAL', image)
-      console.log("mixins", image)
+      
       //@ts-ignore
        if(!this.$auth.loggedIn) return
 

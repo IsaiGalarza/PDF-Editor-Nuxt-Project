@@ -124,6 +124,7 @@ export default mixins(GlobalMixin, login).extend({
       topSearchContent: [],
       isFocused: false,
       loading: false,
+      debounceTimeout: null
     }
   },
   computed: {
@@ -187,11 +188,11 @@ export default mixins(GlobalMixin, login).extend({
         this.$refs['input'].focus()
       }
     },
-    payload: function (val) {
-      clearTimeout(timeout)
-      let timeout = setTimeout(() => {
-        this.getGeneralSearch()
-      }, 1000)
+    payload: function () {
+      if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
+      this.debounceTimeout = setTimeout(() => {
+      this.getGeneralSearch()
+      }, 500);
     },
     item(val) {
       console.log(val)

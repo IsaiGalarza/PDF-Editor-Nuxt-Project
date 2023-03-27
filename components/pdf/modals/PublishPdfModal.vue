@@ -305,6 +305,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.$nuxt.refresh()
           this.$store.commit('SET_PDF_EXIT', true)
           this.$store.commit('SET_SAVE_SEND_AS_GUEST', true)
+          this.$store.commit('SET_FILE_SIGNATURE', null);
+          this.$store.commit('SET_FILE_INITIAL', null)
           this.$auth.loggedIn ? this.$router.push('/dashboard') : this.$router.push('/')
         })
         .catch(err => {

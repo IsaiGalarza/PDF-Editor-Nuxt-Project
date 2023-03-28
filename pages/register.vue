@@ -117,6 +117,7 @@ import login from '~/mixins/login'
 import { ErrorHandler } from '~/types/ErrorFunction'
 import ExclamationIcon from '~/components/svg-icons/ExclamationIcon.vue'
 import { NoAuthpages } from '~/types/NoAuthPages'
+import axios from 'axios'
 
 import SignUpEmailVerify from '~/components/pdf/modals/SignUpEmailVerify.vue'
 import SocialAuth from '~/components/auth/SocialAuth.vue'
@@ -253,9 +254,14 @@ export default Vue.extend({
       }
 
       // return
-      this.$axios
-        .post('/users', data)
+      // axios.post('https://backend.paperdaz.com/users', data)
+        fetch('https://backend.paperdaz.com/users', {
+          method: "POST",
+          body: JSON.stringify(data)
+        })
+        .then((res)=> res.json())
         .then(async (response) => {
+          console.log("then---", response)
           this.verificationInfo = { 
             email : response.data.email, 
             package: this.packageparams 
@@ -263,10 +269,11 @@ export default Vue.extend({
           this.showEmailVerification = true
           // this.isRedirecting = true
         })
-        .catch(({ response }) => {
-          let message = ErrorHandler(response)
-          this.errorMessage = message
-          this.isRedirecting = false
+        .catch(( error) => {
+          console.log("catch-error-----------------", error?.errors)
+          // let message = ErrorHandler(response)
+          // this.errorMessage = message
+          // this.isRedirecting = false
         })
         .finally(() => {
           this.isLoading = false

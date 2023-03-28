@@ -13,7 +13,7 @@
     >
       You have reached
       <span class="font-semibold text-paperdazgreen-500 uppercase"
-        >{{teamMembers}} team Members</span
+        >{{teamMembers ? teamMembers : ""}} team Members</span
       >
       in your plan. Do you want to upgrade?
     </p>

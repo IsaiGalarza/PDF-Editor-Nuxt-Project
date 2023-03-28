@@ -317,6 +317,7 @@ export const ExtractFormPdf = ({
                       })
                       break
                     case 'P':
+                      console.log("tools-paragraph", tools)
                       appendEditText({
                         parent: pdfScrappedData,
                         subParent: totalArray,
@@ -324,7 +325,7 @@ export const ExtractFormPdf = ({
                           element.getBoundingClientRect().top,
                           item.getBoundingClientRect().top - pdfOffset_y,
                         ],
-                        height: tools.children[0].getBoundingClientRect().height ,
+                        height: tools.children[0].getBoundingClientRect().height + 1,
                         axisX: [
                           element.getBoundingClientRect().left,
                           item.getBoundingClientRect().left - pdfOffset_x,
@@ -337,6 +338,7 @@ export const ExtractFormPdf = ({
                       })
                       break
                     case 'INPUT':
+                      console.log("tools-input", tools)
                       appendEditText({
                         parent: pdfScrappedData,
                         subParent: totalArray,
@@ -349,9 +351,10 @@ export const ExtractFormPdf = ({
                           element.getBoundingClientRect().left,
                           item.getBoundingClientRect().left - pdfOffset_x,
                         ],
-                        tools: tools.children[0].value,
+                        height: tools.children[1].getBoundingClientRect().height - 3.5,
+                        tools: tools.children[1].textContent || tools.children[0].value,
                         elem: element,
-                        fontsize: (tools.children[0] as any).getAttribute(
+                        fontsize: (tools.children[1] as any).getAttribute(
                           'style'
                         ),
                       })

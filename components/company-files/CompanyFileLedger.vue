@@ -59,15 +59,15 @@
           <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 hidden sm:flex items-center">
             Folders
           </h4>
-          <div class="overflow-x-auto custom-scrollbar relative">
+          <div class="custom-scrollbar relative">
             <!-- START: spinner container -->
             <div v-if="folderSpinner"
               class="absolute z-10 w-full h-full bg-white top-0 left-0 rounded-lg flex justify-center items-center">
               <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
             </div>
             <div
-              class="my-12 flex items-center px-[3rem]">
-              <div class="items-center border-2 py-[15px] pl-[15px] rounded-[16px] mr-5 border-[#909090] w-6/12 sm:w-4/12 min-w-[250px]"
+              class="my-12 flex items-center flex-wrap px-[3rem]">
+              <div class="items-center mb-3 border-2 py-[15px] pl-[15px] rounded-[16px] mr-[15px] border-[#909090] w-[calc(50%-15px)] sm:w-[calc(33.333333%-15px)] md:w-[calc(25%-15px)] min-w-[250px]"
                 v-for="(content, i) in folders" :key="i">
                 <div class="overflow-hidden px-[10px] flex justify-between">
                   <div class="float-left flex">
@@ -311,7 +311,7 @@
     <EditCompanyFile @refresh="setRefresh" :file="fileProps" v-model="showEditCompanyFile" />
     <QrCode @refresh="setRefresh" :file="fileProps" v-model="showQrCode" />
     <DeleteCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showDeleteCompanyFolder" />
-    <CreateTeam @refresh="setRefresh" v-model="showCreateTeam" />
+    <CreateTeam @refresh="setRefresh" @showMaxInviteTeam="showMaxInviteTeam" v-model="showCreateTeam" />
     <DeleteCompanyFolder @refresh="setRefresh" :file="fileProps" v-model="showDeleteCompanyFolder" />
     <RemoveCompanyFile @refresh="setRefresh" :userFile="userFile" v-model="showRemoveCompanyFiles" />
     <PdfPapertagsModal @refresh="setRefresh" :file="userFile" v-model="showPapertagsModal" />
@@ -326,6 +326,8 @@
     <QrcodeShare :userFile="userFile" v-model="showQrcodeFiles" />
     <MaxPaperlinkModal v-model="showMaxPaperlinkModal" :totalFile="totalFile" />
     <PdfCCFlowModal :file="userFile" v-model="showCCFlowModal" />
+    <MaxInviteModal v-model="maxInviteTeam"/>
+    
     <!-- File Bottom Dialog -->
     <el-dialog :visible.sync="actionFile" :append-to-body="true" :show-close="false" center width="100%" top="100vh" custom-class="-translate-y-full sm:hidden bottom-sm-modal"
       class="bottom-0 overflow-hidden sm:hidden">
@@ -519,6 +521,7 @@ import MaxPaperlinkModal from './Tabs/MaxPaperlinkModal.vue'
 import FileAction from '~/models/FileAction'
 import ArrowDownIcon from '../svg-icons/ArrowDownIcon.vue'
 import EyeIcon from '../svg-icons/EyeIcon.vue'
+import MaxInviteModal from '../teams/MaxInviteModal.vue'
 export default Vue.extend({
   components: {
     EmptyFileLedger,
@@ -560,6 +563,7 @@ export default Vue.extend({
     QrcodeIcon,
     ArrowDownIcon,
     EyeIcon,
+    MaxInviteModal
   },
   name: 'CompanyFileLedger',
   data() {
@@ -603,6 +607,8 @@ export default Vue.extend({
       actionFile: null,
       actionFolder: null,
       FileAction,
+      debounceTimeout: null,
+      maxInviteTeam: false
     }
   },
   methods: {
@@ -661,6 +667,9 @@ export default Vue.extend({
     },
     showCreateTeamFunc() {
       this.showCreateTeam = true
+    },
+    showMaxInviteTeam() {
+      this.maxInviteTeam = true
     },
     showEditCompanyFolderFunc(file) {
       this.fileProps = file
@@ -836,10 +845,13 @@ export default Vue.extend({
       this.fetchFolder(this.returnedFolderPage, this.folderSearch)
     },
     folderSearch: function () {
+      if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
+      this.debounceTimeout = setTimeout(() => {
       this.folderSpinner = true
       this.fetchFolder(this.returnedFolderPage, this.folderSearch)
       this.fileSpinner = true
       this.fetchFiles(this.returnedDataPage, this.folderSearch)
+      }, 500);
     },
     "$auth.user": function () {
       this.fetchFiles(this.returnedDataPage, this.folderSearch)

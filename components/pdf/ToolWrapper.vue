@@ -4,9 +4,9 @@
     <div
       class="h-8 border text-black inline-flex items-center gap-1.5 px-1 backdrop-blur-sm bg-white/30 absolute tool-menu"
       v-show="isActive" ref="toolMenu" v-if="isCreator || $store.getters?.getFillAsGuest" v-hammer:pan="handleDrag">
-      <!-- <button class="h-full cursor-move" v-hammer:pan="handleDrag">
-        <move-icon />
-      </button> -->
+      <button class="h-full cursor-move" >
+        <Move-icon />
+      </button>
 
       <button class="text-sm px-0.5 h-full" @click="dec" v-show="isMenuVisible('increase')" @mouseover="draggingMouseover">
         A
@@ -18,7 +18,7 @@
         v-if="type == TOOL_TYPE.date" @mouseover="draggingMouseover">
         <calendar-icon />
         <el-date-picker ref="datePicker" type="date" placeholder="Pick a day" v-model="calendarValue"
-          :default-value="new Date()" id="sdfadf" hidden
+          :default-value="new Date()" id="sdfadf" 
           style="height: 0; width: 0; max-width: 0; margin-0; padding:0; overflow:hidden; position:absolute; top: 100%; right: 50%; transform: translateX(-50%)">
         </el-date-picker>
       </button>

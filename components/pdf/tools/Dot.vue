@@ -11,6 +11,7 @@
 export default {
   props: {
     scale: Number,
+    elemScale: Number,
     generatePDF: Boolean,
     tool: Object,
   },
@@ -19,8 +20,8 @@ export default {
       return {
         // width: `${(this.scale || 1) * 13}px`,
         // height: `${(this.scale || 1) * 13}px`,
-        width: `${(this.tool?.pageScaleX || 1) * 13}px`,
-        height: `${(this.tool?.pageScaleY || 1) * 13}px`,
+        width: `${(this.elemScale || 1) * 13}px`,
+        height: `${(this.elemScale || 1) * 13}px`,
         fill: `black`,
       }
     },

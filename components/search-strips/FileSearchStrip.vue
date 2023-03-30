@@ -7,14 +7,16 @@
   class="absolute top-[calc(25%-12px)] left-0 bg-white p-1 rounded-full">
     <EyeSlashedIcon width="20px" height="20px" color="rgb(98,164,78)"/></div>
     <img
+     @click="$router.push(`/public/profile/${record.userId}`)"
       v-if="record.user.profile_picture"
      :src="record.user.profile_picture"
       alt=""
-      class="h-14 w-14 rounded-lg object-cover"
+      class="h-14 w-14 rounded-lg object-cover cursor-pointer"
     />
     <letter-avatar
+      @click="$router.push(`/public/profile/${record.userId}`)"
       v-else
-      class="h-16 w-16 rounded-1 object-cover"
+      class="h-16 w-16 rounded-1 object-cover cursor-pointer"
       :username="(record.user || {}).companyName || (record.user || {}).firstName"
     />
     <nuxt-link  class="overflow-hidden w-[100%]" :to="`/pdf/${record.paperLink}`">

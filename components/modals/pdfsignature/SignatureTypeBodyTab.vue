@@ -8,7 +8,7 @@
       class="w-full bg-white border-b-2 border-paperdazgreen-400 cursor-text mt-2 py-3 px-5 rounded outline-none text-4xl sm:text-5xl caret-paperdazgreen-400 min-h-[110px]"
       :style="{
         color: activeColor,
-        fontFamily: updatedFontFamily,
+        fontFamily: `${this.updatedFontFamily} !important`,
       }"
     />
     <div class="mt-6 flex items-center gap-3">
@@ -59,7 +59,7 @@ export default mixins(SignatureBodyMixin).extend({
 
   async fetch() {
     const user = this.$auth.user
-    this.textValue = `${user.first_name} ${user.last_name}`
+    this.textValue = `${user.firstName} ${user.lastName}`
     await this.getFonts()
   },
   computed: {
@@ -76,7 +76,7 @@ export default mixins(SignatureBodyMixin).extend({
     getFonts() {
       return this.$axios
         .$get(
-          `https://www.googleapis.com/webfonts/v1/webfonts?key=${this.$config.googleFontsApiKey}`
+          `https://www.googleapis.com/webfonts/v1/webfonts?key=${process.env.GOOGLE_FONT_API_KEY || "AIzaSyAq0-u-PdIEZLvk8q6-9fIcPVG-8dtVfkc"}`
         )
         .then((response) => {
           const getWeightName = (weight) => {
@@ -185,7 +185,7 @@ export default mixins(SignatureBodyMixin).extend({
         currentFontObject.key,
         `url(${currentFontObject.file})`
       )
-
+        console.log(currentFontObject, dynFont)
       dynFont
         .load()
         .then((loadedFont) => {

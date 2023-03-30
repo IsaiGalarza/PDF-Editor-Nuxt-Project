@@ -1,8 +1,13 @@
 import Vue from 'vue'
 import UserTypeEnum from '~/models/UserTypeEnum'
 
+
 export default{
   methods: {
+    toggleToast(val: any){
+      //@ts-ignore
+      this.$store.commit('SET_TOAST', val)
+    },
     async logout(shouldRedirect: boolean = true) {
       // @ts-ignore
       if (shouldRedirect) await this.$nuxt.$router.push('/login')

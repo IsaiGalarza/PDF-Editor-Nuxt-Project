@@ -14,11 +14,11 @@
     <div class="" :class="collapsed ? 'overlay' : ''"></div>
     <nav class="container h-full flex items-center justify-between">
       <div
-        v-if="$store.getters.getFillAsGuest && $store.getters.getSendAsGuest"
-        class="absolute left-[20%] bg-paperdazgreen-400 top-3 w-[60%] text-white py-3 text-center z-50 rounded"
-      >
-      <span @click="removePopUp" class="absolute right-2 top-2 z-10 cursor-pointer">&#x2715;</span>
-        You are done! File has been sent to <b>{{ $store.state.file?.user?.company_name ?? ""}}</b>
+        class="absolute left-[5%] sm:left-[15%] md:left-[25%]  scale-0 bg-paperdazgreen-400 top-3 text-white py-3 w-[90%] sm:w-[70%] md:w-[50%] px-5 text-center z-50 rounded transform duration-300"
+        :class="[ $store.getters.getToast.active ? 'scale-100' : 'scale-0' ]"
+        >
+      <span @click="removePopUp" class="absolute right-2 top-1 z-10 cursor-pointer">&#x2715;</span>
+        <span v-html="$store.getters.getToast.msg"></span>
       </div>
       <div class="flex items-center gap-1">
         <span
@@ -34,7 +34,7 @@
       <!-- mobile -->
       <!------>
       <div
-        class="flex flex-col bg-white h-full w-full rounded-2xl py-8 transition left-0 transform bg-lime-50 text-sm font-medium gap-8 fixed top-0 bottom-0 w-56 flex flex-col p-6 lg:shadow-none lg:items-center lg:gap-9 lg:p-0 lg:relative lg:bg-transparent lg:w-auto lg:flex-row lg:translate-x-0"
+        class="h-full rounded-2xl py-8 transition left-0 transform bg-lime-50 text-sm font-medium gap-8 fixed top-0 bottom-0 w-56 flex flex-col p-6 lg:shadow-none lg:items-center lg:gap-9 lg:p-0 lg:relative lg:bg-transparent lg:w-auto lg:flex-row lg:translate-x-0"
         :class="[collapsed ? 'translate-x-0' : '-translate-x-56']"
       >
         <div class="flex justify-end lg:hidden">
@@ -53,6 +53,7 @@
         <nuxt-link to="/#key-features-section" class="xs:ml-6"
           >Features
         </nuxt-link>
+       
         <!-- <div class="h-px bg-paperdazgray-300 w-full lg:hidden"></div> -->
         <!-- <a href="/#upload-file-section" class="xs:ml-6">Upload File </a> -->
         <!-- <div class="h-px bg-paperdazgray-300 w-full lg:hidden"></div> -->
@@ -280,7 +281,7 @@ export default mixins(GlobalMixin).extend({
   },
   methods: {
     removePopUp(){
-      this.$store.commit('SET_SAVE_SEND_AS_GUEST', false)
+      this.toggleToast({ active: false, msg: ` You are done! File has been sent to `})
       this.$store.commit('SET_FILL_AS_GUEST', false)
     },
     handleCommand(command) {

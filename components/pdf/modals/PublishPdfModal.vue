@@ -301,10 +301,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       this.$axios
         .$post(`/request`, requestData)
         .then(response => {
-          // this.successAction()
-          this.$nuxt.refresh()
           this.$store.commit('SET_PDF_EXIT', true)
-          this.$store.commit('SET_SAVE_SEND_AS_GUEST', true)
+          this.$store.commit('SET_TOAST', { active: true, msg: ` You are done! File has been sent to <b> ${$store.state.file?.user?.company_name ?? ""}</b>`})
           this.$store.commit('SET_FILE_SIGNATURE', null);
           this.$store.commit('SET_FILE_INITIAL', null)
           this.$auth.loggedIn ? this.$router.push('/dashboard') : this.$router.push('/')
@@ -329,7 +327,6 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       })
     },
     async publishAsGuest() {
-      this.closeModal()
       // let filteredTools = this.tools.filter(e => e.isDeleted != true)
       // filteredTools.map((val, ind) => {
       //   if (val.type == 'star') {
@@ -381,10 +378,10 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           annotaions: JSON.stringify(filteredTools)
         })
         .then(() => {
-          this.closeModal()
           this.$notify.success({
             message: 'File publish successfully'
           })
+          this.closeModal()
           this.$store.commit('SET_PDF_EXIT', true)
           this.$nuxt.$router.push('/company-files')
         })
@@ -394,7 +391,6 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           })
         })
         .finally(() => {
-          this.closeModal()
           this.isLoading = false
         })
     },
@@ -431,11 +427,11 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           duration: 1000 * 7
         })
         this.allowLoadingAllAnnotations(6000).then(() => {
-          this.isCreator ? this.publishAsCreator() : this.publishAsGuest()
+          this.publishAsGuest()
           this.$emit('startGeneratePdf', false)
         })
       } else {
-        this.isCreator ? this.publishAsCreator() : this.publishAsGuest()
+        this.publishAsCreator() 
       }
       this.$emit('trackSubmitTools', this.tools)
     }

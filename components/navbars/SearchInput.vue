@@ -58,13 +58,15 @@
                 class="h-16 w-16 rounded-2 object-cover"
               /> -->
             <letter-avatar
+             @click="$router.push(`/public/profile/${item.userId}`)"
               v-if="!item.user.profile_picture"
-              class="h-16 w-16 rounded-1 object-cover"
+              class="h-16 w-16 rounded-1 object-cover cursor-pointer"
               :username="(item.user || {}).company_name"
             />
             <img
+              @click="$router.push(`/public/profile/${item.userId}`)"
               v-else
-              class="h-14 w-14 rounded-1 object-cover"
+              class="h-14 w-14 rounded-1 object-cover cursor-pointer" 
               :src="(item.user || {}).profile_picture"
             />
 

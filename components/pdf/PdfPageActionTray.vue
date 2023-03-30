@@ -284,6 +284,8 @@ export default Vue.extend({
         this.$store.commit('SET_PDF_EXIT', true)
         this.$router.push('/dashboard')
       }
+      this.$store.commit('SET_FILE_SIGNATURE', null);
+      this.$store.commit('SET_FILE_INITIAL', null)
     },
     showQrcodeFileFunc() {
       this.showQrcodeFiles = true

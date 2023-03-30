@@ -27,7 +27,7 @@
       :src="theInitial"
       :style="style"
     />
-    <img v-else class="absolute-image" src="../../../assets/img/initials.png" />
+    <!-- <img v-else class="absolute-image" src="../../../assets/img/initials.png" /> -->
   </div>
 </template>
 
@@ -99,6 +99,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   },
   components: { AddToPageDrawOrType, DrawOrTypeModal },
   methods: {
+    popUpIfNoinitial(){
+      !this.theInitial && !this.isCreator && this.setInitialSignType('initial')
+    },
     changeInitialToBase64(com) {
       const toDataURL = (url) =>
         fetch(url)
@@ -145,7 +148,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   mounted() {
     this.changeInitialToBase64()
     this.completed && this.changeInitialToBase64(this.completed)
-    console.log(this.theInitial, this.isCreator, this.tool?.user )
+    this.popUpIfNoinitial()
   },
   watch: {
     '$auth.user.initialURL': async function () {

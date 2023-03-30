@@ -9,7 +9,7 @@ export const state = () => ({
   base64Signature: null,
   base64Initial: null,
   fillAsGuest: false,
-  sendAsGuest: false,
+  toast: { active: false, msg: ""},
   pageName: '',
   pdfPageName: {},
   pdfUser: [],
@@ -39,8 +39,8 @@ export type RootState = ReturnType<typeof state>
 
 export const getters: GetterTree<RootState, RootState> = {
  
-  getSendAsGuest(state: any){
-    return state.sendAsGuest
+  getToast(state: any){
+    return state.toast
   },
   getSaveEmailExist(state: any){
     return state.saveEmailExist
@@ -95,8 +95,8 @@ export const mutations: MutationTree<RootState> = {
   SET_PAGE_USER(state, user) {
     state.initialUser = user
   },
-  SET_SAVE_SEND_AS_GUEST(state, payload) {
-    state.sendAsGuest = payload
+  SET_TOAST(state, payload) {
+    state.toast = payload
   },
   SET_SAVE_EMAIL_EXIST(state, payload) {
     state.saveEmailExist = payload

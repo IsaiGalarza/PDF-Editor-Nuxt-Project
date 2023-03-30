@@ -26,7 +26,7 @@
       :src="theSignature"
       :style="style"
     />
-    <img v-else class="absolute-image" src="../../../assets/img/sign.png" />
+    <!-- <img v-else class="absolute-image" src="../../../assets/img/sign.png" /> -->
   </div>
 </template>
 
@@ -57,6 +57,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   mounted() {
     this.changeSignToBase64()
     this.completed && this.changeSignToBase64(this.completed)
+    this.popUpIfNoSign()
   },
   computed: {
     ...mapState(['loadedPdfFile']),
@@ -101,6 +102,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
   },
   methods: {
+    popUpIfNoSign(){
+      !this.theSignature && !this.isCreator && this.setInitialSignType('sign')
+    },
     changeSignToBase64(com) {
       const toDataURL = (url) =>
         fetch(url)

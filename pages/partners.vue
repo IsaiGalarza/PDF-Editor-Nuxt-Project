@@ -112,8 +112,10 @@
 <script>
 import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
 import MessageAlertWidget from '~/components/widgets/MessageAlertWidget.vue'
+import mixins from 'vue-typed-mixins'
+import GlobalMixin from '~/mixins/GlobalMixin'
 
-export default {
+export default mixins(GlobalMixin).extend({
   name: 'partners',
   layout: 'landing',
   auth: false,
@@ -159,10 +161,7 @@ export default {
           ...this.partner,
         })
         .then(() => {
-          this.$notify.success({
-            title: 'Partners',
-            message: 'Partner registered successfully',
-          })
+          this.toggleToast({ active: true, msg: ` Thank you!  We look forward to partnering  with you. `})
           this.errorMessage = ''
 
           this.partner.firstName = ''
@@ -178,7 +177,7 @@ export default {
         })
     },
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>

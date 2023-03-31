@@ -14,7 +14,7 @@
     <div class="" :class="collapsed ? 'overlay' : ''"></div>
     <nav class="container h-full flex items-center justify-between">
       <div
-        class="absolute left-[5%] sm:left-[15%] md:left-[25%]  scale-0 bg-paperdazgreen-400 top-3 text-white py-3 w-[90%] sm:w-[70%] md:w-[50%] px-5 text-center z-50 rounded transform duration-300"
+        class="absolute left-[10%] sm:left-[20%] md:left-[30%]  scale-0 bg-paperdazgreen-400 top-3 text-white py-3 w-[80%] sm:w-[60%] md:w-[40%] px-5 text-center z-50 rounded transform duration-300"
         :class="[ $store.getters.getToast.active ? 'scale-100' : 'scale-0' ]"
         >
       <span @click="removePopUp" class="absolute right-2 top-1 z-10 cursor-pointer">&#x2715;</span>
@@ -239,6 +239,13 @@ export default mixins(GlobalMixin).extend({
     }
   },
   watch: {
+    "$store.getters.getToast.active"(val){
+         if(val){
+          setTimeout(() => {
+            this.removePopUp()
+          }, 3000);
+         }
+    },
     $route(formerVal, currentVal) {
       if (formerVal.fullPath !== currentVal.fullPath) {
         this.collapsed = false

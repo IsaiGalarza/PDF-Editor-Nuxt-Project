@@ -81,7 +81,7 @@ export default Vue.extend({
           id: 2,
           heading: "FAQ's & Support",
           content:
-            'Our support team is spread across the globe to give you answers fast. We also have answers ready for many of freuqntly asked questions.',
+            'Our support team is spread across the globe to give you answers fast. We also have answers ready for many freuqntly asked questions.',
           buttonText: "VISIT FAQ's",
           command: 'faq',
         },

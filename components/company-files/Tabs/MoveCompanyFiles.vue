@@ -155,12 +155,13 @@ export default Vue.extend({
       searchValue: '',
       returnedFolderPage:0,
       folderSpinner: true,
+      debounceTimeout: null
     }
   },
   watch: {
     visible(val) {
       this.showModal = val
-      this.fetchFiles()
+      val ? this.fetchFiles() : null
     },
     showModal(val) {
       this.$emit('updateVisibility', val)
@@ -168,9 +169,12 @@ export default Vue.extend({
     userFile() {
       this.fileInfo = this.userFile
     },
-    searchValue(){
+    searchValue() {
+      if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
+      this.debounceTimeout = setTimeout(() => {
       this.folderSpinner = true
       this.fetchFiles(this.returnedFolderPage, this.searchValue)
+      }, 500);
     },
     returnedFolderPage(){
       this.folderSpinner = true
@@ -206,7 +210,7 @@ export default Vue.extend({
           })
           this.totalFile = response.total
           // set the data.file
-          this.files = filesData
+          this.files = filesData.filter((item, index)=> item.id !== this.userFile?.folderId)
         })
         .finally(() => {
           this.folderSpinner = false

@@ -243,12 +243,14 @@ export default Vue.extend({
       link: `${window.location.origin}/pdf/${(this.userFile.paperLink)}`,
       fileId: this.userFile.id,
       emails : emails,
-      note: this.folderTextareaData
+      note: this.folderTextareaData,
+      userId: this.$auth.user?.id
       }
 
       // return
-      this.$axios.$post(`/request`, requestData)
+      this.$axios.post(`/request`, requestData)
         .then((response) => {
+          console.log("request-res", response)
            this.$notify.success({
            title: 'Request',
            message: 'Request sent Successfully',

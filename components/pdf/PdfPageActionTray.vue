@@ -282,7 +282,9 @@ export default Vue.extend({
       } else {
         this.$store.commit('SET_UPLOAD_STATE', false);
         this.$store.commit('SET_PDF_EXIT', true)
-        this.$router.push('/dashboard')
+        let previousRoute = localStorage.getItem('store_public_profile_path')
+        previousRoute ? this.$router.push(previousRoute) : this.$router.push('/dashboard')
+        localStorage.removeItem('store_public_profile_path')
       }
       this.$store.commit('SET_FILE_SIGNATURE', null);
       this.$store.commit('SET_FILE_INITIAL', null)

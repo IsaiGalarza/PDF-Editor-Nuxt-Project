@@ -136,9 +136,9 @@
             <img src="/icon.png" width="23" height="23" />
             <div class="overflow-hidden">
               <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
-                <nuxt-link :to="`/pdf/${item.paperLink}`" class="cursor-pointer">
+                <span @click="routeToFileManager(`/pdf/${item.paperLink}`)" class="cursor-pointer">
                   {{ ((item || {}).fileName || ' ') | removeExtension }}
-                </nuxt-link>
+                </span>
               </p>
             </div>
             <SearchShare :file="item" :showShareIcon="true" />
@@ -234,6 +234,10 @@ export default Vue.extend({
     }
   },
   methods: {
+    routeToFileManager(val){
+      localStorage.setItem('store_public_profile_path', this.$route.fullPath )
+      this.$router.push(val)
+    },
     getMainPaidUser(val) {
       this.$axios.get(`/users/?mainAccountId=${val}&role=${UserTypeEnum.PAID}`)
         .then((response) => {

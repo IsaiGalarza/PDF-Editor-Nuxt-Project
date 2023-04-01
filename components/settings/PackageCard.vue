@@ -3,7 +3,7 @@
     class="border-2 border-paperdazgreen-400 w-full rounded-2xl overflow-hidden relative pb-5 min-h-[547px] h-[100%]"
   >
     <!-- <div class="promoted-banner" v-if="tags">{{ stagingPackage.tag }}</div> -->
-    <div class="promoted-banner">Popular</div>
+    <!-- <div class="promoted-banner">Popular</div> -->
     <h4
       ref="packagename"
       class="text-lg px-5 py-4 text-center uppercase font-semibold no-outline truncate"
@@ -46,7 +46,7 @@
       <ul class="package-list">
         <li class="">
           <span><tick-icon width="20" height="20" /></span>
-          <span>{{ (stagingPackage || {}).paperlink }} Paperdaz files</span>
+          <span>{{ (stagingPackage || {}).paperlink }} Paperlink files</span>
         </li>
         <li>
           <span><tick-icon width="20" height="20" /></span>

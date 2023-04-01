@@ -1,14 +1,5 @@
 <template>
-  <div class="grid md:grid-cols-[max-content,1fr] mb-12 gap-5">
-    <package-card
-      class="md:min-w-[300px] lg:min-w-[320px]"
-      show-bottom-button
-      @setName="setname"
-      :staging-package="stagingPackage"
-      @bottom-button-clicked="$emit('next-tab', $event)"
-      :edited="true"
-      :create="true"
-    />
+  <div class="grid md:grid-cols-[1fr,max-content] mb-12 gap-5">
     <div
       class="border-2 border-paperdazgreen-400 w-full rounded-2xl overflow-hidden relative bg-white text-[#505050]"
     >
@@ -54,6 +45,7 @@
                         /> -->
                   <el-input-number
                     v-model.number="customPackage.paperlink"
+                    :step="2"
                     size="small"
                     :min="1"
                     :max='20'
@@ -84,6 +76,7 @@
                         /> -->
                   <el-input-number
                     v-model.number="customPackage.teamMembers"
+                    :step="2"
                     size="small"
                     :min="1"
                     :max='20'
@@ -114,6 +107,7 @@
                         /> -->
                   <el-input-number
                     v-model="customPackage.cc"
+                    :step="2"
                     size="small"
                     :min="1"
                     :max='20'
@@ -130,7 +124,7 @@
               </td>
             </tr>
             <tr>
-              <td>Public Profile</td>
+              <td>Paperdaz Public Profile</td>
               <td class="text-center">Included</td>
               <td>
                 <div class="grid place-items-center">
@@ -165,7 +159,7 @@
                 }}  
               </td>
             </tr>
-            <tr>
+            <!-- <tr>
               <td>Company Ledger</td>
               <td class="text-center">Included</td>
               <td>
@@ -200,7 +194,7 @@
                   )
                 }}
               </td>
-            </tr>
+            </tr> -->
           </tbody>
         </table>
       </div>
@@ -211,6 +205,15 @@
         <span class="text-[#606060]">{{ formatPrice(totalCost) }}</span>
       </div>
     </div>
+        <package-card
+      class="md:min-w-[300px] lg:min-w-[320px]"
+      show-bottom-button
+      @setName="setname"
+      :staging-package="stagingPackage"
+      @bottom-button-clicked="$emit('next-tab', $event)"
+      :edited="true"
+      :create="true"
+    />
   </div>
 </template>
 
@@ -225,11 +228,11 @@ export default Vue.extend({
   data() {
     return {
       settings: {
-        custom_paperlink_price: 1,
-        custom_team_members_price: 1,
-        custom_cc_price: 1,
-        custom_public_profile_price: 1,
-        custom_company_ledger_price: 1,
+        custom_paperlink_price: 2,
+        custom_team_members_price: 2,
+        custom_cc_price: 2,
+        custom_public_profile_price: 2,
+        custom_company_ledger_price: 0,
       },
       customPackage: {
         name: 'Custom',

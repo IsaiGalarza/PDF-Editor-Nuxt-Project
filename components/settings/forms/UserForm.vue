@@ -226,15 +226,6 @@ export default mixins(login).extend({
 
       })
     },
-    inputValid(val,title){
-      let valid = true
-      let format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~0-9]/
-      if (format.test(val)) {
-        this.errorMessage = `${title} format not correct`
-        valid = false
-      }
-     return valid
-    },
     inputPhone(val,title){
       let valid = true
       let format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~a-zA-Z]/
@@ -324,16 +315,6 @@ export default mixins(login).extend({
     },
     onSubmit() {
       event?.preventDefault()
-
-      if(!(this.inputValid(this.formData.firstName, 'first name') &&
-     this.inputValid(this.formData.lastName, 'last name') &&
-     this.inputValid(this.formData.briefIntro, 'Brief introduction') &&
-     this.inputValid(this.country, 'country') &&
-     this.inputValid(this.city, 'state') &&
-     this.inputPhone(this.formData.phone, 'Phone'))){
-     this.$refs.form.scrollIntoView()
-     return
-     }
      
       if (this.loading) return
 

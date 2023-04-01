@@ -105,7 +105,7 @@ export default Vue.extend({
         )
         .then((response) => {
           this.$notify.success({
-            title: 'Folder',
+            title: 'File',
             message: 'File name changed successfully',
           })
           this.$emit('updateVisibility', false)

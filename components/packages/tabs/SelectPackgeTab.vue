@@ -24,51 +24,24 @@
     <transition name="fade" mode="out-in" :duration="200">
       <!-- Start:: already existing package -->
       <div v-if="pagesDefault" key="selecting">
-        <div class="relative lg:py-4">
-          <div class="swiper mySwiper overflow-hidden" ref="swiper">
-            <div
-              class="swiper-wrapper lg:py-8 py-4 -mx-4 mx-lg-0"
-              ref="wrapper"
-              :class="[orderedPackages.length < 2 ? 'flex justify-center' : 'item-center']"
-            >
+        <div class="relative lg:py-4 flex flex-wrap justify-between">
+
               <!-- <div class="swiper-slide">Slide 1</div> -->
               <div
-                class="swiper-slide lg:w-[calc(33.33333333%-2rem)] md:w-[calc(50%-2em)] w-[calc(100%-2em)]"
+                class="lg:w-[calc(33.33333333%-2rem)] md:w-[calc(50%-2em)] w-[calc(100%-2em)] my-3"
                 v-for="(p, i) in orderedPackages"
                 :key="i"
-                :ref="`slide-${i}`"
               >
                 <package-card
                   :edited="false"
                   :create="false"
                   :promoted="i == 1"
                   show-bottom-button
-                  class="package-card-check-width"
+                  class="package-card-check-width "
                   :style="{ '--count': orderedPackages.length }"
                   @bottom-button-clicked="$emit('next-tab', $event)"
                   :stagingPackage="p"
                 />
-              </div>
-            </div>
-            <div
-              @click="nextPackage"
-              v-if="showNav && showNext"
-              class="swiper-button-next z-20"
-            >
-              <button
-                class="bg-white/30 backdrop-blur-sm shadow -rotate-90 transform absolute -translate-y-1/2 z-10 -translate-x-5 w-[40px] h-[40px] grid place-content-center rounded-full"
-              >
-                <arrow-down-icon />
-              </button>
-            </div>
-            <div v-if="showNav && showPrev" class="swiper-button-prev z-20">
-              <button
-                @click="prevPackage"
-                class="bg-white/30 backdrop-blur-sm shadow rotate-90 transform absolute -translate-y-1/2 z-10 translate-x-4 w-[40px] h-[40px] grid place-content-center rounded-full"
-              >
-                <arrow-down-icon />
-              </button>
-            </div>
           </div>
         </div>
         <p class="font-medium text-lg text-center">
@@ -164,33 +137,6 @@ export default Vue.extend({
     },
   },
   methods: {
-    nextPackage() {
-      let getSliderItem = document.querySelectorAll('.swiper-slide')
-      if (
-        this.$refs.swiper.scrollWidth - this.$refs.swiper.scrollLeft ==
-        this.$refs.swiper.clientWidth
-      ) {
-        this.showNext = false
-        return
-      }
-      this.initialWidth = this.initialWidth + getSliderItem[0].clientWidth + 32
-      $('.mySwiper').animate({ scrollLeft: this.initialWidth }, 500);
-      this.scaleCenterPackage('.swiper-slide', '.swiper')
-      this.showPrev = true
-    },
-    prevPackage() {
-      this.initialWidth =
-        this.initialWidth -
-        document.querySelectorAll('.swiper-slide')[0].clientWidth -
-        32
-      if (this.initialWidth < 0) {
-        this.initialWidth = 0
-        this.showPrev = false
-      }
-      this.$refs.wrapper.style.cssText = `transition:0.3s;`
-      $('.mySwiper').animate({ scrollLeft: this.initialWidth }, 500)
-      this.showNext = true
-    },
      scaleCenterPackage(child, parent){
         let children = document.querySelectorAll(child);
        let parentElem = document.querySelector(parent)
@@ -232,17 +178,7 @@ export default Vue.extend({
     }
   },
   watch: {
-    orderedPackages: function () {
-      setTimeout(() => {
-        if (
-          this.$refs.swiper.scrollWidth >
-          Math.round(this.$refs.wrapper.clientWidth)
-        )
-          this.showNav = true
-        else this.showNav = false
-      }, 500)
-      this.syncAllElemHeight('.swiper-slide', '.mySwiper')
-    },
+
   },
 })
 </script>

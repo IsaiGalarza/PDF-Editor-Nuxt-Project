@@ -121,15 +121,6 @@ export default mixins(login).extend({
       (this.state = this.$auth.user.state)
   },
   methods: {
-    inputValid(val, title) {
-      let valid = true
-      let format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~0-9]/
-      if (format.test(val)) {
-        this.errorMessage = `${title} format not correct`
-        valid = false
-      }
-      return valid
-    },
     inputPhone(val, title) {
       let valid = true
       let format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~a-zA-Z]/
@@ -173,19 +164,8 @@ export default mixins(login).extend({
         this.setDropDown = false
       }
     },
-
-    fetchCountries() { },
-    fetchStates() { },
     onSubmit() {
       event?.preventDefault()
-
-      if (!(this.inputValid(this.formData.name, 'Company name') &&
-        // this.inputValid(this.formData.email, 'Email') &&
-        this.inputValid(this.country, 'Country') &&
-        this.inputPhone(this.formData.phone, 'Phone'))) {
-        this.$refs.form.scrollIntoView()
-        return
-      }
 
       // return
 

@@ -2,7 +2,7 @@
   <section class="font-family grid grid-cols-1 md:grid-cols-[max-content,1fr] gap-6">
     <!-- logo container -->
     <div class="bg-white md:w-[250px] w-full profile-image-container !py-0">
-      <div class="icon-img md:mx-7 my-7 relative" @click="visibleUploadImageDialog = true">
+      <div class="icon-img md:mx-7 my-7 relative" @click="showImageCropperModal">
         <img v-if="profilePhoto != null" :src="profilePhoto" id="referenceImg"
           class="top-profile-image cursor-pointer" />
         <span v-else>
@@ -52,7 +52,7 @@
       </div>
       <div v-else>
         <div class="px-8 py-3 border-b border-[#F0F0F0] input-wrapper">
-          <input type="text" v-model="address" placeholder="Company`s address" :disabled="editEnalble"
+          <input type="text" v-model="address" placeholder="Company's address" :disabled="editEnalble"
             :class="[editEnalble ? 'text-gray-400' : 'text-black']" />
           <!-- <button v-if="isUser" @click="toggleInput">
             <Pencil v-if="initialInput" :width="18" />
@@ -60,7 +60,7 @@
           </button> -->
           </div>
         <div class="px-8 py-3 input-wrapper">
-          <input type="number" v-model="phone" placeholder="Company`s phone number" :disabled="editEnalble"
+          <input type="number" v-model="phone" placeholder="Company's phone number" :disabled="editEnalble"
             :class="[editEnalble ? 'text-gray-400' : 'text-black']" />
           <!-- <button v-if="isUser" @click="toggleInput2">
             <Pencil v-if="initialInput2" :width="18" />
@@ -136,6 +136,9 @@ export default mixins(login).extend({
     ShareOutlineIcon
  },
   methods: {
+    showImageCropperModal(){
+      this.isCreator ? this.visibleUploadImageDialog = true : null
+    },
     getTeamPublicFolder() {
       this.$axios.get()
     },
@@ -191,6 +194,9 @@ export default mixins(login).extend({
     //     },
   },
   computed: {
+    isCreator(){
+      return this.user?.id == this.userInfo?.id 
+    },
     firstCompanyName() {
       return (this.userInfo?.companyName || '').charAt(0).toUpperCase()
     },

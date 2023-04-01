@@ -56,7 +56,7 @@
         </header>
 
         <!-- Start:: Folders-item -->
-        <div class="max-h-36">
+        <div class="max-h-48 overflow-y-auto">
           <!-- START: spinner container -->
           <div v-if="folderSpinner"
             class="absolute z-10 w-full h-full bg-white top-0 left-0 rounded-lg flex justify-center items-center">

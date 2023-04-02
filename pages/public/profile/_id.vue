@@ -39,6 +39,7 @@
           </div>
         </div>
         <header
+        v-if="folders.length"
           class="py-3 px-2 mx-4 border-b border-[#DCDCDC] text-paperdazgreen-400 flex flex-wrap items-center gap-2 justify-between">
           <h4 class="text-xl font-medium hidden sm:block">Folders</h4>
 
@@ -55,20 +56,7 @@
           </div>
         </header>
 
-        <!-- Start:: Folders-item -->
-        <div class="max-h-48 overflow-y-auto">
-          <!-- START: spinner container -->
-          <div v-if="folderSpinner"
-            class="absolute z-10 w-full h-full bg-white top-0 left-0 rounded-lg flex justify-center items-center">
-            <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
-          </div>
-          <!-- END: spinner container -->
-
-          <!-- START:display when no file -->
-          <div class="w-full h-20 grid place-items-center" v-if="folders.length < 1">
-            <span class="textr-[15px]">No Folder Available</span>
-          </div>
-          <!-- END:display when no file -->
+  
 
           <!-- Start:: Single row -->
           <div v-for="(item, i) in folders" :key="i + 'folder'"

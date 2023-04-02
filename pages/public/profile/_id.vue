@@ -60,7 +60,7 @@
 
           <!-- Start:: Single row -->
           <div v-for="(item, i) in folders" :key="i + 'folder'"
-            class="grid grid-cols-[max-content,1fr,max-content] gap-2 items-center mx-4 border-b border-[#DCDCDC] py-2">
+            class="grid grid-cols-[max-content,1fr,max-content] gap-2 items-center mx-4 folder-border py-2">
             <img class="w-7" src="@/assets/recent-icons/OpenedFolder.svg" />
             <div class="overflow-hidden">
               <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
@@ -120,7 +120,7 @@
 
           <!-- Start:: Single row -->
           <div v-else v-for="(item, i) in files" :key="i + 'file'"
-            class="grid grid-cols-[max-content,1fr,max-content] gap-2 items-center mx-4 border-b border-[#DCDCDC] py-3">
+            class="grid grid-cols-[max-content,1fr,max-content] gap-2 items-center mx-4 folder-border py-3">
             <img src="/icon.png" width="23" height="23" />
             <div class="overflow-hidden">
               <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
@@ -314,8 +314,15 @@ export default Vue.extend({
   },
 })
 </script>
-<style>
+<style lang="scss">
 .el-notification{
     z-index: 999999 !important;
 }
+.folder-border{
+  @apply border-b border-[#DCDCDC];
+  &:nth-last-child(1){
+    border: none
+  }
+}
+
 </style>

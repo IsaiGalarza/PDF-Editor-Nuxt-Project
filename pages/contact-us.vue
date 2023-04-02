@@ -102,17 +102,37 @@ export default Vue.extend({
         case 'faq':
           this.$nuxt.$router.push('/faq')
           break
-          case 'partners':
+        case 'partners':
           this.$nuxt.$router.push('/partners')
           break
         case 'tawk':
-          ;(Tawk_API)?.toggle()
+          try {
+            Tawk_API?.toggle()
+          } catch (error) {
+            //
+          }
           // ;(
           //   document.querySelector('.tawk-button') as HTMLButtonElement
           // )?.click()
           break
       }
     },
+  },
+  mounted() {
+    try {
+      let frame = document.querySelectorAll('.widget-visible')
+      frame[0].style.display = 'block'
+    } catch (error) {
+      //
+    }
+  },
+  beforeDestroy() {
+    try {
+      let frame = document.querySelectorAll('.widget-visible')
+      frame[0].style.cssText = 'display: none !important'
+    } catch (error) {
+      //
+    }
   },
 })
 </script>

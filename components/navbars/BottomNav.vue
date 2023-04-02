@@ -12,10 +12,14 @@
     <nuxt-link to="/" class="h-full flex items-center justify-center flex-1 px-1" >
       <home-icon class="h-4" />
     </nuxt-link>
-    <button class="h-full flex items-center justify-center flex-1 px-1" v-show="!isSearch" @click="isSearch = true">
+    <button
+      class="bottom-nav-search h-full flex items-center justify-center flex-1 px-1"
+      v-show="!isSearch"
+      @click="isSearch = true"
+    >
       <search-icon class="h-4" />
     </button>
-    <nuxt-link  v-if="appIsFreeUser" to="/savefiles" class="relative h-full flex items-center justify-center flex-1 px-1" >
+    <nuxt-link v-if="appIsFreeUser" to="/savefiles" class="bottom-nav-save relative h-full flex items-center justify-center flex-1 px-1" >
       <heart-outline :isActive="$route.fullPath == '/savefiles'" />
       <span v-if="$route.fullPath == '/savefiles'" class="absolute bottom-2 left-[calc(50%-2px)] inline-block w-[4px] h-[4px] bg-red-500 rounded-full"></span>
     </nuxt-link>

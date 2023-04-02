@@ -13,7 +13,7 @@
 
 <script>
 import Vue from 'vue'
-
+import { mapState } from 'vuex'
 import FileLedger from '~/components/dashboard/FileLedger.vue'
 import LedgerIcon from "~/components/svg-icons/LedgerIcon.vue"
 import LeavesDetailsContainer from '~/components/dashboard/LeavesDetailsContainer.vue'
@@ -29,7 +29,6 @@ import ShareIconVue from '~/components/svg-icons/ShareIcon.vue'
 import TickCircleIconVue from '~/components/svg-icons/TickCircleIcon.vue'
 import TrashXIcon from '~/components/svg-icons/TrashXIcon.vue'
 import FloatingActionButton from '~/components/widgets/FloatingActionButton.vue'
-import { mapState } from 'vuex'
 import { ErrorHandler } from '~/types/ErrorFunction'
 import jwt from 'jsonwebtoken'
 import UserTypeEnum from '~/models/UserTypeEnum'

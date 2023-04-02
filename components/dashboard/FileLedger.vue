@@ -1,38 +1,39 @@
 <template>
   <div class="flex flex-col">
     
-    <div class="bg-white rounded-2xl flex-1 min-h-[50vh] lg:min-h-[40vh] position-relative pt-4"
+    <div class="ledger-container bg-white rounded-2xl flex-1 min-h-[50vh] lg:min-h-[40vh] position-relative pt-4"
       >
       <!-- <transition name="fade" mode="out-in"> -->
     
-      <h3
-        class="text-paperdazgray-700 font-semibold text-xl flex xs:items-center justify-between whitespace-nowrap px-3 mb-1"
-        :class="[isPaidUser ? 'flex-col sm:flex-row' : 'flex-row gap-2']"
-        v-if="!spinner"
-      >
+      <div class="search-container">
+        <h3
+          class="text-paperdazgray-700 font-semibold text-xl flex xs:items-center justify-between whitespace-nowrap px-3 mb-1"
+          :class="[isPaidUser ? 'flex-col sm:flex-row' : 'flex-row gap-2']"
+          v-if="!spinner"
+        >
+          <h5 class="text-lg font-semibold text-[#272727] hidden sm:inline-flex items-center gap-2 sm:w-full" :class="[isPaidUser ? 'mb-2' : 'mb-0']">
+            {{ isPaidUser ? "File Ledger" : "Ledger" }}
+            <a :href="`/public/profile/${mainUserLink}`" target="_blank">
+              <!-- <company-icon /> -->
+              <img src="../../assets/img/company-icon.png" class="lg:w-[30px] w-[20px]" v-if="isPaidUser" />
+            </a>
+            <img src="../../assets/img/users-icon.png" class="cursor-pointer lg:w-[44px] w-[35px]" @click="showCreateTeamFunc"
+              v-if="isPaidUser" />
+          </h5>
+          <div class="text-xs font-medium flex justify-end items-center gap-2 relative w-full">
+            <span class="el-dropdown-link left-roll1 flex-1">
+              <input type="text"
+                class="search-input h-8 sm:h-10 transition bg-transparent ps-2 flex-1 border-[1px] border-paperdazgreen-400 rounded-lg focus:border-paperdazgreen-700 outline-none float-right sm:w-3/4 w-full"
+                placeholder="Search Files" v-model="searchParam" />
+            </span>
+            <button
+              class="circle  circle-16 sm:circle-18 bg-paperdazgreen-400 text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
+              <search-icon width="16" height="16" currentcolor="white" />
+            </button>
+          </div>
+        </h3>
+      </div>
       
-        <h5 class="text-lg font-semibold text-[#272727] hidden sm:inline-flex items-center gap-2 sm:w-full" :class="[isPaidUser ? 'mb-2' : 'mb-0']">
-          {{ isPaidUser ? "File Ledger" : "Ledger" }}
-          <a :href="`/public/profile/${mainUserLink}`" target="_blank">
-            <!-- <company-icon /> -->
-            <img src="../../assets/img/company-icon.png" class="lg:w-[30px] w-[20px]" v-if="isPaidUser" />
-          </a>
-          <img src="../../assets/img/users-icon.png" class="cursor-pointer lg:w-[44px] w-[35px]" @click="showCreateTeamFunc"
-            v-if="isPaidUser" />
-        </h5>
-        <div class="text-xs font-medium flex justify-end items-center gap-2 relative w-full">
-          <span class="el-dropdown-link left-roll1 flex-1">
-            <input type="text"
-              class="search-input h-8 sm:h-10 transition bg-transparent ps-2 flex-1 border-[1px] border-paperdazgreen-400 rounded-lg focus:border-paperdazgreen-700 outline-none float-right sm:w-3/4 w-full"
-              placeholder="Search Files" v-model="searchParam" />
-          </span>
-          <button
-            class="circle  circle-16 sm:circle-18 bg-paperdazgreen-400 text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
-            <search-icon width="16" height="16" currentcolor="white" />
-          </button>
-  
-        </div>
-      </h3>
       <div
         ref="ledgerContainer"
         :class="[

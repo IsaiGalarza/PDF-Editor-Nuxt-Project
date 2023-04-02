@@ -11,11 +11,11 @@
     <ul class="overflow-y-auto overflow-x-hidden flex-1 px-4 custom-scrollbar">
       <li>
         <div v-for="(link, i) in links" :key="i" class="nav-item cursor-pointer"
-          @click="shuffleRoute(i, link.link, link.label)" :class="{
+          @click="shuffleRoute(i, link.link, link.label)" :class="[link.className, {
             active: link.exact,
             // ? $nuxt.$route.path == link.link
             // : $nuxt.$route.fullPath.startsWith(link.link),
-          }">
+          }]">
           <div class="w-5 h-5">
             <svg-icon class="h-full w-full" height="100%" width="100%" :value="link.icon" />
           </div>
@@ -91,7 +91,7 @@ export default Vue.extend({
           link: '/dashboard',
           exact: true,
         },
-        { label: 'Save Files', icon: 'SolidHeartIcon', link: '/savefiles', exact: false },
+        { label: 'Save Files', icon: 'SolidHeartIcon', link: '/savefiles', exact: false, className: 'saved-files' },
         {
           label: 'Packages',
           icon: 'NewsPaperIcon',

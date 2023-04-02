@@ -22,6 +22,8 @@ import LandingPageKeyFeatures from '~/components/landing/widgets/LandingPageKeyF
 import LandingPageQrScan from '~/components/landing/widgets/LandingPageQrScan.vue'
 import LandingDivider from '~/components/landing/widgets/LandingDivider.vue'
 
+import 'intro.js/minified/introjs.min.css';
+
 @Component({
   layout: 'landing',
   auth: false,

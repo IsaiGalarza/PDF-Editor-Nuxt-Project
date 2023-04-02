@@ -28,12 +28,13 @@
 
 <script >
 import Vue from 'vue'
+import mixins from 'vue-typed-mixins'
+import introJS from 'intro.js'
+import login from "~/mixins/login"
+import { getTourSteps } from '~/assets/tours'
 import BottomNav from '~/components/navbars/BottomNav.vue'
 import DashboardNavbar from '~/components/navbars/DashboardNavbar.vue'
 import DashboardSidebar from '~/components/sidebars/DashboardSidebar.vue'
-import login from "~/mixins/login"
-import mixins from 'vue-typed-mixins'
-
 
 export default mixins(login).extend({
   name: 'DashboardLayout',
@@ -54,10 +55,24 @@ export default mixins(login).extend({
     window.addEventListener('resize', this.resizeEventListener)
     window.addEventListener('storage', () => {
       if(!localStorage.getItem('paperdaz_userID')){
-         this.$auth.logout()
-         this.$nuxt.$router.push("/login")
+        this.$auth.logout()
+        this.$nuxt.$router.push("/login")
       }
     });
+
+    if (!localStorage.getItem('showTour')) {
+      setTimeout(() => {
+        introJS().setOptions({
+          showProgress: false,
+          showBullets: false,
+          tooltipClass: 'customTooltip',
+          steps: getTourSteps(),
+        }).start()
+
+        localStorage.setItem('showTour', true)
+      }, 3000);
+    }
+    
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.resizeEventListener)
@@ -81,7 +96,11 @@ export default mixins(login).extend({
   }
 })
 </script>
-
+<style>
+.customTooltip {
+  /* transform: translateX(25%); */
+}
+</style>
 <style lang="scss" scoped>
 //     #dashboard-layout {
 //   @media only screen and (min-width: 1024px) {

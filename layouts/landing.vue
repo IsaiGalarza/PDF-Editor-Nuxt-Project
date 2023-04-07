@@ -10,7 +10,7 @@
     >
       <Nuxt class="flex-1" />
     </main>
-    <app-footer />
+    <!-- <app-footer /> -->
     <!-- <CookiesPop/> -->
   </div>
 </template>

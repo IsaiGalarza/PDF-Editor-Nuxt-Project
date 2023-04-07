@@ -1,288 +1,136 @@
 <template>
-  <section class="bg-gradient-to-t from-white to-transparent">
-    <div class="container py-20">
-      <div class="signup-section" >
+  <section class="bg-paperdazgreen-300 pt-10">
+     <div class="flex flex-wrap p-3 justify-around items-center">
+      <div class="w-full sm:w-6/12 md:w-5/12">
+        <p class="font-bold text-xl text-white">Account Information</p>
+        <span class="text-xs mb-6 text-white">Enter the required information to continue</span>
+        <div>
+          <el-input :disabled="loading" class="my-3 rounded" placeholder="Business name" required v-model="name" />
+          <el-input :disabled="loading" class="my-3" placeholder="Contact name" required v-model="name" />
+          <el-input :disabled="loading" class="my-3" placeholder="Email address" required v-model="name" />
+          <el-input :disabled="loading" class="my-3" placeholder="Contact number" required v-model="name" />
+        </div>
+     </div>
+     
+     <div class="w-full sm:w-6/12 md:w-5/12 bg-white rounded shadow-lg">
+       <div class="w-full p-3">
+        <form class="" @submit="submit">
+          <div class="form-group group-label">
+            <label>Total due</label>
+            <label class="text-xl" for="">$ 115/ <abbr class="text-xs">yearly</abbr> </label>
+          </div>
+          <div class="h-[1px] bg-gray-300"></div>
+          <div class="h-4"></div>
+          <div class="grid mb-10">
+            <label class=" font-bold flex items-center justify-between" for="">
+              Credit Card
+              <img class="float-right inline w-[134px]" src="~/assets/img/payment.png" />
+            </label>
+          </div>
+          <!-- <message-alert-widget class="mb-7" :message="errorMessage" v-if="errorMessage" :type="'error'" /> -->
 
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="left-form">
-                <div class="signup-form">
-                  <h1>Create your free account</h1>
-                  <div class="social-btns pb-3">
-                    <SocialAuth />
-                  </div>
-
-                  <message-alert-widget
-                  :message="errorMessage"
-                  v-show="errorMessage"
-                  type="error"
-                  class="mb-8"
-                > 
-                <template #action>      
-                  <p class="pt-1">
-                    Please <button @click="routeLogin" class="opacity-50 hover:opacity-100">Sign in</button> 
-                  Click <button @click="routeForgotPassword" class="opacity-50 hover:opacity-100">here</button> if you forgot your password
-                  </p>
-                </template>
-              </message-alert-widget>
-
-                  <div class="or-line">
-                    <div class="text">Or</div>
-                    <div class="line"></div>
-                  </div>
-                  <form  @submit.prevent="Submit"  class="form">
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <input
-                          type="text"
-                          placeholder="First name"
-                          v-model="user.firstName"
-                          required
-                          :disabled="isLoading || isRedirecting"
-                          class="form-control"
-                        />
-                      </div>
-                      <div class="col-lg-6">
-                        <input
-                          type="text"
-                          placeholder="Last name"
-                          v-model="user.lastName"
-                          :disabled="isLoading || isRedirecting"
-                          required
-                          class="form-control"
-                        />
-                      </div>
-                      <div class="col-lg-12">
-                        <input
-                          type="email"
-                          placeholder="Email address"
-                          v-model="user.email"
-                          :disabled="isLoading || isRedirecting"
-                          required
-                          class="form-control"
-                        />
-                      </div>
-                      <div class="col-lg-12">
-                        <button
-                          class="rounded shadow px-2 next-btn bg-paperdazgreen-300 hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 text-white"
-                        >
-                          Next >
-                        </button>
-                      </div>
-                      <div class="col-lg-12">
-                        <p>
-                          We’re committed to your privacy. Paperdaz uses the
-                          information you provide to us to you about our
-                          relevant content, products, and services. You may
-                          unsubcribe from these communications at any time. For
-                          more information, check out our
-                          <nuxt-link to="/terms-condition">
-                            Privacy Policy
-                          </nuxt-link>
-                        </p>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
+          <div class="form-group mb-3">
+            <label class="input-label" for="">Name of card holder</label>
+            <el-input :disabled="loading" placeholder="Name Surname" required v-model="name" />
+          </div>
+          <div class="form-group mb-3">
+            <label class="input-label" for="">Card Number</label>
+            <el-input :disabled="loading" placeholder="0000-0000-0000-0000" :value="cardNumberWithDashes"
+              @input="inputCardNumber" required />
+          </div>
+          <div class="grid gap-5 grid-cols-2">
+            <div class="form-group">
+              <label class="input-label" for="">Expiration Date</label>
+              <el-input :disabled="loading" placeholder="MM/YY" required :value="expirationDateWithSlashes"
+                @input="inputExpirationDate" />
             </div>
-            <div class="col-lg-6">
-              <div class="right-image">
-                <img src="../static/card.png" alt="" />
-              </div>
+            <div class="form-group">
+              <label class="input-label" for="">CVC</label>
+              <el-input :disabled="loading" placeholder="000" required v-model="cvv" type="password" maxlength="3" />
             </div>
           </div>
-        </div>
+        </form>
       </div>
+   </div>
 
-
-    </div>
-    <SignUpEmailVerify
-      :verificationInfo="verificationInfo"
-      v-model="showEmailVerification"
-    />
+   <div class="w-full flex justify-center mt-12">
+    <button class="w-[50%] sm:w-[350px] py-2 text-center bg-white rounded">Next</button>
+  </div>
+   
+     </div>
   </section>
 </template>
 
 <script>
 import Vue from 'vue'
-import CheckIcon from '~/components/svg-icons/CheckIcon.vue'
-import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
-import SvgIcon from '~/components/svg-icons/SvgIcon.vue'
-import InputField from '~/components/widgets/InputField.vue'
-import MessageAlertWidget from '~/components/widgets/MessageAlertWidget.vue'
-import PasswordField from '~/components/widgets/PasswordField.vue'
-import login from '~/mixins/login'
-import { ErrorHandler } from '~/types/ErrorFunction'
-import ExclamationIcon from '~/components/svg-icons/ExclamationIcon.vue'
-import { NoAuthpages } from '~/types/NoAuthPages'
-import axios from 'axios'
 
-import SignUpEmailVerify from '~/components/pdf/modals/SignUpEmailVerify.vue'
-import SocialAuth from '~/components/auth/SocialAuth.vue'
+
 
 export default Vue.extend({
   name: 'RegisterPage',
   auth: false,
-  mixins: [login],
-  components: {
-    SocialAuth,
-    InputField,
-    PasswordField,
-    SvgIcon,
-    CheckIcon,
-    MessageAlertWidget,
-    SpinnerDottedIcon,
-    ExclamationIcon,
-    SignUpEmailVerify,
-    SocialAuth,
-    MessageAlertWidget
-},
   layout: 'landing',
-  beforeRouteEnter(to, from, next) {
-    //@ts-ignore
-    if (
-      NoAuthpages.test(from.fullPath.slice(1)) &&
-      from.fullPath.slice(1) != ''
-    ) {
-      localStorage.setItem('redirect_paperdaz_path', from.fullPath)
-    }
-    next()
-  },
   data() {
     return {
-      confirmPassword: undefined,
-      setDropDown: false,
-      countrycode: '',
-      country: '',
-      dropDownContent: [],
-      totalCountriesArray: [],
-      isTeamLoggin: false,
-      teamMemberLinkMessage: 'Already have an account?',
-      showEmailVerification: false,
-      ConfirmedPassword: false,
-      verificationInfo: {},
-      packageparams: this.$route.query.hasPackageId,
-      user: {
-        firstName: undefined,
-        lastName: undefined,
-        email: undefined,
-      },
-      isLoading: false,
+      loading: false,
       errorMessage: '',
-      isRedirecting: false,
-      acceptTermsConditions: false,
+      cardNumberWithDashes: '',
+      name: '',
+      cvv: '',
+      cardId: undefined,
+      expirationDateWithSlashes: '',
+      companyName: '',
     }
   },
-  watch: {
-    'user.password': function () {
-      this.checkPasswordStrength()
+  computed: {
+    cardNumber() {
+      return this.cardNumberWithDashes.replace(/-+/g, '')
     },
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$auth.logout()
-    next()
-  },
-  mounted() {
-    this.setTeamIdFromQuery()
+    expirationDateString() {
+      return this.expirationDateWithSlashes.split('/').join('') || ''
+    },
+    expYear() {
+      return this.expirationDateString.split('').splice(2, 4).join('')
+    },
+    expMonth() {
+      return this.expirationDateString.split('').splice(0, 2).join('')
+    },
   },
   methods: {
-    routeLogin(){
-      this.$store.commit("SET_SAVE_EMAIL_EXIST", this.user.email)
-      this.$nuxt.$router.push('/login')  
-    },
-    routeForgotPassword(){
-      this.$store.commit("SET_SAVE_EMAIL_EXIST", this.user.email)
-      this.$nuxt.$router.push('/forgot-password')  
-    },
-    setTeamIdFromQuery() {
-      if (Object.keys(this.$route.query).some((e) => e == 'teamId')) {
-        localStorage.setItem(
-          'team_member_object',
-          JSON.stringify({
-            teamId: this.$route.query.teamId,
-            action: 'join_a_team',
-          })
-        )
-      }
-    },
-    cancleOut(e) {
-      if (e.target.tagname != 'LI') {
-        this.setDropDown = false
-      }
-    },
-    termsConditionClick(event) {
-      event.target.checked
-        ? (this.acceptTermsConditions = true)
-        : (this.acceptTermsConditions = false)
-    },
+    inputCardNumber(val) {
 
-    //method to submit the user data
-    Submit() {
-      event?.preventDefault()
+      if (val.length > 19) return;
+      let temp = val.replace(/(-+)|([^0-9]+)/g, '')
+      this.cardNumberWithDashes = (temp.match(/.{1,4}/g) || []).join('-')
+    },
+    inputExpirationDate(val) {
+      let temp = val.replace(/\/+|[^0-9]+/g, '')
+      if (temp.length > 4) return
 
-
-      //  <-- validating user name -->
-      let inValidName = false
-      var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~0-9]/
-      if (
-        format.test(this.user.firstName.trim()) ||
-        format.test(this.user.lastName.trim())
-      ) {
-        this.errorMessage = 'Name format not correct'
-        inValidName = true
+      // Check if the month is greater than 12
+      if (temp.length === 2) {
+        if (Number(temp) > 12) temp = '0' + temp
+        if (Number(temp) == 0) temp = '01'
       }
 
-      // <-- checking if loading or redirecting -->
-      if (this.isLoading || this.isRedirecting || inValidName) return
-
-      this.isLoading = true
-      this.errorMessage = ''
-      this.isRedirecting = false
-
-      let data = {
-        firstName: this.user.firstName,
-        lastName: this.user.lastName,
-        email: this.user.email,
-        package: this.packageparams,
+      if (temp.length == 4 && Number(temp.substring(2, 4)) == 0) {
+        temp = temp.substring(0, 2) + '01'
       }
 
-      const getReferalParams = Object.keys(this.$route.query)
-      if (getReferalParams.includes('referreeCode')) {
-        data = { ...data, ...this.$route.query }
-      }
-
-      // return
-      // axios.post('https://backend.paperdaz.com/users', data)
-        fetch('https://backend.paperdaz.com/users', {
-          method: "POST",
-          body: JSON.stringify(data)
-        })
-        .then((res)=> res.json())
-        .then(async (response) => {
-          console.log("then---", response)
-          this.verificationInfo = { 
-            email : response.data.email, 
-            package: this.packageparams 
-          } 
-          this.showEmailVerification = true
-          // this.isRedirecting = true
-        })
-        .catch(( error) => {
-          console.log("catch-error-----------------", error?.errors)
-          // let message = ErrorHandler(response)
-          // this.errorMessage = message
-          // this.isRedirecting = false
-        })
-        .finally(() => {
-          this.isLoading = false
-        })
+      let finalVal = (temp.match(/.{1,2}/g) || []).join('/')
+      this.expirationDateWithSlashes = finalVal
     },
   },
+  
 })
 </script>
 <style lang="scss" scoped>
+.input-label{
+  @apply text-xs px-1 my-2;
+}
+.group-label{
+  @apply flex justify-between items-center py-2;
+}
 .dropdown {
   @apply absolute top-[100%] left-0 w-full bg-white;
   max-height: 150px;

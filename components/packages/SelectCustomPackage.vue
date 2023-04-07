@@ -45,7 +45,7 @@
                         /> -->
                   <el-input-number
                     v-model.number="customPackage.paperlink"
-                    :step="2"
+                    :step="1"
                     size="small"
                     :min="1"
                     :max='20'
@@ -76,7 +76,7 @@
                         /> -->
                   <el-input-number
                     v-model.number="customPackage.teamMembers"
-                    :step="2"
+                    :step="1"
                     size="small"
                     :min="1"
                     :max='20'
@@ -107,7 +107,7 @@
                         /> -->
                   <el-input-number
                     v-model="customPackage.cc"
-                    :step="2"
+                    :step="1"
                     size="small"
                     :min="1"
                     :max='20'
@@ -205,15 +205,18 @@
         <span class="text-[#606060]">{{ formatPrice(totalCost) }}</span>
       </div>
     </div>
+       <div class="md:min-w-[300px] lg:min-w-[320px] bg-white rounded-[20px] p-3">
         <package-card
-      class="md:min-w-[300px] lg:min-w-[320px]"
-      show-bottom-button
-      @setName="setname"
-      :staging-package="stagingPackage"
-      @bottom-button-clicked="$emit('next-tab', $event)"
-      :edited="true"
-      :create="true"
-    />
+        show-bottom-button
+        class="w-full"
+        @setName="setname"
+        :staging-package="stagingPackage"
+        @bottom-button-clicked="$emit('next-tab', $event)"
+        :edited="true"
+        :create="true"
+        :isLight="true"
+      />
+       </div>
   </div>
 </template>
 

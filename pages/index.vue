@@ -1,15 +1,8 @@
 <template>
   <div class="">
-    <div class="bg-white min-h-[60vh] grid place-items-center">
+    <div class="min-h-[60vh] grid place-items-center bg-paperdazgreen-300">
       <hero-page />
-    </div>
-    <landing-divider />
-    <landing-page-info />
-    <landing-page-qr-scan />
-    <landing-page-key-features
-      class="bg-gradient-to-t from-white to-[rgba(119,195,96,0.1)]"
-    />
-    <landing-join-section />
+ </div>
   </div>
 </template>
 

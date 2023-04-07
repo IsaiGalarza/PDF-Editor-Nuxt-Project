@@ -1,35 +1,7 @@
 <template>
   <div class="" style="">
-    <section class="container pt-14 pb-24">
-      <!-- Start:: tab indicator -->
-      <div
-        class="tab-indicator-container"
-        :class="{ second: tabLevel >= 2, third: tabLevel >= 3 }"
-      >
-        <div
-          class="tab-indicator-circle circle circle-30 font-medium"
-          :class="{ active: tabLevel >= 1 }"
-        >
-          $
-
-          <span class="highlight">1. Select Package</span>
-        </div>
-        <div
-          class="tab-indicator-circle circle circle-30"
-          :class="{ active: tabLevel >= 2 }"
-        >
-          <span class="highlight">2. Basic Info</span>
-          <user-profile-solid-icon height="20" width="20" />
-        </div>
-        <div
-          class="tab-indicator-circle circle circle-30"
-          :class="{ active: tabLevel >= 3 }"
-        >
-          <span class="highlight">3. Payment</span>
-          <payment-card-icon height="20" width="20" />
-        </div>
-      </div>
-      <!-- End:: tab indicator -->
+    <section class="container pt-14 pb-24 bg-paperdazgreen-300">
+    
 
       <div>
         <keep-alive>

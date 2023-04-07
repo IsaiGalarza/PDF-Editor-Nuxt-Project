@@ -3,70 +3,11 @@
 
 <template>
   <div>
-    <form
-      @submit.prevent="sendPackageCode"
-      v-if="pagesDefault"
-      class="flex items-center gap-2 w-full max-w-[500px] mx-auto lg:mb-12 mb-8"
-    >
-      <el-input
-        ref="packagecode"
-        placeholder="Enter Promotion Name"
-        v-model="promotionCode"
-      />
-      <button
-        class="text-sm h-10 bg-paperdazgreen-400 text-white rounded-lg px-lg-5 px-3 hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150 shadow"
-      >
-        Search
-      </button>
-    </form>
-    <!-- Start:: already existing package -->
-
-    <transition name="fade" mode="out-in" :duration="200">
-      <!-- Start:: already existing package -->
-      <div v-if="pagesDefault" key="selecting">
-        <div class="relative lg:py-4 flex flex-wrap justify-between">
-
-              <!-- <div class="swiper-slide">Slide 1</div> -->
-              <div
-                class="lg:w-[calc(33.33333333%-2rem)] md:w-[calc(50%-2em)] w-[calc(100%-2em)] my-3"
-                v-for="(p, i) in orderedPackages"
-                :key="i"
-              >
-                <package-card
-                  :edited="false"
-                  :create="false"
-                  :promoted="i == 1"
-                  show-bottom-button
-                  class="package-card-check-width "
-                  :style="{ '--count': orderedPackages.length }"
-                  @bottom-button-clicked="$emit('next-tab', $event)"
-                  :stagingPackage="p"
-                />
-          </div>
-        </div>
-        <p class="font-medium text-lg text-center">
-          Need a custom package for your business?
-          <nuxt-link :to="`${$auth.loggedIn ? '../package?tablevel=1' : '/register'}`"
-            ><button class="text-paperdazgreen-400 cursor-pointer">
-              Create one
-            </button>
-          </nuxt-link>
-        </p>
-      </div>
-      <!-- End:: already existing package -->
 
        <!-- Start:: Create custom package -->
-       <div v-else key="creating">
+       <div key="creating">
+        <p class="text-white text-center pb-4">Pay annually and get a 20% discount </p>
         <select-custom-package @next-tab="$emit('next-tab', $event)" />
-        <p class="font-medium text-lg text-center">
-          Want to select pre-created packaged?
-          <Nuxt-link to="/packages/?type=default"><button
-            class="text-paperdazgreen-400 cursor-pointer"
-          >
-            Select Package
-          </button>
-        </Nuxt-link>
-        </p>
       </div>
       <!-- End:: Create custom package -->
     </transition>

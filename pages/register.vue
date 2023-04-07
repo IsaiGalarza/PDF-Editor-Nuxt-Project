@@ -5,10 +5,10 @@
         <p class="font-bold text-xl text-white">Account Information</p>
         <span class="text-xs mb-6 text-white">Enter the required information to continue</span>
         <div>
-          <el-input :disabled="loading" class="my-3 rounded" placeholder="Business name" required v-model="name" />
-          <el-input :disabled="loading" class="my-3" placeholder="Contact name" required v-model="name" />
-          <el-input :disabled="loading" class="my-3" placeholder="Email address" required v-model="name" />
-          <el-input :disabled="loading" class="my-3" placeholder="Contact number" required v-model="name" />
+          <input :disabled="loading" class="my-3 rounded text-input" placeholder="Business name" required v-model="business_name" />
+          <input :disabled="loading" class="my-3 text-input" placeholder="Contact name" required v-model="business_name" />
+          <input :disabled="loading" class="my-3 text-input" placeholder="Email address" required v-model="business_name" />
+          <input :disabled="loading" class="my-3 text-input" placeholder="Contact number" required v-model="business_name" />
         </div>
      </div>
      
@@ -31,11 +31,11 @@
 
           <div class="form-group mb-3">
             <label class="input-label" for="">Name of card holder</label>
-            <el-input :disabled="loading" placeholder="Name Surname" required v-model="name" />
+            <el-input  placeholder="Name Surname" required v-model="name" />
           </div>
           <div class="form-group mb-3">
             <label class="input-label" for="">Card Number</label>
-            <el-input :disabled="loading" placeholder="0000-0000-0000-0000" :value="cardNumberWithDashes"
+            <el-input  placeholder="0000-0000-0000-0000" :value="cardNumberWithDashes"
               @input="inputCardNumber" required />
           </div>
           <div class="grid gap-5 grid-cols-2">
@@ -80,46 +80,47 @@ export default Vue.extend({
       cardId: undefined,
       expirationDateWithSlashes: '',
       companyName: '',
+      business_name: ""
     }
   },
   computed: {
-    cardNumber() {
-      return this.cardNumberWithDashes.replace(/-+/g, '')
-    },
-    expirationDateString() {
-      return this.expirationDateWithSlashes.split('/').join('') || ''
-    },
-    expYear() {
-      return this.expirationDateString.split('').splice(2, 4).join('')
-    },
-    expMonth() {
-      return this.expirationDateString.split('').splice(0, 2).join('')
-    },
+    // cardNumber() {
+    //   return this.cardNumberWithDashes.replace(/-+/g, '')
+    // },
+    // expirationDateString() {
+    //   return this.expirationDateWithSlashes.split('/').join('') || ''
+    // },
+    // expYear() {
+    //   return this.expirationDateString.split('').splice(2, 4).join('')
+    // },
+    // expMonth() {
+    //   return this.expirationDateString.split('').splice(0, 2).join('')
+    // },
   },
   methods: {
-    inputCardNumber(val) {
+    // inputCardNumber(val) {
 
-      if (val.length > 19) return;
-      let temp = val.replace(/(-+)|([^0-9]+)/g, '')
-      this.cardNumberWithDashes = (temp.match(/.{1,4}/g) || []).join('-')
-    },
-    inputExpirationDate(val) {
-      let temp = val.replace(/\/+|[^0-9]+/g, '')
-      if (temp.length > 4) return
+    //   if (val.length > 19) return;
+    //   let temp = val.replace(/(-+)|([^0-9]+)/g, '')
+    //   this.cardNumberWithDashes = (temp.match(/.{1,4}/g) || []).join('-')
+    // },
+    // inputExpirationDate(val) {
+    //   let temp = val.replace(/\/+|[^0-9]+/g, '')
+    //   if (temp.length > 4) return
 
-      // Check if the month is greater than 12
-      if (temp.length === 2) {
-        if (Number(temp) > 12) temp = '0' + temp
-        if (Number(temp) == 0) temp = '01'
-      }
+    //   // Check if the month is greater than 12
+    //   if (temp.length === 2) {
+    //     if (Number(temp) > 12) temp = '0' + temp
+    //     if (Number(temp) == 0) temp = '01'
+    //   }
 
-      if (temp.length == 4 && Number(temp.substring(2, 4)) == 0) {
-        temp = temp.substring(0, 2) + '01'
-      }
+    //   if (temp.length == 4 && Number(temp.substring(2, 4)) == 0) {
+    //     temp = temp.substring(0, 2) + '01'
+    //   }
 
-      let finalVal = (temp.match(/.{1,2}/g) || []).join('/')
-      this.expirationDateWithSlashes = finalVal
-    },
+    //   let finalVal = (temp.match(/.{1,2}/g) || []).join('/')
+    //   this.expirationDateWithSlashes = finalVal
+    // },
   },
   
 })
@@ -165,5 +166,8 @@ export default Vue.extend({
 .width-full {
   width: 100%;
   text-align: left;
+}
+.text-input{
+  @apply p-[8px] border-none outline-none rounded w-full
 }
 </style>

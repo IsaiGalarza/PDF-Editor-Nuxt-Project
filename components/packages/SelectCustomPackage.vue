@@ -92,40 +92,25 @@
                 }}
               </td>
             </tr>
+
             <tr>
-              <td>CC Flow</td>
-              <td class="text-center">
-                {{ formatPrice(settings.custom_cc_price) }}
-              </td>
+              <td>PWA Business Profile</td>
               <td>
                 <div class="grid place-items-center">
-                  <!-- <el-input
-                          v-model="customPackage.carbon"
-                          style="width: 80px"
-                          type="number"
-                          min="1"
-                        /> -->
-                  <el-input-number
-                    v-model="customPackage.cc"
-                    :step="1"
-                    size="small"
-                    :min="1"
-                    :max='20'
-                  />
+                  <label
+                    for="public-profile-checkbox"
+                    class="inline-grid place-items-center h-7 w-7 rounded border border-gray-300 p-1 cursor-pointer"
+                  >
+                    <transition name="fade" :duration="100">
+                      <check-icon
+                        height="12"
+                        width="16"
+                        v-show="customPackage.publicProfile"
+                      />
+                    </transition>
+                  </label>
                 </div>
               </td>
-              <td class="text-center">
-                {{
-                  formatPrice(
-                    Number(settings.custom_cc_price) *
-                      Number(customPackage.cc)
-                  )
-                }}
-              </td>
-            </tr>
-            <tr>
-              <td>Paperdaz Public Profile</td>
-              <td class="text-center">Included</td>
               <td>
                 <div class="grid place-items-center">
                   <input
@@ -234,7 +219,7 @@ export default Vue.extend({
         custom_paperlink_price: 2,
         custom_team_members_price: 2,
         custom_cc_price: 2,
-        custom_public_profile_price: 2,
+        custom_public_profile_price: 10,
         custom_company_ledger_price: 0,
       },
       customPackage: {

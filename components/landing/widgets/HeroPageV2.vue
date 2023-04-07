@@ -1,9 +1,9 @@
 <template>
-  <div class="container lg:py-14 sm:pb-15 sm:pt-10">
+  <div class="container lg:py-20 sm:pb-15 sm:pt-10">
     <div
-      class="grid grid-cols-1 sm:grid-cols-[1fr,max-content] gap-2 sm:gap-2 md:gap-3 lg:gap-5"
+      class="flex justify-between flex-wrap"
     >
-      <div class="text-center sm:text-left">
+      <div class="text-center sm:text-left md:w-6/12 sm:w-full">
         <div class="max-w-[740px] flex flex-col justify-between">
           <div
             class="py-lg-4 py-2 slide-in relative"
@@ -37,9 +37,9 @@
           </div>
         </div>
       </div>
-      <div class="h-fit">
+      <div class="h-fit sm:pt-0 pt-4 md:w-6/12 sm:w-full md:text-right">
         <img
-          class="w-screen max-h-[600px] sm:max-w-[270px] md:max-w-[320px] lg:max-w-[470px]"
+          class="w-full md:w-[90%]"
           src="/img/hero_diplay.svg"
         />
       </div>

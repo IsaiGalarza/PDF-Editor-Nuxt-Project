@@ -13,13 +13,6 @@
   >
     <div class="" :class="collapsed ? 'overlay' : ''"></div>
     <nav class="container h-full flex items-center justify-between">
-      <!-- <div
-        class="absolute left-[10%] sm:left-[20%] md:left-[30%]  scale-0 bg-paperdazgreen-400 top-3 text-white py-3 w-[80%] sm:w-[60%] md:w-[40%] px-5 text-center z-50 rounded transform duration-300"
-        :class="[ $store.getters.getToast.active ? 'scale-100' : 'scale-0' ]"
-        >
-      <span @click="removePopUp" class="absolute right-2 top-1 z-10 cursor-pointer">&#x2715;</span>
-        <span v-html="$store.getters.getToast.msg"></span>
-      </div> -->
       <div class="flex items-center gap-1">
         <!-- <span
           class="lg:hidden cursor-pointer p-2 transform -translate-x-2"

@@ -73,13 +73,6 @@ export default mixins(GlobalMixin).extend({
     }
   },
   watch: {
-    "$store.getters.getToast.active"(val){
-         if(val){
-          setTimeout(() => {
-            this.removePopUp()
-          }, 3000);
-         }
-    },
     $route(formerVal, currentVal) {
       if (formerVal.fullPath !== currentVal.fullPath) {
         this.collapsed = false

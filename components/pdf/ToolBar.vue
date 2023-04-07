@@ -534,9 +534,12 @@ export default {
       })
     },
     confrimStart(e) {
-      if (e.target.checked) {
-        // this.$store.commit('SET_PDF_PAGE_BOTTOM')
+      if (!this.$auth.loggedIn && !this.$store.getters?.getFillAsGuest) {
+        this.$store.getters.showGuestModal() 
+        e.target.checked = false
+        return
       }
+      
       this.isConfirmChecked = e.target.checked
       this.$emit('confirmChecked', e.target.checked)
     },

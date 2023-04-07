@@ -190,7 +190,7 @@
         <!-- <button   @click="downloadPdf">download</button> -->
         <button
           class="w-full bg-paperdazgreen-400 py-2 text-white overflow-hidden duration-300"
-          v-if="$auth.loggedIn && !isCreator && isConfirmChecked"
+          v-if="($auth.loggedIn && !isCreator && isConfirmChecked) ||  $store.getters?.getFillAsGuest"
           id="confirmButtton"
           @click="publishFileFunction"
         >

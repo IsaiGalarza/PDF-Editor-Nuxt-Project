@@ -5,7 +5,7 @@
         class="px-5 text-center text-black absolute inline-block transform top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
       >
         <h4 class="text-4xl lg:text-5xl font-semibold whitespace-nowrap">
-          <span class="text-paperdazgreen-400" @click="show">Contact</span>
+          <span class="text-paperdazgreen-400">Contact</span>
           Us
         </h4>
         <p class="text-[#414142] font-medium">
@@ -96,12 +96,6 @@ export default Vue.extend({
     }
   },
   methods: {
-        show(){
-        this.toggleToast({
-          active: true,
-          msg: ` You are done! File has been sent to `,
-        })
-    },
     mouseHover(id) {},
     handleCommand(command) {
       switch (String(command).toLowerCase()) {

@@ -1,7 +1,8 @@
 <template>
-  <div class="">
+  <div class="" @click="">
     <div class="min-h-[60vh] grid place-items-center bg-paperdazgreen-300">
       <hero-page />
+      <ConfirmPassword v-model="showConfirmPassword"/>
  </div>
   </div>
 </template>
@@ -14,6 +15,7 @@ import LandingPageInfo from '~/components/landing/widgets/LandingPageInfo.vue'
 import LandingPageKeyFeatures from '~/components/landing/widgets/LandingPageKeyFeatures.vue'
 import LandingPageQrScan from '~/components/landing/widgets/LandingPageQrScan.vue'
 import LandingDivider from '~/components/landing/widgets/LandingDivider.vue'
+import ConfirmPassword from '~/components/modals/ConfirmPassword.vue'
 
 import 'intro.js/minified/introjs.min.css';
 
@@ -27,6 +29,7 @@ import 'intro.js/minified/introjs.min.css';
     LandingPageKeyFeatures,
     LandingJoinSection,
     LandingDivider,
+    ConfirmPassword
   },
   // beforeRouteLeave(to, from, next) {
   //   location.href = to.fullPath
@@ -40,6 +43,11 @@ export default class LandingPage extends Vue {
 
   get gsapReadyToSetup() {
     return this.gsapLoaded && this.motionPluginLoaded
+  }
+  data() {
+    return {
+      showConfirmPassword: false
+    }
   }
   mounted() {
     if (sessionStorage.getItem("requestSentFlag")=='true') {

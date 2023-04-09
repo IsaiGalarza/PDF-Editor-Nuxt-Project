@@ -58,6 +58,8 @@ export default class LandingPage extends Vue {
     setTimeout(function(){
       sessionStorage.setItem("requestSentFlag", false);
     },300);
+
+    this.$route.query?.confirm_password  && (this.showConfirmPassword = true)
   }
   head() {
     return {

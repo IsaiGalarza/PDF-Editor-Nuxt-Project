@@ -171,7 +171,6 @@ export default Vue.extend({
   },
   name: 'TeamsPage',
   layout: 'dashboard',
-  mixins: [Paid_User],
   data() {
     return {
       activeTab: 'ledger',

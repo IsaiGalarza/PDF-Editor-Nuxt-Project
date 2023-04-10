@@ -3,30 +3,9 @@
     <!-- Start:: header -->
     <header class="flex flex-col xs:flex-row xs:items-center justify-between whitespace-nowrap px-2 mt-3 mb-2">
       <h5 class="text-lg font-semibold text-[#272727] hidden sm:inline-flex w-full items-center gap-2 my-2">
-        Company Files
-        <a :href="`/public/profile/${mainUserLink}`" target="_blank">
-          <!-- <company-icon /> -->
-          <img src="../../assets/img/company-icon.png" class="lg:w-[30px] w-[20px]" />
-        </a>
-        <img src="../../assets/img/users-icon.png" @click="showCreateTeamFunc" class="lg:w-[44px] w-[35px] cursor-pointer" />
+        Paperlink Files
       </h5>
-      <div class="w-full text-white flex items-center my-2 pl-2">
-        <div action="" class="flex-1 text-xs font-medium flex items-center relative justify-end mr-2"
-          @submit.prevent="$event.preventDefault()">
-          <span class="el-dropdown-link left-roll1 flex-1">
-            <input type="text"
-              class="w-full search-input h-10 pl-4 ml-2 mr-2 text-black bg-transparent flex-1 border-[1px] border-paperdazgreen-400 rounded-lg focus:border-paperdazgreen-700 outline-none float-right"
-              placeholder="Search Files" v-model="folderSearch" />
-          </span>
-          <button
-            class="circle circle-18 bg-paperdazgreen-400 text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
-            <search-icon width="16" height="16" currentcolor="white" />
-          </button>
-        </div>
-        <button @click="showCreateCompanyFolderFunc"
-          class="hidden sm:circle sm:circle-18 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
-          <folder-plus-icon />
-        </button>
+      <div class="w-full text-white flex items-center justify-end my-2 pl-2">
         <button @click="showUploadModalFunction"
           class="hidden sm:circle sm:circle-18 p-2 ml-2 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
           <plus-icon />
@@ -176,18 +155,16 @@
             <!-- END: spinner container -->
             <empty-file-ledger class="min-h-[55vh]" v-if="(pdfUser.length < 1) && !fileSpinner" :isPaidUser="isPaidUser" />
             <!--START: No files container-->
-            <table class="custom-table" v-else>
-              <thead class="text-[#414142]">
-                <tr>
-                  <th class="w-12 text-left fixed-col left">No</th>
-                  <th class="text-left sm:!pl-16">File name</th>
-                  <th class="text-center">Action</th>
-                  <th class="text-center">Privacy</th>
-                  <th class="text-center">Date &amp; Time</th>
-                  <th class="text-center fixed-col right"></th>
-                </tr>
-              </thead>
-              <tbody class="text-[#505050]">
+            <section class="px-2">
+               <div class="border-b-[1px] border-gray-200">
+                 <b class="w-1/12 text-center fixed-col left inline-block">Order</b>
+                  <b class="text-left inline-block w-4/12">File name</b>
+                  <b class="text-center inline-block w-2/12">Action</b>
+                  <b class="text-center inline-block w-2/12">Privacy</b>
+                  <b class="text-center inline-block w-2/12">Date &amp; Time</b>
+                  <b class="text-center inline-block w-1/12"></b>
+               </div>
+               <div>
                 <tr v-for="(file, i) in pdfUser" :key="i">
                   <td class="fixed-col left">{{ i + 1 + returnedDataPage }}</td>
                   <td class="text-left overflow-hidden">
@@ -296,8 +273,9 @@
                     </div>
                   </td>
                 </tr>
-              </tbody>
-            </table>
+               </div>
+            </section>
+           
           </div>
           <FilePagination :totalFile="totalFile" @setPage="setPage" />
         </div>
@@ -477,6 +455,7 @@
 </template>
 <script>
 import Vue from 'vue'
+import draggable from 'vuedraggable'
 import UploadDocumentModal from '../dashboard/UploadDocumentModal.vue'
 import CompanyIcon from '../svg-icons/CompanyIcon.vue'
 import EllipsisIconVerticalIcon from '../svg-icons/EllipsisIconVerticalIcon.vue'
@@ -563,7 +542,8 @@ export default Vue.extend({
     QrcodeIcon,
     ArrowDownIcon,
     EyeIcon,
-    MaxInviteModal
+    MaxInviteModal,
+    draggable
   },
   name: 'CompanyFileLedger',
   data() {
@@ -620,7 +600,6 @@ export default Vue.extend({
         .finally(() => { this.showUploadIcon = true })
     },
     showUploadModalFunction() {
-      if (!this.showUploadIcon) return
       if (this.totalFile >= this.totalRegisteredPaperlink)
         this.showMaxPaperlinkModal = true
       else

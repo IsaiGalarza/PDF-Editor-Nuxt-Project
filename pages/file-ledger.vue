@@ -8,6 +8,7 @@
     <MaxPaperlinkModal :totalFile="totalRegisteredPaperlink" v-model="showMaxPaperlinkModal" />
     <RequestSentNotificationModal v-model="showRequestSentModal" />
     <CongratulationsModal v-model="showCongratulationsModal" />
+    
   </div>
 </template>
 
@@ -28,7 +29,6 @@ import PageIconVue from '~/components/svg-icons/PageIcon.vue'
 import ShareIconVue from '~/components/svg-icons/ShareIcon.vue'
 import TickCircleIconVue from '~/components/svg-icons/TickCircleIcon.vue'
 import TrashXIcon from '~/components/svg-icons/TrashXIcon.vue'
-import FloatingActionButton from '~/components/widgets/FloatingActionButton.vue'
 import { ErrorHandler } from '~/types/ErrorFunction'
 import jwt from 'jsonwebtoken'
 import UserTypeEnum from '~/models/UserTypeEnum'
@@ -36,12 +36,12 @@ import MaxPaperlinkModal from '~/components/company-files/Tabs/MaxPaperlinkModal
 import CongratulationsModal from '~/components/modals/CongratulationsModal.vue'
 import RequestSentNotificationModal from '~/components/company-files/Tabs/RequestSentNotificationModal.vue'
 
+
 export default Vue.extend({
   components: {
     TopDetailsCardContainer,
     LeavesDetailsContainer,
     FileLedger,
-    // FloatingActionButton,
     CongratulationsModal,
     MoveIcon,
     TrashXIcon,
@@ -50,7 +50,7 @@ export default Vue.extend({
     UploadDocumentModal,
     LedgerIcon,
     MaxPaperlinkModal,
-    RequestSentNotificationModal
+    RequestSentNotificationModal,
   },
   layout: 'dashboard',
   // auth:'guest',

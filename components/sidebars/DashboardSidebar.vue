@@ -86,24 +86,29 @@ export default Vue.extend({
       routeIndex: 1,
       links: [
         {
-          label: 'Dashboard',
+          label: 'File Ledger',
           icon: 'DashboardIcon',
-          link: '/dashboard',
+          link: '/file-ledger',
           exact: true,
         },
-        { label: 'Save Files', icon: 'SolidHeartIcon', link: '/savefiles', exact: false, className: 'saved-files' },
         {
-          label: 'Packages',
-          icon: 'NewsPaperIcon',
-          link: '/packages/?type=default',
+          label: 'Paperlink Files',
+          icon: 'DocumentIcon',
+          link: '/paperlink-files',
+          exact: false,
+        },
+        {
+          label: 'Business Page',
+          icon: 'UserProfileIcon',
+          link: '/public/profile',
+        },
+        {
+          label: 'Team Members',
+          icon: 'HoldingHandsIcon',
+          link: '/team',
           exact: false,
         },
         { label: 'FAQ', icon: 'ConversationIcon', link: '/faq', exact: false },
-        // {
-        //   label: 'Public Profile',
-        //   icon: 'UserProfileIcon',
-        //   link: '/public/profile',
-        // },
         {
           label: 'Contact us',
           icon: 'CustomerCareIcon',
@@ -167,44 +172,7 @@ export default Vue.extend({
       }
     },
     checkToRouteLinks() {
-      if (this.$store.getters.userType === UserTypeEnum.PAID) {
-        this.links.splice(1, 1);
-        this.links.splice(1, 0, {
-          label: 'Company Files',
-          icon: 'DocumentIcon',
-          link: '/company-files',
-          exact: false,
-        })
-        this.links.splice(2, 0, {
-          label: 'Team',
-          icon: 'HoldingHandsIcon',
-          link: '/team',
-          exact: false,
-        })
-        this.links.splice(3, 1, {
-          label: 'Billing',
-          icon: 'NewsPaperIcon',
-          link: '/settings?tab=billing',
-          exact: false,
-        })
-      }
-      if (this.$store.getters.userType === UserTypeEnum.TEAM) {
-        this.links.splice(1, 1);
-        this.links.splice(1, 0, {
-          label: 'Company Files',
-          icon: 'DocumentIcon',
-          link: '/company-files',
-          exact: false,
-        })
-      }
-      // else if (this.$store.getters.userType === UserTypeEnum.FREE) {
-      //   this.links.splice(1, 0, {
-      //     label: 'My Files',
-      //     icon: 'FileIcon',
-      //     link: '/my-files',
-      //     exact: false,
-      //   })
-      // }
+     
     },
   },
   computed: {

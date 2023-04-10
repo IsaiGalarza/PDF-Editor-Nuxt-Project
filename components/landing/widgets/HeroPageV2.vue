@@ -46,7 +46,7 @@
     </div>
     <div class="flex flex-col justify-between mt-5">
       <div class="py-lg-4 py-2 sm:hidden lg:inline-block">
-        <nuxt-link to="/register" class="px-5 py-2 rounded bg-white border-none outline-none inline-block">
+        <nuxt-link to="/package?tablevel=1" class="px-5 py-2 rounded bg-white border-none outline-none inline-block">
           Register
         </nuxt-link>
       </div>

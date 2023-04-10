@@ -1,19 +1,10 @@
 <template>
-  <section class="bg-gradient-to-t from-white to-transparent">
+  <section class="bg-paperdazgreen-300">
     <div class="container py-20">
       <div
         class="w-full max-w-md mx-auto bg-white shadow-2xl rounded-xl px-6 py-10"
       >
-        <h4 class="text-lg font-medium mb-8 text-center">
-          Sign in to Paperdaz
-        </h4>
-        <social-auth class="mb-10" />
-        <div class="h-px bg-paperdazgray-100 w-full relative mb-10">
-          <span
-            class="inline-block bg-white p-2 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-paperdazgray-500 font-medium text-sm"
-            >OR</span
-          >
-        </div>
+
 
         <div v-if="isEmailVerified" class="flex items-center text-[13px] w-full bg-red-500 text-white rounded-md py-3 p-2 mb-5">
           <exclamation-icon

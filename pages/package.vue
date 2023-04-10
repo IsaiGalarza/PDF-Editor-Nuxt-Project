@@ -62,6 +62,7 @@ export default Vue.extend({
   // },
   mounted(){
      this.tabLevel = Number(this.$route.query.tablevel)
+   
   },
   async asyncData({ $axios, error }) {
     const packages = await $axios

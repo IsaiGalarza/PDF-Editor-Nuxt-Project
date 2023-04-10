@@ -1,70 +1,139 @@
 <template>
   <section class="bg-paperdazgreen-300 pt-10">
-     <div class="flex flex-wrap p-3 justify-around items-center">
+    <div class="flex flex-wrap p-3 justify-around items-center">
       <div class="w-full sm:w-6/12 md:w-5/12">
         <p class="font-bold text-xl text-white">Account Information</p>
-        <span class="text-xs mb-6 text-white">Enter the required information to continue</span>
+        <span class="text-xs mb-6 text-white"
+          >Enter the required information to continue</span
+        >
         <div>
-          <input :disabled="loading" class="my-3 rounded text-input" placeholder="Business name" required v-model="business_name" />
-          <input :disabled="loading" class="my-3 text-input" placeholder="Contact name" required v-model="business_name" />
-          <input :disabled="loading" class="my-3 text-input" placeholder="Email address" required v-model="business_name" />
-          <input :disabled="loading" class="my-3 text-input" placeholder="Contact number" required v-model="business_name" />
+          <input
+            :disabled="loading"
+            class="my-3 rounded text-input"
+            placeholder="Business name"
+            required
+            v-model="business_name"
+          />
+          <input
+            :disabled="loading"
+            class="my-3 text-input"
+            placeholder="Contact name"
+            required
+            v-model="contact_name"
+          />
+          <input
+            :disabled="loading"
+            class="my-3 text-input"
+            placeholder="Email address"
+            required
+            v-model="business_email"
+          />
+          <input
+            :disabled="loading"
+            class="my-3 text-input"
+            placeholder="Contact number"
+            required
+            v-model="business_number"
+          />
         </div>
-     </div>
-     
-     <div class="w-full sm:w-6/12 md:w-5/12 bg-white rounded shadow-lg">
-       <div class="w-full p-3">
-        <form class="" @submit="submit">
-          <div class="form-group group-label">
-            <label>Total due</label>
-            <label class="text-xl" for="">$ 115/ <abbr class="text-xs">yearly</abbr> </label>
-          </div>
-          <div class="h-[1px] bg-gray-300"></div>
-          <div class="h-4"></div>
-          <div class="grid mb-10">
-            <label class=" font-bold flex items-center justify-between" for="">
-              Credit Card
-              <img class="float-right inline w-[134px]" src="~/assets/img/payment.png" />
-            </label>
-          </div>
-          <!-- <message-alert-widget class="mb-7" :message="errorMessage" v-if="errorMessage" :type="'error'" /> -->
-
-          <div class="form-group mb-3">
-            <label class="input-label" for="">Name of card holder</label>
-            <el-input  placeholder="Name Surname" required v-model="name" />
-          </div>
-          <div class="form-group mb-3">
-            <label class="input-label" for="">Card Number</label>
-            <el-input  placeholder="0000-0000-0000-0000" :value="cardNumberWithDashes"
-              @input="inputCardNumber" required />
-          </div>
-          <div class="grid gap-5 grid-cols-2">
-            <div class="form-group">
-              <label class="input-label" for="">Expiration Date</label>
-              <el-input :disabled="loading" placeholder="MM/YY" required :value="expirationDateWithSlashes"
-                @input="inputExpirationDate" />
-            </div>
-            <div class="form-group">
-              <label class="input-label" for="">CVC</label>
-              <el-input :disabled="loading" placeholder="000" required v-model="cvv" type="password" maxlength="3" />
-            </div>
-          </div>
-        </form>
       </div>
-   </div>
 
-   <div class="w-full flex justify-center mt-12">
-    <button class="w-[50%] sm:w-[350px] py-2 text-center bg-white rounded">Next</button>
-  </div>
-   
-     </div>
+      <div class="w-full sm:w-6/12 md:w-5/12 bg-white rounded shadow-lg">
+        <div class="w-full p-3">
+          <form class="">
+            <div class="form-group group-label">
+              <label>Total due</label>
+              <label class="text-xl" for=""
+                >$
+                {{
+                  packageInfo.isMonthly
+                    ? packageInfo.monthlyPrice
+                    : packageInfo.yearlyPrice
+                }}/
+                <abbr class="text-xs">{{
+                  packageInfo.isMonthly ? 'monthly' : 'yearly'
+                }}</abbr>
+              </label>
+            </div>
+            <div class="h-[1px] bg-gray-300"></div>
+            <div class="h-4"></div>
+            <div class="grid mb-10">
+              <label class="font-bold flex items-center justify-between" for="">
+                Credit Card
+                <img
+                  class="float-right inline w-[134px]"
+                  src="~/assets/img/payment.png"
+                />
+              </label>
+            </div>
+            <message-alert-widget class="mb-7" :message="errorMessage" v-if="errorMessage" :type="'error'" />
+
+            <div class="form-group mb-3">
+              <label class="input-label" for="">Name of card holder</label>
+              <el-input
+                placeholder="Name Surname"
+                required
+                v-model="card_name"
+              />
+            </div>
+            <div class="form-group mb-3">
+              <label class="input-label" for="">Card Number</label>
+              <el-input
+                placeholder="0000-0000-0000-0000"
+                :value="cardNumberWithDashes"
+                @input="inputCardNumber"
+                required
+              />
+            </div>
+            <div class="grid gap-5 grid-cols-2">
+              <div class="form-group">
+                <label class="input-label" for="">Expiration Date</label>
+                <el-input
+                  :disabled="loading"
+                  placeholder="MM/YY"
+                  required
+                  :value="expirationDateWithSlashes"
+                  @input="inputExpirationDate"
+                />
+              </div>
+              <div class="form-group">
+                <label class="input-label" for="">CVC</label>
+                <el-input
+                  :disabled="loading"
+                  placeholder="000"
+                  required
+                  v-model="cvv"
+                  type="password"
+                  maxlength="3"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="w-full flex justify-center mt-12">
+        <button
+          @click="submit"
+          :class="[isLoading ? 'opacity-60' : 'opacity-100']"
+          :disabled="isLoading"
+          class="w-[50%] sm:w-[350px] py-2 text-center bg-white rounded"
+        >
+          <span class="mr-2">Next</span>
+          <transition name="fade" :duration="100">
+            <span v-show="isLoading" class="animate-spin">
+              <SpinnerDottedIcon height="22" width="22" />
+            </span>
+          </transition>
+        </button>
+      </div>
+    </div>
   </section>
 </template>
 
 <script>
 import Vue from 'vue'
-
-
+import axios from 'axios'
 
 export default Vue.extend({
   name: 'RegisterPage',
@@ -72,64 +141,106 @@ export default Vue.extend({
   layout: 'landing',
   data() {
     return {
-      loading: false,
+      isLoading: false,
       errorMessage: '',
       cardNumberWithDashes: '',
-      name: '',
+      card_name: '',
       cvv: '',
       cardId: undefined,
       expirationDateWithSlashes: '',
       companyName: '',
-      business_name: ""
+      business_name: '',
+      contact_name: '',
+      business_email: '',
+      business_number: '',
     }
   },
   computed: {
-    // cardNumber() {
-    //   return this.cardNumberWithDashes.replace(/-+/g, '')
-    // },
-    // expirationDateString() {
-    //   return this.expirationDateWithSlashes.split('/').join('') || ''
-    // },
-    // expYear() {
-    //   return this.expirationDateString.split('').splice(2, 4).join('')
-    // },
-    // expMonth() {
-    //   return this.expirationDateString.split('').splice(0, 2).join('')
-    // },
+    userPayload() {
+      return {
+        email: this.business_email,
+        firstName: this.contact_name,
+        lastName: '',
+        phone: this.business_number,
+        conpanyName: this.business_name,
+      }
+    },
+    cardPayload() {
+      return {
+        card_holder_name: this.card_name,
+        card_number: this.cardNumber,
+        exp_month: this.expMonth,
+        exp_year: this.expYear,
+        cvv: this.cvv,
+        userId: this.$auth.user?.id
+      }
+    },
+    packageInfo() {
+      return this.$store?.getters?.getPackageInfo
+    },
+    cardNumber() {
+      return this.cardNumberWithDashes.replace(/-+/g, '')
+    },
+    expirationDateString() {
+      return this.expirationDateWithSlashes.split('/').join('') || ''
+    },
+    expYear() {
+      return this.expirationDateString.split('').splice(2, 4).join('')
+    },
+    expMonth() {
+      return this.expirationDateString.split('').splice(0, 2).join('')
+    },
   },
   methods: {
-    // inputCardNumber(val) {
+    async createCard() {
+      await this.$axios.post('/cards', this.cardPayload)
+      .then(()=> console.log('success'))
+      .catch((err)=> this.errorMessage = err)
+    },
+    async submit() {
+      this.isLoading = true
+      await axios
+        .post('https://paperlink.app/api/users', this.userPayload)
+        .then((response) => {
+          this.$auth.setUser(response.data)
+          this.createCard()
+        })
+        .catch((error) => console.log(error))
+        .finally(() => (this.isLoading = false))
+    },
+    inputCardNumber(val) {
+      if (val.length > 19) return
+      let temp = val.replace(/(-+)|([^0-9]+)/g, '')
+      this.cardNumberWithDashes = (temp.match(/.{1,4}/g) || []).join('-')
+    },
+    inputExpirationDate(val) {
+      let temp = val.replace(/\/+|[^0-9]+/g, '')
+      if (temp.length > 4) return
 
-    //   if (val.length > 19) return;
-    //   let temp = val.replace(/(-+)|([^0-9]+)/g, '')
-    //   this.cardNumberWithDashes = (temp.match(/.{1,4}/g) || []).join('-')
-    // },
-    // inputExpirationDate(val) {
-    //   let temp = val.replace(/\/+|[^0-9]+/g, '')
-    //   if (temp.length > 4) return
+      // Check if the month is greater than 12
+      if (temp.length === 2) {
+        if (Number(temp) > 12) temp = '0' + temp
+        if (Number(temp) == 0) temp = '01'
+      }
 
-    //   // Check if the month is greater than 12
-    //   if (temp.length === 2) {
-    //     if (Number(temp) > 12) temp = '0' + temp
-    //     if (Number(temp) == 0) temp = '01'
-    //   }
+      if (temp.length == 4 && Number(temp.substring(2, 4)) == 0) {
+        temp = temp.substring(0, 2) + '01'
+      }
 
-    //   if (temp.length == 4 && Number(temp.substring(2, 4)) == 0) {
-    //     temp = temp.substring(0, 2) + '01'
-    //   }
-
-    //   let finalVal = (temp.match(/.{1,2}/g) || []).join('/')
-    //   this.expirationDateWithSlashes = finalVal
-    // },
+      let finalVal = (temp.match(/.{1,2}/g) || []).join('/')
+      this.expirationDateWithSlashes = finalVal
+    },
   },
-  
+  mounted() {
+    console.log('>>>>>>>>', this.packageInfo)
+  },
 })
 </script>
 <style lang="scss" scoped>
-.input-label{
+.input-label {
   @apply text-xs px-1 my-2;
 }
-.group-label{
+.group-label {
   @apply flex justify-between items-center py-2;
 }
 .dropdown {
@@ -167,7 +278,7 @@ export default Vue.extend({
   width: 100%;
   text-align: left;
 }
-.text-input{
-  @apply p-[8px] border-none outline-none rounded w-full
+.text-input {
+  @apply p-[8px] border-none outline-none rounded w-full;
 }
 </style>

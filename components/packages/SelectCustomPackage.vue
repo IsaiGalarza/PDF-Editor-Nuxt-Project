@@ -191,7 +191,7 @@
       </div>
     </div>
        <div class="md:min-w-[300px] lg:min-w-[320px] bg-white rounded-[20px] p-3">
-        <package-card
+        <custom-packagecard
         show-bottom-button
         class="w-full"
         @setName="setname"
@@ -206,13 +206,13 @@
 </template>
 
 <script>
-import PackageCard from '../settings/PackageCard.vue'
+import CustomPackagecard from '../settings/CustomPackagecard.vue'
 import CheckIcon from '../svg-icons/CheckIcon.vue'
 import Vue from 'vue'
 import StringUtils from '~/utils/StringUtils'
 export default Vue.extend({
   name: 'SelectCustomPackage',
-  components: { PackageCard, CheckIcon },
+  components: { CheckIcon, CustomPackagecard },
   data() {
     return {
       settings: {

@@ -38,7 +38,7 @@
         <SpinnerDottedIcon class="animate-spin" />
       </div>
       <!-- END:Team container spinner -->
-      <div v-if="teamMembers.length < 1" class="w-full h-[200px] grid place-items-center text-[17px] font-normal">
+      <div v-if="teamMembers.length" class="w-full h-[200px] grid place-items-center text-[17px] font-normal">
         You have no team member
       </div>
       <table v-else class="custom-table">
@@ -188,46 +188,32 @@ export default Vue.extend({
       teamSearch: '',
       tabs: [
         {
-          label: 'ledger',
+          label: 'Ledger',
           key: 'ledger',
-          action: 'ledger',
           count: 896,
-          icon: LedgerIcon,
+          action: 'ledger',
+          icon: NoteAndPenIconVue,
         },
         {
-          label: 'completed',
+          label: 'Completed',
           key: 'completed',
           count: 25,
           action: 'complete',
           icon: PageIconVue,
         },
         {
-          label: 'confirmed',
+          label: 'Confirmed',
           key: 'confirmed',
           count: 25,
           action: 'confirm',
           icon: TickCircleIconVue,
         },
         {
-          label: 'signed',
+          label: 'Signed',
           key: 'signed',
           count: 25,
           action: 'sign',
           icon: NoteAndPenIconVue,
-        },
-        {
-          label: 'saved',
-          key: 'saved',
-          count: 25,
-          action: 'save',
-          icon: DisketIconVue,
-        },
-        {
-          label: 'shared',
-          key: 'shared',
-          count: 25,
-          action: 'share',
-          icon: ShareIconVue,
         },
       ],
     }

@@ -15,7 +15,6 @@ export default Vue.extend({
   computed: {
     icon() {
       const v = this.value
-      console.log(">>>>>",v)
       return () => import(`./${v}.vue`)
     },
   },

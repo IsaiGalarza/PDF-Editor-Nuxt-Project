@@ -1,29 +1,19 @@
 <template>
-  <svg
-    width="16"
-    height="20"
-    viewBox="0 0 12 14"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    class="stroke-current"
-  >
-    <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
-      d="M5.99125 9.23096C3.41284 9.23096 1.21094 9.6208 1.21094 11.1821C1.21094 12.7433 3.39887 13.1471 5.99125 13.1471C8.56967 13.1471 10.7709 12.7567 10.7709 11.196C10.7709 9.6354 8.58364 9.23096 5.99125 9.23096Z"
-      stroke-width="1.2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-    <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
-      d="M5.98993 7.00408C7.68199 7.00408 9.05342 5.63202 9.05342 3.93996C9.05342 2.24789 7.68199 0.876465 5.98993 0.876465C4.29786 0.876465 2.9258 2.24789 2.9258 3.93996C2.92008 5.62631 4.28262 6.99837 5.96834 7.00408H5.98993Z"
-      stroke-width="1.2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-  </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
+    <rect x="4.5" y="4.5" width="20" height="2" rx="0.5" stroke="#A5A5A5"/>
+    <rect x="7.5" y="6.5" width="14" height="17" rx="0.5" stroke="#A5A5A5"/>
+    <rect x="9.5" y="8.5" width="2" height="2" rx="0.5" stroke="#A5A5A5"/>
+    <rect x="9.5" y="12.5" width="2" height="2" rx="0.5" stroke="#A5A5A5"/>
+    <rect x="13.5" y="8.5" width="2" height="2" rx="0.5" stroke="#A5A5A5"/>
+    <rect x="13.5" y="12.5" width="2" height="2" rx="0.5" stroke="#A5A5A5"/>
+    <rect x="17.5" y="8.5" width="2" height="2" rx="0.5" stroke="#A5A5A5"/>
+    <rect x="17.5" y="12.5" width="2" height="2" rx="0.5" stroke="#A5A5A5"/>
+    <line x1="8" y1="16.5" x2="21" y2="16.5" stroke="#A5A5A5"/>
+    <rect x="12.5" y="16.5" width="4" height="7" stroke="#A5A5A5"/>
+    <line x1="17" y1="19.5" x2="22" y2="19.5" stroke="#A5A5A5"/>
+    <line x1="8" y1="19.5" x2="13" y2="19.5" stroke="#A5A5A5"/>
+    <path d="M4 23.5H24" stroke="#A5A5A5" stroke-linecap="round"/>
+    </svg>
 </template>
 
 <script>

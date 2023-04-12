@@ -34,7 +34,7 @@
         class="disabled:bg-opacity-50 disabled:cursor-not-allowed h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400"
         type="button"
         :disabled="loading"
-        @click="$nuxt.$router.push('/settings?tab=billing')"
+        @click="$nuxt.$router.push('/settings')"
       >
         Yes
         <spinner-dotted-icon

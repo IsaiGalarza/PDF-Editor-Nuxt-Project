@@ -398,7 +398,7 @@ export default Vue.extend({
             if(fromFileManger?.isGuest){
               this.$nuxt.$router.push(fromFileManger.path)
             } else {
-            this.$nuxt.$router.push('/dashboard') 
+            this.$nuxt.$router.push('/file-ledger') 
           }
           }, 2000)
         })

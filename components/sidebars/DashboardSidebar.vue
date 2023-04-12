@@ -100,7 +100,7 @@ export default Vue.extend({
         {
           label: 'Business Page',
           icon: 'UserProfileIcon',
-          link: '/public/profile',
+          link: `/public/profile/${this.$auth.user?.id}`,
         },
         {
           label: 'Team Members',
@@ -115,12 +115,7 @@ export default Vue.extend({
           link: '/contact-us',
           exact: false,
         },
-        {
-          label: 'Settings',
-          icon: 'GearLightIcon',
-          link: '/settings?tab=account',
-          exact: false,
-        },
+ 
       ],
     }
   },

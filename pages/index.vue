@@ -2,8 +2,8 @@
   <div class="" @click="">
     <div class="min-h-[60vh] grid place-items-center bg-paperdazgreen-300">
       <hero-page />
-      <ConfirmPassword v-model="showConfirmPassword"/>
- </div>
+      <ConfirmPassword :userInfo="userDecodedInfo" v-model="showConfirmPassword" />
+    </div>
   </div>
 </template>
 
@@ -16,8 +16,9 @@ import LandingPageKeyFeatures from '~/components/landing/widgets/LandingPageKeyF
 import LandingPageQrScan from '~/components/landing/widgets/LandingPageQrScan.vue'
 import LandingDivider from '~/components/landing/widgets/LandingDivider.vue'
 import ConfirmPassword from '~/components/modals/ConfirmPassword.vue'
+import jwt, { decode, JsonWebTokenError } from 'jsonwebtoken'
 
-import 'intro.js/minified/introjs.min.css';
+import 'intro.js/minified/introjs.min.css'
 
 @Component({
   layout: 'landing',
@@ -29,7 +30,7 @@ import 'intro.js/minified/introjs.min.css';
     LandingPageKeyFeatures,
     LandingJoinSection,
     LandingDivider,
-    ConfirmPassword
+    ConfirmPassword,
   },
   // beforeRouteLeave(to, from, next) {
   //   location.href = to.fullPath
@@ -46,20 +47,27 @@ export default class LandingPage extends Vue {
   }
   data() {
     return {
-      showConfirmPassword: false
+      showConfirmPassword: false,
+      userDecodedInfo: {}
     }
   }
   mounted() {
-    if (sessionStorage.getItem("requestSentFlag")=='true') {
+    if (sessionStorage.getItem('requestSentFlag') == 'true') {
       this.$notify({
         message: 'Request has been sent.',
       })
     }
-    setTimeout(function(){
-      sessionStorage.setItem("requestSentFlag", false);
-    },300);
-
-    this.$route.query?.confirm_password  && (this.showConfirmPassword = true)
+    setTimeout(function () {
+      sessionStorage.setItem('requestSentFlag', false)
+    }, 300)
+     
+    if(!this.$route.query?.verificationToken) return
+    this.$route.query?.verificationToken && (this.showConfirmPassword = true)
+    let encodedUser = jwt.verify(
+      this.$route.query?.verificationToken,
+      '+Erqnl5F0JnIsW++d9U0BfwpJ6w='
+    )
+    this.userDecodedInfo =  encodedUser
   }
   head() {
     return {
@@ -116,4 +124,3 @@ export default class LandingPage extends Vue {
   } // end watcher method watchGsap
 } // end class LandingPage
 </script>
-

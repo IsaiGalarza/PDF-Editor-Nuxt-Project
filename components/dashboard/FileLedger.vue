@@ -54,7 +54,7 @@
               <th class="w-12 text-left fixed-col left">No</th>
               <th class="text-left !pl-5 sm:!pl-16">File Name</th>
               <th class="text-center">{{ isPaidUser ? 'Action' : 'Actions' }}</th>
-              <th class="text-center" v-if="isPaidUser">Action By</th>
+              <th class="text-center" >Action By</th>
               <th class="text-center">Date & Time</th>
               <th class="fixed-col right text-right"></th>
             </tr>
@@ -114,7 +114,7 @@
                     (isPaidUser ? file.fileAction : formatFileAction(file.file.fileAction, file.action))  || "-"
                 }}
               </td>
-              <td class="text-center" v-if="isPaidUser">
+              <td class="text-center" >
                 {{ file.user?.firstName + " " + file.user?.lastName }}
               </td>
               <td class="text-center whitespace-normal px-1">

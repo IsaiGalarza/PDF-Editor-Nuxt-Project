@@ -5,6 +5,7 @@ import UserTypeEnum from '~/models/UserTypeEnum'
 export default{
   methods: {
     toggleToast(val: any){
+      console.log(val)
       //@ts-ignore
       this.$store.commit('SET_TOAST', val)
     },

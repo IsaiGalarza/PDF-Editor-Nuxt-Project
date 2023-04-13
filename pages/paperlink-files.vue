@@ -57,8 +57,8 @@ export default mixins(login).extend({
   methods: {
     increaseCount() {
       this.keepCount = this.keepCount + 1
-      if(this.keepCount == this.popUps.length){
-        this.showGuideModal = false;
+      if (this.keepCount == this.popUps.length) {
+        this.showGuideModal = false
         document.body.style.overflow = 'auto'
       }
     },
@@ -67,7 +67,7 @@ export default mixins(login).extend({
     return {
       // ledger, confirmed, signed, saved, shared
       activeTab: 'ledger',
-      showGuideModal: true,
+      showGuideModal: false,
       keepCount: 0,
       popUps: [
         'WelcomePopUp',
@@ -108,20 +108,6 @@ export default mixins(login).extend({
           action: 'sign',
           icon: NoteAndPenIconVue,
         },
-        // {
-        //   label: 'Saved',
-        //   key: 'saved',
-        //   count: 25,
-        //   action:'save',
-        //   icon: DisketIconVue,
-        // },
-        // {
-        //   label: 'Shared',
-        //   key: 'shared',
-        //   count: 25,
-        //   action:'share',
-        //   icon: ShareIconVue,
-        // },
       ],
       showUploadDocumentModal: false,
       files: [],

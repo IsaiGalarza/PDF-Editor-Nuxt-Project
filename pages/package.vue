@@ -28,6 +28,7 @@ import PaymentCardIcon from '~/components/svg-icons/PaymentCardIcon.vue'
 import UserProfileSolidIcon from '~/components/svg-icons/UserProfileSolidIcon.vue'
 import axios from "axios"
 
+
 export default Vue.extend({
   components: { UserProfileSolidIcon, MailIcon, PaymentCardIcon },
   name: 'PackagesLandingPage',
@@ -56,10 +57,7 @@ export default Vue.extend({
       ],
     }
   },
-  // beforeRouteLeave(to, from, next) {
-  //   location.href = to.fullPath
-  //   return
-  // },
+
   mounted(){
      this.tabLevel = Number(this.$route.query.tablevel)
    

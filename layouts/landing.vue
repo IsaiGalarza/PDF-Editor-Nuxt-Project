@@ -6,8 +6,8 @@
     <app-bar />
     
     <main
-      class="flex-1 flex flex-col"
-      style="background: linear-gradient(180deg, #e4f3e0 0%, #ffffff 36.13%)"
+      class="flex-1 flex flex-col bg-paperdazgreen-300"
+      
     >
     <LandingToast/>
       <Nuxt class="flex-1" />

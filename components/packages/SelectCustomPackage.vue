@@ -48,7 +48,7 @@
                     :step="1"
                     size="small"
                     :min="1"
-                    :max='20'
+                    :max="20"
                   />
                 </div>
               </td>
@@ -79,7 +79,7 @@
                     :step="1"
                     size="small"
                     :min="1"
-                    :max='20'
+                    :max="20"
                   />
                 </div>
               </td>
@@ -141,7 +141,7 @@
                       ? 0
                       : Number(settings.custom_public_profile_price)
                   )
-                }}  
+                }}
               </td>
             </tr>
             <!-- <tr>
@@ -190,8 +190,8 @@
         <span class="text-[#606060]">{{ formatPrice(totalCost) }}</span>
       </div>
     </div>
-       <div class="md:min-w-[300px] lg:min-w-[320px] bg-white rounded-[20px] p-3">
-        <custom-packagecard
+    <div class="md:min-w-[300px] lg:min-w-[320px] bg-white rounded-[20px] p-3">
+      <custom-packagecard
         show-bottom-button
         class="w-full"
         @setName="setname"
@@ -201,7 +201,7 @@
         :create="true"
         :isLight="true"
       />
-       </div>
+    </div>
   </div>
 </template>
 
@@ -247,8 +247,7 @@ export default Vue.extend({
         Number(this.settings.custom_team_members_price) *
         Number(this.customPackage.teamMembers)
       const ccFlowPrice =
-        Number(this.settings.custom_cc_price) *
-        Number(this.customPackage.cc)
+        Number(this.settings.custom_cc_price) * Number(this.customPackage.cc)
       const publicProfilePrice = !this.customPackage.publicProfile
         ? 0
         : Number(this.settings.custom_public_profile_price)
@@ -277,11 +276,8 @@ export default Vue.extend({
     formatPrice(amount) {
       return StringUtils.formatPrice(Number(amount))
     },
-    createAndProceed({
-      stagingPackage,
-      isMonthly,
-    }) {
-      const data = { ...this.customPackage } 
+    createAndProceed({ stagingPackage, isMonthly }) {
+      const data = { ...this.customPackage }
       data.plan = isMonthly ? 'monthly' : 'yearly'
       return
       // Create the custom package

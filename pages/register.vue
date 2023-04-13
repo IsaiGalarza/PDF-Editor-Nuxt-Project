@@ -2,6 +2,12 @@
   <section class="bg-paperdazgreen-300 pt-10">
     <div class="flex flex-wrap p-3 justify-around items-center">
       <div class="w-full sm:w-6/12 md:w-5/12">
+          <message-alert-widget
+          :message="errorMessage"
+          v-show="errorMessageUser"
+          type="error"
+          class="my-2 w-[80%] ml-[0%]"
+        />
         <p class="font-bold text-xl text-white">Account Information</p>
         <span class="text-xs mb-6 text-white"
           >Enter the required information to continue</span
@@ -66,7 +72,12 @@
                 />
               </label>
             </div>
-            <message-alert-widget class="mb-7" :message="errorMessage" v-if="errorMessage" :type="'error'" />
+            <message-alert-widget
+              class="mb-7"
+              :message="errorMessage"
+              v-if="errorMessage"
+              :type="'error'"
+            />
 
             <div class="form-group mb-3">
               <label class="input-label" for="">Name of card holder</label>
@@ -117,14 +128,12 @@
           @click="submit"
           :class="[isLoading ? 'opacity-60' : 'opacity-100']"
           :disabled="isLoading"
-          class="w-[50%] sm:w-[350px] py-2 text-center bg-white rounded"
+          class="w-[50%] sm:w-[320px] py-2 bg-white rounded flex justify-center items-center"
         >
           <span class="mr-2">Next</span>
-          <transition name="fade" :duration="100">
-            <span v-show="isLoading" class="animate-spin">
-              <SpinnerDottedIcon height="22" width="22" />
-            </span>
-          </transition>
+
+              <spinner-dotted-icon v-show="isLoading"  height="20" width="20" class="animate-spin ml-1" />
+
         </button>
       </div>
     </div>
@@ -134,11 +143,14 @@
 <script>
 import Vue from 'vue'
 import axios from 'axios'
+import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
+import MessageAlertWidget from '~/components/widgets/MessageAlertWidget.vue'
 
 export default Vue.extend({
   name: 'RegisterPage',
   auth: false,
   layout: 'landing',
+  components: {SpinnerDottedIcon, MessageAlertWidget},
   data() {
     return {
       isLoading: false,
@@ -153,6 +165,7 @@ export default Vue.extend({
       contact_name: '',
       business_email: '',
       business_number: '',
+      errorMessageUser: ""
     }
   },
   computed: {
@@ -172,7 +185,32 @@ export default Vue.extend({
         exp_month: this.expMonth,
         exp_year: this.expYear,
         cvv: this.cvv,
-        userId: this.$auth.user?.id
+        userId: this.$auth.user?.id,
+      }
+    },
+    subscriptionPayload() {
+      let {
+        companyLedger,
+        name,
+        paperlink,
+        publicProfile,
+        teamMembers,
+        cc,
+        isMonthly,
+      } = this.$store.getters.getPackageInfo
+
+      return {
+        action: 'subscribe',
+        plan: isMonthly ? 'monthly' : 'yearly',
+        custom: {
+          companyLedger,
+          name,
+          paperlink,
+          publicProfile,
+          teamMembers,
+          cc,
+        },
+        userId: this.$auth.user?.id,
       }
     },
     packageInfo() {
@@ -193,9 +231,20 @@ export default Vue.extend({
   },
   methods: {
     async createCard() {
-      await this.$axios.post('/cards', this.cardPayload)
-      .then(()=> console.log('success'))
-      .catch((err)=> this.errorMessage = err)
+      await this.$axios
+        .post('/cards', this.cardPayload)
+        .then(() => this.createSubscription())
+        .catch((err) => (this.errorMessage = err))
+    },
+    async createSubscription() {
+      await this.$axios
+        .post('/subscriptions', this.subscriptionPayload)
+        .then((res) => this.toggleToast({
+          msg: 'Thank you for going paperless! We have sent a receipt with instructions to verify your email!',
+          active: true
+        }))
+        .catch((err) => (this.errorMessage = err))
+        .finally(()=> this.isLoading = false)
     },
     async submit() {
       this.isLoading = true
@@ -205,8 +254,7 @@ export default Vue.extend({
           this.$auth.setUser(response.data)
           this.createCard()
         })
-        .catch((error) => console.log(error))
-        .finally(() => (this.isLoading = false))
+        .catch((error) => this.errorMessageUser = error)
     },
     inputCardNumber(val) {
       if (val.length > 19) return

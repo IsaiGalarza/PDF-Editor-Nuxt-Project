@@ -269,7 +269,7 @@ export default Vue.extend({
       // Toolbar function - cancelConfrim
       if (this.isConfirm) {
         this.$store.commit('SET_PDF_EXIT', true)
-        this.$router.push('/dashboard')
+        this.$router.push('/paperlink-files')
         return;
       }
       if (this.upload_state) {
@@ -277,7 +277,7 @@ export default Vue.extend({
           .then(() => {
             this.$store.commit('SET_UPLOAD_STATE', false);
             this.$store.commit('SET_PDF_EXIT', true)
-            this.$router.push('/dashboard')
+            this.$router.push('/paperlink-files')
           })
       } else {
         this.$store.commit('SET_UPLOAD_STATE', false);

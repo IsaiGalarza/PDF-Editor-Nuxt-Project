@@ -155,56 +155,45 @@
             <!-- END: spinner container -->
             <empty-file-ledger class="min-h-[55vh]" v-if="(pdfUser.length < 1) && !fileSpinner" :isPaidUser="isPaidUser" />
             <!--START: No files container-->
-            <section class="px-2">
-               <div class="border-b-[1px] border-gray-200">
-                 <b class="w-1/12 text-center fixed-col left inline-block">Order</b>
-                  <b class="text-left inline-block w-4/12">File name</b>
-                  <b class="text-center inline-block w-2/12">Action</b>
+            <section class="px-0">
+               <div class="border-b-[1px] border-gray-200 flex items-center py-2">
+                 <b class="w-1/12 fixed-col left inline-block text-center">Order</b>
+                  <b class="text-left inline-block w-3/12">File name</b>
+                  <b class="text-left inline-block w-1/12">Pages</b>
+                  <b class="text-center inline-block w-2/12">Action required</b>
                   <b class="text-center inline-block w-2/12">Privacy</b>
                   <b class="text-center inline-block w-2/12">Date &amp; Time</b>
                   <b class="text-center inline-block w-1/12"></b>
                </div>
-               <div>
-                <tr v-for="(file, i) in pdfUser" :key="i">
-                  <td class="fixed-col left">{{ i + 1 + returnedDataPage }}</td>
-                  <td class="text-left overflow-hidden">
+               <draggable v-model="pdfUser" group="paperlink">
+                <li v-for="(file, i) in pdfUser" :key="i" class="py-2 border-b-[1px] border-gray-200 list-none">
+                  <div class="w-1/12 inline-flex justify-center"><button><DragIcon/></button></div>
+                  <div class="text-left inline-block w-4/12 truncate">
                     <div class="flex items-center gap-3 whitespace-nowrap max-w-[100px] sm:min-w-[150px] sm:max-w-[400px]">
-                      <div class="p-0.5 border border-paperdazgreen-400 hidden sm:block"
-                        :class="[
-                          (file.role == userType.PAID && $auth.user.id != file.userId)
-                            ? 'rounded-md w-9 h-9 min-w-[36px] min-h-[36px]'
-                            : 'hidden sm:circle sm:circle-17']"
-                      >
-                        <img :src="
-                          (file.user || {}).profile_picture ||
-                          '/img/placeholder_picture.png'
-                        " alt=""
-                          :class="[file.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
-                      </div>
                       <div class="max-sm:w-24">
-                        <p class="max-sm:truncate max-sm:text-xs sm:text-base font-medium text-left sm:ml-1">
+                        <p class="max-sm:truncate capitalize text-base font-normal text-left sm:ml-1">
                           <nuxt-link :to="`/pdf/${file.paperLink}`">
                             {{ file.fileName | removeExtension }}
                           </nuxt-link>
                         </p>
-                        <p class="text-xs text-[#878686] truncate hidden sm:block">
-                          {{ file.userName }}
-                        </p>
                       </div>
                     </div>
-                  </td>
-                  <td class="text-sm text-center capitalize"
+                  </div>
+                  <div class="text-center whitespace-normal px-1 inline-block w-1/12 text-xs">
+                   3
+                  </div>
+                  <div class="text-sm text-center capitalize inline-block w-2/12"
                     :class="
                       file.fileAction === FileAction.COMPLETE ? 'text-paperdazgreen-400' :
                       file.fileAction === FileAction.SIGNED ? 'text-blue-400' :
                       file.fileAction === FileAction.CONFIRM ? 'text-purple-400' : ''
                     "
-                  >{{ file.fileAction && file.fileAction !== FileAction.SHARED ? file.fileAction : "-" }}</td>
-                  <td class="text-sm text-center capitalize">{{ (file || {}).filePrivacy }}</td>
-                  <td class="text-center whitespace-normal px-1">
+                  >{{ file.fileAction && file.fileAction !== FileAction.SHARED ? file.fileAction : "-" }}</div>
+                  <div class="text-sm text-center capitalize inline-block w-2/12">{{ (file || {}).filePrivacy }}</div>
+                  <div class="text-center whitespace-normal px-1 inline-block w-2/12 text-xs">
                     {{ formatDateTime(file.updatedAt) }}
-                  </td>
-                  <td class="fixed-col right w-4 sm:w-[50px]">
+                  </div>
+                  <div class="fixed-col right sm:w-[50px] text-center inline-block w-1/12">
                     <div class="w-full h-full grid place-items-center">
                       <button class="sm:hidden w-8 h-8 cursor-pointer grid place-items-center rounded-full"
                         :class="[createdByTeamMember(file.uploadedBy) && isTeam ? 'bg-paperdazgreen-300/20' : '']"
@@ -271,9 +260,9 @@
                         </el-dropdown-menu>
                       </el-dropdown>
                     </div>
-                  </td>
-                </tr>
-               </div>
+                  </div>
+                </li>
+               </draggable>
             </section>
            
           </div>
@@ -501,6 +490,8 @@ import FileAction from '~/models/FileAction'
 import ArrowDownIcon from '../svg-icons/ArrowDownIcon.vue'
 import EyeIcon from '../svg-icons/EyeIcon.vue'
 import MaxInviteModal from '../teams/MaxInviteModal.vue'
+import DragIcon from "../svg-icons/DragIcon.vue"
+
 export default Vue.extend({
   components: {
     EmptyFileLedger,
@@ -543,7 +534,8 @@ export default Vue.extend({
     ArrowDownIcon,
     EyeIcon,
     MaxInviteModal,
-    draggable
+    draggable,
+    DragIcon
   },
   name: 'CompanyFileLedger',
   data() {
@@ -600,7 +592,7 @@ export default Vue.extend({
         .finally(() => { this.showUploadIcon = true })
     },
     showUploadModalFunction() {
-      if (this.totalFile >= this.totalRegisteredPaperlink)
+      if (!(this.totalFile >= this.totalRegisteredPaperlink))
         this.showMaxPaperlinkModal = true
       else
         this.showUploadDocumentModal = true
@@ -715,7 +707,7 @@ export default Vue.extend({
       )}  ${DateFormatter.getFormattedTime(dateVal)}`
     },
     async fetchFiles(page, search) {
-      //---- checking the user role ---
+      console.log(this.$auth.user)
       let paramsId = (this.$auth.user.role == UserTypeEnum.TEAM ? this.$auth.user.teamId : this.$auth.user.id)
       //<------------------- START: fetching of folder ------------>>
       await this.$axios.$get(`/files/?userId=${paramsId}&fileName[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`, {

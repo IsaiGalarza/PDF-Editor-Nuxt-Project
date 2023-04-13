@@ -37,7 +37,7 @@
           </div>
         </div>
       </div>
-      <div class="h-fit sm:pt-0 pt-4 md:w-6/12 sm:w-full md:text-right">
+      <div class="h-fit sm:pt-0 pt-4 lg:w-6/12 sm:w-full md:text-right">
         <img
           class="w-full md:w-[90%]"
           src="/img/hero_diplay.svg"
@@ -45,7 +45,7 @@
       </div>
     </div>
     <div class="flex flex-col justify-between mt-5">
-      <div class="py-lg-4 py-2 sm:hidden lg:inline-block">
+      <div class="py-lg-4 py-2  lg:inline-block">
         <nuxt-link to="/package?tablevel=1" class="px-5 py-2 rounded bg-white border-none outline-none inline-block">
           Register
         </nuxt-link>

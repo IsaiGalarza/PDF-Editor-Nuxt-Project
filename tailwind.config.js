@@ -54,7 +54,15 @@ module.exports = {
     extend: {},
   },
   plugins: [
-    plugin(({ addUtilities, e, theme, variants }) => {
+    plugin(({ addUtilities, e, theme, variants, addComponents }) => {
+      addComponents({
+        '@layer utilities': {
+          '.max-sm': {
+            'max-width': '640px'
+          },
+        },
+      })
+
       addUtilities({
         '.flex-gap-wrapper': {
           overflow: 'auto',

@@ -57,12 +57,13 @@ module.exports = {
     plugin(({ addUtilities, e, theme, variants, addComponents }) => {
       addComponents({
         '@layer utilities': {
-          '.max-sm': {
-            'max-width': '640px'
+          '.max-sm\\:text-xs': {
+            'max-width': '640px',
+            'font-size': '12px',
           },
         },
       })
-
+      
       addUtilities({
         '.flex-gap-wrapper': {
           overflow: 'auto',

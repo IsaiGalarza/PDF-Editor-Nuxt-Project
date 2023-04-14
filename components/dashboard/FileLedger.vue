@@ -485,10 +485,10 @@ export default Vue.extend({
   },
 })
 </script>
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .file-ledger-table {
   --background: white;
-  @apply max-sm:text-xs sm:text-base w-full whitespace-nowrap;
+  @apply sm:text-base w-full whitespace-nowrap;
   border-collapse: separate;
   border-spacing: 0px 0px;
   height: fit-content;

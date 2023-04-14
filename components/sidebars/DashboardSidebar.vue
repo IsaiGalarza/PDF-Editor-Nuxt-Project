@@ -108,6 +108,12 @@ export default Vue.extend({
           link: '/team',
           exact: false,
         },
+        {
+          label: 'Billings',
+          icon: 'QuoteFileIcon',
+          link: '/billing',
+          exact: false,
+        },
         { label: 'FAQ', icon: 'ConversationIcon', link: '/faq', exact: false },
         {
           label: 'Contact us',

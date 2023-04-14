@@ -179,7 +179,9 @@ export default mixins(login).extend({
       let userId = this.$auth.user?.id
       this.loading = true
       this.errorMessage = ''
-      this.$axios
+
+      try {
+        this.$axios
         .$patch(`/users/${userId}`, newFormData)
         .then(async () => {
           this.filterUsers()
@@ -192,13 +194,10 @@ export default mixins(login).extend({
           await this.$nextTick()
           this.$emit('stop-editing')
         })
-        .catch(({ response }) => {
-          let message = ErrorHandler(response)
+      } catch ({response}) {
+        let message = ErrorHandler(response)
           this.errorMessage = message
-        })
-        .finally(() => {
-          this.loading = false
-        })
+      }
     },
   },
   watch: {

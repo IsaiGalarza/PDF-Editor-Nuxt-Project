@@ -4,7 +4,7 @@
     <p class="capitalize inline-flex items-center gap-3"
       :class="[compact ? 'text-sm sm:text-base' : 'text-base sm:text-xl']">
       <span class="inline-block lg:hidden mr-3 sm:mr-4 cursor-pointer"
-        @click="$emit('open-sidebar')"><hamburger-icon class="hidden md:inline-block"/></span><abbr class="whitespace-nowrap">{{ title || routeName }}</abbr>
+        @click="$emit('open-sidebar')"><hamburger-icon class="hidden md:inline-block"/></span><abbr class="whitespace-nowrap">{{ $auth.user.companyName ? $auth.user.companyName : ''  }}</abbr>
     </p>
     <div class="hidden lg:inline-block text-[#BBBBBB] pr-4 border-r mr-2 w-[50%]">
       <!-- <div class="text-[#BBBBBB] mr-4"> -->
@@ -467,6 +467,7 @@ export default mixins(GlobalMixin, login).extend({
     this.fetchUsersInitialAccount()
     this.getUsersAccount()
     this.getUserNotification()
+    console.log(this.user)
   }
 })
 </script>

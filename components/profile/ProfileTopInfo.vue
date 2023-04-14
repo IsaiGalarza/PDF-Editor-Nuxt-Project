@@ -216,7 +216,7 @@ export default mixins(login).extend({
       return this.user?.id == this.userInfo?.id
     },
     profilePhoto() {
-      return  this.userInfo.profilePicture
+      return  this.userInfo?.profilePicture
     },
   },
   watch: {

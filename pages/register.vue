@@ -2,7 +2,7 @@
   <section class="bg-paperdazgreen-300 pt-10">
     <div class="flex flex-wrap p-3 justify-around items-center">
       <div class="w-full sm:w-6/12 md:w-5/12">
-          <message-alert-widget
+        <message-alert-widget
           :message="errorMessage"
           v-show="errorMessageUser"
           type="error"
@@ -126,14 +126,22 @@
       <div class="w-full flex justify-center mt-12">
         <button
           @click="submit"
-          :class="[isLoading ? 'opacity-60' : 'opacity-100']"
-          :disabled="isLoading"
+          :class="[
+            isLoading || !checkFilledInput
+              ? 'opacity-60 cursor-not-allowed'
+              : 'opacity-100',
+          ]"
+          :disabled="isLoading || !checkFilledInput"
           class="w-[50%] sm:w-[320px] py-2 bg-white rounded flex justify-center items-center"
         >
           <span class="mr-2">Next</span>
 
-              <spinner-dotted-icon v-show="isLoading"  height="20" width="20" class="animate-spin ml-1" />
-
+          <spinner-dotted-icon
+            v-show="isLoading"
+            height="20"
+            width="20"
+            class="animate-spin ml-1"
+          />
         </button>
       </div>
     </div>
@@ -150,7 +158,7 @@ export default Vue.extend({
   name: 'RegisterPage',
   auth: false,
   layout: 'landing',
-  components: {SpinnerDottedIcon, MessageAlertWidget},
+  components: { SpinnerDottedIcon, MessageAlertWidget },
   data() {
     return {
       isLoading: false,
@@ -165,10 +173,21 @@ export default Vue.extend({
       contact_name: '',
       business_email: '',
       business_number: '',
-      errorMessageUser: ""
+      errorMessageUser: '',
     }
   },
   computed: {
+    checkFilledInput() {
+      return (
+        this.business_email &&
+        this.contact_name &&
+        this.business_number &&
+        this.business_name &&
+        this.cardNumber &&
+        this.card_name &&
+        this.cvv
+      )
+    },
     userPayload() {
       return {
         email: this.business_email,
@@ -239,12 +258,14 @@ export default Vue.extend({
     async createSubscription() {
       await this.$axios
         .post('/subscriptions', this.subscriptionPayload)
-        .then((res) => this.toggleToast({
-          msg: 'Thank you for going paperless! We have sent a receipt with instructions to verify your email!',
-          active: true
-        }))
+        .then((res) =>
+          this.toggleToast({
+            msg: 'Thank you for going paperless! We have sent a receipt with instructions to verify your email!',
+            active: true,
+          })
+        )
         .catch((err) => (this.errorMessage = err))
-        .finally(()=> this.isLoading = false)
+        .finally(() => (this.isLoading = false))
     },
     async submit() {
       this.isLoading = true
@@ -254,7 +275,7 @@ export default Vue.extend({
           this.$auth.setUser(response.data)
           this.createCard()
         })
-        .catch((error) => this.errorMessageUser = error)
+        .catch((error) => (this.errorMessageUser = error))
     },
     inputCardNumber(val) {
       if (val.length > 19) return

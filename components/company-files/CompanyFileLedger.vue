@@ -156,7 +156,7 @@
             <empty-file-ledger class="min-h-[55vh]" v-if="(pdfUser.length < 1) && !fileSpinner" :isPaidUser="isPaidUser" />
             <!--START: No files container-->
             <section class="px-0">
-               <div class="border-b-[1px] border-gray-200 flex items-center py-2">
+               <div class="border-b-[1px] border-gray-200 flex items-center py-3">
                  <b class="w-1/12 fixed-col left inline-block text-center">Order</b>
                   <b class="text-left inline-block w-3/12">File name</b>
                   <b class="text-left inline-block w-1/12">Pages</b>
@@ -168,8 +168,8 @@
                <draggable v-model="pdfUser" group="paperlink">
                 <li v-for="(file, i) in pdfUser" :key="i" class="py-2 border-b-[1px] border-gray-200 list-none">
                   <div class="w-1/12 inline-flex justify-center"><button><DragIcon/></button></div>
-                  <div class="text-left inline-block w-4/12 truncate">
-                    <div class="flex items-center gap-3 whitespace-nowrap max-w-[100px] sm:min-w-[150px] sm:max-w-[400px]">
+                  <div class="text-left inline-block w-3/12 truncate">
+                    <div class="flex items-center gap-3 max-w-[100px] sm:min-w-[150px] sm:max-w-[400px]">
                       <div class="max-sm:w-24">
                         <p class="max-sm:truncate capitalize text-base font-normal text-left sm:ml-1">
                           <nuxt-link :to="`/pdf/${file.paperLink}`">
@@ -179,7 +179,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="text-center whitespace-normal px-1 inline-block w-1/12 text-xs">
+                  <div class="text-center  px-1 inline-block w-1/12 text-xs">
                    3
                   </div>
                   <div class="text-sm text-center capitalize inline-block w-2/12"
@@ -190,7 +190,7 @@
                     "
                   >{{ file.fileAction && file.fileAction !== FileAction.SHARED ? file.fileAction : "-" }}</div>
                   <div class="text-sm text-center capitalize inline-block w-2/12">{{ (file || {}).filePrivacy }}</div>
-                  <div class="text-center whitespace-normal px-1 inline-block w-2/12 text-xs">
+                  <div class="text-center  px-1 inline-block w-2/12 text-xs">
                     {{ formatDateTime(file.updatedAt) }}
                   </div>
                   <div class="fixed-col right sm:w-[50px] text-center inline-block w-1/12">
@@ -592,6 +592,8 @@ export default Vue.extend({
         .finally(() => { this.showUploadIcon = true })
     },
     showUploadModalFunction() {
+      this.showUploadDocumentModal = true
+      return
       if (!(this.totalFile >= this.totalRegisteredPaperlink))
         this.showMaxPaperlinkModal = true
       else
@@ -710,11 +712,7 @@ export default Vue.extend({
       console.log(this.$auth.user)
       let paramsId = (this.$auth.user.role == UserTypeEnum.TEAM ? this.$auth.user.teamId : this.$auth.user.id)
       //<------------------- START: fetching of folder ------------>>
-      await this.$axios.$get(`/files/?userId=${paramsId}&fileName[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`, {
-        params: {
-          isEditing: 0
-        }
-      })
+      await this.$axios.$get(`/files/?userId=${paramsId}&fileName[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`)
         .then((response) => {
           const filesData = response.data.map((el) => {
             return el

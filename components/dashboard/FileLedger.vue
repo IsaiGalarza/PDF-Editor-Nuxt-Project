@@ -477,7 +477,7 @@ export default Vue.extend({
       this.fetchFiles(this.returnedDataPage, this.searchParam)
       }, 500); // delay for half second
     },
-    refresh: function () {
+    refresh: function () { 
       this.$nuxt.refresh()
       this.fetchFiles(this.returnedDataPage, this.folderSearch)
       this.fetchFolder(this.returnedFolderPage, this.folderSearch)
@@ -485,10 +485,10 @@ export default Vue.extend({
   },
 })
 </script>
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .file-ledger-table {
   --background: white;
-  @apply sm:text-base w-full whitespace-nowrap;
+  @apply max-sm:text-xs sm:text-base w-full whitespace-nowrap;
   border-collapse: separate;
   border-spacing: 0px 0px;
   height: fit-content;

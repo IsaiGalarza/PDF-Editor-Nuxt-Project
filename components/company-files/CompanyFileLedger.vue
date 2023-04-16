@@ -155,9 +155,9 @@
             <!-- END: spinner container -->
             <empty-file-ledger class="min-h-[55vh]" v-if="(pdfUser.length < 1) && !fileSpinner" :isPaidUser="isPaidUser" />
             <!--START: No files container-->
-            <section class="px-0">
+            <section class="px-0 min-w-[700px] w-full">
                <div class="border-b-[1px] border-gray-200 flex items-center py-3">
-                 <b class="w-1/12 fixed-col left inline-block text-center">Order</b>
+                 <b class="w-1/12  inline-block text-center">Order</b>
                   <b class="text-left inline-block w-3/12">File name</b>
                   <b class="text-left inline-block w-1/12">Pages</b>
                   <b class="text-center inline-block w-2/12">Action required</b>
@@ -165,8 +165,8 @@
                   <b class="text-center inline-block w-2/12">Date &amp; Time</b>
                   <b class="text-center inline-block w-1/12"></b>
                </div>
-               <draggable v-model="files" group="paperlink" @change="onChange">
-                <li v-for="(file, i) in files" :key="file.id" class="py-2 border-b-[1px] border-gray-200 list-none">
+               <draggable v-model="files" group="paperlink" @change="onChange" class="px-0">
+                <div v-for="(file, i) in files" :key="file.id" class="py-2 border-b-[1px] border-gray-200 list-none px-0 flex items-center  min-w-[700px] w-full">
                   <div class="w-1/12 inline-flex justify-center"><button><DragIcon/></button></div>
                   <div class="text-left inline-block w-3/12 truncate">
                     <div class="flex items-center gap-3 max-w-[100px] sm:min-w-[150px] sm:max-w-[400px]">
@@ -261,7 +261,7 @@
                       </el-dropdown>
                     </div>
                   </div>
-                </li>
+                </div>
                </draggable>
             </section>
            

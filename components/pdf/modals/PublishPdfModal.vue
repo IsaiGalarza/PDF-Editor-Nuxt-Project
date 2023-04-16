@@ -405,7 +405,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           })
           this.closeModal()
           this.$store.commit('SET_PDF_EXIT', true)
-          this.$nuxt.$router.push('/company-files')
+          this.$nuxt.$router.push('/paperlink-files')
         })
         .catch(() => {
           this.$notify.error({

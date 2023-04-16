@@ -180,7 +180,7 @@
                     </div>
                   </div>
                   <div class="text-center  px-1 inline-block w-1/12 text-xs">
-                   3
+                  {{ file.pages }}
                   </div>
                   <div class="text-sm text-center capitalize inline-block w-2/12"
                     :class="

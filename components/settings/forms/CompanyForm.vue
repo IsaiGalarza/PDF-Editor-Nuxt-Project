@@ -2,46 +2,25 @@
   <form @submit.prevent="onSubmit" ref="form" class="profile-info-form grid grid-cols-1 gap-5">
     <message-alert-widget :message="errorMessage" v-show="errorMessage" type="error" class="my-2 w-[100%] ml-[0%]" />
 
-    <div class="flex justify-between w-full">
-      <div class="mx-2 w-1/2">
-        <label for="">Email</label>
-        <el-input placeholder="email" v-model="formData.email" type="text" :disabled="true" />
-      </div>
-      <div class="mx-2 w-1/2">
-        <label for="">Phone</label>
-        <el-input v-model="formData.phone" placeholder="Enter phone number..." :disabled="!editingDetails"
-          type="phone" />
-      </div>
-    </div>
+    <div class=" w-full">
 
     <div class="mx-2 w-full">
-      <label for="">Business Name</label>
-      <el-input placeholder="business name" class="pr-4" v-model="formData.name" type="text"
+      <el-input placeholder="business name" class="pr-4 mb-4" v-model="formData.name" type="text"
         :disabled="!editingDetails" />
     </div>
-    <div class="flex justify-between w-full">
-      <div class="mx-2 w-1/2">
-        <label for="" class="mb block">Country</label>
-        <input ref="countryInitial" class="custom-input py-2 px-2 text-[14px] width-full pl-4 text-paperdazgray-300"
-          :class="[
-            editingDetails == false ? 'text-black' : 'text-paperdazgray-300',
-          ]" v-model="country" :disabled="!editingDetails" @input="displayCountry" type="text" placeholder="country" />
-        <div v-if="setDropDown" class="dropdown cursor-pointer z-10">
-          <div v-for="(country, i) in dropDownContent" class="flex items-center my-2 px-1">
-            <img :src="country.flags.png" class="w-8 h-6 rounded-md mr-2 dd-image" />
-            <li @click="setCountryInfo" :id="country.dial_code">
-              {{ country.name.common }}
-            </li>
-          </div>
-        </div>
-      </div>
-      <div class="mx-2 w-1/2">
-        <label for="">Timezone</label>
-        <el-select placeholder="Timezone" class="w-full" filterable v-model="formData.timezone"
-          :disabled="!editingDetails">
-          <el-option :value="timezone" :label="timezone" v-for="(timezone, i) in timezones" :key="i" />
-        </el-select>
-      </div>
+    <div class="mx-2 w-full">
+      <el-input placeholder="Contact name" class="pr-4 mb-4" v-model="formData.firstName" type="text"
+        :disabled="!editingDetails" />
+    </div>
+    <div class="mx-2 w-full">
+      <el-input placeholder="Email address" class="pr-4 mb-4" v-model="formData.name" type="text"
+        :disabled="!editingDetails" />
+    </div>
+    <div class="mx-2 w-full">
+      <el-input v-model="formData.phone" class="pr-4 mb-4" placeholder="Contact number" :disabled="!editingDetails"
+        type="phone" />
+    </div>
+  </div>
     </div>
     <transition name="fade">
       <div class="flex items-center justify-center mt-2" v-show="editingDetails">
@@ -88,6 +67,7 @@ export default mixins(login).extend({
         name: (this.$auth.user.companyName),
         email: (this.$auth.user.email),
         state: '',
+        firstName: (this.$auth.user.firstName),
         country: '',
         phone: '',
         timezone: ''

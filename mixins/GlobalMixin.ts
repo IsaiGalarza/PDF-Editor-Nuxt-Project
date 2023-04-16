@@ -1,10 +1,19 @@
 import Vue from 'vue'
 import UserTypeEnum from '~/models/UserTypeEnum'
+import { server } from '~/services/new-service'
+import { ErrorHandler } from '~/types/ErrorFunction'
 
-
-export default{
+export default {
+  computed: {
+    $_ErrorHandler(){
+      return ErrorHandler
+    },
+    $_server() {
+      return server
+    },
+  },
   methods: {
-    toggleToast(val: any){
+    toggleToast(val: any) {
       console.log(val)
       //@ts-ignore
       this.$store.commit('SET_TOAST', val)

@@ -1,23 +1,12 @@
 <template>
-  <section
-    class="bg-white rounded-2xl px-10 py-11 flex-1 flex items-center justify-center"
+  <div
+    class="rounded-2xl px-10 py-11 grid grid-cols-1 lg:grid-cols-[max-content,1fr] gap-6"
   >
-    <form class="w-full max-w-2xl mx-auto" @submit.prevent="submit">
-      <h3
-        class="flex justify-center items-center text-paperdazgreen-300 border-b-2 border-paperdazgreen-300 font-semibold text-2xl gap-2 pb-1 relative mb-12"
-      >
-        <span>Change Your Password</span>
-        <button
-          type="button"
-          @click="editingDetails = !editingDetails"
-          class="px-2 py-1"
-        >
-          <pen-icon v-show="!editingDetails" />
-          <times-icon v-show="editingDetails" width="16" height="16" />
-        </button>
-      </h3>
+  <profile-card class="lg:w-[262px] w-full max-w-full" />
+    <form class="w-full mx-auto bg-white rounded-2xl p-3" @submit.prevent="submit">
+ 
 
-      <div class="mb-7">
+      <div class="mb-7 mt-4">
         <label for="" class="block text-[#282533] font-medium text-lg mb-2"
           >Current Password</label
         >
@@ -90,11 +79,12 @@
         </button>
       </div>
     </form>
-  </section>
+  </div>
 </template>
 
 <script >
 import Vue from 'vue'
+import ProfileCard from '../ProfileCard.vue'
 import PenIcon from '~/components/svg-icons/PenIcon.vue'
 import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
 import TimesIcon from '~/components/svg-icons/TimesIcon.vue'
@@ -113,11 +103,12 @@ export default mixins(login).extend({
     TimesIcon,
     SpinnerDottedIcon,
     MessageAlertWidget,
-    MessageAlertWidget
+    MessageAlertWidget,
+    ProfileCard
 },
   data() {
     return {
-      editingDetails: false,
+      editingDetails: true,
       loading: false,
       formData: {
        oldPassword: '',

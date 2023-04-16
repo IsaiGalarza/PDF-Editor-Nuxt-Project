@@ -165,8 +165,8 @@
                   <b class="text-center inline-block w-2/12">Date &amp; Time</b>
                   <b class="text-center inline-block w-1/12"></b>
                </div>
-               <draggable v-model="pdfUser" group="paperlink">
-                <li v-for="(file, i) in pdfUser" :key="i" class="py-2 border-b-[1px] border-gray-200 list-none">
+               <draggable v-model="files" group="paperlink" @change="onChange">
+                <li v-for="(file, i) in files" :key="file.id" class="py-2 border-b-[1px] border-gray-200 list-none">
                   <div class="w-1/12 inline-flex justify-center"><button><DragIcon/></button></div>
                   <div class="text-left inline-block w-3/12 truncate">
                     <div class="flex items-center gap-3 max-w-[100px] sm:min-w-[150px] sm:max-w-[400px]">
@@ -584,6 +584,9 @@ export default Vue.extend({
     }
   },
   methods: {
+    onChange(){
+        this.$forceUpdate()
+    },
     async maxFileUpload() {
       this.$auth.user.subscriptionId && await this.$axios.get(`/subscriptions/${this.$auth.user.subscriptionId}`)
         .then((response) => {

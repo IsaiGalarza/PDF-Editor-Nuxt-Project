@@ -218,7 +218,7 @@ export default Vue.extend({
       settings: {
         custom_paperlink_price: 2,
         custom_team_members_price: 2,
-        custom_cc_price: 2,
+        custom_cc_price: 0,
         custom_public_profile_price: 10,
         custom_company_ledger_price: 0,
       },
@@ -267,7 +267,7 @@ export default Vue.extend({
       const stag = { ...this.customPackage }
       Object.assign(stag, {
         monthlyPrice: this.totalCost,
-        yearlyPrice: this.totalCost * 10,
+        yearlyPrice: (this.totalCost * 12) - (this.totalCost * 12 * 0.2),
       })
       return stag
     },

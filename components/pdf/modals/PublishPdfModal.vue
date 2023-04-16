@@ -18,37 +18,57 @@
       </h4>
     </template>
     <!-- Start:: Body -->
-    <div v-if="isConfirm" class="flex justify-center pb-2">
-      <CheckedFillIcon width="90" />
-    </div>
-    <!-- <span v-if="!isCreator">Do you want these file to be saved as
-      {{ `${(file.fileAction + 'ed').replace('ee', 'e')}` }}?</span> -->
-    <span v-if="isCreator" class="w-full text-center block py-0 px-2 pb-8 text-[16px] break-normal">Do you want to publish the file as
-      <span class="capitalize">
-        {{
-            file.fileAction + ' & ' + file.filePrivacy.replace('p', 'P') + '?'
-        }}</span></span>
-    <span v-else class="w-full text-center block py-0 px-2 pb-8 text-[16px]">
-      If so, we will send a copy to your email.
-    </span>
-    <div class="flex justify-around mt-6">
-      <button class="h-10 text-xs w-[150px] max-w-[50%] rounded-lg shadow border-[#D9251E] mr-1" type="button"
-        :disabled="isLoading" @click="closeModal()" :class="
-          isConfirm
-            ? 'bg-zinc-500 border-[0px] text-white'
-            : 'bg-white border-[1px] text-[#D9251E]'
-        ">
-        {{ isCreator ? 'Cancel' : 'Back' }}
-      </button>
+     <div v-if="!nonUserRecieveEmail">
+      <div v-if="isConfirm" class="flex justify-center pb-2">
+        <CheckedFillIcon width="90" />
+      </div>
+      <!-- <span v-if="!isCreator">Do you want these file to be saved as
+        {{ `${(file.fileAction + 'ed').replace('ee', 'e')}` }}?</span> -->
+      <span v-if="isCreator" class="w-full text-center block py-0 px-2 pb-8 text-[16px] break-normal">Do you want to publish the file as
+        <span class="capitalize">
+          {{
+              file.fileAction + ' & ' + file.filePrivacy.replace('p', 'P') + '?'
+          }}</span></span>
+      <span v-if="!isCreator && $auth.loggedIn" class="w-full text-center block py-0 px-2 pb-8 text-[16px] mb-6">
+        If so, we will send a copy to your email.
+      </span>
+      <div class="flex justify-around mt-0">
+        <button class="h-10 text-xs w-[150px] max-w-[50%] rounded-lg shadow border-[#D9251E] mr-1" type="button"
+          :disabled="isLoading" @click="closeModal()" :class="
+            isConfirm
+              ? 'bg-zinc-500 border-[0px] text-white'
+              : 'bg-white border-[1px] text-[#D9251E]'
+          ">
+          {{ isCreator ? 'Cancel' : 'Back' }}
+        </button>
+        <button
+          class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400 ml-1"
+          :disabled="isLoading" @click="onSubmit">
+          <span class="inline-flex gap-1 items-center">
+            Yes
+            <spinner-dotted-icon v-show="isLoading" height="20" width="20" class="animate-spin" />
+          </span>
+        </button>
+      </div>
+      <span v-if="!isCreator && $store.getters?.getFillAsGuest" class="w-full text-center block py-0 px-2 pb-8 text-[16px] pt-4">
+        <input v-model="nonUserRecieveEmail" type="checkbox"/> Click here if you want a copy
+       </span>
+     </div>
+
+     <div v-else>
+        <p class="w-full text-center">Enter email copy to be sent to.</p>
+        <input type="text" class="py-2 w-full rounded my-3 border-[1px] border-gray-200" placeholder="--Enter email--"/>
+     <p class="flex justify-center">
       <button
-        class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400 ml-1"
-        :disabled="isLoading" @click="onSubmit">
-        <span class="inline-flex gap-1 items-center">
-          Yes
-          <spinner-dotted-icon v-show="isLoading" height="20" width="20" class="animate-spin" />
-        </span>
-      </button>
-    </div>
+      class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400 ml-1"
+      :disabled="isLoading" @click="onSubmit">
+      <span class="inline-flex gap-1 items-center">
+        Send
+        <spinner-dotted-icon v-show="isLoading" height="20" width="20" class="animate-spin" />
+      </span>
+    </button>
+     </p>
+     </div>
     <!-- end :: body -->
 
     <draw-or-type-modal v-model="showInitialModal" :src="$auth?.user?.signatureURL || ' '"
@@ -115,7 +135,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         action: this.file?.fileAction,
         fileId: this.file?.id,
         fileOwnerId: this.file?.userId,
-        fileOwner: 0
+        fileOwner: 0,
+        isGuest: this.$store.getters?.getFillAsGuest ? true : false
       }
     },
     isSign() {
@@ -173,7 +194,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       base64: null,
       proceedToSendEmail: false,
       generatedPdf: {},
-      showInitialModal: false
+      showInitialModal: false,
+      nonUserRecieveEmail: false
     }
   },
   watch: {

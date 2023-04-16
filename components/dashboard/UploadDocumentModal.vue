@@ -68,6 +68,9 @@
 import Vue from 'vue'
 import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
 import CloudIcon from '../svg-icons/CloudIcon.vue'
+import axios from "axios"
+import { server } from '~/services/new-service'
+
 export default Vue.extend({
   name: 'UploadDocumentModal',
   components: { SpinnerDottedIcon, CloudIcon },
@@ -132,18 +135,15 @@ export default Vue.extend({
         message: 'File uploading ...',
         duration: 1000 * 60,
       })
-      await this.$axios
-        .$post('/files', formData)
+      await this.$_server.post('/files', formData)
         .then((response) => {
-          // this.moveToFolder(response.id)
           this.$store.commit('SET_UPLOAD_STATE', true);
           this.$notify.success({
             title: 'File Upload',
             message: 'File uploaded successfully',
           })
 
-          // TODO: replace this with the id
-          this.$nuxt.$router.push(`/pdf/${response?.paperLink}`)
+          this.$nuxt.$router.push(`/pdf/${response.data?.paperLink}`)
         })
         .catch((error) => {
           this.$notify.error({

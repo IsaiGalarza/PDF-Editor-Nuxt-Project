@@ -113,7 +113,7 @@
           this.$store.commit('PACKAGE_CREATE', this.create)
         }
         // return
-        this.$nuxt.$router.push('/register')
+        this.$emit('bottom-button-clicked')
       },
     },
     data() {

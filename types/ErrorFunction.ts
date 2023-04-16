@@ -4,10 +4,9 @@
  }
    
    export function ErrorHandler( error : Error){
-      console.log("error-handler",error)
       // return
     //getting the error
-     let message = (error as any)?.data?.errors[0] || (error as any)?.data?.message;
+     let message = (error as any)?.data?.errors[0]?.message || (error as any)?.data?.message ;
    //   ErrorHandler(response)
    console.log("error-handler",message)
    //  return
@@ -29,7 +28,9 @@
     else if((message?.message || message)?.includes("Stripe")) {
       return ("Error occured, Trying to send card info") 
     }
- 
+     else {
+      return message
+     }
     
 
     //   return(message.message.includes("email"))

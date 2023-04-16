@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-white rounded-2xl">
     <div class="rounded-2xl bg-white py-6 px-6 flex items-center justify-center">
       <div class="flex flex-col items-center">
         <h3 class="uppercase text-paperdazgray-500 font-semibold text-center mb-4 text-xl">
@@ -15,8 +15,14 @@
         </p>
       </div>
     </div>
-    <div class="grid grid-cols-3 gap-2 mt-4 text-[#6C6777]">
-      <div class="bg-white rounded-lg px-2 py-4" @click="showQrcodeFunc">
+    <div class="flex justify-center">
+      <button
+      @click="visibleUploadImageDialog = true"
+      class="flex items-center py-2 px-3 shadow rounded-md w-9/12 mb-3">
+        <img src="~/assets/icons/edit-icon.svg" class="mr-3"/>
+        {{ $auth.user.profilePicture ? 'Edit' : 'Upload' }}
+      </button>
+      <!-- <div class="bg-white rounded-lg px-2 py-4" @click="showQrcodeFunc">
         <barcode-icon class="w-full h-8 text-paperdazgreen-300 mb-2 cursor-pointer" />
         <p class="text-center text-[10px] font-medium">Download</p>
       </div>
@@ -27,7 +33,7 @@
       <a :href="`/public/profile/${mainUserLink}`" target="_blanck" class="block bg-white rounded-lg px-2 py-4">
         <building-icon class="w-full h-8 text-paperdazgreen-300 mb-2" />
         <p class="text-center text-[10px] font-medium">View Profile</p>
-      </a>
+      </a> -->
     </div>
 
 

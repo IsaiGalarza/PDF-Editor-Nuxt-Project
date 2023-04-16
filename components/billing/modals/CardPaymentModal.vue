@@ -81,6 +81,7 @@
                 :value="cardNumberWithDashes"
                 @input="inputCardNumber"
                 required
+                ref="cardNumber"
               />
             </div>
             <div class="grid gap-5 grid-cols-2">
@@ -106,6 +107,17 @@
                 />
               </div>
             </div>
+
+           <div class="w-full flex justify-center mt-5">
+            <button 
+            :disabled="loading"
+            :class="[ loading ? 'opacity-50' : 'opacity-100']"
+            @click="patchCard"
+             class="w-10/12 py-2 rounded-md bg-paperdazgreen-300 text-white flex items-center justify-center">
+              Pay
+              <spinner-dotted-icon v-show="loading" class="text-white animate-spin ml-1" width="20" />
+            </button>
+           </div>
           </form>
         </div>
       </div>
@@ -141,17 +153,37 @@ export default Vue.extend({
       cvv: '',
       cardId: undefined,
       expirationDateWithSlashes: '',
+      card: {}
     }
   },
   watch: {
     visible(val) {
       this.showModal = val
+      val ? this.getCard() : null
     },
     showModal(val) {
       this.$emit('updateVisibility', val)
     },
   },
   computed: {
+    cardPayload(){
+       return {
+        card_holder_name: this.card_name,
+        cvv: this.cvv,
+        exp_month: this.expMonth,
+        exp_year: this.expYear,
+        card_number: this.cardNumber
+       }
+    },
+    subscriptionPayload(){
+       return {
+        isUpdate: true,
+        packageName: this.packageInfo.name,
+        paperlink: this.packageInfo.paperlink,
+        teamMembers: this.packageInfo.teamMembers,
+        plan: this.packageInfo.isMonthly ? 'monthly' : 'yearly',
+       }
+    },
     packageInfo() {
       return this.$store?.getters?.getPackageInfo
     },
@@ -175,9 +207,43 @@ export default Vue.extend({
     closeModal() {
       this.$emit('updateVisibility', false)
     },
+    getCard(){
+       try {
+        this.$_server(`cards/?userId=${this.$auth.user.id}`)
+        .then((response)=>{
+          this.card = response.data.data[0];
+          console.log(this.card)
+          this.card_name = this.card.card_holder_name
+          this.cvv= this.card.cvv
+          this.inputCardNumber(this.card.card_number)
+          this.inputExpirationDate(`${this.card.exp_month}${this.card.exp_year}`)
+        })
+       } catch (error) {
+        //
+       }
+    },
+    patchCard(){
+      this.loading = true
+       try {
+        this.$_server.patch(`/cards/${this.card.id}`, this.cardPayload)
+        .then(()=> this.patchSubscription())
+       } catch (response) {
+        this.errorMessage = this.$_ErrorHandler(response)
+       }
+    },
+    patchSubscription(){
+        try {
+          this.$_server.patch(`/subscriptions/${this.$auth.user.subscriptionId}`, this.subscriptionPayload)
+        } catch ({response}) {
+          this.errorMessage = this.$_ErrorHandler(response)
+        } finally {
+          this.loading = false
+          this.closeModal()
+        }
+    },
     inputCardNumber(val) {
       if (val.length > 19) return
-      let temp = val.replace(/(-+)|([^0-9]+)/g, '')
+      let temp = val.toString().replace(/(-+)|([^0-9]+)/g, '')
       this.cardNumberWithDashes = (temp.match(/.{1,4}/g) || []).join('-')
     },
     inputExpirationDate(val) {

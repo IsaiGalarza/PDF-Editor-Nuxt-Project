@@ -273,17 +273,14 @@ export default Vue.extend({
         return;
       }
       if (this.upload_state) {
-        this.$axios.delete(`/files/${this.file?.id}`)
-          .then(() => {
             this.$store.commit('SET_UPLOAD_STATE', false);
             this.$store.commit('SET_PDF_EXIT', true)
             this.$router.push('/paperlink-files')
-          })
       } else {
         this.$store.commit('SET_UPLOAD_STATE', false);
         this.$store.commit('SET_PDF_EXIT', true)
         let previousRoute = localStorage.getItem('store_public_profile_path')
-        previousRoute ? this.$router.push(previousRoute) : this.$router.push('/dashboard')
+        previousRoute ? this.$router.push(previousRoute) : this.$router.push('/paperlink-files')
         localStorage.removeItem('store_public_profile_path')
       }
       this.$store.commit('SET_FILE_SIGNATURE', null);

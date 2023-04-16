@@ -15,10 +15,11 @@
     <!-- Start:: Body -->
     <div class="justify-center pb-2">
       <el-input placeholder="user email" disabled class="w-full mt-3" v-model="email" />
-      <el-input placeholder="Password" class="w-full mt-3" v-model="password" />
+      <el-input placeholder="Password" type="password" class="w-full mt-3" v-model="password" />
       <el-input
         placeholder="Confirm Password"
         class="w-full mt-3"
+        type="password"
         v-model="confirm_pasword"
       />
 

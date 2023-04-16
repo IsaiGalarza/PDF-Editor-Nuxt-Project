@@ -72,7 +72,7 @@ export default mixins(login).extend({
         localStorage.setItem('showTour', true)
       }, 3000);
     }
-    
+      console.log(this.$auth.user)
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.resizeEventListener)

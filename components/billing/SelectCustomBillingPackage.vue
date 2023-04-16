@@ -146,7 +146,7 @@
           class="w-full"
           @setName="setname"
           :staging-package="stagingPackage"
-          @bottom-button-clicked="$emit('next-tab', $event)"
+          @bottom-button-clicked="showConfirmPassword = true"
           :edited="true"
           :create="true"
           :isLight="true"

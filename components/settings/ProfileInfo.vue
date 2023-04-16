@@ -1,9 +1,9 @@
 <template>
   <div class="bg-white p-6 rounded-2xl border border-paperdazgreen-400">
     <h3
-      class="flex justify-start sm:justify-center sm:text-paperdazgreen-300 sm:border-b-2 border-paperdazgreen-300 sm:font-semibold text-lg sm:text-2xl gap-2 pb-1 relative mb-[0.5rem] sm:mb-7"
+      class="flex justify-start sm:justify-center sm:text-paperdazgreen-300 sm:border-b-0 border-paperdazgreen-300 sm:font-semibold text-lg sm:text-2xl gap-2 pb-1 relative mb-[0.5rem] sm:mb-7"
     >
-      <span>{{ headerText }} </span>
+      <!-- <span>{{ headerText }} </span> -->
       <button
         @click="editingDetails = !editingDetails"
         type="button"

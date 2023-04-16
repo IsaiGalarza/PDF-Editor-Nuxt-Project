@@ -8,7 +8,7 @@ export default {
     async checkIfTeamMemberIsExpired(teamId){
       await this.$axios.$get(`/users/${teamId}`)
       .then((response)=>{
-        if(response.status == StatusUser.EXPIRED){
+        if(response?.status == StatusUser.EXPIRED){
         this.$auth.logout()
         window.location.assign(`/login/?error=Opps, Team subscription is expired`) 
         }
@@ -41,13 +41,13 @@ export default {
           }
 
            // route to login, if user is not an active user
-          if( this.$auth.user.status != StatusUser.ACTIVE ) {
+          if( this.$auth.user?.status != StatusUser.ACTIVE ) {
             await this.$auth.logout()
-            window.location.assign(`/login/?error=Your account is ${userData.status}, reach out to support for help`)   
+            window.location.assign(`/login/?error=Your account is ${userData?.status}, reach out to support for help`)   
           }
         })
         .catch(async ({response}) => {
-          if(response.status == 401)
+          if(response?.status == 401)
               await this.$auth.logout()
               this.$nuxt.$router.push('/login?error=Login session has expired')
               localStorage.removeItem('paperdaz_userID')

@@ -3,7 +3,7 @@
     <div class="flex flex-wrap p-3 justify-around items-center">
       <div class="w-full sm:w-6/12 md:w-5/12">
         <message-alert-widget
-          :message="errorMessage"
+          :message="errorMessageUser"
           v-show="errorMessageUser"
           type="error"
           class="my-2 w-[80%] ml-[0%]"
@@ -153,6 +153,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
 import MessageAlertWidget from '~/components/widgets/MessageAlertWidget.vue'
+import { ErrorHandler } from '~/types/ErrorFunction'
 
 export default Vue.extend({
   name: 'RegisterPage',
@@ -194,7 +195,7 @@ export default Vue.extend({
         firstName: this.contact_name,
         lastName: '',
         phone: this.business_number,
-        conpanyName: this.business_name,
+        companyName: this.business_name,
       }
     },
     cardPayload() {
@@ -249,6 +250,35 @@ export default Vue.extend({
     },
   },
   methods: {
+    async createUser() {
+      this.isLoading = true
+      try {
+        await this.$_server
+          .post('/users', this.userPayload)
+          .then((response) => {
+            this.$auth.setUser(response.data)
+            this.createCard()
+          })
+      } catch ({ response }) {
+        console.log(response)
+        this.errorMessageUser = this.$_ErrorHandler(response)
+      }
+    },
+    async testCard() {
+      this.isLoading = true
+      try {
+        let clonePayload = this.cardPayload
+        clonePayload.action = 'testCard'
+        delete clonePayload.userId
+
+        await this.$_server.post('/cards', clonePayload).then((res) => {
+          this.createUser()
+        })
+      } catch ({ response }) {
+        this.isLoading = false
+        this.errorMessage = this.$_ErrorHandler(response)
+      }
+    },
     async createCard() {
       await this.$axios
         .post('/cards', this.cardPayload)
@@ -268,14 +298,7 @@ export default Vue.extend({
         .finally(() => (this.isLoading = false))
     },
     async submit() {
-      this.isLoading = true
-      await axios
-        .post('https://paperlink.app/api/users', this.userPayload)
-        .then((response) => {
-          this.$auth.setUser(response.data)
-          this.createCard()
-        })
-        .catch((error) => (this.errorMessageUser = error))
+      this.testCard()
     },
     inputCardNumber(val) {
       if (val.length > 19) return

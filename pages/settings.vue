@@ -1,9 +1,16 @@
 <template>
   <div class="pt-2 lg:py-10 relative">
     <!-- spinner before page loaded -->
-      <div v-if="windowOnLoad" class="absolute w-full h-full min-h-[70vh] grid bg-white rounded-xl place-content-center z-10 top-0 left-0">
-        <spinner-dotted-icon height="32" width="32" class="text-paperdazgray-400 animate-spin" />
-      </div>
+    <div
+      v-if="windowOnLoad"
+      class="absolute w-full h-full min-h-[70vh] grid bg-white rounded-xl place-content-center z-10 top-0 left-0"
+    >
+      <spinner-dotted-icon
+        height="32"
+        width="32"
+        class="text-paperdazgray-400 animate-spin"
+      />
+    </div>
     <profile-tab v-model="currentTab" :tabs="tabs" class="mb-3 sm:mb-10" />
     <keep-alive>
       <component :is="currrentTabComponent" />
@@ -24,63 +31,61 @@ import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
 import ComingSoon from '~/components/widgets/ComingSoon.vue'
 export default Vue.extend({
   name: 'SettingsPage',
-  components: { ProfileTab , SpinnerDottedIcon},
+  components: { ProfileTab, SpinnerDottedIcon },
   layout: 'dashboard',
   data() {
     return {
       windowOnLoad: true,
       currentTab: 'account',
       tabs: [
-        { label: 'Profile Info', value: 'account', component: AccountTab },
-        { label: 'Security', value: 'security', component: ChangePasswordTab },
-        {
-          label: 'Referral Credit',
-          value: 'referral-credit',
-          // component: ReferralTabVue,
-          component: ComingSoon,
-        },
+        { label: 'Account Information', value: 'account', component: AccountTab },
+        { label: 'Password', value: 'security', component: ChangePasswordTab },
+        // {
+        //   label: 'Referral Credit',
+        //   value: 'referral-credit',
+        //   // component: ReferralTabVue,
+        //   component: ComingSoon,
+        // },
         // {
         //   label: 'Signature/Initials',
         //   value: 'signature-initials',
         //   component: SignatureInitialsTab,
         // },
-        {
-          label: 'Notifications',
-          value: 'notifications',
-          component: NotificationsTab,
-        },
+        // {
+        //   label: 'Notifications',
+        //   value: 'notifications',
+        //   component: NotificationsTab,
+        // },
       ],
     }
   },
-  mounted(){
-        if(this.$store.getters.userType)
-           this.windowOnLoad = false;
-        if(this.$route.query.tab)
-           this.currentTab = this.$route.query.tab.toString()
-        //check if is a social user to remove settings tabs
-        if (this.$auth.user.id && this.$auth.user.socialLogin !== null){
-          this.tabs.splice(1, 1)
-        }
-  },
-  beforeMount() {
-    if (this.$store.getters.userType === UserTypeEnum.PAID) {
-      this.tabs.splice(3, 0, {
-        label: 'Billing',
-        value: 'billing',
-        component: BillingTab,
-        hidden: true
-      })
-    } else if (this.$store.getters.userType === UserTypeEnum.FREE) {
-      this.tabs.splice(3, 0, {
-        label: 'Signature/Initials',
-        value: 'signature-initials',
-        component: SignatureInitialsTab,
-      })
-    }
-    else if (this.$store.getters.userType === UserTypeEnum.TEAM) {
-     this.tabs.splice(1, (this.tabs.length-2))
+  mounted() {
+    if (this.$store.getters.userType) this.windowOnLoad = false
+    if (this.$route.query.tab)
+      this.currentTab = this.$route.query.tab.toString()
+    //check if is a social user to remove settings tabs
+    if (this.$auth.user.id && this.$auth.user.socialLogin !== null) {
+      this.tabs.splice(1, 1)
     }
   },
+  // beforeMount() {
+  //   if (this.$store.getters.userType === UserTypeEnum.PAID) {
+  //     this.tabs.splice(3, 0, {
+  //       label: 'Billing',
+  //       value: 'billing',
+  //       component: BillingTab,
+  //       hidden: true,
+  //     })
+  //   } else if (this.$store.getters.userType === UserTypeEnum.FREE) {
+  //     this.tabs.splice(3, 0, {
+  //       label: 'Signature/Initials',
+  //       value: 'signature-initials',
+  //       component: SignatureInitialsTab,
+  //     })
+  //   } else if (this.$store.getters.userType === UserTypeEnum.TEAM) {
+  //     this.tabs.splice(1, this.tabs.length - 2)
+  //   }
+  // },
   computed: {
     currrentTabComponent() {
       const tab = this.tabs.find((el) => el.value === this.currentTab)
@@ -89,37 +94,36 @@ export default Vue.extend({
       } else {
         return {
           render(h) {
-          return h('h1', 'Loading...')
+            return h('h1', 'Loading...')
           },
         }
       }
     },
   },
-  watch:{
-    "$auth.user.role": function(){
-       if (this.$store.getters.userType === UserTypeEnum.PAID) {
-        this.tabs.splice(3, 0, {
-        label: 'Billing',
-        value: 'billing',
-        component: BillingTab,
-        hidden: true
-      })
-    } else if (this.$store.getters.userType === UserTypeEnum.FREE) {
-        this.tabs.splice(3, 0, {
-        label: 'Signature/Initials',
-        value: 'signature-initials',
-        component: SignatureInitialsTab,
-      })
-    }
-     else if (this.$store.getters.userType === UserTypeEnum.TEAM) {
-        this.tabs.splice(1, (this.tabs.length-2))
-    }
-    //<<<<-- check if user is a social user--->>>>
-   if (this.$auth.user.socialLogin !== null) {
-      this.tabs.splice(1, 1)
-      }
-      this.windowOnLoad = false;
+  watch: {
+    '$auth.user.role': function () {
+      // if (this.$store.getters.userType === UserTypeEnum.PAID) {
+      //   this.tabs.splice(3, 0, {
+      //     label: 'Billing',
+      //     value: 'billing',
+      //     component: BillingTab,
+      //     hidden: true,
+      //   })
+      // } else if (this.$store.getters.userType === UserTypeEnum.FREE) {
+      //   this.tabs.splice(3, 0, {
+      //     label: 'Signature/Initials',
+      //     value: 'signature-initials',
+      //     component: SignatureInitialsTab,
+      //   })
+      // } else if (this.$store.getters.userType === UserTypeEnum.TEAM) {
+      //   this.tabs.splice(1, this.tabs.length - 2)
+      // }
+      // //<<<<-- check if user is a social user--->>>>
+      // if (this.$auth.user.socialLogin !== null) {
+      //   this.tabs.splice(1, 1)
+      // }
+      this.windowOnLoad = false
     },
-  }
+  },
 })
 </script>

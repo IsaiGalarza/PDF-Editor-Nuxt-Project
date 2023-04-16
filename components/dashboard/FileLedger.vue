@@ -105,13 +105,13 @@
               </td>
               <td class="text-sm text-center capitalize"
                   :class="
-                    file.fileAction === FileAction.COMPLETE ? 'text-paperdazgreen-400' :
-                    file.fileAction === FileAction.SIGNED ? 'text-blue-400' :
-                    file.fileAction === FileAction.CONFIRM ? 'text-purple-400' : ''
+                    file?.fileAction === FileAction.COMPLETE ? 'text-paperdazgreen-400' :
+                    file?.fileAction === FileAction.SIGNED ? 'text-blue-400' :
+                    file?.fileAction === FileAction.CONFIRM ? 'text-purple-400' : ''
                   "
               >
                 {{
-                    (isPaidUser ? file.fileAction : formatFileAction(file.file.fileAction, file.action))  || "-"
+                    (isPaidUser ? file?.fileAction : formatFileAction(file.file?.fileAction, file.action))  || "-"
                 }}
               </td>
               <td class="text-center" >
@@ -290,10 +290,7 @@ export default Vue.extend({
     },
     async ledgerFiles(page, search) {
       // &fileName[$like]=${search}%&$skip=${page}
-      let acct = this.$auth.user.role != UserTypeEnum.PAID ?
-        `/ledger?userId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}` :
-        // `/ledger?mainAccountId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}`
-        `/ledger?fileOwnerId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}`
+      let acct = `/ledger?userId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}` 
       await this.$axios.get(acct)
         .then((response) => {
           let files = [];
@@ -308,6 +305,7 @@ export default Vue.extend({
             }
           })
           this.files = files.length ? files : []
+          console.log(this.files)
           this.$store.commit('ADD_USER', files)
           this.totalFile = response.data.total
         })

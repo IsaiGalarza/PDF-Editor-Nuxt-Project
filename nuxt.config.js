@@ -153,9 +153,9 @@ export default {
   auth: {
     watchLoggedIn: false,
     redirect: {
-      login: '/login',
+      login: '/',
       logout: '/',
-      callback: '/login',
+      callback: '/',
       home: '/dashboard',
     },
     strategies: {

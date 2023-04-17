@@ -305,7 +305,8 @@ export default {
           this.TOOL_TYPE.draw,
           this.TOOL_TYPE.appendInitial,
           this.TOOL_TYPE.appendSignature,
-          this.TOOL_TYPE.appendDate
+          this.TOOL_TYPE.appendDate,
+          this.TOOL_TYPE.star
         ].includes(this.type)
       )
         return false

@@ -146,9 +146,9 @@ export default {
     ],
   ],
   axios: {
-    //  baseURL: process.env.NEW_API_URL,
+     baseURL: process.env.NEW_API_URL,
     // baseURL: 'http://localhost:3030',
-   baseURL:'http://84d6-197-210-53-75.ngrok-free.app/',
+  //  baseURL:'http://84d6-197-210-53-75.ngrok-free.app/',
   },
   auth: {
     watchLoggedIn: false,

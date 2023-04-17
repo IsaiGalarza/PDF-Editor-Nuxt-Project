@@ -45,9 +45,9 @@
                           /> -->
                     <el-input-number
                       v-model.number="customPackage.paperlink"
-                      :step="1"
+                      :step="0"
                       size="small"
-                      :min="1"
+                      :min="0"
                       :max="20"
                     />
                   </div>
@@ -76,9 +76,9 @@
                           /> -->
                     <el-input-number
                       v-model.number="customPackage.teamMembers"
-                      :step="1"
+                      :step="0"
                       size="small"
-                      :min="1"
+                      :min="0"
                       :max="20"
                     />
                   </div>
@@ -180,8 +180,8 @@
         customPackage: {
           name: 'Custom',
           description: 'Custom package',
-          paperlink: 1,
-          teamMembers: 1,
+          paperlink: 0,
+          teamMembers: 0,
           cc: 1,
           publicProfile: true,
           companyLedger: true,

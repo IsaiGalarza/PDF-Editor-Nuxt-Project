@@ -213,4 +213,7 @@ export default Vue.extend({
   @apply w-full;
   height: calc(100vh - 10em - 18em);
 }
+a:hover{
+  color: inherit
+}
 </style>

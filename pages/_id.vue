@@ -171,7 +171,7 @@ export default Vue.extend({
   },
   computed: {
     isAuthor() {
-      return this.$auth?.user.id == this.userInfo?.id
+      return this.$auth?.user?.id == this.userInfo?.id
     }
   },
   // middleware:['paid_user'],
@@ -220,7 +220,7 @@ export default Vue.extend({
     },
     getTeamPublicInfo() {
       const that = this;
-      this.$axios.get(`users/?businessPage=${this.$route.params.id}`)
+      this.$axios.get(`users/?businessPage=${this.$route.params?.id}`)
         .then((response) => {
           const user = response.data.data
           this.userInfo = user[0]
@@ -237,7 +237,7 @@ export default Vue.extend({
     },
     async getUserFolders(page, search) {
       await this.$axios
-        .$get(`/folders/?userId=${this.userInfo.id}&name[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`)
+        .$get(`/folders/?userId=${this.userInfo?.id}&name[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`)
         .then((response) => {
           const filesData = response.data.map((el) => {
             return el
@@ -250,7 +250,7 @@ export default Vue.extend({
     },
     async getUserFiles(page, search) {
       await this.$axios
-        .$get(`/files/?userId=${this.userInfo.id}&fileName[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`, {
+        .$get(`/files/?userId=${this.userInfo?.id}&fileName[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`, {
           params: {
             isEditing: 0
           }

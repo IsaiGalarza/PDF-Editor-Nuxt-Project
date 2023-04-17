@@ -14,7 +14,7 @@
       <!-- <button class="text-white bg-zinc-500 rounded px-4 py-2 float-right mr-2" @click="cancelConfrim">Cancel</button> -->
       <button class="bg-red-500 w-4 h-4 rounded-full text-xs text-white lg:mr-4 mr-2 sm:hidden" @click="cancelConfrim">x</button>
     </div>
-    <div class="flex justify-between items-center h-full bg-gray-200" v-if="userRole == 'free_user' && isSign && isAgreedSign === -1">
+    <div class="flex justify-between items-center h-full bg-gray-200" v-if="!isCreator && isSign && isAgreedSign === -1">
       <span class="float-left m-2 text-[10px] lg:text-sm font-bold d-flex">I agree to apply my electronic signature/initials.
         <input type="checkbox" class="ml-1" @change="checkBoxChange" /></span>
       <button class="bg-red-500 w-4 h-4 rounded-full text-xs text-white lg:mr-4 mr-2 sm:hidden" @click="signCancel">x</button>

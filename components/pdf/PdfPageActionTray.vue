@@ -20,9 +20,9 @@
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="complete" :disabled="file.fileAction == 'completed'">Complete</el-dropdown-item>
-          <el-dropdown-item command="confirm" v-if="isPaid || teamAccess" :disabled="file.fileAction == 'confirm'">
+          <el-dropdown-item command="confirm"  :disabled="file.fileAction == 'confirm'">
             Confirm</el-dropdown-item>
-          <el-dropdown-item command="sign" v-if="isPaid || teamAccess" :disabled="file.fileAction == 'sign'">Sign
+          <el-dropdown-item command="sign"  :disabled="file.fileAction == 'sign'">Sign
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -48,11 +48,6 @@
       <!-- <div
         class="flex-1 flex items-center gap-5 justify-end text-xs font-medium"
       > -->
-      <span class="hidden md:inline">
-        <span class="circle circle-2 bg-[#757575]"></span>
-      </span>
-
-      <span class="hidden md:inline">{{ file.userName }}</span>
 
       <span class="hidden md:inline">
         <span class="circle circle-2 bg-[#757575]"></span>
@@ -258,7 +253,7 @@ export default Vue.extend({
       return String(this.file.fileAction).toLowerCase() === FileAction.SIGNED
     },
     userRole() {
-      return this.$auth.user.role;
+      return this.$auth.user?.role;
     },
     isAgreedSign() {
       return this.$store.state.agreeSign;

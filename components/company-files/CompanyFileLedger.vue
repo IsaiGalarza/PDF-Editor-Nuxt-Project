@@ -153,7 +153,7 @@
               <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
             </div>
             <!-- END: spinner container -->
-            <empty-file-ledger class="min-h-[55vh]" v-if="(pdfUser.length < 1) && !fileSpinner" :isPaidUser="isPaidUser" />
+            <!-- <empty-file-ledger class="min-h-[55vh]" v-if="(pdfUser.length < 1) && !fileSpinner" :isPaidUser="isPaidUser" /> -->
             <!--START: No files container-->
             <section class="px-0 min-w-[700px] w-full">
                <div class="border-b-[1px] border-gray-200 flex items-center py-3">

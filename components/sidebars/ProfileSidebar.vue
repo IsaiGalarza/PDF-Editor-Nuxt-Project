@@ -52,9 +52,9 @@
           </span>
         </div> -->
 
-        <p class="py-[1em]  font-[600] text-center text-[20px]">
-          <nuxt-link to="/login" class="cursor-pointer">Paperlink Console</nuxt-link>
-        </p>
+        <!-- <nuxt-link to="/login"  target="_blank" class="py-[1em]font-[600] text-center text-[20px] hover:text-white">Paperlink Console</nuxt-link> -->
+
+        <p @click=" window.open('https://paperlink.app/login')" class="py-[1em]font-[600] text-center text-[20px]">Paperlink Console</p>
         <!-- <p class="text-white text-[11px] mt-3 text-center">
           powered by
           <span class="font-semibold uppercase text-[15px]">Paperdaz</span>

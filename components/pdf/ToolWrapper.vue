@@ -81,6 +81,7 @@ import AppendDateTool from './tools/InitialDate.vue'
 import moment from 'moment'
 import { mapState } from 'vuex'
 import TeamAccess from '~/models/TeamAccess'
+import AppendNameTool from './tools/AppendName.vue'
 
 export default {
   props: {
@@ -137,7 +138,8 @@ export default {
     StarTool,
     AppendSignatureTool,
     AppendInitialTool,
-    AppendDateTool
+    AppendDateTool,
+    AppendNameTool
   },
   data: () => ({
     lastPosX: 0,
@@ -306,7 +308,8 @@ export default {
           this.TOOL_TYPE.appendInitial,
           this.TOOL_TYPE.appendSignature,
           this.TOOL_TYPE.appendDate,
-          this.TOOL_TYPE.star
+          this.TOOL_TYPE.star,
+          this.TOOL_TYPE.appendName
         ].includes(this.type)
       )
         return false

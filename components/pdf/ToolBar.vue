@@ -1,11 +1,10 @@
 <template>
   <div>
-    <div class="text-base px-6 py-2 flex items-center bg-paperdazgreen-500 text-white"
+    <!-- <div class="text-base px-6 py-2 flex items-center bg-paperdazgreen-500 text-white"
       v-if="isConfirm && !isLoading && $auth.loggedIn && isCreator">
-      <!-- <exclamation-icon class="text-white mr-2" /> -->
       Free user will be asked to scroll to the bottom of last page to click Confirm. A copy with free user signature
       will be sent to all users.
-    </div>
+    </div> -->
     <div class="w-full py-1 pb-2 bg-gray-200 sm:bg-lime-200 flex items-center justify-between" v-if="isConfirm && !isCreator && (!isConfirmChecked || !isScrollBottom)">
       <!-- <span class="float-left pt-2 px-2">Scroll to the bottom of file to confirm that you have read.</span> -->
       <span class="float-left py-1 px-2">Click here to start Confirm
@@ -237,11 +236,6 @@
 
     <div v-if="isComplete && isCreator" class="flex items-center justify-between py-1">
       <button class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm"
-      :class="[activeTool == TOOL_TYPE.star ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onImageClick">  
-        <img src="../../assets/img/require-icon.png" width="18" class="bg-slate-200 p-[2px]" />      
-        Require
-      </button>
-      <button class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm"
       :class="[activeTool == TOOL_TYPE.appendSignature ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onSignClick">
         <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         Sign
@@ -256,11 +250,16 @@
         <img src="../../assets/img/date_icon.svg" width="18" class="bg-slate-200 p-[2px]" />
         Date
       </button>
-      <button @click="undoFunction"
+      <button class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm"
+      :class="[activeTool == TOOL_TYPE.star ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onImageClick">  
+        <img src="../../assets/img/require-icon.png" width="18" class="bg-slate-200 p-[2px]" />      
+        Require
+      </button>
+      <!-- <button @click="undoFunction"
         class="rounded-md h-8 sm:h-10 flex items-center gap-1 py-1 px-3 max-sm:!px-1 tool-item text-sm bg-white text-red-500">
         <undo-icon />
         Undo
-      </button>
+      </button> -->
     </div>
 
     <div v-if="isSign && isCreator" class="flex items-center justify-between py-1">
@@ -282,11 +281,16 @@
         <img src="../../assets/img/date_icon.svg" width="18" class="bg-slate-200 p-[2px]" />
         Date
       </button>
-      <button @click="undoFunction"
+      <button class="rounded-md h-8 sm:h-10 flex items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm"
+      :class="[activeTool == TOOL_TYPE.appendName ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onNameClick">
+        <img src="../../assets/img/name_icon.svg" width="18" class="bg-slate-200 p-[2px]" />
+        Name
+      </button>
+      <!-- <button @click="undoFunction"
         class="rounded-md h-8 sm:h-10 flex items-center gap-1 py-1 px-3 max-sm:!px-1 tool-item text-sm bg-white text-red-500">
         <undo-icon />
         Undo
-      </button>
+      </button> -->
     </div>
 
     <draw-or-type-modal v-model="showSignatureModal" :src="`${$auth?.user?.signatureURL}`"
@@ -429,6 +433,11 @@ export default {
         this.setSelectedType(this.TOOL_TYPE.appendDate)
       }
     },
+    onNameClick() {
+      if (this.isCreator) {
+        this.setSelectedType(this.TOOL_TYPE.appendName)
+      }
+    },
     handleInitialFocusOut(e) {
       if (e.target.id !== 'initialtraybtn') {
         this.showInitialTray = false;
@@ -466,6 +475,8 @@ export default {
             return type == this.TOOL_TYPE.star
           else if (type == this.TOOL_TYPE.appendDate)
             return type == this.TOOL_TYPE.appendDate
+          else if (type == this.TOOL_TYPE.appendName)
+            return type == this.TOOL_TYPE.appendName
 
         default:
           return this.isCreator ? false : true

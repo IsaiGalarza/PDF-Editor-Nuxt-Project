@@ -14,5 +14,6 @@ export default {
   star: 'star',
   appendSignature:'appendSignature',
   appendInitial:"appendInitial",
-  appendDate: "appendDate"
+  appendDate: "appendDate",
+  appendName: "appendName"
 }

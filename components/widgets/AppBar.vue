@@ -28,8 +28,11 @@
       <!------>
       <div class="text-center w-full text-[0.8rem] md:text-[1.2rem] font-semibold flex justify-end md:justify-between items-center">
         <abbr class="hidden md:block">Secure, Private & HIPAA Compliant!</abbr>
-        <nuxt-link to="/login" class="px-4 py-2 text-white rounded-md bg-paperdazgreen-300">
+        <nuxt-link v-if="!$auth.loggedIn" to="/login" class="px-4 py-2 text-white rounded-md bg-paperdazgreen-300">
           Login
+        </nuxt-link>
+        <nuxt-link v-else to="/paperlink-files" class="px-4 py-2 text-paperdazgreen-300 rounded-md border-paperdazgreen-300 border-2">
+          Dashboard
         </nuxt-link>
        </div>
 
@@ -176,7 +179,9 @@ export default mixins(GlobalMixin).extend({
     transition: all ease-in-out 200ms;
   }
 }
-
+a:hover{
+  color: inherit
+}
 // .active{
 //   opacity: 1 !important;
 //   background: rgba(0, 0, 0, 0.2);

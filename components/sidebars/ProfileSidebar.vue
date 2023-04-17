@@ -52,7 +52,9 @@
           </span>
         </div> -->
 
-        <p class="py-[1em]  font-[600] text-center text-[20px]">Paperlink Console</p>
+        <p class="py-[1em]  font-[600] text-center text-[20px]">
+          <nuxt-link to="/login" class="cursor-pointer">Paperlink Console</nuxt-link>
+        </p>
         <!-- <p class="text-white text-[11px] mt-3 text-center">
           powered by
           <span class="font-semibold uppercase text-[15px]">Paperdaz</span>
@@ -210,5 +212,8 @@ export default Vue.extend({
 .middle-space-divider {
   @apply w-full;
   height: calc(100vh - 10em - 18em);
+}
+a:hover{
+  color: inherit
 }
 </style>

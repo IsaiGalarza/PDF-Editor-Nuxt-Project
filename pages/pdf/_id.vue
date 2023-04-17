@@ -1369,6 +1369,9 @@ export default mixins(PdfAuth).extend({
       } else if (this.selectedToolType == this.TOOL_TYPE.appendSignature) {
         obj.x1 = obj.left
         obj.y1 = obj.top
+      } else if (this.selectedToolType == this.TOOL_TYPE.appendDate) {
+        obj.x1 = obj.left
+        obj.y1 = obj.top
       }
       this.tools.push(obj)
       this.stack.push(this.toolId)

@@ -392,15 +392,13 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.$store.commit('SET_PDF_EXIT', true)
           this.toggleToast({
             active: true,
-            msg: ` You are done! File has been sent to <b> ${
-              this.$store.state?.file?.user?.company_name ?? ''
-            }</b>`,
+            msg: `Thank you for completing a Paperlink!`,
           })
           this.$store.commit('SET_FILE_SIGNATURE', null)
           this.$store.commit('SET_FILE_INITIAL', null)
           this.$auth.loggedIn
             ? this.$nuxt.$router.push('/file-ledger')
-            : this.$nuxt.$router.push('/')
+            : this.$nuxt.$router.go(-1)
         })
         } catch (error) {
           this.$notify.error({

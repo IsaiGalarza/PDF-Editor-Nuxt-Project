@@ -10,7 +10,7 @@
       <ProfileSidebar class="relative" @close="collapseSidebar = false" />
     </div>
      <!-- <ProfileTab/> -->
-
+     <LandingPublicToast/>
     <div id="main-container" class="overflow-y-auto overflow-x-hidden">
       <Nuxt class="py-4 flex-1 px-3 px-lg-0 lg:pb-10" />
     </div>
@@ -28,11 +28,12 @@ import ProfileSidebar from '~/components/sidebars/ProfileSidebar.vue'
 import login from "~/mixins/login"
 import ProfileTab from '../components/widgets/profileTab.vue'
 import mixins from 'vue-typed-mixins'
+import LandingPublicToast from '~/components/widgets/LandingPublicToast.vue';
 
 
 export default mixins(login).extend({
   name: 'ProfileLayout',
-  components: { ProfileSidebar, BottomNav, ProfileTab },
+  components: { ProfileSidebar, BottomNav, ProfileTab, LandingPublicToast },
   data() {
     return {
       collapseSidebar: false,

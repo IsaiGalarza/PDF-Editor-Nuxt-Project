@@ -31,7 +31,7 @@ import Vue from 'vue'
 import mixins from 'vue-typed-mixins'
 import introJS from 'intro.js'
 import login from "~/mixins/login"
-import { getTourSteps } from '~/assets/tours'
+import { paperlinkSteps } from '~/assets/paperlinkSteps'
 import BottomNav from '~/components/navbars/BottomNav.vue'
 import DashboardNavbar from '~/components/navbars/DashboardNavbar.vue'
 import DashboardSidebar from '~/components/sidebars/DashboardSidebar.vue'
@@ -60,19 +60,19 @@ export default mixins(login).extend({
       }
     });
 
-    if (!localStorage.getItem('showTour')) {
-      setTimeout(() => {
-        introJS().setOptions({
-          showProgress: false,
-          showBullets: false,
-          tooltipClass: 'customTooltip',
-          steps: getTourSteps(),
-        }).start()
+    // if (!localStorage.getItem('newUser')) {
+    //   setTimeout(() => {
+    //     introJS().setOptions({
+    //       showProgress: false,
+    //       showBullets: false,
+    //       tooltipClass: 'customTooltip',
+    //       steps: getTourSteps(),
+    //     }).start()
 
-        localStorage.setItem('showTour', true)
-      }, 3000);
-    }
-      console.log(this.$auth.user)
+    //     localStorage.setItem('showTour', true)
+    //   }, 3000);
+    // }
+
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.resizeEventListener)

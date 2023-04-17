@@ -6,33 +6,33 @@
       </span>
     </div>
     <nuxt-link to="/" class="flex items-center justify-center mb-4 px-8">
-      <logo-with-text class="h-8 w-auto" />
+      <logo-with-text class="h-14 w-auto" />
     </nuxt-link>
 
-    <section class="text-white bg-paperdazgreen-500 rounded-[inherit] py-[15px]">
+    <section class="text-white bg-[#77B550] rounded-[inherit] py-[15px]">
       <!-- SCANNER CONTAINER -->
       <div class="flex justify-center mt-4">
-        <canvas ref="qrcancas" width="200" height="200" class="object-contain"></canvas>
+        <canvas ref="qrcancas" width="200" height="200" class="object-contain rounded-[20px]"></canvas>
       </div>
       <!-- END OF SCANNER CONTAINER -->
 
       <ul class="overflow-y-auto overflow-x-hidden flex-1 px-4 custom-scrollbar">
-        <div class="middle-space-divider text-center px-2 flex justify-center items-center flex-wrap">
+        <div class="middle-space-divider text-center px-2 flex justify-center   flex-wrap">
 
           <div>
-            <p class="py-1 font-[500] text-[15px]">Contactless Paperless </p>
-            <div class="py-[1em] font-[700] text-center text-[19px]">
+            <p class="py-[2em]  font-[700] text-center text-[19px]">Paperless Paper</p>
+            <!-- <div class="py-[1em] font-[700] text-center text-[19px]">
               Be Social<br />
               Responsible<br />
               Together !
-            </div>
-            <span class="text-[13px] font-[400] block w-[200px]">Keep everyone safe<br /> and the world green.</span>
+            </div> -->
+            <span class="py-1  text-[18px]">Keep everyone <br />  safe and the <br />  world green.</span>
           </div>
         </div>
       </ul>
 
       <div class="px-8">
-        <p class="text-center text-white mb-6 font-medium">Share</p>
+        <!-- <p class="text-center text-white mb-6 font-medium">Share</p>
         <div class="flex flex-wrap items-center gap-2 justify-center">
           <span @click="socialShareFunction('facebook')"
             class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white">
@@ -50,11 +50,13 @@
             class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white">
             <twitter-icon height="11" />
           </span>
-        </div>
-        <p class="text-white text-[11px] mt-3 text-center">
+        </div> -->
+
+        <p class="py-[1em]  font-[600] text-center text-[20px]">Paperlink Console</p>
+        <!-- <p class="text-white text-[11px] mt-3 text-center">
           powered by
           <span class="font-semibold uppercase text-[15px]">Paperdaz</span>
-        </p>
+        </p> -->
       </div>
     </section>
 

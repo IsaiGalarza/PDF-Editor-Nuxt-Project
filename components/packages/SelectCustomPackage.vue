@@ -267,7 +267,7 @@ export default Vue.extend({
       const stag = { ...this.customPackage }
       Object.assign(stag, {
         monthlyPrice: this.totalCost,
-        yearlyPrice: (this.totalCost * 12) - (this.totalCost * 12 * 0.2),
+        yearlyPrice: Math.floor((this.totalCost * 12) - (this.totalCost * 12 * 0.2)),
       })
       return stag
     },

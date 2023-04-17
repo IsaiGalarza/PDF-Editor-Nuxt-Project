@@ -1,11 +1,11 @@
 <template>
   <div class="">
     <ProfileTopInfo :userInfo="userInfo" />
-    <div class="mt-4 bg-white rounded-xl" v-if="checkWEmptyFileFolder">
+    <div class="mt-4 bg-white rounded-xl" v-if="!files.length">
       <!-- <header class="text-paperdazgreen-400 font-semibold p-4 border-b border-[#DCDCDC]">
         <h4 class="text-[19px]">Folders \ Files</h4>
       </header> -->
-      <div class="min-h-[50vh] grid place-items-center p-4">
+      <div class=" grid place-items-center p-4">
         <!-- <div>
           <p class="text-center text-[#434242] text-md font-medium">
             Your Public Profile is empty!
@@ -16,7 +16,7 @@
             </button>
           </div>
         </div> -->
-        <div>
+        <div v-if="!files.length">
           <img src="@/assets/img/dashboard-bg.png"
               class=" mt-4 md:w-auto sm:w-[200px]" />
           <p class="text-center text-[22px] text-[#434242] text-md font-medium mt-4 mb-16">
@@ -38,23 +38,7 @@
               @click="showFolders = true">Folders</div>
           </div>
         </div>
-        <header
-        v-if="folders.length"
-          class="py-3 px-2 mx-4 border-b border-[#DCDCDC] text-paperdazgreen-400 flex flex-wrap items-center gap-2 justify-between">
-          <h4 class="text-xl font-medium hidden sm:block">Folders</h4>
 
-          <div @submit.prevent class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
-            <span class="el-dropdown-link max-sm:flex-1" >
-              <input type="text" placeholder="Search any folder..."
-                class="rounded-lg border !border-paperdazgreen-400 px-2 h-8 w-full sm:w-[165px] md:w-48 placeholder:italic"
-                v-model="searchFolderParam" />
-            </span>
-
-            <button @click="show = !show" type="button" class="circle circle-15 bg-paperdazgreen-400 text-white">
-              <search-icon width="14" height="14" currentcolor="white" />
-            </button>
-          </div>
-        </header>
 
   
 
@@ -90,6 +74,7 @@
           </div>
         </div>
         <header
+          v-if="files.length"
           class="py-3 px-2 mx-4 border-b border-[#DCDCDC] text-paperdazgreen-400 flex flex-wrap items-center gap-2 justify-between">
           <h4 class="text-xl font-medium hidden sm:block">Files</h4>
           <form @submit.prevent class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
@@ -112,11 +97,6 @@
           </div>
           <!-- END: spinner container -->
 
-          <!-- START:display when no file -->
-          <div class="w-full h-20 grid place-items-center" v-if="files.length < 1">
-            <span class="textr-[15px]">No File Here...</span>
-          </div>
-          <!-- END:display when no file -->
 
           <!-- Start:: Single row -->
           <div v-else v-for="(item, i) in files" :key="i + 'file'"
@@ -185,8 +165,6 @@ export default Vue.extend({
     store.commit('SET_PAGE_NAME', { name: 'Profile' })
   },
   mounted() {
-    this.getUserFolders(this.returnedFolderPage, this.searchFolderParam)
-    this.getUserFiles(this.returnedDataPage, this.searchFileParam)
     this.getTeamPublicInfo()
     this.generateQR()
     // this.totalFileFolder()
@@ -246,6 +224,8 @@ export default Vue.extend({
         .then((response) => {
           const user = response.data.data
           this.userInfo = user[0]
+          this.getUserFolders(this.returnedFolderPage, this.searchFolderParam)
+          this.getUserFiles(this.returnedDataPage, this.searchFileParam)
           //  if(user.role != UserTypeEnum.PAID)
           //  this.$nuxt.$router.push('/dashboard')
         })
@@ -257,7 +237,7 @@ export default Vue.extend({
     },
     async getUserFolders(page, search) {
       await this.$axios
-        .$get(`/folders/?userId=${this.$route.params.id}&name[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`)
+        .$get(`/folders/?userId=${this.userInfo.id}&name[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`)
         .then((response) => {
           const filesData = response.data.map((el) => {
             return el
@@ -270,7 +250,7 @@ export default Vue.extend({
     },
     async getUserFiles(page, search) {
       await this.$axios
-        .$get(`/files/?userId=${this.$route.params.id}&fileName[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`, {
+        .$get(`/files/?userId=${this.userInfo.id}&fileName[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`, {
           params: {
             isEditing: 0
           }

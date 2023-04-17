@@ -1,91 +1,51 @@
 <template>
   <section class="bg-paperdazgreen-300">
     <div class="container py-20">
-      <div
-        class="w-full max-w-md mx-auto bg-white shadow-2xl rounded-xl px-6 py-10"
-      >
-
-
-        <div v-if="isEmailVerified" class="flex items-center text-[13px] w-full bg-red-500 text-white rounded-md py-3 p-2 mb-5">
-          <exclamation-icon
-          width= "18"
-          height="18"
-          />
-           <span class="inline-block pl-2">
+      <div class="w-full max-w-md mx-auto bg-white shadow-2xl rounded-xl pt-6  pb-10">
+        <div v-if="isEmailVerified"
+          class="flex items-center text-[13px] w-full bg-red-500 text-white rounded-md py-3 p-2 mb-5">
+          <exclamation-icon width="18" height="18" />
+          <span class="inline-block pl-2">
             Email is not verified, <b class="underline">
-           <button
-           @click="showUpdateEmail = true"
-           >Click to resend</button></b>
+              <button @click="showUpdateEmail = true">Click to resend</button></b>
           </span>
-          </div>
+        </div>
 
-        <form action="" class="text-sm" @submit.prevent="login">
-          <message-alert-widget
-            :message="errorMessage"
-            v-show="errorMessage"
-            type="error"
-            class="mb-8"
-          />
-          <message-alert-widget
-            :message="'Please wait, redirecting'"
-            v-show="isRedirecting"
-            type="success"
-            class="mb-8"
-            :isLoading="true"
-          />
+        <p class="text-center text-[1.3rem] text-[#5FA348]">PaperLink Console</p>
+          <hr class="my-4  bg-[#80808037]" />
+
+        <form action="" class="text-sm px-6" @submit.prevent="login">
+          <message-alert-widget :message="errorMessage" v-show="errorMessage" type="error" class="mb-8" />
+          <message-alert-widget :message="'Please wait, redirecting'" v-show="isRedirecting" type="success" class="mb-8"
+            :isLoading="true" />
+
+         
           <div class="mb-6">
             <label for="" class="mb-2 block">Email</label>
-            <input-field
-              v-model="user.email"
-              :showAsError="!!errorMessage"
-              :disabled="isLoading || isRedirecting"
-              type="email"
-              placeholder="example@email.com"
-              required
-            />
+            <input-field v-model="user.email" :showAsError="!!errorMessage" :disabled="isLoading || isRedirecting"
+              type="email" placeholder="example@email.com" required />
           </div>
           <div class="mb-10">
             <label for="" class="mb-2 block">Password</label>
-            <password-field
-              :showAsError="!!errorMessage"
-              v-model="user.password"
-              :disabled="isLoading || isRedirecting"
-              required
-              placeholder="xxxxxxxxxxxxxxxxxxxx"
-            />
+            <password-field :showAsError="!!errorMessage" v-model="user.password" :disabled="isLoading || isRedirecting"
+              required placeholder="xxxxxxxxxxxxxxxxxxxx" />
           </div>
 
           <div class="flex justify-between text-xs mb-10">
-            <div
-              class="text-paperdazgray-400 font-medium flex items-center gap-2"
-            >
+            <div class="text-paperdazgray-400 font-medium flex items-center gap-2">
               <input id="remember-me-checkbox" type="checkbox" hidden />
-              <label
-                for="remember-me-checkbox"
-                class="cursor-pointer circle circle-8 text-white relative"
-              >
+              <label for="remember-me-checkbox" class="cursor-pointer circle circle-8 text-white relative">
                 <div class="overlay circle circle-18"></div>
-                <check-icon
-                  class="relative"
-                  style="z-index: 1;"
-                  height="8"
-                  width="8"
-                />
+                <check-icon class="relative" style="z-index: 1;" height="8" width="8" />
               </label>
-              <label for="remember-me-checkbox" class="cursor-pointer"
-                >Remember me</label
-              >
+              <label for="remember-me-checkbox" class="cursor-pointer">Remember me</label>
             </div>
-            <nuxt-link to="/forgot-password" class="text-paperdazgreen-300"
-              >Forgot Password</nuxt-link
-            >
+            <nuxt-link to="/forgot-password" class="text-[#FF7373]">Forgot Password</nuxt-link>
           </div>
-          <div class="flex flex-col items-center">
+          <div class="flex w-full  flex-col items-center">
             <button
-              class="h-10 rounded-lg shadow px-5 text-white text-sm bg-paperdazgreen-300 disabled:bg-opacity-70"
-              :class="[isLoading ? 'cursor-progress' : '']"
-              :disabled="isLoading || checkingEmailVerified"
-            >
+              class="h-10 w-[80%] rounded-lg shadow px-5 text-white text-sm bg-paperdazgreen-300 disabled:bg-opacity-70"
+              :class="[isLoading ? 'cursor-progress' : '']" :disabled="isLoading || checkingEmailVerified">
               <span class="inline-flex items-center gap-3">
                 <span>Sign in</span>
                 <transition name="fade" :duration="100">
@@ -96,22 +56,19 @@
               </span>
             </button>
 
-            <span class="text-xs inline-block mt-6"
+            <!-- <span class="text-xs inline-block mt-6"
               >Not a member yet?
               <nuxt-link to="/" class="text-paperdazgreen-300"
                 >Join Now</nuxt-link
-              ></span
-            >
+              >
+              </span> -->
           </div>
         </form>
       </div>
     </div>
 
-    <ChangeUserEmail
-      @updateSocialDataEmail="updateSocialDataEmail"
-      :modalMessageError="modalMessageError"
-      v-model="showUpdateEmail"
-    />
+    <ChangeUserEmail @updateSocialDataEmail="updateSocialDataEmail" :modalMessageError="modalMessageError"
+      v-model="showUpdateEmail" />
   </section>
 </template>
 
@@ -130,6 +87,9 @@ import login from '~/mixins/login'
 import { ErrorHandler } from '~/types/ErrorFunction'
 import ChangeUserEmail from '~/components/company-files/Tabs/ChangeUserEmail.vue'
 import { NoAuthpages } from '~/types/NoAuthPages'
+import { Route } from 'vue-router'
+
+
 
 
 interface PassportUserProfile {
@@ -170,7 +130,7 @@ export default Vue.extend({
   data() {
     return {
       user: {
-        email: undefined,
+        email:  (this as any).$route.query.email ?  (this as any).$route.query.email : undefined,
         password: undefined,
         strategy: 'local',
       },
@@ -232,31 +192,36 @@ export default Vue.extend({
     //@ts-ignore
     this.socialLogin()
     this.confirmIsEmailVerified()
-    this.user.email = this.$store.getters.getSaveEmailExist
+    // this.user.email = this.$store.getters.getSaveEmailExist
+    let email = (this as any).$route.query.email ?  (this as any).$route.query.email : undefined
+    this.user.email = email
   },
 
+  
+
   methods: {
-    async confirmIsEmailVerified(){
-      let {verificationToken} = this.$route.query
-      if(!verificationToken) return
+   
+    async confirmIsEmailVerified() {
+      let { verificationToken } = this.$route.query
+      if (!verificationToken) return
       this.checkingEmailVerified = true;
       await this.$axios.$post(`/verify`, {
         action: 'verifyEmail',
         token: verificationToken
       })
-      .then(()=>{
-        this.$notify.success({
-          title:'',
-          message: 'Email verified'
+        .then(() => {
+          this.$notify.success({
+            title: '',
+            message: 'Email verified'
+          })
         })
-      })
-      .catch(()=>{
-        this.$notify.error({
-          title:'',
-          message: 'verification failed'
+        .catch(() => {
+          this.$notify.error({
+            title: '',
+            message: 'verification failed'
+          })
         })
-      })
-      .finally(()=>{this.checkingEmailVerified = false;})
+        .finally(() => { this.checkingEmailVerified = false; })
     },
     checkEmailValidity(data: any) {
       if (data.email == null) {
@@ -265,7 +230,7 @@ export default Vue.extend({
     },
     //@ts-ignore
     async updateSocialDataEmail(val) {
-      ;(this.socialData as any).email = val
+      ; (this.socialData as any).email = val
 
       console.log('updated-password', this.socialData)
       //@ts-ignore
@@ -276,8 +241,8 @@ export default Vue.extend({
 
     //@ts-ignore
     async loginInSocialUser(data) {
-      ;(this.user as any).email = data.email
-      ;(this.user as any).password = data.secret + data.socialId
+      ; (this.user as any).email = data.email
+        ; (this.user as any).password = data.secret + data.socialId
       console.log('about to log in these user')
       //@ts-ignore
       await this.login()
@@ -296,7 +261,7 @@ export default Vue.extend({
             this.loginInSocialUser(data[0])
         })
         .catch(() => {
-          ;(this.socialIsSignIn as any) = undefined
+          ; (this.socialIsSignIn as any) = undefined
         })
     },
 
@@ -376,15 +341,15 @@ export default Vue.extend({
         .then(async (response: any) => {
           let { user } = response.data
           // console.log(">>>>>>>>>>>>>>>>>", user)
-          if(user.isEmailVerified == 0 || !user.isEmailVerified){
+          if (user.isEmailVerified == 0 || !user.isEmailVerified) {
             await this.$auth.logout()
             this.isLoading = false
             this.isEmailVerified = true
-           return
+            return
           }
           //@ts-ignore
           await this.loginUser(response)
-          
+
           this.isRedirecting = true
           // if ( user.status != StatusUser.ACTIVE ) {
           // this.isRedirecting = false;
@@ -395,16 +360,16 @@ export default Vue.extend({
           setTimeout(() => {
             let fromFileManger = JSON.parse(localStorage.getItem('isGuest') as string)
             console.log(fromFileManger)
-            if(fromFileManger?.isGuest){
+            if (fromFileManger?.isGuest) {
               this.$nuxt.$router.push(fromFileManger.path)
             } else {
-            this.$nuxt.$router.push('/file-ledger') 
-          }
+              this.$nuxt.$router.push('/file-ledger')
+            }
           }, 2000)
         })
-        .catch(({ response } : any) => {
+        .catch(({ response }: any) => {
           let message = ErrorHandler(response)
-          ;(this.errorMessage as string | undefined) = message
+            ; (this.errorMessage as string | undefined) = message
         })
         .finally(() => {
           this.isLoading = false
@@ -417,26 +382,30 @@ export default Vue.extend({
 
 <style lang="postcss" scoped>
 #remember-me-checkbox {
-  &:not(:checked) + label {
+  &:not(:checked)+label {
     @apply bg-paperdazgray-400;
+
     & .overlay {
       @apply bg-paperdazgray-400 bg-opacity-20;
     }
   }
-  &:checked + label {
+
+  &:checked+label {
     @apply bg-paperdazgreen-300;
+
     & .overlay {
       opacity: 1;
       @apply bg-paperdazgreen-300 bg-opacity-20;
     }
   }
 
-  & + label {
+  &+label {
     z-index: 2;
+
     & .overlay {
       z-index: -1;
       opacity: 0;
-      @apply transition ease-in-out  absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2;
+      @apply transition ease-in-out absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2;
     }
 
     &:hover .overlay {

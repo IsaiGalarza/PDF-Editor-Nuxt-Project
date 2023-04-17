@@ -1,7 +1,12 @@
 <template>
-  <nav class="flex flex-col bg-white h-full w-full rounded-tr-2xl rounded-br-2xl py-8">
+  <nav
+    class="flex flex-col bg-white h-full w-full rounded-tr-2xl rounded-br-2xl py-8"
+  >
     <div class="flex justify-end px-8">
-      <span class="py-2 mb-3 cursor-pointer inline-block lg:hidden" @click="$emit('close')">
+      <span
+        class="py-2 mb-3 cursor-pointer inline-block lg:hidden"
+        @click="$emit('close')"
+      >
         <times-icon width="12" height="12" />
       </span>
     </div>
@@ -10,14 +15,27 @@
     </nuxt-link>
     <ul class="overflow-y-auto overflow-x-hidden flex-1 px-4 custom-scrollbar">
       <li>
-        <div v-for="(link, i) in links" :key="i" class="nav-item cursor-pointer"
-          @click="shuffleRoute(i, link.link, link.label, link.openNew)" :class="[link.className, {
-            active: link.exact,
-            // ? $nuxt.$route.path == link.link
-            // : $nuxt.$route.fullPath.startsWith(link.link),
-          }]">
+        <div
+          v-for="(link, i) in links"
+          :key="i"
+          class="nav-item cursor-pointer"
+          @click="shuffleRoute(i, link.link, link.label, link.openNew)"
+          :class="[
+            link.className,
+            {
+              active: link.exact,
+              // ? $nuxt.$route.path == link.link
+              // : $nuxt.$route.fullPath.startsWith(link.link),
+            },
+          ]"
+        >
           <div class="w-5 h-5">
-            <svg-icon class="h-full w-full" height="100%" width="100%" :value="link.icon" />
+            <svg-icon
+              class="h-full w-full"
+              height="100%"
+              width="100%"
+              :value="link.icon"
+            />
           </div>
           <span>{{ link.label }}</span>
         </div>
@@ -26,20 +44,28 @@
     <div class="px-8">
       <p class="text-center text-[#909090] mb-6 font-medium">Find us on</p>
       <div class="flex flex-wrap items-center gap-2 justify-center">
-        <span @click="socialShareFunction('facebook')"
-          class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white">
+        <span
+          @click="socialShareFunction('facebook')"
+          class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white"
+        >
           <facebook-icon height="12" />
         </span>
-        <span @click="socialShareFunction('linkedin')"
-          class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white">
+        <span
+          @click="socialShareFunction('linkedin')"
+          class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white"
+        >
           <linked-in-icon height="12" />
         </span>
-        <span @click="socialShareFunction('linkedin')"
-          class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white">
+        <span
+          @click="socialShareFunction('linkedin')"
+          class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white"
+        >
           <instagram-icon height="11" />
         </span>
-        <span @click="socialShareFunction('twitter')"
-          class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white">
+        <span
+          @click="socialShareFunction('twitter')"
+          class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white"
+        >
           <twitter-icon height="11" />
         </span>
       </div>
@@ -53,7 +79,7 @@
 <script>
 import Vue from 'vue'
 import UserTypeEnum from '~/models/UserTypeEnum'
-import AuthUser from "~/models/AuthUser"
+import AuthUser from '~/models/AuthUser'
 import LogoWithText from '../LogoWithText.vue'
 import EnvelopeIcon from '../svg-icons/EnvelopeIcon.vue'
 import FacebookIcon from '../svg-icons/FacebookIcon.vue'
@@ -65,7 +91,7 @@ import TwitterIcon from '../svg-icons/TwitterIcon.vue'
 import WhatsappIcon from '../svg-icons/WhatsappIcon.vue'
 import InstagramIcon from '../svg-icons/InstagramIcon.vue'
 import GearLightIcon from '../svg-icons/GearLightIcon.vue'
-import TeamAccess from "~/models/TeamAccess"
+import TeamAccess from '~/models/TeamAccess'
 export default Vue.extend({
   name: 'DashboardSidebar',
   components: {
@@ -79,7 +105,7 @@ export default Vue.extend({
     ReditIcon,
     TimesIcon,
     InstagramIcon,
-    GearLightIcon
+    GearLightIcon,
   },
   data() {
     return {
@@ -99,12 +125,6 @@ export default Vue.extend({
           exact: false,
         },
         {
-          label: 'Business Page',
-          icon: 'UserProfileIcon',
-          openNew: true,
-          link: `/${this.$auth.user?.businessPage}`,
-        },
-        {
           label: 'Team Members',
           icon: 'HoldingHandsIcon',
           link: '/team',
@@ -118,7 +138,13 @@ export default Vue.extend({
           openNew: false,
           exact: false,
         },
-        { label: 'FAQ', icon: 'ConversationIcon', link: '/faq', exact: false, openNew: false, },
+        {
+          label: 'FAQ',
+          icon: 'ConversationIcon',
+          link: '/faq',
+          exact: false,
+          openNew: false,
+        },
         {
           label: 'Contact us',
           icon: 'CustomerCareIcon',
@@ -126,7 +152,6 @@ export default Vue.extend({
           exact: false,
           openNew: false,
         },
- 
       ],
     }
   },
@@ -135,24 +160,28 @@ export default Vue.extend({
       switch (val) {
         case 'linkedin':
           window.open(`https://www.linkedin.com/company/80987259/`)
-          break;
+          break
         case 'whatsapp':
           window.open(`whatsapp://send?text=${window.location.origin}`)
-          break;
+          break
         case 'twitter':
-          window.open(`https://twitter.com/intent/tweet?text=${window.location.origin}`)
-          break;
+          window.open(
+            `https://twitter.com/intent/tweet?text=${window.location.origin}`
+          )
+          break
         case 'facebook':
-          window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.origin}`)
-          break;
+          window.open(
+            `https://www.facebook.com/sharer/sharer.php?u=${window.location.origin}`
+          )
+          break
         case 'instagram':
           window.open(`https://www.instagram.com/paperdaz_/`)
-          break;
+          break
       }
     },
     getCurrentRoute() {
-      let pathHistory = (this.$nuxt.$router).history.current.fullPath;
-      (this.links) = this.links.map((item, i) => {
+      let pathHistory = this.$nuxt.$router.history.current.fullPath
+      this.links = this.links.map((item, i) => {
         if (pathHistory == item.link || pathHistory == `${item.link}/`) {
           return { ...item, exact: true }
         } else {
@@ -161,11 +190,11 @@ export default Vue.extend({
       })
     },
     shuffleRoute(index, link, name, openNew) {
-       if(openNew){
+      if (openNew) {
         window.open(`${location.origin}${link}`)
         return
-       }
-      (this.links) = this.links.map((item, i) => {
+      }
+      this.links = this.links.map((item, i) => {
         if (index == i) {
           return { ...item, exact: true }
         } else {
@@ -174,21 +203,24 @@ export default Vue.extend({
       })
       switch (name) {
         case 'Packages':
-          this.isPaidUser ? this.$nuxt.$router.push('/settings?tab=billing') : this.$nuxt.$router.push('/packages?type=default')
-          break;
+          this.isPaidUser
+            ? this.$nuxt.$router.push('/settings?tab=billing')
+            : this.$nuxt.$router.push('/packages?type=default')
+          break
         default:
           this.$nuxt.$router.push(link)
-          break;
+          break
       }
     },
-    checkToRouteLinks() {
-     
-    },
+    checkToRouteLinks() {},
   },
   computed: {
     isPaidUser() {
       return this.$auth.user.role == UserTypeEnum.PAID
-    }
+    },
+    userPage() {
+      return this.$auth.user?.businessPage
+    },
   },
   mounted() {
     console.log(this.$auth.user)
@@ -198,10 +230,16 @@ export default Vue.extend({
     '$auth.user.role': function () {
       this.checkToRouteLinks()
       this.getCurrentRoute()
+      this.links.splice(2, 0, {
+        label: 'Business Page',
+        icon: 'UserProfileIcon',
+        openNew: true,
+        link: `/${this.userPage}`,
+      })
     },
-    "$nuxt.$route": function () {
+    '$nuxt.$route': function () {
       this.getCurrentRoute()
-    }
+    },
   },
 })
 </script>
@@ -210,7 +248,7 @@ export default Vue.extend({
   @apply flex items-center whitespace-nowrap gap-4 text-paperdazgray-300 text-sm py-4 px-4 rounded-xl transition ease-in-out overflow-hidden;
   background: transparent;
 
-  &>* {
+  & > * {
     position: relative;
     z-index: 1;
   }

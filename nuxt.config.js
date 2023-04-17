@@ -156,7 +156,7 @@ export default {
       login: '/',
       logout: '/',
       callback: '/',
-      home: '/dashboard',
+      home: '/paperlink-files',
     },
     strategies: {
       local: {

@@ -96,7 +96,13 @@
       <!-- <--- START: navbar dropdown --- -->
       <el-dropdown trigger="click" @command="handleCommand">
         <span class="flex items-center el-dropdown-link">
-          <span class="border-paperdazgreen-300 mr-2 p-0.5 overflow-hidden relative text-center" :class="[
+          <letter-avatar
+          v-if="!$auth.user.profilePicture"
+          style="width: 43px; height: 43px"
+          class="h-[28px] w-[28px] rounded-1 object-cover cursor-pointer mr-1"
+          :username="(userCompanyName || userFullName )"
+        />
+          <span v-else class="border-paperdazgreen-300 mr-2 p-0.5 overflow-hidden relative text-center" :class="[
             isPaidUser
               ? 'w-[45px] h-[45px] rounded-md'
               : 'circle-20 rounded-full',

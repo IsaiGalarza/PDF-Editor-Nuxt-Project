@@ -130,7 +130,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     ledgerInfo() {
       return {
-        userId: this.$auth?.user?.id ?? 0,
+        userId: this.$auth?.user?.id ?? this.file.userId,
         fileName: this.file?.fileName,
         action: this.file?.fileAction,
         fileId: this.file?.id,
@@ -164,9 +164,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         date.getUTCHours()
       )}${this.convertToDoubleString(
         date.getUTCMinutes()
-      )}${this.$auth.user?.firstName?.charAt(0)}${this.$auth.user?.lastName.charAt(
+      )}${(this.$auth.user?.firstName || '')?.charAt(
         0
-      )}`.toUpperCase()
+      )}${(this.$auth.user?.lastName || '').charAt(0)}`.toUpperCase()
     },
     confirmAnnotation() {
       let date = new Date()
@@ -237,7 +237,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       }
     },
     addToLedger() {
-      this.$axios
+      this.$_server
         .post(`/ledger`, { ...this.ledgerInfo })
         .then(() => {
           this.proceedToSendEmail = true
@@ -316,30 +316,37 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       let requestData = {
         action: this.file?.fileAction,
         userId: this.$auth?.user?.id ?? 0,
-        link: this.generatedPdf?.downloadLink,
-        fileId: this.file?.id
+        editedFileLink: this.generatedPdf?.downloadLink,
+        fileId: this.file?.id,
       }
       //   // return
-      this.$axios
-        .$post(`/request`, requestData)
-        .then(response => {
+        try {
+        this.$_server.post(`/request`, requestData)
+        .then(() => {
           this.$store.commit('SET_PDF_EXIT', true)
-          this.$store.commit('SET_TOAST', { active: true, msg: ` You are done! File has been sent to <b> ${$store.state.file?.user?.company_name ?? ""}</b>`})
-          this.$store.commit('SET_FILE_SIGNATURE', null);
+          this.toggleToast({
+            active: true,
+            msg: ` You are done! File has been sent to <b> ${
+              this.$store.state?.file?.user?.company_name ?? ''
+            }</b>`,
+          })
+          this.$store.commit('SET_FILE_SIGNATURE', null)
           this.$store.commit('SET_FILE_INITIAL', null)
-          this.$auth.loggedIn ? this.$router.push('/dashboard') : this.$router.push('/')
+          this.$auth.loggedIn
+            ? this.$nuxt.$router.push('/file-ledger')
+            : this.$nuxt.$router.push('/')
         })
-        .catch(err => {
+        } catch (error) {
           this.$notify.error({
             title: 'Request',
             message: 'Request Failed'
           })
-        })
-        .finally(() => {
+        } finally {
           this.closeModal()
           this.isLoading = false
           this.proceedToSendEmail = false
-        })
+        }
+   
     },
     allowLoadingAllAnnotations(ms) {
       return new Promise(resolve => {

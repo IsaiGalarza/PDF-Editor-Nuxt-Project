@@ -213,7 +213,7 @@ export default Vue.extend({
         .$patch(`/users/${this.userInfo.data?.user_id}`, this.userPayload)
         .then((res) => {
           this.closeModal()
-          this.$nuxt.$router.push('/login')
+          this.$nuxt.$router.push(`/login?email=${this.email}`)
         })
         .catch((err) => {
           console.log(err)

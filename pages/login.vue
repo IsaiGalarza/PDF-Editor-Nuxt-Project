@@ -2,8 +2,6 @@
   <section class="bg-paperdazgreen-300">
     <div class="container py-20">
       <div class="w-full max-w-md mx-auto bg-white shadow-2xl rounded-xl pt-6  pb-10">
-
-
         <div v-if="isEmailVerified"
           class="flex items-center text-[13px] w-full bg-red-500 text-white rounded-md py-3 p-2 mb-5">
           <exclamation-icon width="18" height="18" />
@@ -89,6 +87,9 @@ import login from '~/mixins/login'
 import { ErrorHandler } from '~/types/ErrorFunction'
 import ChangeUserEmail from '~/components/company-files/Tabs/ChangeUserEmail.vue'
 import { NoAuthpages } from '~/types/NoAuthPages'
+import { Route } from 'vue-router'
+
+
 
 
 interface PassportUserProfile {
@@ -129,7 +130,7 @@ export default Vue.extend({
   data() {
     return {
       user: {
-        email: undefined,
+        email:  (this as any).$route.query.email ?  (this as any).$route.query.email : undefined,
         password: undefined,
         strategy: 'local',
       },
@@ -191,10 +192,15 @@ export default Vue.extend({
     //@ts-ignore
     this.socialLogin()
     this.confirmIsEmailVerified()
-    this.user.email = this.$store.getters.getSaveEmailExist
+    // this.user.email = this.$store.getters.getSaveEmailExist
+    let email = (this as any).$route.query.email ?  (this as any).$route.query.email : undefined
+    this.user.email = email
   },
 
+  
+
   methods: {
+   
     async confirmIsEmailVerified() {
       let { verificationToken } = this.$route.query
       if (!verificationToken) return

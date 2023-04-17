@@ -204,7 +204,7 @@ export default mixins(login).extend({
       return !this.editEnalble || !this.editEnalble
     },
     qrCodeurl() {
-      return `${window.origin}/public/profile/${this.userInfo?.id}`
+      return `${window.origin}/${this.userInfo?.businessPage}`
     },
     login() {
       return this.$auth.loggedIn

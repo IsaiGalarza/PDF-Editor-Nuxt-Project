@@ -29,6 +29,7 @@
         <span class="flex items-center el-dropdown-link">
           <letter-avatar
           v-if="!$auth.user.profilePicture"
+          style="width: 43px; height: 43px"
           class="h-[28px] w-[28px] rounded-1 object-cover cursor-pointer mr-1"
           :username="(userCompanyName || userFullName )"
         />

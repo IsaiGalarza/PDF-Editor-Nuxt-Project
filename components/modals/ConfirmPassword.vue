@@ -8,17 +8,17 @@
     class="relative text-[#414042]"
   >
     <template #title>
-      <span class="text-center font-semibold text-xl block w-full"
+      <span class="text-center  text-xl block w-full"
         >Create Password</span
       >
     </template>
     <!-- Start:: Body -->
     <div class="justify-center pb-2">
-      <el-input placeholder="user email" disabled class="w-full mt-3" v-model="email" />
-      <el-input placeholder="Password" type="password" class="w-full mt-3" v-model="password" />
+      <el-input placeholder="user email" disabled class="w-full  " v-model="email" />
+      <el-input placeholder="Create password" type="password" class="w-full rounded-[100px] mt-3" v-model="password" />
       <el-input
-        placeholder="Confirm Password"
-        class="w-full mt-3"
+        placeholder="Retype password"
+        class="w-full mt-3 mb-3"
         type="password"
         v-model="confirm_pasword"
       />

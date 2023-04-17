@@ -12,11 +12,11 @@
             v-if="activeContent == index"
           >
             <h1
-              class="font-bold text-4xl md:text-5xl leading-[42px] md:leading-[62px] text-white text-left"
+              class="font-[500] text-3xl md:text-5xl leading-[42px] md:leading-[62px] text-white text-left"
             >
               {{ content.article }}
             </h1>
-            <div class="lg:my-12 mt-8 mb-6 font-medium lg:text-2xl text-left">
+            <div class="lg:my-12 mt-8 mb-4 font-medium lg:text-2xl text-left">
               <p
                 class="text-sm bg-paperdazgreen-500 inline-block p-3 text-white rounded"
                 v-html="content.note"
@@ -26,7 +26,7 @@
           <div class="text-left">
             <div class="w-[50%] flex items-center justify-between">
               <button
-                class="h-[4px]"
+                class="h-[7px] rounded-[30px]"
                 v-for="(content, index) in contents"
                 :key="index"
                 :style="`width: ${70 / contents.length}%`"
@@ -44,9 +44,9 @@
         />
       </div>
     </div>
-    <div class="flex flex-col justify-between mt-5">
+    <div class="flex flex-col justify-between mt-2 mb-6">
       <div class="py-lg-4 py-2  lg:inline-block">
-        <nuxt-link to="/package?tablevel=1" class="px-5 py-2 rounded bg-white border-none outline-none inline-block">
+        <nuxt-link to="/package?tablevel=1" class="px-[110px] py-2 rounded-[15px] bg-white border-none outline-none inline-block">
           Register
         </nuxt-link>
       </div>

@@ -21,12 +21,12 @@
           <hamburger-icon />
         </span> -->
         <nuxt-link to="/">
-          <logo-with-text class="mr-2 h-5 xs:h-6 sm:h-7 w-auto" />
+          <logo-with-text class="mr-2  h-[30px] xs:h-6 sm:h-[60px] w-auto" />
         </nuxt-link>
       </div>
       <!-- mobile -->
       <!------>
-      <div class="text-center w-full font-semibold">
+      <div class="text-center w-full text-[0.8rem] md:text-[1.2rem] font-semibold">
         Secure, Private & HIPAA Compliant!
        </div>
 

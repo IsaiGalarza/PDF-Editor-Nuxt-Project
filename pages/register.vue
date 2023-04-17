@@ -1,6 +1,6 @@
 <template>
   <section class="bg-paperdazgreen-300 pt-10">
-    <div class="flex flex-wrap p-3 justify-around items-center">
+    <div class="flex flex-wrap p-3 justify-around items-end">
       <div class="w-full sm:w-6/12 md:w-5/12">
         <message-alert-widget
           :message="errorMessageUser"
@@ -8,14 +8,14 @@
           type="error"
           class="my-2 w-[80%] ml-[0%]"
         />
-        <p class="font-bold text-xl text-white">Account Information</p>
-        <span class="text-xs mb-6 text-white"
+        <p class=" md:text-[2rem] text-white">Account Information</p>
+        <span class="text-[0.9rem] mb-10 text-white"
           >Enter the required information to continue</span
         >
-        <div>
+        <div class="mt-8">
           <input
             :disabled="loading"
-            class="my-3 rounded text-input"
+            class="my-3  text-input"
             placeholder="Business name"
             required
             v-model="business_name"
@@ -36,7 +36,7 @@
           />
           <input
             :disabled="loading"
-            class="my-3 text-input"
+            class="my-3 md:mt-3 md:mb-0 text-input"
             placeholder="Contact number"
             required
             v-model="business_number"
@@ -44,7 +44,7 @@
         </div>
       </div>
 
-      <div class="w-full sm:w-6/12 md:w-5/12 bg-white rounded shadow-lg">
+      <div class="w-full sm:w-6/12 md:w-5/12 px-2 md:px-3 bg-white pb-3 rounded-[1.1rem] shadow-lg">
         <div class="w-full p-3">
           <form class="">
             <div class="form-group group-label">
@@ -55,7 +55,7 @@
                   packageInfo.isMonthly
                     ? packageInfo.monthlyPrice
                     : packageInfo.yearlyPrice
-                }}/
+                }}
                 <abbr class="text-xs">{{
                   packageInfo.isMonthly ? 'monthly' : 'yearly'
                 }}</abbr>
@@ -63,13 +63,27 @@
             </div>
             <div class="h-[1px] bg-gray-300"></div>
             <div class="h-4"></div>
-            <div class="grid mb-10">
-              <label class="font-bold flex items-center justify-between" for="">
+            <div class="grid mb-6">
+              <label class="font-[500] flex items-center justify-between" for="">
                 Credit Card
-                <img
-                  class="float-right inline w-[134px]"
-                  src="~/assets/img/payment.png"
+                <div class="row flex items-center">
+                  <img
+                  class="w-[70px] mr-[-15px]"
+                  src="~/assets/icons/Mastercard.svg"
                 />
+                <img
+                  class="w-[70px] mr-[-15px]"
+                  src="~/assets/icons/Visa.svg"
+                />
+                <img
+                  class="w-[70px] mr-[-15px]"
+                  src="~/assets/icons/Amex.svg"
+                />
+                <img
+                  class="w-[70px]"
+                  src="~/assets/icons/Discover.svg"
+                />
+                </div>
               </label>
             </div>
             <message-alert-widget
@@ -132,7 +146,7 @@
               : 'opacity-100',
           ]"
           :disabled="isLoading || !checkFilledInput"
-          class="w-[50%] sm:w-[320px] py-2 bg-white rounded flex justify-center items-center"
+          class="w-[50%] sm:w-[320px] py-2 bg-white rounded-[0.7rem] flex justify-center items-center"
         >
           <span class="mr-2">Next</span>
 
@@ -373,6 +387,6 @@ export default Vue.extend({
   text-align: left;
 }
 .text-input {
-  @apply p-[8px] border-none outline-none rounded w-full;
+  @apply px-3 py-3 border-none outline-none rounded-[0.6rem] w-full;
 }
 </style>

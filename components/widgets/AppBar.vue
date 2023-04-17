@@ -13,7 +13,7 @@
   >
     <div class="" :class="collapsed ? 'overlay' : ''"></div>
     <nav class="container h-full flex items-center justify-between">
-      <div class="flex items-center gap-1">
+      <div class="flex gap-1 w-6/12 items-center">
         <!-- <span
           class="lg:hidden cursor-pointer p-2 transform -translate-x-2"
           @click="collapsed = true"
@@ -26,8 +26,11 @@
       </div>
       <!-- mobile -->
       <!------>
-      <div class="text-center w-full text-[0.8rem] md:text-[1.2rem] font-semibold">
-        Secure, Private & HIPAA Compliant!
+      <div class="text-center w-full text-[0.8rem] md:text-[1.2rem] font-semibold flex justify-end md:justify-between items-center">
+        <abbr class="hidden md:block">Secure, Private & HIPAA Compliant!</abbr>
+        <nuxt-link to="/login" class="px-4 py-2 text-white rounded-md bg-paperdazgreen-300">
+          Login
+        </nuxt-link>
        </div>
 
     </nav>

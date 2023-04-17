@@ -54,6 +54,9 @@ export default mixins(login).extend({
     // disable scrolling
     document.body.style.overflow = 'hidden'
   },
+  beforeDestroy() {
+    localStorage.setItem('newUser', "true")
+  },
   methods: {
     increaseCount() {
       this.keepCount = this.keepCount + 1
@@ -67,7 +70,7 @@ export default mixins(login).extend({
     return {
       // ledger, confirmed, signed, saved, shared
       activeTab: 'ledger',
-      showGuideModal: false,
+      showGuideModal: localStorage.getItem('newUser') ? false : true,
       keepCount: 0,
       popUps: [
         'WelcomePopUp',

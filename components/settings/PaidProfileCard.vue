@@ -5,7 +5,13 @@
         <h3 class="uppercase text-paperdazgray-500 font-semibold text-center mb-4 text-xl">
           {{ userAccount }}
         </h3>
-        <div class="w-40 h-40 mx-auto p-0.5 mb-2">
+        <letter-avatar
+        v-if="!$auth.user.profilePicture"
+        style="width: 160px; height: 160px; font-size: 70px"
+        class="w-40 h-40 rounded-1 object-cover cursor-pointer mr-1 mb-2"
+        :username="(user.companyName || userFullName)"
+      />
+        <div v-else class="w-40 h-40 mx-auto p-0.5 mb-2">
           <div @click="visibleUploadImageDialog = true" class="w-full h-full border-2 border-[#B7EF94] p-2 cursor-pointer rounded-lg">
             <img :src="profilePhoto" class="w-full h-full profilePhoto rounded-lg" alt="" />
           </div>
@@ -58,10 +64,11 @@ import mixins from 'vue-typed-mixins'
 import UserTypeEnum from '~/models/UserTypeEnum'
 import QrcodeShare from '../company-files/Tabs/QrcodeShare.vue'
 import ShareFilesModal from '../company-files/Tabs/ShareFilesModal.vue'
+import LetterAvatar from '../widgets/LetterAvatar.vue'
 
 export default mixins(login).extend({
   name: 'PaidProfileCard',
-  components: { BarcodeIcon, ShareIcon, BuildingIcon, QrcodeShare, ShareFilesModal, CropperImageUpload },
+  components: { BarcodeIcon, ShareIcon, BuildingIcon, QrcodeShare, ShareFilesModal, CropperImageUpload, LetterAvatar },
   data() {
     return {
       showQrcode: false,
@@ -70,6 +77,9 @@ export default mixins(login).extend({
     }
   },
   computed: {
+    userFullName(){
+        return `${this.user?.firstName} ${this.user?.lastName}`
+    },
     profilePhoto() {
       return this.$store.getters.profilePhoto
     },

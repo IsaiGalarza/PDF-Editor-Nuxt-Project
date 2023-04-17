@@ -11,7 +11,7 @@
     <ul class="overflow-y-auto overflow-x-hidden flex-1 px-4 custom-scrollbar">
       <li>
         <div v-for="(link, i) in links" :key="i" class="nav-item cursor-pointer"
-          @click="shuffleRoute(i, link.link, link.label)" :class="[link.className, {
+          @click="shuffleRoute(i, link.link, link.label, link.openNew)" :class="[link.className, {
             active: link.exact,
             // ? $nuxt.$route.path == link.link
             // : $nuxt.$route.fullPath.startsWith(link.link),
@@ -94,32 +94,37 @@ export default Vue.extend({
         {
           label: 'Paperlink Files',
           icon: 'DocumentIcon',
+          openNew: false,
           link: '/paperlink-files',
           exact: false,
         },
         {
           label: 'Business Page',
           icon: 'UserProfileIcon',
+          openNew: true,
           link: `/public/profile/${this.$auth.user?.id}`,
         },
         {
           label: 'Team Members',
           icon: 'HoldingHandsIcon',
           link: '/team',
+          openNew: false,
           exact: false,
         },
         {
           label: 'Billings',
           icon: 'QuoteFileIcon',
           link: '/billing',
+          openNew: false,
           exact: false,
         },
-        { label: 'FAQ', icon: 'ConversationIcon', link: '/faq', exact: false },
+        { label: 'FAQ', icon: 'ConversationIcon', link: '/faq', exact: false, openNew: false, },
         {
           label: 'Contact us',
           icon: 'CustomerCareIcon',
           link: '/contact-us',
           exact: false,
+          openNew: false,
         },
  
       ],
@@ -155,7 +160,11 @@ export default Vue.extend({
         }
       })
     },
-    shuffleRoute(index, link, name) {
+    shuffleRoute(index, link, name, openNew) {
+       if(openNew){
+        window.open(`${location.origin}${link}`)
+        return
+       }
       (this.links) = this.links.map((item, i) => {
         if (index == i) {
           return { ...item, exact: true }

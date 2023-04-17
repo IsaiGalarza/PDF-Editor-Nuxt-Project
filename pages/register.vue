@@ -288,11 +288,13 @@ export default Vue.extend({
     async createSubscription() {
       await this.$axios
         .post('/subscriptions', this.subscriptionPayload)
-        .then((res) =>
+        .then((res) =>{
           this.toggleToast({
             msg: 'Thank you for going paperless! We have sent a receipt with instructions to verify your email!',
             active: true,
           })
+          this.$nuxt.$router.push('/')
+        }
         )
         .catch((err) => (this.errorMessage = err))
         .finally(() => (this.isLoading = false))

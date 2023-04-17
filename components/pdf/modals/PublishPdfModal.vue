@@ -1,78 +1,139 @@
 <template>
-  <el-dialog :visible.sync="showModal" :append-to-body="true" style="" :show-close="false" center
-    class="relative text-[#414042]">
+  <el-dialog
+    :visible.sync="showModal"
+    :append-to-body="true"
+    style=""
+    :show-close="false"
+    center
+    class="relative text-[#414042]"
+  >
     <!--Start:: Close Button -->
     <div class="absolute -top-3 -right-3" style="padding: inherit">
-      <span class="circle circle-12 bg-white cursor-pointer text-red-600" @click="closeModal()">
-        <svg width="12" height="12" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd"
+      <span
+        class="circle circle-12 bg-white cursor-pointer text-red-600"
+        @click="closeModal()"
+      >
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 8 8"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
             d="M4 3.19188L7.02451 0.167368C7.24767 -0.0557892 7.60948 -0.0557892 7.83263 0.167368C8.05579 0.390524 8.05579 0.752333 7.83263 0.975489L4.80812 4L7.83263 7.02451C8.05579 7.24767 8.05579 7.60948 7.83263 7.83263C7.60948 8.05579 7.24767 8.05579 7.02451 7.83263L4 4.80812L0.975489 7.83263C0.752333 8.05579 0.390524 8.05579 0.167368 7.83263C-0.0557892 7.60948 -0.0557892 7.24767 0.167368 7.02451L3.19188 4L0.167368 0.975489C-0.0557892 0.752333 -0.0557892 0.390524 0.167368 0.167368C0.390524 -0.0557892 0.752333 -0.0557892 0.975489 0.167368L4 3.19188Z"
-            fill="#414042" />
+            fill="#414042"
+          />
         </svg>
       </span>
     </div>
     <!--End:: Close Button -->
     <template #title>
-      <h4 class="text-center font-semibold text-2xl text-gray-800 pb-2" v-if="!isCreator">
+      <h4
+        class="text-center font-semibold text-2xl text-gray-800 pb-2"
+        v-if="!isCreator"
+      >
         All Done?
       </h4>
     </template>
     <!-- Start:: Body -->
-     <div v-if="!nonUserRecieveEmail">
+    <div v-if="!nonUserRecieveEmail">
       <div v-if="isConfirm" class="flex justify-center pb-2">
         <CheckedFillIcon width="90" />
       </div>
       <!-- <span v-if="!isCreator">Do you want these file to be saved as
         {{ `${(file.fileAction + 'ed').replace('ee', 'e')}` }}?</span> -->
-      <span v-if="isCreator" class="w-full text-center block py-0 px-2 pb-8 text-[16px] break-normal">Do you want to publish the file as
+      <span
+        v-if="isCreator"
+        class="w-full text-center block py-0 px-2 pb-8 text-[16px] break-normal"
+        >Do you want to publish the file as
         <span class="capitalize">
           {{
-              file.fileAction + ' & ' + file.filePrivacy.replace('p', 'P') + '?'
-          }}</span></span>
-      <span v-if="!isCreator && $auth.loggedIn" class="w-full text-center block py-0 px-2 pb-8 text-[16px] mb-6">
+            file.fileAction + ' & ' + file.filePrivacy.replace('p', 'P') + '?'
+          }}</span
+        ></span
+      >
+      <span
+        v-if="!isCreator && $auth.loggedIn"
+        class="w-full text-center block py-0 px-2 pb-8 text-[16px] mb-6"
+      >
         If so, we will send a copy to your email.
       </span>
       <div class="flex justify-around mt-0">
-        <button class="h-10 text-xs w-[150px] max-w-[50%] rounded-lg shadow border-[#D9251E] mr-1" type="button"
-          :disabled="isLoading" @click="closeModal()" :class="
+        <button
+          class="h-10 text-xs w-[150px] max-w-[50%] rounded-lg shadow border-[#D9251E] mr-1"
+          type="button"
+          :disabled="isLoading"
+          @click="closeModal()"
+          :class="
             isConfirm
               ? 'bg-zinc-500 border-[0px] text-white'
               : 'bg-white border-[1px] text-[#D9251E]'
-          ">
+          "
+        >
           {{ isCreator ? 'Cancel' : 'Back' }}
         </button>
         <button
           class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400 ml-1"
-          :disabled="isLoading" @click="onSubmit">
+          :disabled="isLoading"
+          @click="onSubmit"
+        >
           <span class="inline-flex gap-1 items-center">
             Yes
-            <spinner-dotted-icon v-show="isLoading" height="20" width="20" class="animate-spin" />
+            <spinner-dotted-icon
+              v-show="isLoading"
+              height="20"
+              width="20"
+              class="animate-spin"
+            />
           </span>
         </button>
       </div>
-      <span v-if="!isCreator && $store.getters?.getFillAsGuest" class="w-full text-center block py-0 px-2 pb-8 text-[16px] pt-4">
-        <input v-model="nonUserRecieveEmail" type="checkbox"/> Click here if you want a copy
-       </span>
-     </div>
-
-     <div v-else>
-        <p class="w-full text-center">Enter email copy to be sent to.</p>
-        <input type="text" class="py-2 w-full rounded my-3 border-[1px] border-gray-200" placeholder="--Enter email--"/>
-     <p class="flex justify-center">
-      <button
-      class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400 ml-1"
-      :disabled="isLoading" @click="onSubmit">
-      <span class="inline-flex gap-1 items-center">
-        Send
-        <spinner-dotted-icon v-show="isLoading" height="20" width="20" class="animate-spin" />
+      <span
+        v-if="!isCreator && $store.getters?.getFillAsGuest"
+        class="w-full text-center block py-0 px-2 pb-8 text-[16px] pt-4"
+      >
+        <input v-model="nonUserRecieveEmail" type="checkbox" /> Click here if
+        you want a copy
       </span>
-    </button>
-     </p>
-     </div>
+    </div>
+
+    <div v-else>
+      <p class="w-full text-center">Enter email copy to be sent to.</p>
+      <input
+        v-model="externalGuestEmail"
+        type="text"
+        class="py-2 w-full rounded my-3 border-[1px] border-gray-200 px-2"
+        placeholder="--Enter email--"
+      />
+      <p class="flex justify-center">
+        <button
+          class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400 ml-1"
+          :disabled="isLoading"
+          @click="onSubmit"
+        >
+          <span class="inline-flex gap-1 items-center">
+            Send
+            <spinner-dotted-icon
+              v-show="isLoading"
+              height="20"
+              width="20"
+              class="animate-spin"
+            />
+          </span>
+        </button>
+      </p>
+    </div>
     <!-- end :: body -->
 
-    <draw-or-type-modal v-model="showInitialModal" :src="$auth?.user?.signatureURL || ' '"
-      @image-exported="imageExportedLocal($event, true)" use-default-button />
+    <draw-or-type-modal
+      v-model="showInitialModal"
+      :src="$auth?.user?.signatureURL || ' '"
+      @image-exported="imageExportedLocal($event, true)"
+      use-default-button
+    />
   </el-dialog>
 </template>
 
@@ -98,22 +159,22 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     SpinnerDottedIcon,
     CheckedFillIcon,
     DrawOrTypeModal,
-    AddToPageDrawOrType
+    AddToPageDrawOrType,
   },
   model: {
     prop: 'visible',
-    event: 'updateVisibility'
+    event: 'updateVisibility',
   },
   props: {
     visible: {
       type: Boolean,
-      default: false
+      default: false,
     },
     tools: { type: Array },
     file: { type: Object },
     startGeneratePdf: { type: Function },
     successFileFunction: { type: Function },
-    trackSubmitTools: { type: Function }
+    trackSubmitTools: { type: Function },
   },
   computed: {
     signature() {
@@ -136,7 +197,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         fileId: this.file?.id,
         fileOwnerId: this.file?.userId,
         fileOwner: 0,
-        isGuest: this.$store.getters?.getFillAsGuest ? true : false
+        isGuest: this.$store.getters?.getFillAsGuest ? true : false,
       }
     },
     isSign() {
@@ -164,9 +225,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         date.getUTCHours()
       )}${this.convertToDoubleString(
         date.getUTCMinutes()
-      )}${this.$auth.user?.firstName?.charAt(0)}${this.$auth.user?.lastName.charAt(
+      )}${this.$auth.user?.firstName?.charAt(
         0
-      )}`.toUpperCase()
+      )}${this.$auth.user?.lastName.charAt(0)}`.toUpperCase()
     },
     confirmAnnotation() {
       let date = new Date()
@@ -183,9 +244,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         )}${this.$auth.user?.firstName?.charAt(
           0
         )}${this.$auth.user?.lastName?.charAt(0)}`.toUpperCase(),
-        fileAction: this.file?.fileAction
+        fileAction: this.file?.fileAction,
       }
-    }
+    },
   },
   data() {
     return {
@@ -195,7 +256,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       proceedToSendEmail: false,
       generatedPdf: {},
       showInitialModal: false,
-      nonUserRecieveEmail: false
+      nonUserRecieveEmail: false,
+      externalGuestEmail: undefined,
     }
   },
   watch: {
@@ -207,7 +269,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     '$auth.user': function () {
       this.convertImageToBase64(this.$auth?.user?.signatureURL)
-    }
+    },
   },
   mounted() {
     this.showModal = this.visible
@@ -245,17 +307,18 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         })
         .catch(() => {
           this.$notify.error({
-            message: 'Error occcured, could not send file'
+            message: 'Error occcured, could not send file',
           })
         })
     },
     appendConfirmSign() {
-      console.log('appendConfirmSign',
+      console.log(
+        'appendConfirmSign',
         ExtractFormPdf({
           downloadLink: this.file.downloadLink,
           file: this.confirmAnnotation,
           pdfOffset_y: this.pdfOffsetY,
-          pdfOffset_x: this.pdfOffsetX
+          pdfOffset_x: this.pdfOffsetX,
         })
       )
     },
@@ -264,7 +327,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       else
         return (
           ExtractFormPdf(this.file?.downloadLink)[0].data.filter(
-            item => item.hasOwnProperty('uploaded') && item.uploaded == null
+            (item) => item.hasOwnProperty('uploaded') && item.uploaded == null
           ).length < 1
         )
     },
@@ -276,14 +339,14 @@ export default mixins(SaveSignatureInitialsMixin).extend({
             file: this.confirmAnnotation,
             pdfOffset_y: this.pdfOffsetY,
             pdfOffset_x: this.pdfOffsetX,
-            signLabel: this.signLabel
-          })[0]
+            signLabel: this.signLabel,
+          })[0],
         })
-        .then(response => {
+        .then((response) => {
           this.generatedPdf = response.data
           this.addToLedger()
         })
-        .catch(() => { })
+        .catch(() => {})
         .finally(() => {
           this.isLoading = false
         })
@@ -295,17 +358,17 @@ export default mixins(SaveSignatureInitialsMixin).extend({
             downloadLink: this.file?.downloadLink,
             pdfOffset_y: this.pdfOffsetY,
             pdfOffset_x: this.pdfOffsetX,
-            signLabel: this.signLabel
-          })[0]
+            signLabel: this.signLabel,
+          })[0],
           // actionBy: `${this.$auth.user.firstName} ${this.$auth.user.lastName}`.toUpperCase()
         })
-        .then(response => {
+        .then((response) => {
           this.addToLedger()
           this.generatedPdf = response.data
         })
         .catch(() => {
           this.$notify.error({
-            message: 'Error occcured, could not save file'
+            message: 'Error occcured, could not save file',
           })
         })
         .finally(() => {
@@ -314,25 +377,35 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     sendPdfToEmail() {
       let requestData = {
-        action: this.file?.fileAction,
+        email: this.externalGuestEmail,
+        action: this.$auth?.user?.id
+          ? this.file?.fileAction
+          : 'shareFileToGuest',
         userId: this.$auth?.user?.id ?? 0,
         link: this.generatedPdf?.downloadLink,
-        fileId: this.file?.id
+        fileId: this.file?.id,
       }
       //   // return
       this.$axios
         .$post(`/request`, requestData)
-        .then(response => {
+        .then((response) => {
           this.$store.commit('SET_PDF_EXIT', true)
-          this.$store.commit('SET_TOAST', { active: true, msg: ` You are done! File has been sent to <b> ${$store.state.file?.user?.company_name ?? ""}</b>`})
-          this.$store.commit('SET_FILE_SIGNATURE', null);
+          this.$store.commit('SET_TOAST', {
+            active: true,
+            msg: ` You are done! File has been sent to <b> ${
+              $store.state.file?.user?.company_name ?? ''
+            }</b>`,
+          })
+          this.$store.commit('SET_FILE_SIGNATURE', null)
           this.$store.commit('SET_FILE_INITIAL', null)
-          this.$auth.loggedIn ? this.$router.push('/dashboard') : this.$router.push('/')
+          this.$auth.loggedIn
+            ? this.$router.push('/dashboard')
+            : this.$router.push('/')
         })
-        .catch(err => {
+        .catch((err) => {
           this.$notify.error({
             title: 'Request',
-            message: 'Request Failed'
+            message: 'Request Failed',
           })
         })
         .finally(() => {
@@ -342,7 +415,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         })
     },
     allowLoadingAllAnnotations(ms) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(function () {
           resolve()
         }, ms)
@@ -392,16 +465,16 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       }
     },
     publishAsCreator() {
-      let filteredTools = this.tools.filter(e => e.isDeleted != true)
+      let filteredTools = this.tools.filter((e) => e.isDeleted != true)
 
       this.$axios
         .patch(`/files/${this.file?.id}`, {
           fileAction: this.file?.fileAction,
-          annotaions: JSON.stringify(filteredTools)
+          annotaions: JSON.stringify(filteredTools),
         })
         .then(() => {
           this.$notify.success({
-            message: 'File publish successfully'
+            message: 'File publish successfully',
           })
           this.closeModal()
           this.$store.commit('SET_PDF_EXIT', true)
@@ -409,7 +482,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         })
         .catch(() => {
           this.$notify.error({
-            message: 'Error occcured, could not save file'
+            message: 'Error occcured, could not save file',
           })
         })
         .finally(() => {
@@ -426,11 +499,11 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     onSubmit() {
       if (!this.confirmAllSignAndInitials()) {
         this.$notify.error({
-          message: 'Input all signs and initial to save'
+          message: 'Input all signs and initial to save',
         })
         return
       }
-      
+
       if (
         !this.isCreator &&
         !this.$auth.user?.signatureURL &&
@@ -446,23 +519,23 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       if (!this.isCreator && !this.proceedToSendEmail) {
         this.$notify.info({
           message: 'Pdf generating.....',
-          duration: 1000 * 7
+          duration: 1000 * 7,
         })
         this.allowLoadingAllAnnotations(6000).then(() => {
           this.publishAsGuest()
           this.$emit('startGeneratePdf', false)
         })
       } else {
-        this.publishAsCreator() 
+        this.publishAsCreator()
       }
       this.$emit('trackSubmitTools', this.tools)
-    }
-  }
+    },
+  },
 })
 </script>
 
 <style scoped>
-*>>>.el-dialog {
+* >>> .el-dialog {
   width: 416px !important;
   max-width: 95% !important;
   border-radius: 20px !important;
@@ -471,22 +544,22 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   overflow: hidden;
 }
 
-*>>>.el-dialog__header {
+* >>> .el-dialog__header {
   padding-bottom: 20px;
 }
 
-*>>>.el-dialog__header,
-*>>>.el-dialog__footer {
+* >>> .el-dialog__header,
+* >>> .el-dialog__footer {
   text-align: left !important;
 }
 
-*>>>.el-dialog__body {
+* >>> .el-dialog__body {
   /* padding-top: 0 !important;
     padding-bottom: 0 !important; */
   background: #fcfcfd;
 }
 
-*>>>.el-select .el-input__inner {
+* >>> .el-select .el-input__inner {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }

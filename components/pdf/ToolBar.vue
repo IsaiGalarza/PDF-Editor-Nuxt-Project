@@ -251,6 +251,11 @@
         <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         Initial
       </button>
+      <button class="rounded-md h-8 sm:h-10 flex items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm"
+      :class="[activeTool == TOOL_TYPE.appendDate ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onDateClick">
+        <img src="../../assets/img/date_icon.svg" width="18" class="bg-slate-200 p-[2px]" />
+        Date
+      </button>
       <button @click="undoFunction"
         class="rounded-md h-8 sm:h-10 flex items-center gap-1 py-1 px-3 max-sm:!px-1 tool-item text-sm bg-white text-red-500">
         <undo-icon />
@@ -271,6 +276,11 @@
         @click="onInitialsClick">
         <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
         Initial
+      </button>
+      <button class="rounded-md h-8 sm:h-10 flex items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm"
+      :class="[activeTool == TOOL_TYPE.appendDate ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onDateClick">
+        <img src="../../assets/img/date_icon.svg" width="18" class="bg-slate-200 p-[2px]" />
+        Date
       </button>
       <button @click="undoFunction"
         class="rounded-md h-8 sm:h-10 flex items-center gap-1 py-1 px-3 max-sm:!px-1 tool-item text-sm bg-white text-red-500">
@@ -414,6 +424,11 @@ export default {
         this.setSelectedType(this.TOOL_TYPE.star)
       }
     },
+    onDateClick() {
+      if (this.isCreator) {
+        this.setSelectedType(this.TOOL_TYPE.appendDate)
+      }
+    },
     handleInitialFocusOut(e) {
       if (e.target.id !== 'initialtraybtn') {
         this.showInitialTray = false;
@@ -449,6 +464,8 @@ export default {
             return type == this.TOOL_TYPE.appendInitial
           else if (type == this.TOOL_TYPE.star)
             return type == this.TOOL_TYPE.star
+          else if (type == this.TOOL_TYPE.appendDate)
+            return type == this.TOOL_TYPE.appendDate
 
         default:
           return this.isCreator ? false : true

@@ -100,7 +100,8 @@ export default Vue.extend({
         {
           label: 'Business Page',
           icon: 'UserProfileIcon',
-          link: `/public/profile/${this.$auth.user?.id}`,
+          openNew: true,
+          link: `/${this.$auth.user?.businessPage}`,
         },
         {
           label: 'Team Members',
@@ -182,6 +183,7 @@ export default Vue.extend({
     }
   },
   mounted() {
+    console.log(this.$auth.user)
     this.checkToRouteLinks()
   },
   watch: {

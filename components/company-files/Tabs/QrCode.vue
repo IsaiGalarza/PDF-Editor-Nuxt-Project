@@ -78,7 +78,7 @@ export default Vue.extend({
   },
   computed: {
     qrCodeurl() {
-      return `${window.origin}/public/profile/${this.$auth?.user?.id}`;
+      return `${window.origin}/${this.$auth?.user?.businessPage}`;
     },
     paperLink() {
 

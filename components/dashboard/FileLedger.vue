@@ -64,20 +64,24 @@
               <td class="text-left fixed-col left">{{ i + 1 + returnedDataPage }}</td>
               <td class="text-center !pl-5 sm:!pl-16">
                 <div class="flex items-center gap-1.5">
-                  <div class="border !border-paperdazgreen-300 p-0.5 hidden"
-                    :class="[
-                      (file.role == userType.PAID || $auth.user.role == userType.FREE) ? 'sm:block rounded-md w-9 h-9' : 'sm:circle sm:circle-17'
-                    ]">
-                    <img
-                      v-if="(file.user || {}).profile_picture"
-                    :src="(file.user || {}).profile_picture || '/img/placeholder_picture.png'"
-                     alt=""
-                      :class="[
-                        (file.role == userType.PAID || $auth.user.role == userType.FREE) ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']"
-                      />
-                      <div v-else class="text-paperdazgreen-300 h-[30px] leading-[30px]">
-                        {{ (file.fileOwner || {}).company_name | initialFirstName }}
-                      </div>
+                  <div class=""
+                    >
+                    <letter-avatar
+                    v-if="!(file.user || {}).profile_picture && !file.isGuest"
+                    style="width: 43px; height: 43px"
+                    class="h-[28px] w-[28px] rounded-full object-cover cursor-pointer mr-1"
+                    :username="file.user?.firstName"
+                  />
+                       <span v-else class="border !border-paperdazgreen-300 p-0.5 inline-block rounded-full h-[36px] w-[36px]">
+                        <img
+                        v-if="(file.user || {}).profile_picture"
+                      :src="(file.user || {}).profile_picture || ''"
+                      class="w-full h-full"
+                       alt=""
+                        :class="[
+                          (file.role == userType.PAID || $auth.user.role == userType.FREE) ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']"
+                        />
+                       </span>
                   </div>
                   <div class="max-sm:w-24">
                     <p class="max-sm:truncate max-sm:text-xs sm:text-base font-medium text-left sm:ml-1">
@@ -86,20 +90,6 @@
                         {{ file.fileName | removeExtension }}
                       </nuxt-link>
                     </p>
-                    <div class="hidden sm:block">
-                      <a
-                        v-if="$auth.user.role == userType.FREE"
-                        :href="`/public/profile/${(file.fileOwnerId || {})}`"
-                        target="_blank"
-                      >
-                        <p class="ml-1 max-sm:text-xs sm:text-base">
-                          {{ (file.user || {}).company_name }}
-                        </p>
-                      </a>
-                      <p v-else class="ml-1 max-sm:text-xs sm:text-base flex">
-                        {{ (file || {}).userName }}
-                      </p>
-                    </div>
                   </div>
                 </div>
               </td>
@@ -115,7 +105,7 @@
                 }}
               </td>
               <td class="text-center" >
-                {{ file.user?.firstName + " " + file.user?.lastName }}
+                {{ file.isGuest ? "Guest" : (file.user?.firstName + " " + file.user?.lastName) }}
               </td>
               <td class="text-center whitespace-normal px-1">
                 {{ formatDateTime(file.updatedAt) }}
@@ -166,6 +156,10 @@ import CreateTeam from '../company-files/Tabs/CreateTeam.vue'
 import EmptyFileLedger from '../widgets/EmptyFileLedger.vue'
 import FileAction from '~/models/FileAction'
 import _ from 'lodash'
+import LetterAvatar from '../widgets/LetterAvatar.vue'
+
+
+
 export default Vue.extend({
   components: {
     TreeIcon,
@@ -183,7 +177,8 @@ export default Vue.extend({
     UploadDocumentModal,
     CreateCompanyFolder,
     CreateTeam,
-    EmptyFileLedger
+    EmptyFileLedger,
+    LetterAvatar
   },
   props: ['searchContect'],
   filters: {

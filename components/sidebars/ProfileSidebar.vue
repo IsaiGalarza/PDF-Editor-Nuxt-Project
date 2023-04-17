@@ -113,7 +113,7 @@ export default Vue.extend({
   },
   computed: {
     qrCodeurl() {
-      return `${window.origin}/public/profile/${this.userInfo?.id}`;
+      return `${window.location.href}`;
     },
   },
   beforeMount() {

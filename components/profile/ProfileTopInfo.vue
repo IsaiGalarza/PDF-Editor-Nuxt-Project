@@ -239,11 +239,11 @@ export default mixins(login).extend({
 }
 
 .profile-image-container {
-  @apply bg-white flex justify-center flex-wrap items-center py-4 rounded-[10px];
+  @apply bg-white flex justify-center flex-wrap items-center py-4 rounded-[20px];
 
   .icon-img {
-    @apply w-[195px] h-[195px] font-[900] text-[6em] text-paperdazgreen-500 cursor-pointer border-2 border-paperdazgreen-400/60 grid place-items-center rounded-[30px];
-    text-shadow: 1px 5px 7px rgb(148 148 148);
+    @apply w-[195px] h-[195px] font-[900] text-[6em] text-white cursor-pointer  bg-[#77B550] grid place-items-center rounded-[30px];
+    // text-shadow: 1px 5px 7px rgb(148 148 148);
   }
 
   .text-wrapper {
@@ -252,7 +252,7 @@ export default mixins(login).extend({
 }
 
 .profile-dental-container {
-  @apply py-4 rounded-[10px];
+  @apply py-4 rounded-[20px];
 
   h1 {
     @apply border-b-2 border-paperdazgray-200 py-4 text-[1.2rem] pl-4 font-medium;

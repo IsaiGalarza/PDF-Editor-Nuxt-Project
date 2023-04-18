@@ -69,10 +69,10 @@ export default Vue.extend({
        return response.data
       })
       .catch((err) => {
-        error({
-        statusCode: 404,
-        message: err.message || 'Unable to fetch the data',
-        })
+        // error({
+        // statusCode: 404,
+        // message: err.message || 'Unable to fetch the data',
+        // })
       })
     return { packages }
   },

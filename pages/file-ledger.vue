@@ -1,6 +1,6 @@
 <template>
   <div class="pt-2 lg:pt-4 min-h-full flex flex-col">
-    <top-details-card-container v-model="activeTab" :tabs="tabs" />
+    <top-details-card-container v-model="activeTab"  />
     <!-- <leaves-details-container class="mb-9" /> -->
     <file-ledger @setUploadpaperlink="setUploadpaperlink" ref="fileLedger" class="flex-1 mt-3" />
 

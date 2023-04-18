@@ -396,9 +396,10 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           })
           this.$store.commit('SET_FILE_SIGNATURE', null)
           this.$store.commit('SET_FILE_INITIAL', null)
+          console.log(this.file)
           this.$auth.loggedIn
             ? this.$nuxt.$router.push('/file-ledger')
-            : this.$nuxt.$router.go(-1)
+            : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
         })
         } catch (error) {
           this.$notify.error({

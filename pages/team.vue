@@ -1,6 +1,6 @@
 <template>
   <main class="">
-    <top-details-card-container v-model="activeTab" class="mb-5" :tabs="tabs" />
+    <top-details-card-container v-model="activeTab" class="mb-5"  />
     <!-- <leaves-details-container class="mb-12" /> -->
 
     <div class="flex items-center flex-wrap gap-4 justify-between mb-6 max-sm:px-4">

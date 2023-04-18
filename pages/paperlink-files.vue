@@ -1,6 +1,6 @@
 <template>
   <main class="">
-    <top-details-card-container v-model="activeTab" :tabs="tabs" />
+    <top-details-card-container v-model="activeTab"  />
     <!-- <leaves-details-container class="mb-9" /> -->
     <company-file-ledger />
     <PopUpWrapper @count="increaseCount" :showModal="showGuideModal">
@@ -52,16 +52,28 @@ export default mixins(login).extend({
   },
   mounted() {
     // disable scrolling
-    document.body.style.overflow = 'hidden'
+     this.updateTutorialStatus();
+    this.$auth.user.isTutorialPassed == 0 && this.popTutorial()
   },
   beforeDestroy() {
     localStorage.setItem('newUser', "true")
   },
   methods: {
-    increaseCount() {
+    async updateTutorialStatus(){
+       await this.$axios.patch(`/users/${this.$auth.user.id}`, {
+        isTutorialPassed : 1
+       })
+    },
+    popTutorial(){
+      this.showGuideModal = true
+      document.body.style.overflow = 'hidden';
+    },
+    async increaseCount() {
       this.keepCount = this.keepCount + 1
       if (this.keepCount == this.popUps.length) {
         this.showGuideModal = false
+        await this.updateTutorialStatus()
+        await this.filterUsers()
         document.body.style.overflow = 'auto'
       }
     },

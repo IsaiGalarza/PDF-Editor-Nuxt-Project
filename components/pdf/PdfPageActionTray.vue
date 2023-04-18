@@ -260,7 +260,7 @@ export default Vue.extend({
         this.$store.commit('SET_PDF_EXIT', true)
         this.$auth.loggedIn
             ? this.$nuxt.$router.push('/file-ledger')
-            : this.$nuxt.$router.go(-1)
+            : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
         return;
       }
       if (this.upload_state) {
@@ -268,13 +268,13 @@ export default Vue.extend({
             this.$store.commit('SET_PDF_EXIT', true)
             this.$auth.loggedIn
             ? this.$nuxt.$router.push('/file-ledger')
-            : this.$nuxt.$router.go(-1)
+            : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
       } else {
         this.$store.commit('SET_UPLOAD_STATE', false);
         this.$store.commit('SET_PDF_EXIT', true)
         this.$auth.loggedIn
             ? this.$nuxt.$router.push('/file-ledger')
-            : this.$nuxt.$router.go(-1)
+            : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
         localStorage.removeItem('store_public_profile_path')
       }
       this.$store.commit('SET_FILE_SIGNATURE', null);

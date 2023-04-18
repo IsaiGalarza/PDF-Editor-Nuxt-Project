@@ -1,7 +1,23 @@
 <template>
-   
+  <div class="bg-gradient-to-b from-[#E4F3E0] to-white">
+    <section class="relative shadow">
+      <div
+        class="px-5 text-center text-black absolute inline-block transform top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
+      >
+        <h4 class="text-4xl lg:text-5xl font-semibold whitespace-nowrap">
+          FAQ's
+        </h4>
+        <p class="text-[#414142] font-medium">Frequently Asked Questions</p>
+      </div>
+      <img
+        src="~/assets/img/world_map.svg"
+        alt=""
+        class="w-full max-w-full max-h-80 min-h-[250px] object-cover"
+      />
+    </section>
+
     
-    <section class="relative container min-h-[50vh] ">
+    <section class="relative container min-h-[50vh] py-16">
          <!-- spinner before page loaded -->
       <div v-if="windowOnLoad" class="absolute w-full h-full min-h-[40vh] grid bg-white rounded-xl place-content-center z-10 top-0 left-0">
         <spinner-dotted-icon height="32" width="32" class="text-paperdazgray-400 animate-spin" />
@@ -65,6 +81,7 @@
       </div>
     </section>
 
+  </div>
 </template>
 
 <script>
@@ -80,7 +97,7 @@ import $ from "jquery"
 export default Vue.extend({
   components: { SearchIcon, ArrowDownIcon, ballloader, SpinnerDottedIcon },
   name: 'FaqPage',
-  layout: 'dashboard',
+  layout: 'landing',
   auth: false,
   head() {
     return {
@@ -179,12 +196,12 @@ export default Vue.extend({
     height: 42px;
     transition: all 0.2s ease-in-out;
 
-    // clip-path: polygon(
-    //   0% 0%,
-    //   calc(0% - var(--slide-size)) 0%,
-    //   100% 100%,
-    //   var(--slide-size) 100%
-    // );
+    clip-path: polygon(
+      0% 0%,
+      calc(100% - var(--slide-size)) 0%,
+      100% 100%,
+      var(--slide-size) 100%
+    );
 
     @media only screen and (min-width: 375px) {
       --slide-size: 15px;
@@ -198,24 +215,22 @@ export default Vue.extend({
       --slide-size: 30px;
     }
 
-    // &:not(:first-child) {
-    //   margin-left: calc(-1 * var(--slide-size));
-    // }
+    &:not(:first-child) {
+      margin-left: calc(-1 * var(--slide-size));
+    }
 
     &:first-child {
-      // clip-path: polygon(
-      //   0% 0%,
-      //   calc(100% - var(--slide-size)) 0%,
-      //   100% 100%,
-      //   0% 100%
-      // );
+      clip-path: polygon(
+        0% 0%,
+        calc(100% - var(--slide-size)) 0%,
+        100% 100%,
+        0% 100%
+      );
     }
 
     &:last-child {
-      height: 80px;
-      clip-path: polygon(0.81% 25.25%, 100% 25.25%, 61.76% 73.75%, 0% 73.75%);
-
-}
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, var(--slide-size) 100%);
+    }
     &:hover {
       background: #a6e480;
     }

@@ -40,7 +40,7 @@
       <div class="flex justify-center items-end h-28">
         <p class="text-center leading-8">
           We are doing our part to reduce carbon footprint. <br />
-          Join us, complete our files on Paperdaz!
+          Join us, complete our files on Paperlink!
         </p>
       </div>
       <!-- <div v-else>

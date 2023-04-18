@@ -6,20 +6,89 @@
       <span class="inline-block lg:hidden mr-3 sm:mr-4 cursor-pointer"
         @click="$emit('open-sidebar')"><hamburger-icon class="hidden md:inline-block"/></span><abbr class="whitespace-nowrap">{{ $auth.user.companyName ? $auth.user.companyName : ''  }}</abbr>
     </p>
-
+    <div class="hidden lg:inline-block text-[#BBBBBB] pr-4 border-r mr-2 w-[50%]">
+      <!-- <div class="text-[#BBBBBB] mr-4"> -->
+      <search-input />
+    </div>
     <div v-if="$auth.loggedIn" class="h-full self-stretch flex items-center">
       <!-- Start:: search -->
 
       <!-- End:: search -->
 
-   
+      <!-- -------------START: notification -->
+      <div class="grid place-items-center text-[#909090] mr-4 relative">
+        <el-dropdown trigger="click">
+          <span @click="readNotification" class="el-dropdown-link relative">
+            <bell-icon />
+            <i v-show="!isRead" class="el-dropdown-indicator"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <div class="max-w-[433px] text-xs text-[#676464]">
+              <div class="flex justify-end mb-2 px-4" v-if="notification.length > 0">
+                <button class="text-red-600 underline">Clear all</button>
+              </div>
+              <div class="max-h-[70vh] custom-scrollbar overflow-y-auto px-4 relative" ref="notificationContainer">
+                <div v-if="notificationSpinner"
+                  class="min-w-[250px] z-10 w-full h-full top-0 left-0 flex justify-center">
+                  <SpinnerDottedIcon width="16" height="16" class="animate-spin text-grey/50" />
+                </div>
+                <!-- Start:: Single row -->
+                <div v-if="!isLoadedSuccess"
+                  class="bg-paperdazgray-200/10 font-normal gap-3 min-w-[250px] grid place-items-center py-4 h-[50px]">
+                  <span class="text-[14px]"> No notification yet</span>
+                </div>
+                <div v-else v-for="index in notification" :key="index.id"
+                  class="notifyBox overflow-hidden relative items-center gap-3 min-w-[200px] py-4">
+                  <div class="flex">
+                    <span class="w-[60px] mr-2"> <notification-dropdown-icon /></span>
+                    <p class="notificationText">
+                      <b v-html="
+                        index.message.substring(
+                          index.message.indexOf('{'),
+                          index.message.indexOf('}')
+                        )
+                      "></b>
+                      <span v-html="
+                        index.message.substring(
+                          index.message.indexOf('}') + 1,
+                          index.message.length
+                        )
+                      "></span>
+                    </p>
+                    <button @click="deleteNotification(index.id)"
+                      class="absolute -right-[40px] transition-transform trash-box p-2 bg-white">
+                      <TrashCanIcon fill="red" width="16" height="16" />
+                    </button>
+                  </div>
+                  <div class="w-full flex justify-end my-1">
+                    <button class="text-[10px] bg-paperdazgreen-500 py-1 w-[80px] text-white rounded-md">
+                      Accept
+                    </button>
+                  </div>
+                </div>
+                <!-- End:: single row -->
+                <button @click="_refetchNotification" v-if="loadMoreNotifications"
+                  class="min-w-[250px] text-left w-full px-4 py-2">See more</button>
+              </div>
 
-   
+            </div>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+      <!-- -------------END: notification -->
+
+      <nuxt-link to="/settings?tab=account" class="hidden lg:inline-block text-[#909090] mr-4">
+        <gear-icon />
+      </nuxt-link>
 
       <!-- container for user name -->
       <div v-if="login || false" class="hidden lg:flex flex-col mr-3 text-sm leading-[15px] flex-wrap justify-end ">
         <span class="text-black text-[13px] font-[600] capitalize text-right">
-          {{ user.email || '' }}
+          {{ userCompanyName || '' }}
+        </span>
+
+        <span class="text-[#524D5B] text-[11.5px] text-right leading-0">
+          {{ userFullName || '' }}
         </span>
       </div>
       <!-- end of container for user name -->
@@ -38,6 +107,8 @@
               ? 'w-[45px] h-[45px] rounded-md'
               : 'circle-20 rounded-full',
           ]" style="borderWidth: 1px">
+            <!-- <img :src="profilePhoto" class="w-full h-full profilePhoto" alt=""
+              :class="[isPaidUser ? 'rounded-md' : 'rounded-full']" /> -->
             <img
               v-if="isPaidUser"
               :src="profilePhoto"
@@ -45,12 +116,15 @@
               alt=""
               :class="[isPaidUser ? 'rounded-md' : 'rounded-full']"
             />
+            <!-- <span v-if="isPaidUser" class="text-3xl font-bold w-full h-full text-center text-paperdazgreen-300 rounded-md"
+              style="text-shadow: 1px 2px 3px grey;">{{ (userCompanyName || '').charAt(0).toUpperCase() }}</span> -->
+            <img v-else :src="profilePhoto" :class="[isPaidUser ? 'rounded-md' : 'rounded-full']" />
           </span>
           <span class="text-black"><arrow-down-icon class="h-2 w-3 sm:h-2.5 sm:w-4" /></span>
         </span>
 
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item  command="profile" >
+          <el-dropdown-item  command="profile" v-if="!profile">
             <span class="inline-flex gap-2 items-center">
               <user-profile-solid-icon height="14" width="14" />
               Profile</span>
@@ -65,7 +139,15 @@
       </el-dropdown>
     </div>
 
-   
+    <div v-else class="h-full self-stretch flex items-center">
+      <button type="button" @click="showLandingPageSearchModal = true">
+        <search-icon width="15" />
+      </button>
+      <nuxt-link v-if="!$auth.loggedIn" to="/login" class="text-paperdazgreen-300 mx-2">Sign in</nuxt-link>
+      <nuxt-link v-if="!$auth.loggedIn" to="/register"
+        class="bg-paperdazgreen-300 text-white h-7 xs:h-8 rounded shadow px-2 xs:px-3 flex items-center justify-center whitespace-nowrap mx-2">Get
+        Started</nuxt-link>
+    </div>
     <landing-page-search-modal v-model="showLandingPageSearchModal" />
   </nav>
 </template>
@@ -91,7 +173,6 @@ import SpinnerDottedIcon from '../svg-icons/SpinnerDottedIcon.vue'
 import StatusUser from '~/models/StatusUser'
 import LandingPageSearchModal from '../landing/LandingPageSearchModal.vue'
 import SearchInput from './SearchInput.vue'
-import LetterAvatar from '../widgets/LetterAvatar.vue'
 
 // email-acout emauil,password-referal-code
 export default mixins(GlobalMixin, login).extend({
@@ -113,8 +194,7 @@ export default mixins(GlobalMixin, login).extend({
     SpinnerDottedIcon,
     SearchIcon,
     LandingPageSearchModal,
-    SearchInput,
-    LetterAvatar
+    SearchInput
   },
   props: {
     compact: {
@@ -357,7 +437,7 @@ export default mixins(GlobalMixin, login).extend({
           this.logout()
           break
         case 'profile':
-          this.$nuxt.$router.push('/settings?tab=account')
+          this.$nuxt.$router.push('/public/profile')
           break
         case 'dashboard':
           this.$nuxt.$router.push('/paperlink-files')

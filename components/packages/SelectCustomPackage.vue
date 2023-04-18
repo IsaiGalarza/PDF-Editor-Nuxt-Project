@@ -78,7 +78,7 @@
                     v-model.number="customPackage.teamMembers"
                     :step="1"
                     size="small"
-                    :min="0"
+                    :min="1"
                     :max="20"
                   />
                 </div>
@@ -226,7 +226,7 @@ export default Vue.extend({
         name: 'Custom',
         description: 'Custom package',
         paperlink: 1,
-        teamMembers: 0,
+        teamMembers: 1,
         cc: 1,
         publicProfile: true,
         companyLedger: true,

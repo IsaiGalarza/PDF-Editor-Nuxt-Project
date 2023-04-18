@@ -58,7 +58,7 @@
 
             <!-- <span class="text-xs inline-block mt-6"
               >Not a member yet?
-              <nuxt-link to="/" class="text-paperdazgreen-300"
+              <nuxt-link to="/register" class="text-paperdazgreen-300"
                 >Join Now</nuxt-link
               >
               </span> -->

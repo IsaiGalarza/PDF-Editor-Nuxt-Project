@@ -1,5 +1,5 @@
 <template>
-  <div class="vue-avatar--wrapper" :style="[style, customStyle, `width:${customStyle}`]" aria-hidden="true">
+  <div class="vue-avatar--wrapper" :style="[style, customStyle]" aria-hidden="true">
     <!-- this img is not displayed; it is used to detect failure-to-load of div background image -->
     <img v-if="this.isImage" style="display: none" :src="this.src" @error="onImgError" />
     <span v-show="!this.isImage">{{ userInitial }}</span>

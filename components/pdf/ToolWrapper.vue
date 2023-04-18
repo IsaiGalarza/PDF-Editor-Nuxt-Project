@@ -77,7 +77,6 @@ import TrashXIcon from '../svg-icons/TrashXIcon.vue'
 import CheckCircleIcon from '../svg-icons/CheckCircleIcon.vue'
 import AppendSignatureTool from './tools/AppendSignature'
 import AppendInitialTool from './tools/AppendInitial'
-import AppendDateTool from './tools/InitialDate.vue'
 import moment from 'moment'
 import { mapState } from 'vuex'
 import TeamAccess from '~/models/TeamAccess'
@@ -137,7 +136,6 @@ export default {
     StarTool,
     AppendSignatureTool,
     AppendInitialTool,
-    AppendDateTool
   },
   data: () => ({
     lastPosX: 0,
@@ -404,7 +402,7 @@ export default {
 
         let dx = (this.lastPosX - this.left)
         let dy = (this.lastPosY - this.top)
-         console.log(dx, dy, this.tool)
+
         this.$emit('pos-change', {
           dx,
           dy,

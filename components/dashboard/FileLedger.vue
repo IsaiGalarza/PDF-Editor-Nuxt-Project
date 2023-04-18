@@ -13,7 +13,12 @@
         >
           <h5 class="text-lg font-semibold text-[#272727] hidden sm:inline-flex items-center gap-2 sm:w-full" :class="[isPaidUser ? 'mb-2' : 'mb-0']">
             {{ isPaidUser ? "File Ledger" : "Ledger" }}
-    
+            <a :href="`/public/profile/${mainUserLink}`" target="_blank">
+              <!-- <company-icon /> -->
+              <img src="../../assets/img/company-icon.png" class="lg:w-[30px] w-[20px]" v-if="isPaidUser" />
+            </a>
+            <img src="../../assets/img/users-icon.png" class="cursor-pointer lg:w-[44px] w-[35px]" @click="showCreateTeamFunc"
+              v-if="isPaidUser" />
           </h5>
           <div class="text-xs font-medium flex justify-end items-center gap-2 relative w-full">
             <span class="el-dropdown-link left-roll1 flex-1">

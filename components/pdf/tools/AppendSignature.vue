@@ -7,12 +7,12 @@
     :style="style"
   />
     <img
-      v-else-if="!initialimgDisplay"
+      v-else-if="!initialimgDisplay && isCreator"
       src="../../../assets/img/sign-icon.png"
       attr="sign"
       :elemFill="uploaded && initialimgDisplay"
       :uploaded="uploaded"
-      @click="selectIsCreatorDisplay"
+      @click="setInitialImgDisplay"
       class="annot-button"
       :class="[
         $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
@@ -57,7 +57,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   mounted() {
     this.changeSignToBase64()
     this.completed && this.changeSignToBase64(this.completed)
-    // this.popUpIfNoSign()
+    this.popUpIfNoSign()
   },
   computed: {
     ...mapState(['loadedPdfFile']),
@@ -86,9 +86,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       return this.$store.state.agreeSign
     },
     isCreator() {
-      if(!this.$auth?.user?.id) return false
+      if(!this.tool?.user) return false
       return (
-        this.$auth?.user?.id == this.file?.userId ||
+        this.tool?.user == this.file?.userId ||
         (this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE &&
           this.$auth?.user?.teamId == this.file.userId)
       )
@@ -102,9 +102,6 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
   },
   methods: {
-    selectIsCreatorDisplay(){
-      !this.isCreator ? this.setInitialImgDisplay() : null
-    },
     popUpIfNoSign(){
       !this.theSignature && !this.isCreator && this.setInitialSignType('sign')
     },
@@ -145,6 +142,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       if (!this.uploaded) this.showSignatureModal = true
     },
     setInitialImgDisplay() {
+      console.log(this.isCreator)
       if(!this.$auth.loggedIn && !this.$store.getters?.getFillAsGuest) return
       !this.isOwner && (this.initialimgDisplay = true)
       this.$BUS.$emit('scrollToSignInitial', 'appendsign')

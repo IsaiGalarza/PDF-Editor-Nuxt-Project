@@ -7,12 +7,12 @@
     :style="style"
   />
     <img
-      v-if="!initialimgDisplay"
+      v-if="!initialimgDisplay && isCreator"
       src="../../../assets/img/initial-icon.png"
       attr="initial"
       :elemFill="uploaded && initialimgDisplay"
       :uploaded="uploaded"
-      @click="selectIsCreatorDisplay"
+      @click="setInitialImgDisplay"
       class="annot-button"
       :class="[
         $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
@@ -51,9 +51,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   computed: {
     ...mapState(['loadedPdfFile']),
     isCreator() {
-      if(!this.$auth?.user?.id) return false
+      if(!this.tool?.user) return false
       return (
-        this.$auth?.user?.id == this.file?.userId ||
+        this.tool?.user == this.file?.userId ||
         (this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE &&
           this.$auth?.user?.teamId == this.file.userId)
       )
@@ -99,9 +99,6 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   },
   components: { AddToPageDrawOrType, DrawOrTypeModal },
   methods: {
-    selectIsCreatorDisplay(){
-      !this.isCreator ? this.setInitialImgDisplay() : null
-    },
     popUpIfNoinitial(){
       !this.theInitial && !this.isCreator && this.setInitialSignType('initial')
     },
@@ -151,7 +148,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   mounted() {
     this.changeInitialToBase64()
     this.completed && this.changeInitialToBase64(this.completed)
-    // this.popUpIfNoinitial()
+    this.popUpIfNoinitial()
   },
   watch: {
     '$auth.user.initialURL': async function () {

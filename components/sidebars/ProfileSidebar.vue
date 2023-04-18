@@ -52,9 +52,13 @@
           </span>
         </div> -->
 
+<<<<<<< HEAD
         <p class="py-[1em]  font-[600] text-center text-[20px]">
           <nuxt-link to="/login" class="cursor-pointer">Paperlink Console</nuxt-link>
         </p>
+=======
+        <p class="py-[1em]  font-[600] text-center text-[20px]">Paperlink Console</p>
+>>>>>>> fixed-ui
         <!-- <p class="text-white text-[11px] mt-3 text-center">
           powered by
           <span class="font-semibold uppercase text-[15px]">Paperdaz</span>

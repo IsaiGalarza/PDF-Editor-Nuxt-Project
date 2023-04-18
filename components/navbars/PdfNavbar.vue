@@ -64,9 +64,12 @@
                 <span
                     class="text-black text-[13px] font-[600] capitalize text-right"
                 >
-                    {{ user.email }}
+                    {{ userCompanyName || '' }}
                 </span>
 
+                <span class="text-[#524D5B] text-[11.5px] text-right leading-0">
+                    {{ userFullName || '' }}
+                </span>
             </div>
             <!-- end of container for user name -->
 
@@ -195,12 +198,12 @@
 
         <div v-else class="h-full self-stretch flex items-center">
             <button
-                v-if="!$store.getters.getFillAsGuest && !$auth.loggedIn"
+                v-if="!$store.getters.getFillAsGuest"
                 @click="$store.getters.showGuestModal"
                 class="bg-paperdazgreen-300 text-white h-7 xs:h-8 rounded shadow px-4 sm:px-3 hidden sm:flex items-center justify-center whitespace-nowrap mx-2"
                 >Start</button>
         </div>
-        <div v-if="$store.getters.getFillAsGuest && !$auth.loggedIn" class="flex items-center">
+        <div v-if="$store.getters.getFillAsGuest" class="flex items-center">
             <span class="mr-3">Guest</span>
             <img src="/img/placeholder_picture.png" width="30" class="rounded-full mr-2"/>
         </div>

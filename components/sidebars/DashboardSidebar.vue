@@ -11,7 +11,7 @@
     <ul class="overflow-y-auto overflow-x-hidden flex-1 px-4 custom-scrollbar">
       <li>
         <div v-for="(link, i) in links" :key="i" class="nav-item cursor-pointer"
-          @click="shuffleRoute(i, link.link, link.label, link.openNew)" :class="[link.className, {
+          @click="shuffleRoute(i, link.link, link.label)" :class="[link.className, {
             active: link.exact,
             // ? $nuxt.$route.path == link.link
             // : $nuxt.$route.fullPath.startsWith(link.link),
@@ -94,7 +94,6 @@ export default Vue.extend({
         {
           label: 'Paperlink Files',
           icon: 'DocumentIcon',
-          openNew: false,
           link: '/paperlink-files',
           exact: false,
         },
@@ -108,23 +107,20 @@ export default Vue.extend({
           label: 'Team Members',
           icon: 'HoldingHandsIcon',
           link: '/team',
-          openNew: false,
           exact: false,
         },
         {
           label: 'Billings',
           icon: 'QuoteFileIcon',
           link: '/billing',
-          openNew: false,
           exact: false,
         },
-        { label: 'FAQ', icon: 'ConversationIcon', link: '/faq', exact: false, openNew: false, },
+        { label: 'FAQ', icon: 'ConversationIcon', link: '/faq', exact: false },
         {
           label: 'Contact us',
           icon: 'CustomerCareIcon',
           link: '/contact-us',
           exact: false,
-          openNew: false,
         },
  
       ],

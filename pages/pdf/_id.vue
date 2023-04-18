@@ -190,7 +190,7 @@
         <!-- <button   @click="downloadPdf">download</button> -->
         <button
           class="w-full bg-paperdazgreen-400 py-2 text-white overflow-hidden duration-300"
-          v-if="($auth.loggedIn && !isCreator && isConfirmChecked) ||  ($store.getters?.getFillAsGuest && !isCreator && isConfirmChecked)"
+          v-if="($auth.loggedIn && !isCreator && isConfirmChecked) ||  $store.getters?.getFillAsGuest"
           id="confirmButtton"
           @click="publishFileFunction"
         >
@@ -586,10 +586,6 @@ export default mixins(PdfAuth).extend({
           tool: { top: 23, left: 10 },
         },
         [TOOL_TYPE.appendSignature]: {
-          identifier: { top: 20, left: 0 },
-          tool: { top: 23, left: 10 },
-        },
-        [TOOL_TYPE.appendDate]: {
           identifier: { top: 20, left: 0 },
           tool: { top: 23, left: 10 },
         },
@@ -1327,12 +1323,12 @@ export default mixins(PdfAuth).extend({
     placeTool(e, pageNumber, initialPoint) {
       let parent = this.$refs[`pdf-single-page-outer-${pageNumber}`]
       if (Array.isArray(parent)) parent = parent[0]
-      console.log(this.tools)
+
       let { x, y } = !initialPoint
         ? this.pointerPos(e, parent || this.$refs.scrollingElement)
         : // ? this.pointerPos(e, parent || this.$refs['pdf-single-page-outer'])
           initialPoint
-      this.toolId = this.tools?.length
+      this.toolId = this.tools.length
       let obj = {
         type: this.TOOL_TYPE[this.selectedToolType],
         top: y - this.TOOL_THRESHOLD[this.selectedToolType].tool.top,
@@ -1347,6 +1343,8 @@ export default mixins(PdfAuth).extend({
         isChecked: true,
         user: this.$auth?.user?.id,
         justMounted: true,
+        pdfWidth: parent.offsetWidth,
+        pdfHeight: parent.offsetHeight,
       }
       if (this.selectedToolType == this.TOOL_TYPE.line) {
         obj.x1 = obj.left

@@ -337,7 +337,7 @@ $screens: 'xxs', 'xs', 'sm', 'md', 'lg', 'xl';
 .pulse {
   box-shadow: 0 0 0 0 rgba(119, 180, 81, 1);
   transform: scale(1);
-  animation: pulse-black 2s infinite;
+  // animation: pulse-black 2s infinite;
 }
 
 @keyframes pulse-black {

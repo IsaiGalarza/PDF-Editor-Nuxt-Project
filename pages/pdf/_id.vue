@@ -593,6 +593,10 @@ export default mixins(PdfAuth).extend({
           identifier: { top: 20, left: 0 },
           tool: { top: 23, left: 10 },
         },
+        [TOOL_TYPE.appendName]: {
+          identifier: { top: 20, left: 0 },
+          tool: { top: 23, left: 10 },
+        },
       }
     },
     selectedTool() {

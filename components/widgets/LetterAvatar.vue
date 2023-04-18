@@ -2,7 +2,7 @@
   <div class="vue-avatar--wrapper" :style="[style, customStyle]" aria-hidden="true">
     <!-- this img is not displayed; it is used to detect failure-to-load of div background image -->
     <img v-if="this.isImage" style="display: none" :src="this.src" @error="onImgError" />
-    <span v-show="!this.isImage">{{ userInitial }}</span>
+    <span class="text-white" v-show="!this.isImage">{{ userInitial }}</span>
   </div>
 </template>
   
@@ -81,9 +81,10 @@ export default Vue.extend({
   },
   computed: {
     background() {
-      if (!this.isImage) {
-        return this.backgroundColor || this.randomBackgroundColor(this.username?this.username.length:0, this.backgroundColors)
-      }
+      // if (!this.isImage) {
+      //   return this.backgroundColor || this.randomBackgroundColor(this.username?this.username.length:0, this.backgroundColors)
+      // }
+      return '#75C05F'
     },
     fontColor() {
       if (!this.isImage) {

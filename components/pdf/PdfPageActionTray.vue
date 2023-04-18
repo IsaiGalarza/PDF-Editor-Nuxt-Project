@@ -1,13 +1,7 @@
 <template>
   <div class="bg-paperdazgreen-300 sm:bg-transparent py-2 flex items-center text-black justify-between ml-[-2%] w-[104%]">
     <div class="flex items-center gap-lg-4 flex-1 justify-between px-lg-4 px-3 flex-wrap">
-      <span class="font-normal max-w-[12%] truncate">
-        {{ file.fileName ?? "" }}
-      </span>
 
-      <span class="hidden md:inline">
-        <span class="circle circle-2 bg-[#757575]"></span>
-      </span>
       <!-- If authenticated user is created -->
       <span v-if="!isCreator" class="hidden md:inline capitalize font-medium">{{
         file.fileAction
@@ -27,9 +21,6 @@
         </el-dropdown-menu>
       </el-dropdown>
 
-      <span class="hidden md:inline">
-        <span class="circle circle-2 bg-[#757575]"></span>
-      </span>
 
       <!-- If authenticated user is created -->
       <span v-if="!isCreator" class="hidden md:inline capitalize font-medium">{{ access }}</span>
@@ -48,10 +39,13 @@
       <!-- <div
         class="flex-1 flex items-center gap-5 justify-end text-xs font-medium"
       > -->
-
-      <span class="hidden md:inline">
-        <span class="circle circle-2 bg-[#757575]"></span>
+      
+      <span class="font-normal max-w-[12%] truncate">
+        {{ file.fileName ?? "" }}
       </span>
+
+
+      <span class="font-normal max-w-[12%] truncate"> </span>
 
       <span class="hidden md:inline">{{
       `${(file.updatedAt || "").substring(0, 10)} - ${(file.updatedAt || "").substring(

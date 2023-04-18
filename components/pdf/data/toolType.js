@@ -14,4 +14,9 @@ export default {
   star: 'star',
   appendSignature:'appendSignature',
   appendInitial:"appendInitial",
+<<<<<<< HEAD
+=======
+  appendDate: "appendDate",
+  appendName: "appendName"
+>>>>>>> c1249029c17ff1f5bea5dbb9e5e089289e25c00b
 }

@@ -1,10 +1,10 @@
 <template>
   <main class="">
     <top-details-card-container v-model="activeTab" class="mb-5" :tabs="tabs" />
-    <leaves-details-container class="mb-12" />
+    <!-- <leaves-details-container class="mb-12" /> -->
 
     <div class="flex items-center flex-wrap gap-4 justify-between mb-6 max-sm:px-4">
-      <h5 class="text-lg font-semibold text-[#272727]">Team Members</h5>
+      <h5 class="text-lg font-semibold text-[#272727]">Team Members { {{ teamMembers?.length }} } </h5>
       <div class="text-white flex items-center">
         <form action="" class="w-full xs:max-w-[280px] text-xs font-medium flex items-center relative justify-end mr-2"
           @submit.prevent="$event.preventDefault()">
@@ -16,14 +16,16 @@
           </span>
 
           <button @click="show = !show"
-            class="circle circle-18 bg-paperdazgreen-400 text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
-            <search-icon width="16" height="16" currentcolor='white' />
+            class="   transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
+            <img src="../assets/icons/Link_t.svg" alt="">
+            <!-- <search-icon width="16" height="16" currentcolor='white' /> -->
           </button>
         </form>
         <button
-          class="circle circle-18 bg-paperdazgreen-400 hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150"
+          class="circle circle-18 bg-paperdazgreen-400 text-[1.5rem] hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150"
           @click="showInviteTeamMemberModal = true">
-          <user-plus-icon width="16" height="16" />
+          +
+          <!-- <user-plus-icon width="16" height="16" /> -->
         </button>
       </div>
     </div>
@@ -38,25 +40,25 @@
         <SpinnerDottedIcon class="animate-spin" />
       </div>
       <!-- END:Team container spinner -->
-      <div v-if="teamMembers.length" class="w-full h-[200px] grid place-items-center text-[17px] font-normal">
+      <div v-if="teamMembers.length === 0" class="w-full h-[200px] grid place-items-center text-[17px] font-normal">
         You have no team member
       </div>
       <table v-else class="custom-table">
         <thead class="text-[#414142]">
           <tr>
-            <th class="w-12 text-center fixed-col left">No</th>
-            <th class="text-left">Member</th>
-            <th class="text-left">Access</th>
-            <th class="text-left">Date &amp; Time</th>
-            <th class="w-28 text-center">
-              <p class="w-24">Status</p>
-            </th>
-            <th class="text-center fixed-col right"></th>
+            <!-- <th class="w-12 text-center fixed-col left">No</th> -->
+            <th class="text-left font-[500] ">Member</th>
+            <!-- <th class="text-left">Access</th> -->
+            <!-- <th class="text-left">Date &amp; Time</th> -->
+            <!-- <th class="w-28 text-center"> -->
+              <!-- <p class="w-24">Status</p>
+            </th> -->
+            <th class="text-center font-[500]  right">Email</th>
           </tr>
         </thead>
         <tbody class="text-[#505050]">
           <tr v-for="(member, i) in teamMembers" :key="i">
-            <td class="w-12 text-center fixed-col left">{{ i + 1 }}</td>
+            <!-- <td class="w-12 text-center fixed-col left">{{ i + 1 }}</td> -->
             <td>
               <div class="flex items-center gap-3">
                 <span class="p-0.5 border border-paperdazgreen-400"
@@ -71,19 +73,19 @@
               </div>
             </td>
             <td>
-              {{ member.teamAccess }}
+              {{ member.email }}
             </td>
-            <td class="text-sm">
+            <!-- <td class="text-sm">
               {{ `${(member.createdAt || '').replace(/T|.000Z/g, ' ')}` }}
-            </td>
-            <td class="w-28 text-center">
+            </td> -->
+            <!-- <td class="w-28 text-center">
               <div
                 class="w-24 text-sm font-medium flex items-center justify-center rounded-full h-8 capitalize px-1 whitespace-nowrap"
                 :class="[getStatusClass(member.status || '')]">
                 {{ member.status }}
               </div>
-            </td>
-            <td class="fixed-col right w-[50px]">
+            </td> -->
+            <!-- <td class="fixed-col right w-[50px]">
               <div class="w-full h-full grid place-items-center">
                 <el-dropdown trigger="click">
                   <button class="el-dropdown-link px-3">
@@ -119,7 +121,7 @@
                   </el-dropdown-menu>
                 </el-dropdown>
               </div>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>

@@ -101,7 +101,7 @@
                   "
               >
                 {{
-                    (isPaidUser ? file?.fileAction : formatFileAction(file.file?.fileAction, file.action))  || "-"
+                    (isPaidUser ? file?.fileAction : formatFileAction(file.file?.fileAction, file.action))   
                 }}
               </td>
               <td class="text-center" >

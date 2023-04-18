@@ -6,25 +6,20 @@
 
 
 /**
- * @licstart The following is the entire license notice for the
- * Javascript code in this page
- *
- * Copyright 2020 Mozilla Foundation
+ * @license
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * @licend The above is the entire license notice for the
- * Javascript code in this page
  */
 
 
@@ -38,6 +33,7 @@
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 
 
+<<<<<<< HEAD
 =======
 >>>>>>> fixed-ui
 /*!
@@ -75,6 +71,8 @@ PERFORMANCE OF THIS SOFTWARE.
   */
 
 
+=======
+>>>>>>> c1249029c17ff1f5bea5dbb9e5e089289e25c00b
 /**
  * @license
  * Copyright 2017 Google LLC
@@ -121,29 +119,68 @@ PERFORMANCE OF THIS SOFTWARE.
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /**!
  * Sortable 1.10.2
  * @author	RubaXa   <trash@rubaxa.org>
  * @author	owenm    <owen23355@gmail.com>
  * @license MIT
  */
+=======
+//! moment.js
+
+//! moment.js locale configuration
+
+
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+/**
+  * vue-class-component v7.2.6
+  * (c) 2015-present Evan You
+  * @license MIT
+  */
+>>>>>>> c1249029c17ff1f5bea5dbb9e5e089289e25c00b
 
 
 /**
- * @license
- * Copyright 2020 Google LLC
+ * @licstart The following is the entire license notice for the
+ * Javascript code in this page
+ *
+ * Copyright 2020 Mozilla Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * @licend The above is the entire license notice for the
+ * Javascript code in this page
+ */
+
+
+/*!
+ * Signature Pad v3.0.0-beta.4 | https://github.com/szimek/signature_pad
+ * (c) 2020 Szymon Nowak | Released under the MIT license
  */
 =======
 /*!
@@ -1288,6 +1325,7 @@ PERFORMANCE OF THIS SOFTWARE.
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*! @license DOMPurify 2.4.1 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/2.4.1/LICENSE */
 
 
@@ -1295,16 +1333,26 @@ PERFORMANCE OF THIS SOFTWARE.
 
 
 //! moment.js
-
-//! moment.js locale configuration
-
-
+=======
 /*!
- * Vue.js v2.7.14
- * (c) 2014-2022 Evan You
- * Released under the MIT License.
+  Copyright (c) 2018 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+>>>>>>> c1249029c17ff1f5bea5dbb9e5e089289e25c00b
+
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+
+/**!
+ * Sortable 1.10.2
+ * @author	RubaXa   <trash@rubaxa.org>
+ * @author	owenm    <owen23355@gmail.com>
+ * @license MIT
  */
 
+<<<<<<< HEAD
 /*!
  * cookie
  * Copyright(c) 2012-2014 Roman Shtylman
@@ -1342,12 +1390,17 @@ PERFORMANCE OF THIS SOFTWARE.
  * limitations under the License.
 >>>>>>> fixed-ui
  */
+=======
+>>>>>>> c1249029c17ff1f5bea5dbb9e5e089289e25c00b
 
-/*!
- * vuex v3.6.2
- * (c) 2021 Evan You
- * @license MIT
- */
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
 
 
 /**
@@ -1386,8 +1439,31 @@ PERFORMANCE OF THIS SOFTWARE.
 
 //! moment.js
 
-//! moment.js locale configuration
 
+/*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
+
+
+/*!
+ * Vue.js v2.7.14
+ * (c) 2014-2022 Evan You
+ * Released under the MIT License.
+ */
+
+/*!
+ * cookie
+ * Copyright(c) 2012-2014 Roman Shtylman
+ * Copyright(c) 2015 Douglas Christopher Wilson
+ * MIT Licensed
+ */
+
+/*!
+ * vuex v3.6.2
+ * (c) 2021 Evan You
+ * @license MIT
+ */
+
+
+/*! @license DOMPurify 2.4.1 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/2.4.1/LICENSE */
 
 <<<<<<< HEAD
 THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
@@ -1398,6 +1474,7 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
+<<<<<<< HEAD
 =======
 /**
  * @license
@@ -1484,3 +1561,11 @@ PERFORMANCE OF THIS SOFTWARE.
  * @license MIT
  */
 >>>>>>> fixed-ui
+=======
+
+
+/*!
+ * Signature Pad v3.0.0-beta.4 | https://github.com/szimek/signature_pad
+ * (c) 2020 Szymon Nowak | Released under the MIT license
+ */
+>>>>>>> c1249029c17ff1f5bea5dbb9e5e089289e25c00b

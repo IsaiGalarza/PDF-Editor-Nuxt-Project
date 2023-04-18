@@ -53,12 +53,18 @@
         </div> -->
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         <p class="py-[1em]  font-[600] text-center text-[20px]">
           <nuxt-link to="/login" class="cursor-pointer">Paperlink Console</nuxt-link>
         </p>
 =======
         <p class="py-[1em]  font-[600] text-center text-[20px]">Paperlink Console</p>
 >>>>>>> fixed-ui
+=======
+        <!-- <nuxt-link to="/login"  target="_blank" class="py-[1em]font-[600] text-center text-[20px] hover:text-white">Paperlink Console</nuxt-link> -->
+
+        <p @click=" window.open('https://paperlink.app/login')" class="py-[1em]font-[600] text-center text-[20px]">Paperlink Console</p>
+>>>>>>> c1249029c17ff1f5bea5dbb9e5e089289e25c00b
         <!-- <p class="text-white text-[11px] mt-3 text-center">
           powered by
           <span class="font-semibold uppercase text-[15px]">Paperdaz</span>

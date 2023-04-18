@@ -255,11 +255,11 @@
         <img src="../../assets/img/require-icon.png" width="18" class="bg-slate-200 p-[2px]" />      
         Require
       </button>
-      <!-- <button @click="undoFunction"
+      <button @click="undoFunction"
         class="rounded-md h-8 sm:h-10 flex items-center gap-1 py-1 px-3 max-sm:!px-1 tool-item text-sm bg-white text-red-500">
         <undo-icon />
         Undo
-      </button> -->
+      </button>
     </div>
 
     <div v-if="isSign && isCreator" class="flex items-center justify-between py-1">
@@ -286,11 +286,11 @@
         <img src="../../assets/img/name_icon.svg" width="18" class="bg-slate-200 p-[2px]" />
         Name
       </button>
-      <!-- <button @click="undoFunction"
+      <button @click="undoFunction"
         class="rounded-md h-8 sm:h-10 flex items-center gap-1 py-1 px-3 max-sm:!px-1 tool-item text-sm bg-white text-red-500">
         <undo-icon />
         Undo
-      </button> -->
+      </button>
     </div>
 
     <draw-or-type-modal v-model="showSignatureModal" :src="`${$auth?.user?.signatureURL}`"

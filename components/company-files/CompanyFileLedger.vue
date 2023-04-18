@@ -188,7 +188,7 @@
                       file.fileAction === FileAction.SIGNED ? 'text-blue-400' :
                       file.fileAction === FileAction.CONFIRM ? 'text-purple-400' : ''
                     "
-                  >{{ file.fileAction && file.fileAction !== FileAction.SHARED ? file.fileAction : "-" }}</div>
+                  >{{ file.fileAction && file.fileAction !== FileAction.SHARED ? file.fileAction : "" }}</div>
                   <div class="text-sm text-center capitalize inline-block w-2/12">{{ (file || {}).filePrivacy }}</div>
                   <div class="text-center  px-1 inline-block w-2/12 text-xs">
                     {{ formatDateTime(file.updatedAt) }}
@@ -208,13 +208,13 @@
                         <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu hidden sm:block">
                           <div class="no-access" v-if="!createdByTeamMember(file.uploadedBy)">no access right</div>
                           <ul class="min-w-[150px]" v-else>
-                            <li class="dropdown-item" @click="showShareCompanyFileFunc(file)" divided>
+                            <!-- <li class="dropdown-item" @click="showShareCompanyFileFunc(file)" divided>
                               <div class="flex justify-between w-full">
                                 <share-icon width="16" height="16" class="inline-block float-left" />
                                 <span>Share</span>
                               </div>
-                            </li>
-                            <li @click="showRequestModalFunc(file)" class="dropdown-item">
+                            </li> -->
+                            <!-- <li @click="showRequestModalFunc(file)" class="dropdown-item">
                               <div class="flex justify-between w-full border-t border-gray-200">
                                 <request-icon width="20" height="20" class="inline-block float-left" />
                                 <span>Request</span>
@@ -231,25 +231,32 @@
                                 <FileSolidIcon width="16" height="16" class="inline-block float-left" />
                                 <span class="ml-1">Carbon Copy</span>
                               </div>
-                            </li>
+                            </li> -->
                             <li class="dropdown-item" @click="showEditCompanyFileFunc(file)">
                               <div class="flex justify-between w-full border-t border-gray-200">
                                 <PenIcon width="16" height="16" class="inline-block float-left" />
                                 <span class="ml-1">Edit</span>
                               </div>
                             </li>
-                            <li v-if="folders.length"  class="dropdown-item" @click="showMoveCompanyFileFunc(file)">
+
+                            <li class="dropdown-item" @click="showShareCompanyFileFunc(file)" divided>
+                              <div class="flex justify-between w-full">
+                                <share-icon width="16" height="16" class="inline-block float-left" />
+                                <span>Share</span>
+                              </div>
+                            </li>
+                            <!-- <li v-if="folders.length"  class="dropdown-item" @click="showMoveCompanyFileFunc(file)">
                               <div class="flex justify-between w-full border-t border-gray-200">
                                 <MoveIcon width="16" height="16" class="inline-block float-left" />
                                 <span class="ml-1">Move</span>
                               </div>
-                            </li>
-                            <li class="dropdown-item" @click="showQrCodeFunc(file)">
+                            </li> -->
+                            <!-- <li class="dropdown-item" @click="showQrCodeFunc(file)">
                               <div class="flex justify-between w-full border-t border-gray-200">
                                 <QrcodeIcon width="16" height="16" class="inline-block float-left" />
                                 <span class="ml-1">QR Code</span>
                               </div>
-                            </li>
+                            </li> -->
                             <li class="dropdown-item" @click="showRemoveCompanyFileFunc(file)">
                               <div class="flex justify-between w-full border-t border-gray-200">
                                 <trash-can-icon width="16" height="16" class="inline-block float-left" />

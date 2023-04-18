@@ -4,7 +4,7 @@
     <div class="ledger-container bg-white rounded-2xl flex-1 min-h-[50vh] lg:min-h-[40vh] position-relative pt-4"
       >
       <!-- <transition name="fade" mode="out-in"> -->
-    
+    {{ $store.getters.getLedgerParams }}
       <div class="search-container">
         <h3
           class="text-paperdazgray-700 font-semibold text-xl flex xs:items-center justify-between whitespace-nowrap px-3 mb-1"
@@ -217,7 +217,7 @@ export default Vue.extend({
     this.handleShowingLedger()
     this.tableScrollObserver()
     this.fetchFiles(this.returnedDataPage, this.searchValue)
-    console.log(this.pdfUser)
+
   },
   methods: {
     formatFileAction(fileAction, action) {
@@ -280,7 +280,7 @@ export default Vue.extend({
     },
     async ledgerFiles(page, search) {
       // &fileName[$like]=${search}%&$skip=${page}
-      let acct = `/ledger?userId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}` 
+      let acct = `/ledger?userId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}&fileAction=${this.$store.getters.getLedgerParams}` 
       await this.$axios.get(acct)
         .then((response) => {
           let files = [];
@@ -444,6 +444,9 @@ export default Vue.extend({
     }
   },
   watch: {
+    "$store.getters.getLedgerParams"(){
+      this.fetchFiles(this.returnedDataPage, this.searchParam)
+    },
     '$auth.user': function () {
       if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
       this.debounceTimeout = setTimeout(() => {
@@ -462,7 +465,7 @@ export default Vue.extend({
       if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
       this.debounceTimeout = setTimeout(() => {
       this.spinner = true;
-      this.fetchFiles(this.returnedDataPage, this.searchParam)
+      this.fetchFiles(ledgerFilesledgerFiles)
       }, 500); // delay for half second
     },
     refresh: function () { 

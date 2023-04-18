@@ -118,7 +118,9 @@ export default Vue.extend({
           openNew: false,
           exact: false,
         },
-        { label: 'FAQ', icon: 'ConversationIcon', link: '/faq', exact: false, openNew: false, },
+        { label: 'FAQ', 
+        icon: 'ConversationIcon', 
+        link: '/faq', exact: false, openNew: false, },
         {
           label: 'Contact us',
           icon: 'CustomerCareIcon',

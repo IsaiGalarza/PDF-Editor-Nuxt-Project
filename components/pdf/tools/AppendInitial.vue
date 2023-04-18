@@ -7,7 +7,7 @@
     :style="style"
   />
     <img
-      v-if="!initialimgDisplay"
+      v-if="!initialimgDisplay  && isCreator"
       src="../../../assets/img/initial-icon.png"
       attr="initial"
       :elemFill="uploaded && initialimgDisplay"
@@ -20,6 +20,21 @@
       ]"
       :width="(tool?.pageScaleY || 1) * 18"
     />
+
+    <img
+    v-if="!initialimgDisplay  && !isCreator && !tool.justMounted"
+    src="../../../assets/img/initial-icon.png"
+    attr="initial"
+    :elemFill="uploaded && initialimgDisplay"
+    :uploaded="uploaded"
+    @click="selectIsCreatorDisplay"
+    class="annot-button"
+    :class="[
+      $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
+      isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
+    ]"
+    :width="(tool?.pageScaleY || 1) * 18"
+  />
   
     <img
       v-else-if="theInitial"
@@ -151,7 +166,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   mounted() {
     this.changeInitialToBase64()
     this.completed && this.changeInitialToBase64(this.completed)
-    // this.popUpIfNoinitial()
+    !this.initialimgDisplay && !this.isCreator && this.tool.justMounted ? this.popUpIfNoinitial() : null
   },
   watch: {
     '$auth.user.initialURL': async function () {

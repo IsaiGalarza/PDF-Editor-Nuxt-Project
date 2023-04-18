@@ -8,7 +8,7 @@ export const state = () => ({
   guestModalFunc: () => {},
   base64Signature: null,
   base64Initial: null,
-  fillAsGuest: false,
+  fillAsGuest: true,
   toast: { active: false, msg: ""},
   pageName: '',
   pdfPageName: {},
@@ -33,6 +33,7 @@ export const state = () => ({
   showCongratulationsModal: false,
   agreeSign: -1,
   file: {},
+  ledgerParams: ""
 })
 
 export type RootState = ReturnType<typeof state>
@@ -40,6 +41,9 @@ export type RootState = ReturnType<typeof state>
 export const getters: GetterTree<RootState, RootState> = {
   getPackageInfo( state: any){
     return state.setPackage
+  },
+  getLedgerParams( state: any){
+    return state.ledgerParams
   },
   getToast(state: any){
     return state.toast
@@ -96,6 +100,9 @@ export const mutations: MutationTree<RootState> = {
   // -- Setting the user --
   SET_PAGE_USER(state, user) {
     state.initialUser = user
+  },
+  SET_LEDGER_PARAMS(state, params) {
+    state.ledgerParams = params
   },
   SET_TOAST(state, payload) {
     state.toast = payload

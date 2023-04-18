@@ -101,8 +101,11 @@ export default Vue.extend({
           localStorage.removeItem('main_user_paperdaz_token')
           localStorage.setItem("reset_user_mail", this.user.email)
           this.$nuxt.$router.push('/reset-sent-link');
+
+          console.log('Forget')
         })
         .catch(({ response }) => {
+          console.log('Forget')
           this.alertMessage.isSuccess = false
           this.alertMessage.message = response.data.message || 'unable to reset password'
         })

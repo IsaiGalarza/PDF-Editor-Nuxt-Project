@@ -1,215 +1,104 @@
 <template>
-  <div>
-    <section class="relative shadow">
-      <div
-        class="px-5 text-center text-black absolute inline-block transform top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
-      >
-        <h4 class="text-4xl lg:text-5xl font-semibold whitespace-nowrap">
-          <span class="text-paperdazgreen-400">Contact</span>
-          Us
-        </h4>
-        <p class="text-[#414142] font-medium">
-          Have any questions? We'd love to hear from you.
+  <div class="grid grid-cols-1 md:grid-cols-2 h-full mb-8 ">
+    <div class=" flex flex-col items-center px-6 mb-8 md:mb-0">
+      <p class="text-center text-[#414142] font-[800] text-[20px] mb-12">We look forward to <br /> hearing from you!</p>
+      <p class="text-center text-[1rem] mb-16 text-[#8E8E8E] leading-6">
+        We strive to make the best Paperlink <br /> for everyone.
+        Drop us a note with any <br /> feedback, questions or concerns. <br />
+        We’d love to hear from you. Initiate a <br /> chat to talk to us 9am to 5pm PST.
+      </p>
+
+      <div class="card-left  flex flex-col items-center justify-center">
+        <p class="text-center text-[#414142] font-[800] text-[20px] mb-12">Chat with us</p>
+        <p class="text-center text-[1rem] mb-16 text-[#8E8E8E] leading-6">
+          Our team is ready to answer any <br /> questions you may have.
         </p>
-      </div>
-      <img
-        src="~/assets/img/world_map.svg"
-        alt=""
-        class="w-full max-w-full max-h-80 min-h-[250px] object-cover"
-      />
-    </section>
-    <section class="container card-containers">
-      <article
-        class="contact-us-card"
-        v-for="card in cards"
-        :key="card.id"
-        @mouseover="currentActiveCard = card.id"
-        @mouseleave="currentActiveCard = 2"
-        :class="{ active: card.id === currentActiveCard }"
-      >
-        <header>
-          <h4 class="card-header">{{ card.heading }}</h4>
-        </header>
-
-        <div class="body">
-          {{ card.content }}
-        </div>
-
-        <button class="button" @click="handleCommand(card.command || '')">
-          {{ card.buttonText }}
+        <button class="outline-btn">
+          INITIATE CHAT
         </button>
-      </article>
-    </section>
+      </div>
+    </div>
+    <div class="px-4 ">
+      <div class="card-left py-8 h-full">
+        <p class=" text-[#414142] text-[15px] mb-2 mt-4 ">CONTACT</p>
+        <p class=" text-[0.9rem] text-[#8E8E8E] mb-2 leading-6">
+          We will reply within 24 hours.
+        </p>
+
+        <form action="">
+          <input type="text" placeholder="NAME" class="contac-input mb-8">
+          <input type="text" placeholder="" class="contac-input mb-8">
+          <textarea type="text" placeholder="MESSAGE" class="contac-input min-h-[150px]  " />
+
+          <div class="flex mt-4 justify-end">
+          <button class="outline-btn-sm text-[#F93120] border-[#F93120] mr-4">
+            Clear 
+          </button>
+          <button class="outline-btn-sm text-white bg-[#77C360]">
+            Clear 
+          </button>
+          </div>
+        </form>
+        <!-- <button class="outline-btn">
+          INITIATE CHAT
+        </button> -->
+      </div>
+    </div>
+
+
   </div>
 </template>
 
 <script>
-import Vue from 'vue'
-export default Vue.extend({
-  name: 'ContactUsPage',
-  layout: 'landing',
-  auth: false,
-  head() {
-    return {
-      script: [
-        // ...
-        {
-          hid: 'tawk.to',
-          src: 'https://embed.tawk.to/61ee08389bd1f31184d8e4d8/1fq4t07bg',
-          defer: true,
-        },
-      ],
-    }
-  },
-  // beforeRouteLeave(to, from, next) {
-  //   location.href = to.fullPath
-  //   return
-  // },
+
+import BillingDetails from '~/components/billing/BillingDetails.vue'
+import SelectCustomBillingPackage from '~/components/billing/SelectCustomBillingPackage.vue'
+
+export default {
+  name: 'billing',
+  layout: 'dashboard',
+  components: { BillingDetails, SelectCustomBillingPackage },
   data() {
     return {
-      currentActiveCard: 2,
-      cards: [
-        {
-          id: 1,
-          heading: 'Partnership',
-          content:
-            "Let's strategically partner to keep everyone SAFE while reducing carbon footprint in the world we live in.",
-          buttonText: 'CONTACT US',
-          command: 'partners',
-        },
-        {
-          id: 2,
-          heading: "FAQ's & Support",
-          content:
-            'Our support team is spread across the globe to give you answers fast. We also have answers ready for many freuqntly asked questions.',
-          buttonText: "VISIT FAQ's",
-          command: 'faq',
-        },
-        {
-          id: 3,
-          heading: 'Chat with us',
-          content: 'Our team is ready to answer any questions you may have.',
-          buttonText: 'INITIATE CHAT',
-          command: 'tawk',
-        },
-      ],
+
     }
   },
-  methods: {
-    mouseHover(id) {},
-    handleCommand(command) {
-      switch (String(command).toLowerCase()) {
-        case 'faq':
-          this.$nuxt.$router.push('/faq')
-          break
-        case 'partners':
-          this.$nuxt.$router.push('/partners')
-          break
-        case 'tawk':
-          try {
-            Tawk_API?.toggle()
-          } catch (error) {
-            //
-          }
-          // ;(
-          //   document.querySelector('.tawk-button') as HTMLButtonElement
-          // )?.click()
-          break
-      }
-    },
-  },
-  mounted() {
-    try {
-      let frame = document.querySelectorAll('.widget-visible')
-      frame[0].style.display = 'block'
-    } catch (error) {
-      //
-    }
-  },
-  beforeDestroy() {
-    try {
-      let frame = document.querySelectorAll('.widget-visible')
-      frame[0].style.cssText = 'display: none !important'
-    } catch (error) {
-      //
-    }
-  },
-})
+
+}
 </script>
 
 <style lang="scss" scoped>
-.header {
-  @apply text-2xl lg:text-3xl text-paperdazgreen-400 mb-1.5 lg:mb-2 font-semibold;
+.card-left {
+  @apply min-h-[100px] w-[100%] relative px-6 py-4;
+  box-shadow: 0px 8.66781px 15.6021px 8.66781px rgba(0, 0, 0, 0.25);
+
+  &::after {
+    content: '';
+    position: absolute;
+    height: 8px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: #E6AF23;
+  }
+
 }
 
-.body {
-  @apply text-[#414142] font-medium text-sm lg:text-base;
+.contac-input {
+  @apply w-full bg-white h-[60px] rounded-[17px] px-3 py-3;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+
 }
 
-.card-containers {
-  @apply py-9;
-  --col-counts: 1;
-  display: grid;
-  grid-template-columns: repeat(var(--col-counts), 1fr);
-  gap: 24px;
-
-  @media only screen and (min-width: 768px) {
-    @apply py-20;
-    --col-counts: 3;
-  }
-  @media only screen and (min-width: 1024px) {
-    gap: 32px;
-  }
+.contac-input:focus {
+  border-color: #E6AF23 !important
 }
 
-.contact-us-card {
-  @apply shadow;
-  --accent-color: #e6af23;
-  --scaling-factor: 1.05;
-  border: 1px solid rgba(0, 0, 0, 0.17);
-  border-top: 3px solid var(--accent-color);
-  max-width: 100%;
-  transition: all 0.3s ease-in-out;
-  background: white;
-  transform: scale(1);
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  position: relative;
-  z-index: 1;
-  padding: 32px 16px;
 
-  @media only screen and (min-width: 768px) {
-    --scaling-factor: 1.2;
-    box-shadow: 0px 10px 18px 10px rgba(75, 75, 75, 0.15);
-    // border: none;
-  }
-
-  & .card-header {
-    @apply text-center text-[#414142] text-xl font-semibold mb-8;
-  }
-
-  & .body {
-    @apply text-center  font-normal mb-6;
-    flex: 1;
-    font-size: 13px;
-  }
-
-  & > .button {
-    @apply w-full h-10 text-sm font-semibold rounded-full;
-    color: var(--accent-color);
-    border: 1px solid var(--accent-color);
-    transition: all 0.3s ease-in-out;
-  }
+.outline-btn {
+  @apply border-[1px] border-[#E6AF23] py-4 rounded-[50px] font-[800] w-full text-[#E6AF23];
 }
-
-.contact-us-card.active {
-  --accent-color: #77b550;
-  transform: scale(var(--scaling-factor));
-  z-index: 2;
-  & > .button {
-    color: white;
-    background: var(--accent-color);
-  }
+.outline-btn-sm {
+  @apply border-[1px]  py-2 px-6 rounded-[10px]  ;
 }
 </style>

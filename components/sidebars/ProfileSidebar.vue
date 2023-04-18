@@ -26,7 +26,7 @@
               Responsible<br />
               Together !
             </div> -->
-            <span class="py-1  text-[18px]">Keep everyone <br />  safe and the <br />  world green.</span>
+            <span class="py-1  text-[18px]">Keep everyone <br /> safe and the <br /> world green.</span>
           </div>
         </div>
       </ul>
@@ -54,7 +54,11 @@
 
         <!-- <nuxt-link to="/login"  target="_blank" class="py-[1em]font-[600] text-center text-[20px] hover:text-white">Paperlink Console</nuxt-link> -->
 
-        <p @click=" window.open('https://paperlink.app/login')" class="py-[1em]font-[600] text-center text-[20px]">Paperlink Console</p>
+        <!-- <p 
+        @click=" window.open('https://paperlink.app/login')" 
+        class="py-[1em]font-[600] text-center cursor-pointer text-[20px]">Paperlink Console</p> -->
+        <nuxt-link to="/login" target="_blank"
+          class="py-[1em]font-[600] text-center text-[20px] hover:text-white">Paperlink Console</nuxt-link>
         <!-- <p class="text-white text-[11px] mt-3 text-center">
           powered by
           <span class="font-semibold uppercase text-[15px]">Paperdaz</span>
@@ -143,7 +147,7 @@ export default Vue.extend({
   },
   "$auth.user": function () {
     console.log(this.qrCodeurl);
-    QRCode.toCanvas(this.$refs.qrcancas, this.qrCodeurl, function () {});
+    QRCode.toCanvas(this.$refs.qrcancas, this.qrCodeurl, function () { });
   },
   methods: {
     socialShareFunction(val) {
@@ -213,7 +217,8 @@ export default Vue.extend({
   @apply w-full;
   height: calc(100vh - 10em - 18em);
 }
-a:hover{
+
+a:hover {
   color: inherit
 }
 </style>

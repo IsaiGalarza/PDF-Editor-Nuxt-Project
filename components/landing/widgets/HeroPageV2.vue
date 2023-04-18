@@ -58,6 +58,15 @@
 import Vue from 'vue'
 export default Vue.extend({
   name: 'HeroPage',
+  created() {
+    setInterval(() => {
+      if(this.activeContent === 2){
+        this.activeContent = 0
+      }else{
+        this.activeContent += 1 
+      }
+    }, 3000) // run timer every second
+  },
 
   data() {
     return {
@@ -71,13 +80,13 @@ export default Vue.extend({
         },
         {
           article:
-            'Perfect for small medical clinics to go paperless in minutes!',
+            'Register, upload and Paperlink is created, no reason for not going paperless!',
           note: `20, 200, 2000 or more people can <br/>
           complete a Paperlink for just $2.00`,
         },
         {
           article:
-            'Perfect for small medical clinics to go paperless in minutes!',
+            'Save time and money for everyone!',
           note: `20, 200, 2000 or more people can<br/> 
           complete a Paperlink for just $2.00`,
         },

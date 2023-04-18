@@ -340,7 +340,6 @@ export default Vue.extend({
         .loginWith('local', { data: this.user })
         .then(async (response: any) => {
           let { user } = response.data
-          // console.log(">>>>>>>>>>>>>>>>>", user)
           if (user.isEmailVerified == 0 || !user.isEmailVerified) {
             await this.$auth.logout()
             this.isLoading = false

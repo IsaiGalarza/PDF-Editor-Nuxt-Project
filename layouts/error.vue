@@ -24,7 +24,7 @@
         <span v-if="error.statusCode == 404"> We couldn`t find the page you are looking for</span>
         <span  v-else-if="error.statusCode >= 500">Could not access these page</span>
         <span v-else>{{error.message}}</span>
-       . Maybe our <b>FAQ (at top nav)</b> or community can help</p>
+       . Maybe our  or community can help</p>
     </div>
        </div>
     </main>

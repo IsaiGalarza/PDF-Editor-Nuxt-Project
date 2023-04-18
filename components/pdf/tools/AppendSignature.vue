@@ -7,7 +7,21 @@
     :style="style"
   />
     <img
-      v-else-if="!initialimgDisplay"
+      v-else-if="!initialimgDisplay && isCreator"
+      src="../../../assets/img/sign-icon.png"
+      attr="sign"
+      :elemFill="uploaded && initialimgDisplay"
+      :uploaded="uploaded"
+      @click="selectIsCreatorDisplay"
+      class="annot-button"
+      :class="[
+        $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
+        isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
+      ]"
+      :width="(tool?.pageScaleY || 1) * 18"
+    />
+    <img
+      v-else-if="!initialimgDisplay && !isCreator && !tool.justMounted"
       src="../../../assets/img/sign-icon.png"
       attr="sign"
       :elemFill="uploaded && initialimgDisplay"
@@ -57,7 +71,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   mounted() {
     this.changeSignToBase64()
     this.completed && this.changeSignToBase64(this.completed)
-    // this.popUpIfNoSign()
+    !this.initialimgDisplay && !this.isCreator && this.tool.justMounted ? this.popUpIfNoSign() : null
   },
   computed: {
     ...mapState(['loadedPdfFile']),

@@ -40,12 +40,12 @@
         class="flex-1 flex items-center gap-5 justify-end text-xs font-medium"
       > -->
       
-      <span class="font-normal max-w-[12%] truncate">
+      <span class="font-normal max-w-[30%] truncate">
         {{ file.fileName ?? "" }}
       </span>
 
 
-      <span class="font-normal max-w-[12%] truncate"> </span>
+      
 
       <span class="hidden md:inline">{{
       `${(file.updatedAt || "").substring(0, 10)} - ${(file.updatedAt || "").substring(
@@ -258,18 +258,23 @@ export default Vue.extend({
       // Toolbar function - cancelConfrim
       if (this.isConfirm) {
         this.$store.commit('SET_PDF_EXIT', true)
-        this.$router.push('/paperlink-files')
+        this.$auth.loggedIn
+            ? this.$nuxt.$router.push('/file-ledger')
+            : this.$nuxt.$router.go(-1)
         return;
       }
       if (this.upload_state) {
             this.$store.commit('SET_UPLOAD_STATE', false);
             this.$store.commit('SET_PDF_EXIT', true)
-            this.$router.push('/paperlink-files')
+            this.$auth.loggedIn
+            ? this.$nuxt.$router.push('/file-ledger')
+            : this.$nuxt.$router.go(-1)
       } else {
         this.$store.commit('SET_UPLOAD_STATE', false);
         this.$store.commit('SET_PDF_EXIT', true)
-        let previousRoute = localStorage.getItem('store_public_profile_path')
-        previousRoute ? this.$router.push(previousRoute) : this.$router.push('/paperlink-files')
+        this.$auth.loggedIn
+            ? this.$nuxt.$router.push('/file-ledger')
+            : this.$nuxt.$router.go(-1)
         localStorage.removeItem('store_public_profile_path')
       }
       this.$store.commit('SET_FILE_SIGNATURE', null);

@@ -916,10 +916,12 @@ export default mixins(PdfAuth).extend({
           return {
             ..._el,
             id: index + 1,
+            justMounted: false
             // completed: await this.toDataURL(_el.completed),
           }
-        else return { ..._el, id: index + 1 }
+        else return { ..._el, id: index + 1, justMounted: false }
       })
+
       this.initialFileAnnotation = JSON.parse(this.file.annotaions || `[]`).map(
         (_el, index) => {
           return { ..._el, id: index + 1 }
@@ -1331,7 +1333,7 @@ export default mixins(PdfAuth).extend({
     placeTool(e, pageNumber, initialPoint) {
       let parent = this.$refs[`pdf-single-page-outer-${pageNumber}`]
       if (Array.isArray(parent)) parent = parent[0]
-      console.log(this.tools)
+      
       let { x, y } = !initialPoint
         ? this.pointerPos(e, parent || this.$refs.scrollingElement)
         : // ? this.pointerPos(e, parent || this.$refs['pdf-single-page-outer'])

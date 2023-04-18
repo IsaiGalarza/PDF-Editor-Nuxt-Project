@@ -8,7 +8,7 @@ export const state = () => ({
   guestModalFunc: () => {},
   base64Signature: null,
   base64Initial: null,
-  fillAsGuest: false,
+  fillAsGuest: true,
   toast: { active: false, msg: ""},
   pageName: '',
   pdfPageName: {},

@@ -29,7 +29,6 @@
       :elemFill="uploaded && initialimgDisplay"
       :uploaded="uploaded"
       @click="selectIsCreatorDisplay"
-      class="annot-button"
       ref="annotbutton"
       :class="[
         $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',

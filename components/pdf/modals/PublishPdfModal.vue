@@ -230,7 +230,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     confirmAnnotation() {
       let date = new Date()
       return {
-        signaturePath: this.base64,
+        signaturePath: this.$store.getters.getUserSignature,
         text: `P${date.getFullYear()}${this.convertToDoubleString(
           date.getUTCDate()
         )}${this.convertToDoubleString(
@@ -239,9 +239,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           date.getUTCHours()
         )}${this.convertToDoubleString(
           date.getUTCMinutes()
-        )}${this.$auth.user?.firstName?.charAt(
+        )}${(this.$auth.user?.firstName || '')?.charAt(
           0
-        )}${this.$auth.user?.lastName?.charAt(0)}`.toUpperCase(),
+        )}${(this.$auth.user?.lastName || "")?.charAt(0)}`.toUpperCase(),
         fileAction: this.file?.fileAction,
       }
     },
@@ -373,12 +373,10 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.isLoading = false
         })
     },
-    sendPdfToEmail() {
+    sendPdfToEmail(val) {
       let requestData = {
         email: this.externalGuestEmail,
-        action: this.$auth?.user?.id
-          ? this.file?.fileAction
-          : 'shareFileToGuest',
+        action: val == 'owner' ? this.file?.fileAction : 'shareFileToGuest',
         userId: this.$auth?.user?.id ?? 0,
         editedFileLink: this.generatedPdf?.downloadLink,
         fileId: this.file?.id,
@@ -456,7 +454,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
             break
         }
       } else {
-        this.sendPdfToEmail()
+        this.sendPdfToEmail('owner')
+        this.sendPdfToEmail('guest')
       }
     },
     publishAsCreator() {

@@ -1,34 +1,42 @@
 <template>
   <div class="flex flex-col">
-    
-    <div class="ledger-container bg-white rounded-2xl flex-1 min-h-[50vh] lg:min-h-[40vh] position-relative pt-4"
-      >
+    <div
+      class="ledger-container bg-white rounded-2xl flex-1 min-h-[50vh] lg:min-h-[40vh] position-relative pt-4"
+    >
       <!-- <transition name="fade" mode="out-in"> -->
-    {{ $store.getters.getLedgerParams }}
+      {{ $store.getters.getLedgerParams }}
       <div class="search-container">
         <h3
           class="text-paperdazgray-700 font-semibold text-xl flex xs:items-center justify-between whitespace-nowrap px-3 mb-1"
           :class="[isPaidUser ? 'flex-col sm:flex-row' : 'flex-row gap-2']"
           v-if="!spinner"
         >
-          <h5 class="text-lg font-semibold text-[#272727] hidden sm:inline-flex items-center gap-2 sm:w-full" :class="[isPaidUser ? 'mb-2' : 'mb-0']">
-            {{ isPaidUser ? "File Ledger" : "Ledger" }}
-    
+          <h5
+            class="text-lg font-semibold text-[#272727] hidden sm:inline-flex items-center gap-2 sm:w-full"
+            :class="[isPaidUser ? 'mb-2' : 'mb-0']"
+          >
+            {{ isPaidUser ? 'File Ledger' : 'Ledger' }}
           </h5>
-          <div class="text-xs font-medium flex justify-end items-center gap-2 relative w-full">
+          <div
+            class="text-xs font-medium flex justify-end items-center gap-2 relative w-full"
+          >
             <span class="el-dropdown-link left-roll1 flex-1">
-              <input type="text"
+              <input
+                type="text"
                 class="search-input h-8 sm:h-10 transition bg-transparent ps-2 flex-1 border-[1px] border-paperdazgreen-400 rounded-lg focus:border-paperdazgreen-700 outline-none float-right sm:w-3/4 w-full"
-                placeholder="Search Files" v-model="searchParam" />
+                placeholder="Search Files"
+                v-model="searchParam"
+              />
             </span>
             <button
-              class="circle  circle-16 sm:circle-18 bg-paperdazgreen-400 text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
+              class="circle circle-16 sm:circle-18 bg-paperdazgreen-400 text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150"
+            >
               <search-icon width="16" height="16" currentcolor="white" />
             </button>
           </div>
         </h3>
       </div>
-      
+
       <div
         ref="ledgerContainer"
         :class="[
@@ -38,7 +46,11 @@
             : 'pb-4 overflow-x-auto custom-scrollbar',
         ]"
       >
-        <div v-if="spinner" key="1" class="p-6 flex justify-center items-center">
+        <div
+          v-if="spinner"
+          key="1"
+          class="p-6 flex justify-center items-center"
+        >
           <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
         </div>
         <!-- Start:: empty file ledger -->
@@ -48,39 +60,58 @@
             <tr class="text-left">
               <th class="w-12 text-left fixed-col left">No</th>
               <th class="text-left !pl-5 sm:!pl-16">File Name</th>
-              <th class="text-center">{{ isPaidUser ? 'Action' : 'Actions' }}</th>
-              <th class="text-center" >Action By</th>
+              <th class="text-center">
+                {{ isPaidUser ? 'Action' : 'Actions' }}
+              </th>
+              <th class="text-center">Action By</th>
               <th class="text-center">Date & Time</th>
               <th class="fixed-col right text-right"></th>
             </tr>
           </thead>
           <tbody v-if="pdfUser.length && !spinner">
-            <tr v-for="(file, i) in pdfUser" :key="file.id" :class="{ highlight: file.id == highlightedFileId }">
-              <td class="text-left fixed-col left">{{ i + 1 + returnedDataPage }}</td>
+            <tr
+              v-for="(file, i) in ledger"
+              :key="file.id"
+              :class="{ highlight: file.id == highlightedFileId }"
+            >
+              <td class="text-left fixed-col left">
+                {{ i + 1 + returnedDataPage }}
+              </td>
               <td class="text-center !pl-5 sm:!pl-16">
                 <div class="flex items-center gap-1.5">
-                  <div class=""
-                    >
+                  <div class="">
                     <letter-avatar
-                    v-if="!(file.user || {}).profile_picture && !file.isGuest"
-                    style="width: 43px; height: 43px"
-                    class="h-[28px] w-[28px] rounded-full object-cover cursor-pointer mr-1"
-                    :username="file.user?.firstName"
-                  />
-                       <span v-else class="border !border-paperdazgreen-300 p-0.5 inline-block rounded-full h-[36px] w-[36px]">
-                        <img
+                      v-if="!(file.user || {}).profile_picture && !file.isGuest"
+                      style="width: 43px; height: 43px"
+                      class="h-[28px] w-[28px] rounded-full object-cover cursor-pointer mr-1"
+                      :username="file.user?.firstName"
+                    />
+                    <span
+                      v-else
+                      class="border !border-paperdazgreen-300 p-0.5 inline-block rounded-full h-[36px] w-[36px]"
+                    >
+                      <img
                         v-if="(file.user || {}).profile_picture"
-                      :src="(file.user || {}).profile_picture || ''"
-                      class="w-full h-full"
-                       alt=""
+                        :src="(file.user || {}).profile_picture || ''"
+                        class="w-full h-full"
+                        alt=""
                         :class="[
-                          (file.role == userType.PAID || $auth.user.role == userType.FREE) ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']"
-                        />
-                       </span>
+                          file.role == userType.PAID ||
+                          $auth.user.role == userType.FREE
+                            ? 'w-full h-full rounded-md'
+                            : 'w-full h-full rounded-full',
+                        ]"
+                      />
+                    </span>
                   </div>
                   <div class="max-sm:w-24">
-                    <p class="max-sm:truncate max-sm:text-xs sm:text-base font-medium text-left sm:ml-1">
-                      <nuxt-link :to="`/pdf/${file.paperLink}`" class="w-full block">
+                    <p
+                      class="max-sm:truncate max-sm:text-xs sm:text-base font-medium text-left sm:ml-1"
+                    >
+                      <nuxt-link
+                        :to="`/pdf/${file.paperLink}`"
+                        class="w-full block"
+                      >
                         <!-- {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName  }} -->
                         {{ file.fileName | removeExtension }}
                       </nuxt-link>
@@ -88,41 +119,68 @@
                   </div>
                 </div>
               </td>
-              <td class="text-sm text-center capitalize"
-                  :class="
-                    file?.fileAction === FileAction.COMPLETE ? 'text-paperdazgreen-400' :
-                    file?.fileAction === FileAction.SIGNED ? 'text-blue-400' :
-                    file?.fileAction === FileAction.CONFIRM ? 'text-purple-400' : ''
-                  "
+              <td
+                class="text-sm text-center capitalize"
+                :class="
+                  file?.action === FileAction.COMPLETE
+                    ? 'text-paperdazgreen-400'
+                    : file?.action === FileAction.SIGNED
+                    ? 'text-blue-400'
+                    : file?.action === FileAction.CONFIRM
+                    ? 'text-purple-400'
+                    : ''
+                "
               >
                 {{
-                    (isPaidUser ? file?.fileAction : formatFileAction(file.file?.fileAction, file.action))   
+                   `${file?.action}ed`.replace('ee', 'e')
                 }}
               </td>
-              <td class="text-center" >
-                {{ file.isGuest ? "Guest" : (file.user?.firstName + " " + file.user?.lastName) }}
+              <td class="text-center">
+                {{
+                  file.isGuest
+                    ? 'Guest'
+                    : file.user?.firstName + ' ' + file.user?.lastName
+                }}
               </td>
               <td class="text-center whitespace-normal px-1">
                 {{ formatDateTime(file.updatedAt) }}
               </td>
               <td class="fixed-col right">
-                <button class="cursor-pointer" @click="showShareCompanyFilesFunc(file)">
+                <button
+                  class="cursor-pointer"
+                  @click="showShareCompanyFilesFunc(file)"
+                >
                   <share-outline-icon class="w-4 h-4" />
                 </button>
               </td>
             </tr>
           </tbody>
-
         </table>
       </div>
-      
+
       <!-- </transition> -->
     </div>
-    <FilePagination :totalFile="totalFile" @setPage="setPage" v-if="(pdfUser.length > 10)" />
-    <ShareFilesModal :userFile="userFile" @qrLoad="showQrcodeFileFunc" v-model="showShareCompanyFiles" />
-    <CreateCompanyFolder @refresh="setRefresh" :userFile="userFile" @resetUserFile="resetUserFile"
-      v-model="showCreateCompanyFolder" />
-    <upload-document-modal @resetUserFolder="resetUserFolder" :folder="fileProps" v-model="showUploadDocumentModal" />
+    <FilePagination
+      :totalFile="totalFile"
+      @setPage="setPage"
+      v-if="pdfUser.length > 10"
+    />
+    <ShareFilesModal
+      :userFile="userFile"
+      @qrLoad="showQrcodeFileFunc"
+      v-model="showShareCompanyFiles"
+    />
+    <CreateCompanyFolder
+      @refresh="setRefresh"
+      :userFile="userFile"
+      @resetUserFile="resetUserFile"
+      v-model="showCreateCompanyFolder"
+    />
+    <upload-document-modal
+      @resetUserFolder="resetUserFolder"
+      :folder="fileProps"
+      v-model="showUploadDocumentModal"
+    />
     <QrcodeShare :userFile="userFile" v-model="showQrcodeFiles" />
     <CreateTeam @refresh="setRefresh" v-model="showCreateTeam" />
   </div>
@@ -153,8 +211,6 @@ import FileAction from '~/models/FileAction'
 import _ from 'lodash'
 import LetterAvatar from '../widgets/LetterAvatar.vue'
 
-
-
 export default Vue.extend({
   components: {
     TreeIcon,
@@ -173,18 +229,18 @@ export default Vue.extend({
     CreateCompanyFolder,
     CreateTeam,
     EmptyFileLedger,
-    LetterAvatar
+    LetterAvatar,
   },
   props: ['searchContect'],
   filters: {
     removeExtension(filename) {
-      return filename.replace(/\.[^\/.]+$/, '');
+      return filename.replace(/\.[^\/.]+$/, '')
     },
-    initialFirstName (name) {
+    initialFirstName(name) {
       return name?.charAt(0).toUpperCase()
     },
   },
-  async fetch() { },
+  async fetch() {},
   data() {
     return {
       searchParam: '',
@@ -195,7 +251,7 @@ export default Vue.extend({
       showQrcodeFiles: false,
       showShareCompanyFiles: false,
       userFile: {},
-      userId: (this.$auth.user).id,
+      userId: this.$auth.user.id,
       filterTitle: '',
       searchValue: '',
       showScribble: false,
@@ -210,6 +266,7 @@ export default Vue.extend({
       showCreateTeam: false,
       FileAction,
       debounceTimeout: null,
+      ledger: [],
     }
   },
   mounted() {
@@ -217,7 +274,6 @@ export default Vue.extend({
     this.handleShowingLedger()
     this.tableScrollObserver()
     this.fetchFiles(this.returnedDataPage, this.searchValue)
-
   },
   methods: {
     formatFileAction(fileAction, action) {
@@ -225,31 +281,33 @@ export default Vue.extend({
       switch ((fileAction || '').toLowerCase()) {
         case FileAction.COMPLETE:
           isEd = true
-          break;
+          break
         case FileAction.SIGNED:
           isEd = true
-          if (action === FileAction.COMPLETE)  {
+          if (action === FileAction.COMPLETE) {
             fileAction = FileAction.SIGNED
             isEd = false
-          }
-          else if (action === FileAction.CONFIRM)  {
+          } else if (action === FileAction.CONFIRM) {
             fileAction = FileAction.CONFIRM
           }
-          break;
+          break
         case FileAction.CONFIRM:
-          if (action === FileAction.COMPLETE)  {
+          if (action === FileAction.COMPLETE) {
             isEd = false
           } else {
             isEd = true
           }
-          break;
+          break
         default:
           return ''
-        }
+      }
 
       fileAction = fileAction.charAt(0).toUpperCase() + fileAction.slice(1)
       if (isEd) {
-        fileAction = fileAction.charAt(fileAction.length - 1) === 'e' ? (fileAction + 'd') : (fileAction + 'ed')
+        fileAction =
+          fileAction.charAt(fileAction.length - 1) === 'e'
+            ? fileAction + 'd'
+            : fileAction + 'ed'
       }
       return fileAction
     },
@@ -279,23 +337,18 @@ export default Vue.extend({
       this.searchValue = event.target.value
     },
     async ledgerFiles(page, search) {
-      // &fileName[$like]=${search}%&$skip=${page}
-      let acct = `/ledger?userId=${this.$auth.user.id}&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}&fileAction=${this.$store.getters.getLedgerParams}` 
-      await this.$axios.get(acct)
+      let ledgerParams = this.$store.getters.getLedgerParams
+      let acct = `/ledger?userId=${
+        this.$auth.user.id
+      }&$sort[updatedAt]=-1&fileName[$like]=${search}%&$skip=${page}${
+        ledgerParams
+          ? '&action=' + this.$store.getters.getLedgerParams
+          : ledgerParams
+      }`
+      await this.$axios
+        .get(acct)
         .then((response) => {
-          let files = [];
-          response.data.data.map((el) => {
-            if (el.file) {
-              el.favourites = [];
-              el.shared = null;
-              el.fileAction = el.action;
-              el.paperLink = (el.file || {}).paperLink;
-              el.userName = el.fileOwner?.firstName + " " + el.fileOwner?.lastName;
-              files.push(el);
-            }
-          })
-          this.files = files.length ? files : []
-          console.log(this.files)
+          this.ledger = response.data.data
           this.$store.commit('ADD_USER', files)
           this.totalFile = response.data.total
         })
@@ -304,17 +357,23 @@ export default Vue.extend({
         })
     },
     async fetchUserFiles(page, search) {
-      let paramsId = this.$auth.user?.role == UserTypeEnum.TEAM ? this.$auth.user.teamId : this.$auth.user?.id
+      let paramsId =
+        this.$auth.user?.role == UserTypeEnum.TEAM
+          ? this.$auth.user.teamId
+          : this.$auth.user?.id
       //<<---------------- START: fetching the user files --- ------>>
       await this.$axios
-        .$get(`/files?userId=${paramsId}&fileName[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`, {
-          params: {
-            isEditing: 0
+        .$get(
+          `/files?userId=${paramsId}&fileName[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`,
+          {
+            params: {
+              isEditing: 0,
+            },
           }
-        })
+        )
         .then((response) => {
           this.$emit('setUploadpaperlink', response.total)
-          const files = (response.data).map((el) => {
+          const files = response.data.map((el) => {
             return el
           })
           this.files = files
@@ -334,10 +393,12 @@ export default Vue.extend({
       this.showShareCompanyFiles = true
     },
     showQrcodeFileFunc() {
-      this.showQrcodeFiles = true;
+      this.showQrcodeFiles = true
     },
     async fetchFiles(page, search) {
-      this.isPaidUser ? this.ledgerFiles(page, search) : this.ledgerFiles(page, search)
+      this.isPaidUser
+        ? this.ledgerFiles(page, search)
+        : this.ledgerFiles(page, search)
     },
     handleFileHighlight() {
       this.highlightedFileId = this.$nuxt.$route.query.highlight_file
@@ -358,7 +419,7 @@ export default Vue.extend({
         try {
           this.scrollObserver.disconnect()
           this.scrollObserver = undefined
-        } catch (e) { }
+        } catch (e) {}
       }
       const options = {
         root: this.$refs.ledgerContainer,
@@ -366,8 +427,7 @@ export default Vue.extend({
         rootMargin: '0px',
         threshold: 1.0,
       }
-      const callback = (
-        entries) => {
+      const callback = (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) {
             entry.target.classList.add('scrolled')
@@ -396,10 +456,7 @@ export default Vue.extend({
         threshold: 0.75,
         rootMargin: '0px',
       }
-      const callback = (
-        entries,
-        _observer
-      ) => {
+      const callback = (entries, _observer) => {
         entries.forEach((entry) => {
           if (entry.target === ledgerContainer) {
             if (entry.isIntersecting) {
@@ -421,7 +478,7 @@ export default Vue.extend({
     // getting state from the store
     ...mapState(['filterUser', 'pdfUser']),
     userType() {
-      return (UserTypeEnum)
+      return UserTypeEnum
     },
     isPaidUser() {
       switch (this.$auth?.user?.role) {
@@ -440,35 +497,35 @@ export default Vue.extend({
         case UserTypeEnum.TEAM:
           return (this.$auth.user || {}).mainAccountId
       }
-      (this.$auth.user || {}).id
-    }
+      ;(this.$auth.user || {}).id
+    },
   },
   watch: {
-    "$store.getters.getLedgerParams"(){
+    '$store.getters.getLedgerParams'() {
       this.fetchFiles(this.returnedDataPage, this.searchParam)
     },
     '$auth.user': function () {
-      if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
+      if (this.debounceTimeout) clearTimeout(this.debounceTimeout)
       this.debounceTimeout = setTimeout(() => {
-      this.spinner = true;
-      this.fetchFiles(this.returnedDataPage, this.searchParam)
-      }, 500);
+        this.spinner = true
+        this.fetchFiles(this.returnedDataPage, this.searchParam)
+      }, 500)
     },
-    'returnedDataPage': function () {
-      if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
+    returnedDataPage: function () {
+      if (this.debounceTimeout) clearTimeout(this.debounceTimeout)
       this.debounceTimeout = setTimeout(() => {
-      this.spinner = true;
-      this.fetchFiles(this.returnedDataPage, this.searchParam)
-      }, 500);
+        this.spinner = true
+        this.fetchFiles(this.returnedDataPage, this.searchParam)
+      }, 500)
     },
-    'searchParam': function () {
-      if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
+    searchParam: function () {
+      if (this.debounceTimeout) clearTimeout(this.debounceTimeout)
       this.debounceTimeout = setTimeout(() => {
-      this.spinner = true;
-      this.fetchFiles(ledgerFilesledgerFiles)
-      }, 500); // delay for half second
+        this.spinner = true
+        this.fetchFiles(ledgerFilesledgerFiles)
+      }, 500) // delay for half second
     },
-    refresh: function () { 
+    refresh: function () {
       this.$nuxt.refresh()
       this.fetchFiles(this.returnedDataPage, this.folderSearch)
       this.fetchFolder(this.returnedFolderPage, this.folderSearch)

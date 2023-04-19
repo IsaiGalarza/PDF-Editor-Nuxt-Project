@@ -259,7 +259,7 @@ export default Vue.extend({
       if (this.isConfirm) {
         this.$store.commit('SET_PDF_EXIT', true)
         this.$auth.loggedIn
-            ? this.$nuxt.$router.push('/file-ledger')
+            ? this.$nuxt.$router.push('/paperlink-files')
             : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
         return;
       }
@@ -267,13 +267,13 @@ export default Vue.extend({
             this.$store.commit('SET_UPLOAD_STATE', false);
             this.$store.commit('SET_PDF_EXIT', true)
             this.$auth.loggedIn
-            ? this.$nuxt.$router.push('/file-ledger')
+            ? this.$nuxt.$router.push('/paperlink-files')
             : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
       } else {
         this.$store.commit('SET_UPLOAD_STATE', false);
         this.$store.commit('SET_PDF_EXIT', true)
         this.$auth.loggedIn
-            ? this.$nuxt.$router.push('/file-ledger')
+            ? this.$nuxt.$router.push('/paperlink-files')
             : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
         localStorage.removeItem('store_public_profile_path')
       }

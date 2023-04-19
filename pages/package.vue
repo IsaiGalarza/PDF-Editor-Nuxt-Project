@@ -62,20 +62,7 @@ export default Vue.extend({
      this.tabLevel = Number(this.$route.query.tablevel)
    
   },
-  async asyncData({ $axios, error }) {
-    const packages = await $axios
-      .$get('/packages')
-      .then((response) => {
-       return response.data
-      })
-      .catch((err) => {
-        // error({
-        // statusCode: 404,
-        // message: err.message || 'Unable to fetch the data',
-        // })
-      })
-    return { packages }
-  },
+ 
   computed: {
     currentTabComponent() {
       switch (this.tabLevel) {

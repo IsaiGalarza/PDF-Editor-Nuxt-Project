@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- <span v-if="!initialimgDisplay && !isCreator && isAgreedSign == 1 && isSign" class="toolTip">Initial</span> -->
     <img
     v-if="completed"
     class="absolute-image"
@@ -13,6 +14,7 @@
       :elemFill="uploaded && initialimgDisplay"
       :uploaded="uploaded"
       @click="selectIsCreatorDisplay"
+      ref="annotbutton"
       class="annot-button"
       :class="[
         $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
@@ -28,6 +30,7 @@
     :elemFill="uploaded && initialimgDisplay"
     :uploaded="uploaded"
     @click="selectIsCreatorDisplay"
+    ref="annotbutton"
     class="annot-button"
     :class="[
       $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
@@ -110,10 +113,17 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       initial: null,
       initialimgDisplay: false,
       completedImgData: null,
+      isFirstAction: false
     }
   },
   components: { AddToPageDrawOrType, DrawOrTypeModal },
   methods: {
+    checkToolIndex(){
+       let bl = document.querySelectorAll('.annot-button')
+      Array.from(bl).forEach((element, index) => {
+        element == this.$refs.annotbutton && index == 0 && (this.isFirstAction = true)
+      });
+    },
     selectIsCreatorDisplay(){
       !this.isCreator ? this.setInitialImgDisplay() : null
     },
@@ -164,11 +174,16 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
   },
   mounted() {
+    console.log(this.$store.state.agreeSign)
     this.changeInitialToBase64()
     this.completed && this.changeInitialToBase64(this.completed)
-    !this.initialimgDisplay && !this.isCreator && this.tool.justMounted ? this.popUpIfNoinitial() : null
+    !this.initialimgDisplay && !this.isCreator && this.tool.justMounted ? this.popUpIfNoinitial() : null;
+    this.checkToolIndex()
   },
   watch: {
+    theInitial(){
+      this.$BUS.$emit('scroll-to-tools')
+    },
     '$auth.user.initialURL': async function () {
       this.changeInitialToBase64()
     },
@@ -183,5 +198,18 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   width: 70px;
   height: auto;
   @apply absolute top-0 left-[5%] opacity-100;
+}
+.toolTip{
+  position: absolute;
+  left: 100%;
+  bottom: calc(100% - 4px);
+  background-color: yellow;
+  border-radius: 2px;
+  font-size: 10px;
+  color:red;
+  font-weight: 600;
+  padding: 3px 6px;
+  padding-bottom: 8px;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 75% 75%, 19% 75%, 0 99%, 0% 75%);
 }
 </style>

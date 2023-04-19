@@ -1,5 +1,6 @@
 <template>
   <div>
+      <!-- <span v-if="!initialimgDisplay && !isCreator && isAgreedSign == 1 && isSign" class="toolTip">Sign</span> -->
     <img
     v-if="completed"
     class="absolute-image"
@@ -14,6 +15,7 @@
       :uploaded="uploaded"
       @click="selectIsCreatorDisplay"
       class="annot-button"
+      ref="annotbutton"
       :class="[
         $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
         isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
@@ -28,6 +30,7 @@
       :uploaded="uploaded"
       @click="selectIsCreatorDisplay"
       class="annot-button"
+      ref="annotbutton"
       :class="[
         $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
         isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
@@ -72,6 +75,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     this.changeSignToBase64()
     this.completed && this.changeSignToBase64(this.completed)
     !this.initialimgDisplay && !this.isCreator && this.tool.justMounted ? this.popUpIfNoSign() : null
+    this.checkToolIndex()
   },
   computed: {
     ...mapState(['loadedPdfFile']),
@@ -116,6 +120,12 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
   },
   methods: {
+    checkToolIndex(){
+       let bl = document.querySelectorAll('.annot-button')
+      Array.from(bl).forEach((element, index) => {
+        element == this.$refs.annotbutton && (console.log("sig",index))
+      });
+    },
     selectIsCreatorDisplay(){
       !this.isCreator ? this.setInitialImgDisplay() : null
     },
@@ -167,6 +177,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   },
   components: { DrawOrTypeModal },
   watch: {
+    theSignature(){
+      this.$BUS.$emit('scroll-to-tools')
+    },
     '$auth.user.signatureURL': async function () {
       this.changeSignToBase64()
     },
@@ -181,5 +194,18 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   width: 70px;
   height: auto;
   @apply absolute top-0 left-[5%] opacity-100;
+}
+.toolTip{
+  position: absolute;
+  left: 100%;
+  bottom: calc(100% - 4px);
+  background-color: yellow;
+  border-radius: 2px;
+  font-size: 10px;
+  color:red;
+  font-weight: 600;
+  padding: 3px 6px;
+  padding-bottom: 8px;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 75% 75%, 19% 75%, 0 99%, 0% 75%);
 }
 </style>

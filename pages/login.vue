@@ -362,7 +362,7 @@ export default Vue.extend({
             if (fromFileManger?.isGuest) {
               this.$nuxt.$router.push(fromFileManger.path)
             } else {
-              this.$nuxt.$router.push('/file-ledger')
+              this.$nuxt.$router.push('/paperlink-files')
             }
           }, 2000)
         })

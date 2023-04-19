@@ -92,17 +92,16 @@ export default Vue.extend({
         .post(`/users`, this.user)
         .then((response) => {
           this.alertMessage.isSuccess = true
-          this.alertMessage.message =
-            response.message.replace("token", 'link') ||
-            'A password reset email has been sent to your mail check your mail to reset it'
+          this.alertMessage.message = response?.data?.message
           // this.user.email = ''
           localStorage.removeItem('redirect_paperdaz_path')
           localStorage.removeItem('paperdaz_userID')
           localStorage.removeItem('main_user_paperdaz_token')
           localStorage.setItem("reset_user_mail", this.user.email)
-          this.$nuxt.$router.push('/reset-sent-link');
+          // this.$nuxt.$router.push('/reset-sent-link');
         })
         .catch(({ response }) => {
+          console.log('Forget')
           this.alertMessage.isSuccess = false
           this.alertMessage.message = response.data.message || 'unable to reset password'
         })

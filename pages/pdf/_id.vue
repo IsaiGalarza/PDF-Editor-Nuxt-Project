@@ -429,6 +429,7 @@ export default mixins(PdfAuth).extend({
     this.setToolsFromFileAnnotations()
     this.$BUS.$on('is-deleted', this.isDeletedFunc)
     this.$BUS.$on('download-pdf', this.downloadPdf)
+    this.$BUS.$on('scroll-to-tools',  this.scrollToSignInitial)
     this.$BUS.$on('scrollToSignInitial', this.deactivateSignInitial)
     this.$BUS.$on('signature-update', (v) => (this.signature = v))
     this.$BUS.$on('initials-update', (v) => (this.initial = v))
@@ -453,6 +454,7 @@ export default mixins(PdfAuth).extend({
     this.$BUS.$off('signature-update')
     this.$BUS.$off('initials-update')
     this.$BUS.$off('scrollToSignInitial')
+    this.$BUS.$off('scroll-to-tools')
     this.$store.commit('SET_EDIT_ANNOTATION', true)
   },
   async asyncData({ $axios, params, error, store }) {

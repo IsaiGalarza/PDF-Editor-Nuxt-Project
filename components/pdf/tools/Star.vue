@@ -5,6 +5,9 @@
     attr="star"
     :elemFill="confirmStar"
   >
+  <span v-if="isFirstAction && $store.state.agreeSign == 1" class="toolTip"
+  >Sign</span
+>
     <svg
       v-if="confirmStar"
       :style="style"
@@ -40,11 +43,16 @@ export default {
     return {
       isModalActive: false,
       confirmStar: false,
+      isFirstAction: false,
+      isActionIndex: null
     }
   },
   props: {
     scale: Number,
     file: { type: Object, required: true },
+  },
+  mounted() {
+    this.checkToolIndex()
   },
   computed: {
     style() {
@@ -69,6 +77,15 @@ export default {
     },
   },
   methods: {
+    checkToolIndex(){
+       let bl = document.querySelectorAll('.annot-button')
+      Array.from(bl).forEach((element, index) => {
+        element == this.$refs.annotbutton &&
+          index == 0 &&
+          (this.isFirstAction = true) &&
+          (this.isActionIndex = index)
+      });
+    },
     overHandler: function () {
       this.isModalActive = true
     },
@@ -77,10 +94,19 @@ export default {
     },
     confirmStarAction() {
       if(!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest) return ;
+      this.$store.commit('CLICK_TOOL_ACTION', this.isActionIndex)
       !this.isCreator && (this.confirmStar = true)
       this.$BUS.$emit('scrollToSignInitial')
       this.notClass = ''
     },
+  },
+  watch: {
+    confirmStar(){
+      this.$BUS.$emit('scroll-to-tools')
+    },
+    "$store.getters.getClickAction"(){
+      this.checkToolIndex()
+  },
   },
 }
 </script>
@@ -90,5 +116,18 @@ input {
   border: 0.5px solid #e9e9e9;
   background-color: transparent;
   border-radius: 4px;
+}
+.toolTip{
+  position: absolute;
+  left: 100%;
+  bottom: calc(100% - 4px);
+  background-color: yellow;
+  border-radius: 2px;
+  font-size: 10px;
+  color:red;
+  font-weight: 600;
+  padding: 3px 6px;
+  padding-bottom: 8px;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 75% 75%, 19% 75%, 0 99%, 0% 75%);
 }
 </style>

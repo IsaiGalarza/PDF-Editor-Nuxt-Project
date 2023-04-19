@@ -3,7 +3,6 @@
       class="text-field tool annot-button"
       @click="confirmStarAction"
       attr="star"
-      :elemFill="confirmStar"
     >
       <p  v-if="confirmStar" :style="style">
         <input

@@ -223,11 +223,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         date.getFullYear()
       )}${this.convertToDoubleString(
         date.getUTCHours()
-      )}${this.convertToDoubleString(
-        date.getUTCMinutes()
-      )}${(this.$auth.user?.firstName || '')?.charAt(
-        0
-      )}${(this.$auth.user?.lastName || '').charAt(0)}`.toUpperCase()
+      )}${this.convertToDoubleString(date.getUTCMinutes())}${(
+        this.$auth.user?.firstName || ''
+      )?.charAt(0)}${(this.$auth.user?.lastName || '').charAt(0)}`.toUpperCase()
     },
     confirmAnnotation() {
       let date = new Date()
@@ -386,9 +384,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         fileId: this.file?.id,
       }
       //   // return
-        try {
-        this.$_server.post(`/request`, requestData)
-        .then(() => {
+      try {
+        this.$_server.post(`/request`, requestData).then(() => {
           this.$store.commit('SET_PDF_EXIT', true)
           this.toggleToast({
             active: true,
@@ -398,20 +395,19 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.$store.commit('SET_FILE_INITIAL', null)
           console.log(this.file)
           this.$auth.loggedIn
-            ? this.$nuxt.$router.push('/file-ledger')
+            ? this.$nuxt.$router.push('/paperlink-files')
             : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
         })
-        } catch (error) {
-          this.$notify.error({
-            title: 'Request',
-            message: 'Request Failed',
-          })
-        } finally {
-          this.closeModal()
-          this.isLoading = false
-          this.proceedToSendEmail = false
-        }
-   
+      } catch (error) {
+        this.$notify.error({
+          title: 'Request',
+          message: 'Request Failed',
+        })
+      } finally {
+        this.closeModal()
+        this.isLoading = false
+        this.proceedToSendEmail = false
+      }
     },
     allowLoadingAllAnnotations(ms) {
       return new Promise((resolve) => {
@@ -502,10 +498,11 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         })
         return
       }
-
+ 
       if (
         !this.isCreator &&
         !this.$auth.user?.signatureURL &&
+        !this.$store.getters.getUserSignature &&
         this.file?.fileAction == FileAction.CONFIRM
       ) {
         this.showInitialModal = true

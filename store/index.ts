@@ -33,7 +33,8 @@ export const state = () => ({
   showCongratulationsModal: false,
   agreeSign: -1,
   file: {},
-  ledgerParams: ""
+  ledgerParams: "",
+  clickAction: null
 })
 
 export type RootState = ReturnType<typeof state>
@@ -41,6 +42,9 @@ export type RootState = ReturnType<typeof state>
 export const getters: GetterTree<RootState, RootState> = {
   getPackageInfo( state: any){
     return state.setPackage
+  },
+  getClickAction( state: any){
+    return state.clickAction
   },
   getLedgerParams( state: any){
     return state.ledgerParams
@@ -100,6 +104,9 @@ export const mutations: MutationTree<RootState> = {
   // -- Setting the user --
   SET_PAGE_USER(state, user) {
     state.initialUser = user
+  },
+  CLICK_TOOL_ACTION(state, payload) {
+    state.clickAction = payload
   },
   SET_LEDGER_PARAMS(state, params) {
     state.ledgerParams = params

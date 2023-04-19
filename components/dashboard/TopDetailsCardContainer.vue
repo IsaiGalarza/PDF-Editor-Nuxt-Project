@@ -100,13 +100,13 @@ export default Vue.extend({
     getTopContainerDetails() {
       const ledgers = this.$axios.get(`/ledger?userId=${this.$auth?.user?.id}`)
       const completeFiles = this.$axios.get(
-        `/ledger?userId=${this.$auth?.user?.id}&fileAction=complete`
+        `/ledger?userId=${this.$auth?.user?.id}&action=complete`
       )
       const signFiles = this.$axios.get(
-        `/ledger?userId=${this.$auth?.user?.id}&fileAction=sign`
+        `/ledger?userId=${this.$auth?.user?.id}&action=sign`
       )
       const confirmFiles = this.$axios.get(
-        `/ledger?userId=${this.$auth?.user?.id}&fileAction=confirm`
+        `/ledger?userId=${this.$auth?.user?.id}&action=confirm`
       )
       try {
         Promise.all([ledgers, completeFiles, signFiles, confirmFiles]).then(

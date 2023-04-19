@@ -5,9 +5,9 @@
     attr="star"
     :elemFill="confirmStar"
   >
-  <span v-if="isFirstAction && $store.state.agreeSign == 1" class="toolTip"
+  <!-- <span v-if="isFirstAction && $store.state.agreeSign == 1" class="toolTip"
   >Sign</span
->
+> -->
     <svg
       v-if="confirmStar"
       :style="style"

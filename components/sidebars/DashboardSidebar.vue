@@ -196,8 +196,8 @@ export default Vue.extend({
     }
   },
   mounted() {
-    console.log(this.$auth.user)
     this.checkToRouteLinks()
+    this.getCurrentRoute()
   },
   watch: {
     '$auth.user.role': function () {

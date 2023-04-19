@@ -31,6 +31,7 @@
     :uploaded="uploaded"
     @click="selectIsCreatorDisplay"
     ref="annotbutton"
+    class="annot-button"
     :class="[
       $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
       isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',

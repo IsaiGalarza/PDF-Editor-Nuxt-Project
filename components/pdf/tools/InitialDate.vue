@@ -1,6 +1,6 @@
 <template>
   <div
-    class="text-field tool annot-button"
+    class="text-field tool "
     @click="confirmStarAction"
     attr="star"
   >

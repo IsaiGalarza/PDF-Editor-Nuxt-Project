@@ -102,6 +102,7 @@ export default Vue.extend({
         })
         .catch(({ response }) => {
           console.log('Forget')
+          console.log('Forget')
           this.alertMessage.isSuccess = false
           this.alertMessage.message = response.data.message || 'unable to reset password'
         })

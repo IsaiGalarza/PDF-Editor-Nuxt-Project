@@ -57,7 +57,7 @@
               <nuxt-link :to="`/public-profile/${item.id}`" class="cursor-pointer">{{ (item || {}).name }}</nuxt-link>
             </p>
           </div>
-          <ShareFolder :folder="item" :showShareIcon="true" />
+          <ShareFolder :folder="item"  :showShareIcon="false" />
         </div>
         <!-- End:: Single row -->
       </div>
@@ -96,9 +96,9 @@
               <th class=" font-[700]  right">Privacy</th>
               <th class=" font-[700]  right">
                 <form @submit.prevent class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
-                  <span v-if="showFile" class="el-dropdown-link max-sm:flex-1 absolute bottom-[-40px] ">
+                  <span v-if="showFile" class="el-dropdown-link max-sm:flex-1 absolute top-[-30px] ">
                     <input type="text" placeholder="Search any file..."
-                      class="rounded-lg border !border-paperdazgreen-400 px-2 h-8 w-full sm:w-[165px] md:w-48  placeholder:italic"
+                      class="rounded-lg border !border-paperdazgreen-400 px-2 h-7 w-full sm:w-[165px] md:w-48  placeholder:italic"
                       v-model="searchFileParam" />
                   </span>
                   <button @click="showFile = !showFile" type="button"
@@ -121,39 +121,27 @@
                     </span>
                   </p>
                 </div>
-
-
               </td>
               <td>
                 {{ ((item || {}).fileAction || ' ') }}
               </td>
               <td>
-
                 <p class="capitalize">
                   {{ ((item || {}).filePrivacy || ' ') }}
-
                 </p>
               </td>
               <td class="flex ">
                 <div class="flex  w-full justify-end ">
-                  <SearchShare :file="item" :showShareIcon="true" />
+                  <ShareIconFunc  :file="item"  />
                 </div>
-
               </td>
-
             </tr>
           </tbody>
         </table>
-
         <div v-if="files.length === 0 && isFetched" class="flex items-center justify-center py-4">
           <p>No Item Found</p>
         </div>
-
-
       </div>
-
-   
-
       <FilePagination :totalFile="totalFile" @setPage="setFilePage" />
     </div>
     <!-- Start:: Files -->
@@ -178,7 +166,7 @@ import Paid_User from '~/mixins/Paid_User'
 import ArrowDownIcon from '~/components/svg-icons/ArrowDownIcon.vue'
 import FilePagination from '~/components/pagination/FilePagination.vue'
 import ShareFileOptions from '~/components/profile/components/ShareFileOptions.vue'
-import SearchShare from '~/components/search-strips/component/SearchShare.vue'
+import ShareIconFunc from '~/components/search-strips/component/ShareIconFunc.vue'
 import ShareFolder from '~/components/search-strips/component/ShareFolder.vue'
 export default Vue.extend({
   components: {
@@ -194,7 +182,8 @@ export default Vue.extend({
     ArrowDownIcon,
     FilePagination,
     ShareFolder,
-    ShareFileOptions
+    ShareFileOptions,
+    ShareIconFunc
   },
   name: 'PublicProfilePage',
   layout: 'profile',

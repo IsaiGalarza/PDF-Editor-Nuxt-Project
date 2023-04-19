@@ -24,6 +24,10 @@ export default {
     showShareIcon: {
       type: Boolean,
       default: false
+    },
+    showLikeIcon: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -41,6 +45,7 @@ export default {
       this.getFavouriteFile()
     }
   },
+
 
   computed: {
     user() {

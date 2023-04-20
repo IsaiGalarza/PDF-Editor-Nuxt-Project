@@ -2,7 +2,7 @@
   <svg
     :height="fontSize * hwRatio"
     :width="fontSize / hwRatio"
-    viewBox="0 0 19 18"
+    viewBox="0 0 22 21"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     class="fill-current"

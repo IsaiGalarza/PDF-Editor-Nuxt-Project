@@ -137,46 +137,38 @@
     <div v-if="(!isLoading && !isCreator && isComplete)"
       class="tools-container-wrapper hidden sm:flex flex-wrap items-center justify-between w-full gap-x-1 gap-y-2 text-[#757575] text-base sm:text-2xl"
       :class="[isConfirm ? 'py-0' : 'py-2']">
-      <button class="rounded h-10 w-10" :class="[activeTool == TOOL_TYPE.text ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+      <button class="rounded h-10 w-24 text-sm" :class="[activeTool == TOOL_TYPE.text ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
       isCreator ? 'opacity-40' : 'opacity-100']" @click="setSelectedType(TOOL_TYPE.text)">
         <pdf-text-tool-icon />
+        <abbr class="ml-2">Type</abbr>
       </button>
-      <button class="rounded h-10 w-10" :class="[activeTool == TOOL_TYPE.tick ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.tick)">
-        <pdf-tick-icon />
-      </button>
-      <button class="rounded h-10 w-10" :class="[activeTool == TOOL_TYPE.cross ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.cross)">
-        <pdf-times-icon />
-      </button>
-      <button class="rounded h-10 w-10" :class="[activeTool == TOOL_TYPE.circle ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.circle)">
-        <hollow-circle-icon />
-      </button>
-      <button class="rounded text-base h-10 w-10" :class="[activeTool == TOOL_TYPE.dot ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.dot)">
-        <solid-circle-icon />
-      </button>
-      <button class="rounded h-10 w-10" :class="[activeTool == TOOL_TYPE.line ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.line)">
-        <pdf-rectangle-tool-icon />
-      </button>
-      <button class="rounded text-[#FFCF27] h-10 w-10" :class="[activeTool == TOOL_TYPE.highlight ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.highlight)">
-        <pdf-highlight-tool-icon />
-      </button>
-      <button class="rounded h-10 w-10" :class="[activeTool == TOOL_TYPE.draw ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-      isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.draw)">
-        <pdf-pen-tool-icon />
-      </button>
-      <button class="rounded h-10 w-10" :class="[activeTool == TOOL_TYPE.date ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+      
+      <div class="rounded h-10 w-20 text-sm relative">
+          <span class="inline-flex w-full h-full rounded bg-white overflow-hidden">
+            <button class=" h-10 w-10" :class="[activeTool == initialIcon?.type ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+            isCreator ? 'opacity-40' : '']" @click="setSelectedType(initialIcon?.type)">
+            <component :is="initialIcon?.component"/>
+            </button>
+            <button :class="[ showDropDown ? 'turn-up' : 'turn-down']" @click="showDropDown = !showDropDown" class="h-10 w-10 bg-white"><img src="../pdf/assets/chevron_down.svg"/></button>
+          </span>
+          <div class="drop-down-action shadow-md" :class="[ showDropDown ? 'h-[240px]' : 'h-[0px]']">
+            <button v-for="tool in toolsDropdowm" :key="tool.type" 
+            class="rounded h-10 w-10" :class="[activeTool == tool.type ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+            isCreator ? 'opacity-40' : '', tool.color]" @click="setSelectedType(tool.type)">
+              <component :is="tool.component"/>
+            </button>
+          </div>
+      </div>
+ 
+      <button class="rounded h-10 w-24 text-sm" :class="[activeTool == TOOL_TYPE.date ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
       isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.date)">
         <calendar-icon />
+        <abbr class="ml-2">Date</abbr>
       </button>
-      <button class="rounded h-10 w-10" :class="[activeTool == TOOL_TYPE.name ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+      <!-- <button class="rounded h-10 w-10" :class="[activeTool == TOOL_TYPE.name ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
       isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.name)">
         <user-profile-solid-icon />
-      </button>
+      </button> -->
       <!-- <zoom-in-out @zoomIn="$emit('zoomIn')" @zoomOut="$emit('zoomOut')" /> -->
       <div class="flex">
         <!-- <div v-if="isComplete && isCreator" class="mx-1">
@@ -371,6 +363,44 @@ export default {
     showSignTray: false,
     showInsertTools: false,
     isConfirmChecked: false,
+    showDropDown: false,
+    initialIcon:  {
+        type: TOOL_TYPE.tick,
+        component: 'pdf-tick-icon',
+        color: 'text-black'
+      },
+    toolsDropdowm: [
+      {
+        type: TOOL_TYPE.cross,
+        component: 'pdf-times-icon',
+        color: 'text-black'
+      },
+      {
+        type: TOOL_TYPE.circle,
+        component: 'hollow-circle-icon',
+        color: 'text-black'
+      },
+      {
+        type: TOOL_TYPE.dot,
+        component: 'solid-circle-icon',
+        color: 'text-black'
+      },
+      {
+        type: TOOL_TYPE.line,
+        component: 'pdf-rectangle-tool-icon',
+        color: 'text-black'
+      },
+      {
+        type: TOOL_TYPE.highlight,
+        component: 'pdf-highlight-tool-icon',
+        color: 'text-[#FFCF27]'
+      },
+      {
+        type: TOOL_TYPE.draw,
+        component: 'pdf-pen-tool-icon',
+        color: 'text-black'
+      }
+    ]
   }),
   props: {
     file: {
@@ -573,6 +603,20 @@ export default {
     },
   },
   watch: {
+    selectedType(){
+       if(this.selectedType == TOOL_TYPE.appendDate ||
+        this.selectedType == TOOL_TYPE.appendInitial || 
+        this.selectedType == TOOL_TYPE.appendSignature || 
+        this.selectedType == TOOL_TYPE.appendName || 
+        this.selectedType == TOOL_TYPE.date || 
+        this.selectedType == TOOL_TYPE.text ||  this.selectedType == null) return
+
+       this.toolsDropdowm = [ ...this.toolsDropdowm, this.initialIcon ]
+       const storeInitialIcon = this.toolsDropdowm.filter((item)=> item.type == this.selectedType)[0]
+       this.toolsDropdowm = this.toolsDropdowm.filter((item)=> item.type != this.selectedType)
+       this.initialIcon = storeInitialIcon
+       this.showDropDown = false
+    },
     'file.fileAction': function () {
       this.setSelectedType(null)
     },
@@ -627,4 +671,22 @@ export default {
 //   transform: rotate(45deg);
 //   margin-top: -20px;
 // }
+.drop-down-action{
+    position: absolute;
+    top: calc(100% + 5px);
+    background-color: white;
+    border-radius: 8px;
+    left: 0px;
+    z-index: 5;
+    transition: 0.3s;
+    overflow: hidden
+}
+ .turn-up{
+  transition: 0.3s;
+  transform: rotateX(180deg)
+}
+.turn-down{
+  transition: 0.3s;
+  transform: rotateX(0deg)
+}
 </style>

@@ -76,7 +76,7 @@ export default Vue.extend({
     },
     "file": function () {
       this.fileData = this.file;
-      this.fileInputData = this.file?.fileName;
+      this.fileInputData = this.file?.fileName.replace('.pdf', '');
     }
   },
   mounted() {

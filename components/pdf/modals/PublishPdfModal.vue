@@ -230,7 +230,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     confirmAnnotation() {
       let date = new Date()
       return {
-        signaturePath: this.$store.getters.getUserSignature,
+        signaturePath: this.$store.getters.getUserSignature ?? this.$auth?.user?.signatureURL,
         text: `P${date.getFullYear()}${this.convertToDoubleString(
           date.getUTCDate()
         )}${this.convertToDoubleString(
@@ -361,7 +361,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           // actionBy: `${this.$auth.user.firstName} ${this.$auth.user.lastName}`.toUpperCase()
         })
         .then((response) => {
-          this.addToLedger()
+          this.isLoading = false
+          // this.addToLedger()
           this.generatedPdf = response.data
         })
         .catch(() => {

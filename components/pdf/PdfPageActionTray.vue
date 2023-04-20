@@ -13,7 +13,7 @@
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="complete" :disabled="file.fileAction == 'completed'">Complete</el-dropdown-item>
+          <el-dropdown-item command="complete" :disabled="file.fileAction == 'complete'">Complete</el-dropdown-item>
           <el-dropdown-item command="confirm"  :disabled="file.fileAction == 'confirm'">
             Confirm</el-dropdown-item>
           <el-dropdown-item command="sign"  :disabled="file.fileAction == 'sign'">Sign
@@ -41,7 +41,7 @@
       > -->
       
       <span class="font-normal max-w-[30%] truncate">
-        {{ file.fileName ?? "" }}
+        {{ file?.fileName.replace('.pdf', '') ?? "" }}
       </span>
 
 

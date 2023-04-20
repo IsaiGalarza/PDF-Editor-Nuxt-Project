@@ -14,7 +14,7 @@
     <!--End:: Close Button -->
     <template #title>
       <h4 class="text-center font-semibold text-xl">Share</h4>
-      <div class="w-full text-center font-semibold py-2 pt-3 text-paperdazgreen-250">{{ userFile?.fileName }}</div>
+      <div class="w-full text-center font-semibold py-2 pt-3 text-paperdazgreen-250">{{ (userFile?.fileName || "").replace('.pdf', '') }}</div>
     </template>
     <!-- Start:: Body -->
     <form ref="form" @submit.prevent="onSubmit">

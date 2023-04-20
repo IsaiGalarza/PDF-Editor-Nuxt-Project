@@ -74,11 +74,12 @@
         class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed">
         Publish
       </button>
-      <button v-if="($auth.loggedIn || $store.getters?.getFillAsGuest) && !isCreator && !isConfirm" @click="saveChanges" 
+      <button v-if="($auth.loggedIn || $store.getters?.getFillAsGuest) && !isCreator && !isConfirm && !isSign" @click="saveChanges" 
         class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed">
         Done
       </button>
-      <button  @click="cancelPublish"
+      
+      <button v-if="!isSign"  @click="cancelPublish"
         class="text-xs text-red-500 bg-white border rounded px-3 h-7 disabled:cursor-not-allowed">
         Cancel  
       </button>

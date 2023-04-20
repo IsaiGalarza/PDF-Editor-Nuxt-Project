@@ -98,6 +98,9 @@ export default {
       !this.isCreator && (this.confirmStar = true)
       this.$BUS.$emit('scrollToSignInitial')
       this.notClass = ''
+      setTimeout(() => {
+        this.$BUS.$emit('scroll-to-tools')
+      }, 200);
     },
   },
   watch: {

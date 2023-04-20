@@ -1,6 +1,6 @@
 <template>
     <div
-      class="text-field tool annot-button"
+      class="text-field tool"
       @click="confirmStarAction"
       attr="star"
     >
@@ -24,6 +24,7 @@
       <img
         v-if="!confirmStar"
         style="width: 18px"
+        class="annot-button"
         src="../../../assets/img/name_icon.svg"
       />
       <!-- <div v-if="!isCreator && isModalActive && !confirmStar"
@@ -84,6 +85,9 @@
         !this.isCreator && (this.confirmStar = true)
         this.$BUS.$emit('scrollToSignInitial')
         this.notClass = ''
+        setTimeout(() => {
+          this.$BUS.$emit('scroll-to-tools')
+        }, 200);
       },
     },
   }

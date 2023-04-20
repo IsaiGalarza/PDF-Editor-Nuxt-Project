@@ -47,8 +47,8 @@
         {{ `${(file.fileAction + 'ed').replace('ee', 'e')}` }}?</span> -->
       <span
         v-if="isCreator"
-        class="w-full text-center block py-0 px-2 pb-8 text-[16px] break-normal"
-        >Do you want to publish the file as
+        class="w-full text-center block py-0 px-2 pb-8 mb-6 text-[16px] break-normal"
+        >Publish file as
         <span class="capitalize">
           {{
             file.fileAction + ' & ' + file.filePrivacy.replace('p', 'P') + '?'
@@ -392,6 +392,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           })
           this.$store.commit('SET_FILE_SIGNATURE', null)
           this.$store.commit('SET_FILE_INITIAL', null)
+          this.$store.commit("UN_SET_AGREE_SIGN")
           console.log(this.file)
           this.$auth.loggedIn
             ? this.$nuxt.$router.push('/paperlink-files')

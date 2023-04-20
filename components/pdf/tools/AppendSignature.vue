@@ -128,6 +128,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     selectIsCreatorDisplay(){
       !this.isCreator ? this.setInitialImgDisplay() : null
+      setTimeout(() => {
+        this.$BUS.$emit('scroll-to-tools')
+      }, 200);
     },
     popUpIfNoSign(){
       !this.theSignature && !this.isCreator && this.setInitialSignType('sign')

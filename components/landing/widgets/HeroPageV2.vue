@@ -4,7 +4,7 @@
       class="flex justify-between flex-wrap"
     >
       <div class="text-center sm:text-left md:w-6/12 sm:w-full">
-        <div class="max-w-[740px] flex flex-col justify-between w-full">
+        <div class="max-w-[740px] flex flex-col justify-between w-full transform duration-150">
           <div
             class="py-lg-4 py-2 slide-in relative"
             v-for="(content, index) in contents"
@@ -65,7 +65,7 @@ export default Vue.extend({
       }else{
         this.activeContent += 1 
       }
-    }, 3000) // run timer every second
+    }, 7000) // run timer every second
   },
 
   data() {

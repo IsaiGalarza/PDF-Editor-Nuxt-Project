@@ -312,6 +312,7 @@ import { mapState } from 'vuex'
 import AddToPageDrawOrType from '~/components/modals/AddToPageDrawOrType.vue'
 import GlobalMixin from '~/mixins/GlobalMixin'
 
+
 export default mixins(PdfAuth).extend({
   mixins: [GlobalMixin],
   layout: 'pdf',
@@ -456,6 +457,9 @@ export default mixins(PdfAuth).extend({
     this.$BUS.$off('scrollToSignInitial')
     this.$BUS.$off('scroll-to-tools')
     this.$store.commit('SET_EDIT_ANNOTATION', true)
+    this.$store.commit('SET_FILE_SIGNATURE', null)
+    this.$store.commit('SET_FILE_INITIAL', null)
+    this.$store.commit("UN_SET_AGREE_SIGN")
   },
   async asyncData({ $axios, params, error, store }) {
     const file = await $axios
@@ -705,9 +709,15 @@ export default mixins(PdfAuth).extend({
 
 
         let annotationButton = document.querySelectorAll('.annot-button')
-        Array.from(annotationButton).forEach((element) => {
+        Array.from(annotationButton).forEach((element, index) => {
           if (element) element.classList.remove('pulse')
+          if(element.parentElement.children[1].tagName == 'SPAN'){
+          element.parentElement.children[1].classList.add('hidden')
+          index == 0 && element.parentElement.children[1].classList.remove('hidden')
+          console.log(element.parentElement.children[1])
+          }
         })
+  
         this.filteredAnnotationButton = Array.from(annotationButton).filter(
           (item, index) => !item.hasAttribute('elemFill')
         )

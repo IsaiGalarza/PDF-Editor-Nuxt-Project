@@ -919,3 +919,16 @@ $screens: 'xxs', 'xs', 'sm', 'md', 'lg', 'xl';
   border-top-left-radius: 0.75rem !important;
   border-top-right-radius: 0.75rem !important;
 }
+.toolTip{
+  position: absolute;
+  left: 100%;
+  bottom: calc(100% - 4px);
+  background-color: yellow;
+  border-radius: 2px;
+  font-size: 10px;
+  color:red;
+  font-weight: 600;
+  padding: 3px 6px;
+  padding-bottom: 8px;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 75% 75%, 19% 75%, 0 99%, 0% 75%);
+}

@@ -116,7 +116,7 @@
                 <div class="flex items-center">
                   <img src="/icon.png" class="mr-2" width="23" height="23" />
                   <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
-                    <span @click="routeToFileManager(`/pdf/${item.paperLink}`)" class="cursor-pointer">
+                    <span @click="routeToFileManager(`/pdf/${item.paperLink}`, item.filePrivacy)" class="cursor-pointer">
                       {{ ((item || {}).fileName || ' ') | removeExtension }}
                     </span>
                   </p>
@@ -146,6 +146,7 @@
     </div>
     <!-- Start:: Files -->
 
+    <PrivateFileModal v-model="showPrivateModal"/>
   </div>
 </template>
 
@@ -168,6 +169,9 @@ import FilePagination from '~/components/pagination/FilePagination.vue'
 import ShareFileOptions from '~/components/profile/components/ShareFileOptions.vue'
 import ShareIconFunc from '~/components/search-strips/component/ShareIconFunc.vue'
 import ShareFolder from '~/components/search-strips/component/ShareFolder.vue'
+import PrivateFileModal from '~/components/profile/modal/PrivateFileModal.vue'
+import FilePrivacy from '~/models/FilePrivacy'
+
 export default Vue.extend({
   components: {
     PenIcon,
@@ -183,7 +187,8 @@ export default Vue.extend({
     FilePagination,
     ShareFolder,
     ShareFileOptions,
-    ShareIconFunc
+    ShareIconFunc,
+    PrivateFileModal
   },
   name: 'PublicProfilePage',
   layout: 'profile',
@@ -226,13 +231,17 @@ export default Vue.extend({
       userInfo: {},
       showFolders: false,
       showSearch: false,
-      isFetched: false
+      isFetched: false,
+      showPrivateModal: false
     }
   },
   methods: {
-    routeToFileManager(val) {
+    routeToFileManager(val, privacy) {
+      if(privacy == FilePrivacy.PRIVATE) this.showPrivateModal = true
+      else {
       localStorage.setItem('store_public_profile_path', this.$route.fullPath)
       this.$router.push(val)
+      }
     },
     getMainPaidUser(val) {
       this.$axios.get(`/users/?mainAccountId=${val}&role=${UserTypeEnum.PAID}`)

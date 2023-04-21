@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <span v-if="!initialimgDisplay && !isCreator && isAgreedSign == 1 && isSign" class="toolTip">Initial</span> -->
     <img
     v-if="completed"
     class="absolute-image"
@@ -45,6 +44,7 @@
       :src="theInitial"
       :style="style"
     />
+    <span v-show="!initialimgDisplay  && !isCreator && !tool.justMounted" class="toolTip hidden">Initial</span>
     <!-- <img v-else class="absolute-image" src="../../../assets/img/initials.png" /> -->
   </div>
 </template>

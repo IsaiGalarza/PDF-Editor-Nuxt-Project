@@ -1,6 +1,5 @@
 <template>
   <div>
-      <!-- <span v-if="!initialimgDisplay && !isCreator && isAgreedSign == 1 && isSign" class="toolTip">Sign</span> -->
     <img
     v-if="completed"
     class="absolute-image"
@@ -43,6 +42,7 @@
       :src="theSignature"
       :style="style"
     />
+    <span v-show="!initialimgDisplay && !isCreator && !tool.justMounted" class="toolTip hidden">Sign</span>
     <!-- <img v-else class="absolute-image" src="../../../assets/img/sign.png" /> -->
   </div>
 </template>
@@ -119,11 +119,15 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       }
     },
   },
+  updated() {
+    this.checkToolIndex()
+  },
   methods: {
     checkToolIndex(){
        let bl = document.querySelectorAll('.annot-button')
+       console.log(bl.length)
       Array.from(bl).forEach((element, index) => {
-        element == this.$refs.annotbutton && (console.log("sig",index))
+        element == this.$refs.annotbutton && index == 0 && (console.log("sig",index))
       });
     },
     selectIsCreatorDisplay(){

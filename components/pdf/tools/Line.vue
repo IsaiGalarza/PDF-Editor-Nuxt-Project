@@ -29,6 +29,7 @@ export default {
     // },
     generatePDF: function () {
       if (this.generatePDF) {
+        console.log("started line generate")
         this.convertImage();
       }
     }

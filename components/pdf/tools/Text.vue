@@ -1,20 +1,20 @@
 <template>
   <div
     class="text-field tool"
-    style="height: 19px; display: flex; align-items: end"
   >
     <input
       type="text"
       v-model="text"
-      v-if="(isActive || justMounted) && !isCreator"
+      v-if="(isActive || justMounted) && !isCreator && !isBlur"
       :style="style"
       class="input-annotation"
       placeholder="Type here..."
       ref="text_box"
-      @blur="$emit('onBlur')"
+      @blur="setBlur"
     />
-    <p v-else :style="style">{{ text || 'Type here...' }}</p>
-    <span :style="hideStyle" ref="text_hidden">{{ text || 'Type here...' }}</span>
+
+    <p v-else ref="textbox" @click="isBlur = false" :textImageContent="svgToImageData" :style="style">{{ text || 'Type here...' }}</p>
+    <!-- <span :style="hideStyle" ref="text_hidden">{{ text || 'Type here...' }}</span> -->
   </div>
 </template>
 
@@ -29,10 +29,13 @@ export default {
     file: Object,
     justMounted: Boolean,
     tool: Object,
+    generatePDF: Boolean,
   },
   data: () => ({
     text: null,
     inputWidth: 0,
+    svgToImageData: '',
+    isBlur: true
   }),
   created () {
     this.text = this.value;
@@ -41,11 +44,33 @@ export default {
     this.$refs.text_box && this.$refs.text_box.focus()
   },
   methods: {
+    setBlur(){
+      // this.$emit('onBlur')
+      this.isBlur = true
+    },
     onBlur: () => {
       console.log("onBlur")
-    }
+    },
+    async svgToImage() {
+      this.svgToImageData = '';
+      let dataPAz = ''
+      await htmlToImage.toPng(this.$refs.textbox)
+        .then(function (dataUrl) {
+          dataPAz = dataUrl;
+        })
+        .catch(function (error) {
+          console.error('oops, something went wrong!', error);
+        });
+
+      this.svgToImageData = dataPAz
+      console.log("dazppp---text",dataPAz)
+    },
   },
   watch: {
+    generatePDF: function () {
+      if (this.generatePDF)
+        this.svgToImage()
+    },
     value (v) {
       if (this.text != v) this.text = v
     },
@@ -82,6 +107,9 @@ export default {
     }
   },
   computed: {
+    computedFontsize(){
+        return `${(this.fontSize || 12)*(this.tool?.pageScaleX || 1)}px`
+    },
     isCreator () {
       return (
         this.file.userId == this.$auth?.user?.id ||
@@ -92,7 +120,7 @@ export default {
     style () {
       return {
         // fontSize: `${this.fontSize || 11}px`,
-        fontSize: `${(this.fontSize || 11)*(this.tool?.pageScaleX || 1)}px`,
+        fontSize: this.computedFontsize,
         background: 'transparent'
         // width: `${this.inputWidth}px`
       }

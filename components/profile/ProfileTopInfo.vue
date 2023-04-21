@@ -2,14 +2,11 @@
   <section class="font-family grid grid-cols-1 md:grid-cols-[max-content,1fr] gap-6">
     <!-- logo container -->
     <div class="bg-white md:w-[250px] w-full profile-image-container !py-0">
-      <div class="icon-img md:mx-7 my-7 relative" @click="showImageCropperModal">
+      <div class="icon-img md:mx-7 my-7 relative" >
         <img v-if="profilePhoto != null" :src="profilePhoto" id="referenceImg" class="top-profile-image cursor-pointer" />
         <span v-else>
           {{ firstCompanyName }}
         </span>
-        <div v-if="isUser" @click="visibleUploadImageDialog = true" class="w-auto absolute bottom-3 right-3">
-          <upload-file-icon />
-        </div>
       </div>
 
       <cropper-image-upload :show="visibleUploadImageDialog"

@@ -14,7 +14,7 @@
         class="w-[200px]"
         :class="[ focus ? 'border-[1px] border-paperdazgreen-200 rounded py-[2px]' : '']"
         />
-        <span v-else @click="focus = true">{{ inputText }}</span>
+        <span v-else ref="namebox" :textImageContent="svgToImageData" @click="focus = true">{{ inputText }}</span>
       </p>
       <!-- <svg v-if="!confirmStar" :style="style" viewBox="0 0 37 36" fill="black" xmlns="http://www.w3.org/2000/svg" @mouseover="overHandler" @mouseleave="leaveHandler">
           <path options="fill"
@@ -41,13 +41,21 @@
         isModalActive: false,
         confirmStar: false,
         inputText: "",
-        focus: true
+        focus: true,
+        svgToImageData: ''
       }
     },
     props: {
       scale: Number,
       file: { type: Object, required: true },
+      generatePDF: Boolean,
     },
+    watch: {
+    generatePDF: function () {
+      if (this.generatePDF)
+        this.svgToImage()
+    },
+  },
     computed: {
       nowDate() {
         return moment().format('YYYY-MM-DD')
@@ -74,6 +82,19 @@
       },
     },
     methods: {
+      async svgToImage() {
+      this.svgToImageData = '';
+      let dataPAz = ''
+      await htmlToImage.toPng(this.$refs.namebox)
+        .then(function (dataUrl) {
+          dataPAz = dataUrl;
+        })
+        .catch(function (error) {
+          console.error('oops, something went wrong!', error);
+        });
+
+      this.svgToImageData = dataPAz
+    },
       overHandler: function () {
         this.isModalActive = true
       },

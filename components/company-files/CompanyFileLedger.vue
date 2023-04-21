@@ -206,8 +206,7 @@
                           <ellipsis-icon-vertical-icon />
                         </button>
                         <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu hidden sm:block">
-                          <div class="no-access" v-if="!createdByTeamMember(file.uploadedBy)">no access right</div>
-                          <ul class="min-w-[150px]" v-else>
+                          <ul class="min-w-[150px]">
                             <!-- <li class="dropdown-item" @click="showShareCompanyFileFunc(file)" divided>
                               <div class="flex justify-between w-full">
                                 <share-icon width="16" height="16" class="inline-block float-left" />

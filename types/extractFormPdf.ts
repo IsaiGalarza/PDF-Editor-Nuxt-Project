@@ -10,6 +10,19 @@ export const formatStyleTop = (x: string, String: string) => {
   return parseFloat(sliceString.trim())
 }
 
+export const formatStyle = (x: String, string: String)=>  {
+  let stringText : any
+  switch (x) {
+    case 'left':
+     string = string.split(';')[1].replace('left:','').replace('px','');
+      break;
+    case 'top':
+    string = string.split(';')[0].replace('top:','').replace('px','');
+      break;
+  }
+return Number(string)
+}
+
 let formatStyleLeft = (x: string, String: string) => {
   let sliceString = String.substring(
     String.indexOf(x) + x.length + 1,
@@ -26,18 +39,26 @@ export const appendEditText = ({
   axisX,
   axisY,
   height,
+  width,
+  left,
+  top,
+  textImageContent,
   fontsize,
   isLabel
 }: any) => {
   ; (parent.data as any).push({
     page_number: subParent.indexOf(elem),
-    type: 'DrawText',
+    type: isLabel ? 'DrawText' : 'DrawText',
     text: tools,
     isLabel: isLabel,
     height: height,
+    width,
+    textImageContent,
     axisX: axisX[1] - axisX[0],
     axisY: axisY[1] > axisY[0] ? axisY[1] - axisY[0] : axisY[0] - axisY[1],
     size: formatStyleTop('font-size', fontsize),
+    left,
+    top,
   })
 }
 
@@ -51,6 +72,8 @@ export const appendEditElement = ({
   axisX,
   axisY,
   length,
+  left,
+  top,
   svgImagePath,
   svgWidth,
   svgHeight,
@@ -66,6 +89,8 @@ export const appendEditElement = ({
     svgImagePath,
     svgWidth,
     svgHeight,
+    left,
+    top,
   })
 }
 
@@ -228,6 +253,8 @@ export const ExtractFormPdf = ({
                       element.getBoundingClientRect().left,
                       item.getBoundingClientRect().left - pdfOffset_x,
                     ],
+                    left: formatStyle("left",(item as any).getAttribute('style'))- pdfOffset_x,
+                    top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                     length: item.getBoundingClientRect().width,
                     svgImagePath: tools.children[0].getAttribute('svgToImage'),
                     svgWidth: tools.getBoundingClientRect().width,
@@ -292,22 +319,25 @@ export const ExtractFormPdf = ({
                 case 'DIV':
                   switch (tools.children[0]?.tagName) {
                     case 'svg':
+                      console.log((item as any).getAttribute('style'), typeof((item as any).getAttribute('style')))
                       //these gets all svg that is not DRAW and LINE as PNG
                       appendEditElement({
                         parent: pdfScrappedData,
                         subParent: totalArray,
                         elem: element,
-                        axisY: [
-                          element.getBoundingClientRect().top,
-                          item.getBoundingClientRect().top - pdfOffset_y,
-                        ],
-
-                        axisX: [
-                          element.getBoundingClientRect().left,
-                          item.getBoundingClientRect().left - pdfOffset_x,
-                        ],
                         svgWidth: tools.children[0].getBoundingClientRect()
                           .width,
+                          axisY: [
+                            element.getBoundingClientRect().top,
+                            item.getBoundingClientRect().top - pdfOffset_y,
+                          ],
+  
+                          axisX: [
+                            element.getBoundingClientRect().left,
+                            item.getBoundingClientRect().left - pdfOffset_x,
+                          ],
+                        left: formatStyle("left",(item as any).getAttribute('style'))- pdfOffset_x,
+                        top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                         svgHeight: tools.children[0].getBoundingClientRect()
                           .height,
                         svgImagePath: tools.children[0].children[0].getAttribute(
@@ -317,7 +347,6 @@ export const ExtractFormPdf = ({
                       })
                       break
                     case 'P':
-                      console.log("tools-paragraph", tools)
                       appendEditText({
                         parent: pdfScrappedData,
                         subParent: totalArray,
@@ -325,11 +354,15 @@ export const ExtractFormPdf = ({
                           element.getBoundingClientRect().top,
                           item.getBoundingClientRect().top - pdfOffset_y,
                         ],
-                        height: tools.children[0].getBoundingClientRect().height + 1,
+                        height: tools.children[0].getBoundingClientRect().height,
+                        width: tools.children[0].getBoundingClientRect().width,
                         axisX: [
                           element.getBoundingClientRect().left,
                           item.getBoundingClientRect().left - pdfOffset_x,
                         ],
+                        left: formatStyle("left",(item as any).getAttribute('style')) - pdfOffset_x,
+                        top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
+                        textImageContent: tools.children[0].getAttribute('textImageContent'),
                         tools: tools.children[0].textContent,
                         elem: element,
                         fontsize: (tools.children[0] as any).getAttribute(

@@ -22,7 +22,7 @@
       <!-- <h1>{{user.companyName || ''}}</h1> -->
       <header class="text-600 text-[#414142] font-semibold pl-7 pb-2 border-b border-[#DCDCDC] relative">
 
-        <div class="input-wrapper-title flex justify-between items-start">
+        <div class="input-wrapper-title flex justify-between items-center">
           <!-- <input type="text" v-model="name" placeholder="Apple Dental" :disabled="true"
           class="text-black text-2xl" /> -->
           <span class="text-2xl text-grey pl-3"> {{ name }}</span>

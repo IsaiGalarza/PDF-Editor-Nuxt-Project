@@ -711,8 +711,8 @@ export default mixins(PdfAuth).extend({
         let annotationButton = document.querySelectorAll('.annot-button')
         Array.from(annotationButton).forEach((element, index) => {
           if (element) element.classList.remove('pulse')
-          if(element.parentElement.children[1].tagName == 'SPAN'){
-          element.parentElement.children[1].classList.add('hidden')
+          if(element.parentElement.children[1]?.tagName == 'SPAN'){
+          element.parentElement.children[1]?.classList.add('hidden')
           index == 0 && element.parentElement.children[1].classList.remove('hidden')
           console.log(element.parentElement.children[1])
           }
@@ -1528,7 +1528,7 @@ export default mixins(PdfAuth).extend({
       })
     },
     filteredAnnotationButton(value, oldValue) {
-      if (value.length === 0 && oldValue.length > 0 && this.isSign) {
+      if (value.length === 0 && oldValue.length > 0 && (this.isSign || this.isComplete)) {
         this.$store.commit('SET_UPLOAD_STATE', false)
         this.saveFunction = 'saved'
         this.publishFileFunction()

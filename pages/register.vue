@@ -1,6 +1,6 @@
 <template>
   <section class="bg-paperdazgreen-300 pt-10">
-    <div class="flex flex-wrap p-3 justify-around items-end">
+    <div class="flex flex-wrap p-3 justify-around items-center">
       <div class="w-full sm:w-6/12 md:w-5/12">
         <message-alert-widget
           :message="errorMessageUser"
@@ -13,30 +13,31 @@
           >Enter the required information to continue</span
         >
         <div class="mt-8">
-          <input
+          <el-input
             :disabled="loading"
-            class="my-3  text-input"
+            class="text-input"
             placeholder="Business name"
             required
-            v-model="business_name"
+            @input="setBusinessName"
+            :value="business_name"
           />
-          <input
+          <el-input
             :disabled="loading"
-            class="my-3 text-input"
+            class="text-input"
             placeholder="Contact name"
             required
             v-model="contact_name"
           />
-          <input
+          <el-input
             :disabled="loading"
-            class="my-3 text-input"
+            class="text-input"
             placeholder="Email address"
             required
             v-model="business_email"
           />
-          <input
+          <el-input
             :disabled="loading"
-            class="my-3 md:mt-3 md:mb-0 text-input"
+            class="text-input"
             placeholder="Contact number"
             required
             v-model="business_number"
@@ -194,7 +195,7 @@ export default Vue.extend({
   computed: {
     checkFilledInput() {
       return (
-        this.business_email &&
+        this.business_email.trim() &&
         this.contact_name &&
         this.business_number &&
         this.business_name &&
@@ -205,7 +206,7 @@ export default Vue.extend({
     },
     userPayload() {
       return {
-        email: this.business_email,
+        email: this.business_email.trim(),
         firstName: this.contact_name,
         lastName: '',
         phone: this.business_number,
@@ -264,6 +265,10 @@ export default Vue.extend({
     },
   },
   methods: {
+    setBusinessName(val){
+      console.log(val)
+      this.business_name = val.replace(/\s/g, '')
+    },
     async createUser() {
       this.isLoading = true
       try {
@@ -275,6 +280,7 @@ export default Vue.extend({
           })
       } catch ({ response }) {
         console.log(response)
+        this.isLoading = false
         this.errorMessageUser = this.$_ErrorHandler(response)
       }
     },
@@ -310,7 +316,10 @@ export default Vue.extend({
           this.$nuxt.$router.push('/')
         }
         )
-        .catch((err) => (this.errorMessage = err))
+        .catch((err) => {
+          this.isLoading = false
+          this.errorMessage = err
+        })
         .finally(() => (this.isLoading = false))
     },
     async submit() {
@@ -387,6 +396,6 @@ export default Vue.extend({
   text-align: left;
 }
 .text-input {
-  @apply px-3 py-3 border-none outline-none rounded-[0.6rem] w-full;
+  @apply  py-3 border-none outline-none rounded-[0.6rem] w-full;
 }
 </style>

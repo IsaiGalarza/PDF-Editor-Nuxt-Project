@@ -2,13 +2,14 @@
   <section class="font-family grid grid-cols-1 md:grid-cols-[max-content,1fr] gap-6">
     <!-- logo container -->
     <div class="bg-white md:w-[250px] w-full profile-image-container !py-0">
-      <div class="icon-img md:mx-7 my-7 relative" @click="showImageCropperModal">
+      <!-- <div class="icon-img md:mx-7 my-7 relative" @click="showImageCropperModal"> -->
+      <div  class="icon-img md:mx-7 my-7 relative" :class="[profilePhoto != null && 'bg-black']" >
         <img v-if="profilePhoto != null" :src="profilePhoto" id="referenceImg" class="top-profile-image cursor-pointer" />
         <span v-else>
           {{ firstCompanyName }}
         </span>
         <div v-if="isUser" @click="visibleUploadImageDialog = true" class="w-auto absolute bottom-3 right-3">
-          <upload-file-icon />
+          <!-- <upload-file-icon /> -->
         </div>
       </div>
 
@@ -22,11 +23,11 @@
       <!-- <h1>{{user.companyName || ''}}</h1> -->
       <header class="text-600 text-[#414142] font-semibold pl-7 pb-2 border-b border-[#DCDCDC] relative">
 
-        <div class="input-wrapper-title flex justify-between items-center">
+        <div class="input-wrapper-title flex relative justify-center items-center">
           <!-- <input type="text" v-model="name" placeholder="Apple Dental" :disabled="true"
           class="text-black text-2xl" /> -->
           <span class="text-2xl text-grey pl-3"> {{ name }}</span>
-          <share-outline-icon :width="18" class="w-auto  pr-3" />
+          <share-outline-icon :width="18" class="w-auto absolute right-4	 pr-3" />
           <!-- <button v-if="isUser" @click="toggleInput" class="float-right pr-10 md:pr-20">
             <img src="../../assets/img/pencil.png" class="cursor-pointer w-[20px] h-[20px]" />
           </button> -->
@@ -37,7 +38,7 @@
        
       </header>
       <!--<div class="text-sm px-2 border-b w-full py-2 text-gray-400"><i>@hookname</i></div>-->
-      <div class="flex justify-center items-end h-28">
+      <div class="flex min-h-0 justify-center px-2 items-end h-28">
         <p class="text-center leading-8">
           We are doing our part to reduce carbon footprint. <br />
           Join us, complete our files on Paperlink!

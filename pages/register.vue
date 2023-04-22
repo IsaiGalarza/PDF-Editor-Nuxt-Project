@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-paperdazgreen-300 pt-10">
+  <div class="grid md:grid-cols-[1fr,max-content] mb-12 ">
     <div class="flex flex-wrap p-3 justify-around items-end">
       <div class="w-full sm:w-6/12 md:w-5/12">
         <message-alert-widget
@@ -159,7 +159,7 @@
         </button>
       </div>
     </div>
-  </section>
+  </div >
 </template>
 
 <script>

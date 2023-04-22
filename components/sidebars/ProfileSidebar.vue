@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex flex-col bg-white h-full w-full rounded-2xl py-8">
+  <nav class="flex  flex-col bg-white h-full  w-full rounded-2xl ">
     <div class="flex justify-end px-8">
       <span class="py-2 mb-3 cursor-pointer inline-block lg:hidden" @click="$emit('close')">
         <times-icon width="12" height="12" />
@@ -9,61 +9,29 @@
       <logo-with-text class="h-14 w-auto" />
     </nuxt-link>
 
-    <section class="text-white bg-[#77B550] rounded-[inherit] py-[15px]">
+    <section class="text-white overflow-hidden  bg-[#77B550] h-full rounded-[inherit] py-[15px]">
       <!-- SCANNER CONTAINER -->
       <div class="flex justify-center mt-4">
         <canvas ref="qrcancas" width="200" height="200" class="object-contain rounded-[20px]"></canvas>
       </div>
       <!-- END OF SCANNER CONTAINER -->
 
-      <ul class="overflow-y-auto overflow-x-hidden flex-1 px-4 custom-scrollbar">
-        <div class="middle-space-divider text-center px-2 flex justify-center   flex-wrap">
 
-          <div>
-            <p class="py-[2em]  font-[700] text-center text-[19px]">Paperless Paper</p>
-            <!-- <div class="py-[1em] font-[700] text-center text-[19px]">
-              Be Social<br />
-              Responsible<br />
-              Together !
-            </div> -->
-            <span class="py-1  text-[18px]">Keep everyone <br /> safe and the <br /> world green.</span>
-          </div>
+      <div class=" h-[100%] text-center px-2 relative    ">
+
+        <div class="row-span-2 h-[60%]">
+          <p class="py-[2em]  font-[700] text-center text-[19px]">Paperless Paper</p>
+          <span class="py-1  text-[18px]">Keep everyone <br /> safe and the <br /> world green.</span>
         </div>
-      </ul>
 
-      <div class="px-8">
-        <!-- <p class="text-center text-white mb-6 font-medium">Share</p>
-        <div class="flex flex-wrap items-center gap-2 justify-center">
-          <span @click="socialShareFunction('facebook')"
-            class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white">
-            <facebook-icon height="12" />
-          </span>
-          <span @click="socialShareFunction('linkedin')"
-            class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white">
-            <linked-in-icon height="12" />
-          </span>
-          <span @click="socialShareFunction('linkedin')"
-            class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white">
-            <instagram-icon height="11" />
-          </span>
-          <span @click="socialShareFunction('twitter')"
-            class="circle circle-10 cursor-pointer bg-paperdazgreen-300 text-white">
-            <twitter-icon height="11" />
-          </span>
-        </div> -->
+        <div class="  ">
+          <nuxt-link to="/login" target="_blank"
+          class="font-[600] text-center  text-[20px] hover:text-white">Paperlink Console</nuxt-link>
+        </div>
+      </div> 
 
-        <!-- <nuxt-link to="/login"  target="_blank" class="py-[1em]font-[600] text-center text-[20px] hover:text-white">Paperlink Console</nuxt-link> -->
 
-        <!-- <p 
-        @click=" window.open('https://paperlink.app/login')" 
-        class="py-[1em]font-[600] text-center cursor-pointer text-[20px]">Paperlink Console</p> -->
-        <nuxt-link to="/login" target="_blank"
-          class="py-[1em]font-[600] text-center text-[20px] hover:text-white">Paperlink Console</nuxt-link>
-        <!-- <p class="text-white text-[11px] mt-3 text-center">
-          powered by
-          <span class="font-semibold uppercase text-[15px]">Paperdaz</span>
-        </p> -->
-      </div>
+
     </section>
 
 

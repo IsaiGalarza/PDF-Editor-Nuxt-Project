@@ -1,32 +1,55 @@
 <template>
-  <div class="bg-paperdazgreen-300 sm:bg-transparent py-2 flex items-center text-black justify-between ml-[-2%] w-[104%]">
-    <div class="flex items-center gap-lg-4 flex-1 justify-between px-lg-4 px-3 flex-wrap">
-
+  <div
+    class="bg-paperdazgreen-300 sm:bg-transparent py-2 flex items-center text-black justify-between ml-[-2%] w-[104%]"
+  >
+    <div
+      class="flex items-center gap-lg-4 flex-1 justify-between px-lg-4 px-3 flex-wrap"
+    >
       <!-- If authenticated user is created -->
       <span v-if="!isCreator" class="hidden md:inline capitalize font-medium">{{
         file.fileAction
       }}</span>
       <!-- else -->
-      <el-dropdown v-else trigger="click" class="hidden md:flex font-medium" @command="handleActionChange">
+      <el-dropdown
+        v-else
+        trigger="click"
+        class="hidden md:flex font-medium"
+        @command="handleActionChange"
+      >
         <span class="el-dropdown-link capitalize">
           {{ file.fileAction }}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="complete" :disabled="file.fileAction == 'complete'">Complete</el-dropdown-item>
-          <el-dropdown-item command="confirm"  :disabled="file.fileAction == 'confirm'">
-            Confirm</el-dropdown-item>
-          <el-dropdown-item command="sign"  :disabled="file.fileAction == 'sign'">Sign
+          <el-dropdown-item
+            command="complete"
+            :disabled="file.fileAction == 'complete'"
+            >Complete</el-dropdown-item
+          >
+          <el-dropdown-item
+            command="confirm"
+            :disabled="file.fileAction == 'confirm'"
+          >
+            Confirm</el-dropdown-item
+          >
+          <el-dropdown-item command="sign" :disabled="file.fileAction == 'sign'"
+            >Sign
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
 
-
       <!-- If authenticated user is created -->
-      <span v-if="!isCreator" class="hidden md:inline capitalize font-medium">{{ access }}</span>
+      <span v-if="!isCreator" class="hidden md:inline capitalize font-medium">{{
+        access
+      }}</span>
 
       <!-- -- the content below is v-else if previous is v-if - -->
-      <el-dropdown v-else trigger="click" class="font-medium flex" @command="handleAccessChange">
+      <el-dropdown
+        v-else
+        trigger="click"
+        class="font-medium flex"
+        @command="handleAccessChange"
+      >
         <span class="el-dropdown-link capitalize">
           {{ access }} <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
@@ -39,56 +62,79 @@
       <!-- <div
         class="flex-1 flex items-center gap-5 justify-end text-xs font-medium"
       > -->
-      
+
       <span class="font-normal max-w-[30%] truncate">
-        {{ file?.fileName.replace('.pdf', '') ?? "" }}
+        {{ file?.fileName.replace('.pdf', '') ?? '' }}
       </span>
 
-
-      
-
-      <span class="hidden md:inline">{{
-      `${(file.updatedAt || "").substring(0, 10)} - ${(file.updatedAt || "").substring(
-        11,
-        16
-      )}`
-      }}
+      <span class="hidden md:inline"
+        >{{
+          `${(file.updatedAt || '').substring(0, 10)} - ${(
+            file.updatedAt || ''
+          ).substring(11, 16)}`
+        }}
       </span>
-
-
 
       <div class="flex items-center sm:hidden">
         <span class="cursor-pointer" @click="showPdfInfo = true">
           <img :src="require('~/assets/icons/info-circle.svg')" />
         </span>
 
-        <button v-if="(isCreator || isSign) && (userRole != 'free_user' || !isSign || isAgreedSign != -1)"
-          class="bg-red-500 w-5 h-5 rounded-full text-xs text-white ml-3" @click="cancelPublish">x</button>
+        <button
+          v-if="
+            (isCreator || isSign) &&
+            (userRole != 'free_user' || !isSign || isAgreedSign != -1)
+          "
+          class="bg-red-500 w-5 h-5 rounded-full text-xs text-white ml-3"
+          @click="cancelPublish"
+        >
+          x
+        </button>
       </div>
     </div>
 
     <!-- <div class="hidden sm:flex items-center justify-end pe-lg-4" v-if="$auth.loggedIn && !isSign"> -->
     <div class="hidden sm:flex items-center justify-end pe-lg-4">
-
-      <button v-if="($auth.loggedIn || $store.getters?.getFillAsGuest) && isCreator" @click="saveChanges" 
-        class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed">
+      <button
+        v-if="($auth.loggedIn || $store.getters?.getFillAsGuest) && isCreator"
+        @click="saveChanges"
+        class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed"
+      >
         Publish
       </button>
-      <button v-if="($auth.loggedIn || $store.getters?.getFillAsGuest) && !isCreator && !isConfirm && !isSign" @click="saveChanges" 
-        class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed">
+      <button
+        v-if="
+          ($auth.loggedIn || $store.getters?.getFillAsGuest) &&
+          !isCreator &&
+          !isConfirm &&
+          !isSign
+        "
+        @click="saveChanges"
+        class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed"
+      >
         Done
       </button>
-      
-      <button v-if="!isSign"  @click="cancelPublish"
-        class="text-xs text-red-500 bg-white border rounded px-3 h-7 disabled:cursor-not-allowed">
-        Cancel  
+
+      <button
+        v-if="!isSign"
+        @click="cancelPublish"
+        class="text-xs text-red-500 bg-white border rounded px-3 h-7 disabled:cursor-not-allowed"
+      >
+        Cancel
       </button>
     </div>
 
-
-    <ShareFilesModal :pdfContainerDimension="pdfContainerDimension" :userFile="file" v-model="showShareCompanyFiles"
-      @qrLoad="showQrcodeFileFunc" />
-    <RequestModal :pdfContainerDimension="pdfContainerDimension" :userFile="file" v-model="showRequestModal" />
+    <ShareFilesModal
+      :pdfContainerDimension="pdfContainerDimension"
+      :userFile="file"
+      v-model="showShareCompanyFiles"
+      @qrLoad="showQrcodeFileFunc"
+    />
+    <RequestModal
+      :pdfContainerDimension="pdfContainerDimension"
+      :userFile="file"
+      v-model="showRequestModal"
+    />
     <pdf-c-c-flow-modal :file="file" v-model="showCCFlowModal" />
     <pdf-papertags-modal :file="file" v-model="showPapertagsModal" />
     <!-- <save-pdf-modal :pdfContainerDimension="pdfContainerDimension" :sendAction="saveFunction" :file="file" v-model="showSaveModal" /> -->
@@ -96,12 +142,23 @@
 
     <RemoveFileModal :fileId="file.id" v-model="showRemoveModal" />
 
-    <AddToPageDrawOrType :src="$auth?.user?.initialURL || ' '" @image-exported="imageExportedLocal($event, false)"
-      use-default-button />
+    <AddToPageDrawOrType
+      :src="$auth?.user?.initialURL || ' '"
+      @image-exported="imageExportedLocal($event, false)"
+      use-default-button
+    />
     <!-- v-model="showInitialModal" -->
 
-    <el-dialog :visible.sync="showPdfInfo" :append-to-body="true" :show-close="false" center width="100%" top="100vh" custom-class="-translate-y-full sm:hidden bottom-sm-modal"
-      class="bottom-0 overflow-hidden sm:hidden">
+    <el-dialog
+      :visible.sync="showPdfInfo"
+      :append-to-body="true"
+      :show-close="false"
+      center
+      width="100%"
+      top="100vh"
+      custom-class="-translate-y-full sm:hidden bottom-sm-modal"
+      class="bottom-0 overflow-hidden sm:hidden"
+    >
       <div class="w-full flex flex-col p-0 -mt-8 -mb-4">
         <div class="border-b flex items-center justify-between py-2">
           <span class="font-bold">Action</span>
@@ -121,11 +178,11 @@
         </div>
         <div class="border-b flex items-center justify-between py-2">
           <span class="font-bold">Date</span>
-          <span class="">{{(file.updatedAt || "").substring(0, 10)}}</span>
+          <span class="">{{ (file.updatedAt || '').substring(0, 10) }}</span>
         </div>
         <div class="flex items-center justify-between py-2">
           <span class="font-bold">Time</span>
-          <span class="">{{(file.updatedAt || "").substring(11, 16)}}</span>
+          <span class="">{{ (file.updatedAt || '').substring(11, 16) }}</span>
         </div>
       </div>
     </el-dialog>
@@ -177,7 +234,7 @@ export default Vue.extend({
     AddToPageDrawOrType,
   },
   beforeMount() {
-    // if(!this.$auth.loggedIn){  
+    // if(!this.$auth.loggedIn){
     //   this.$nuxt.$router.push("/login")
     // }
   },
@@ -284,32 +341,35 @@ export default Vue.extend({
     showQrcodeFileFunc() {
       this.showQrcodeFiles = true
     },
-    handleActionChange(command) {
+    async handleActionChange(command) {
       const fileTemp = { ...this.file }
       fileTemp.fileAction = command.toLowerCase()
-      console.log(fileTemp.fileAction)
       this.$emit('update-file', fileTemp)
-
-      // this.$axios.patch(`/files/${fileTemp.id}`, {
-      //   fileAction: fileTemp.fileAction
-      // }).catch(()=>{
+      this.$BUS.$emit('reset-tools')
+      this.$emit('tool-change', null)
+      // try {
+      //   await this.$_server.patch(`/files/${fileTemp.id}`, { annotaions: ''})
+      //   .then(()=>{
+      //     this.$BUS.$emit('reset-tools')
+      //   })
+      // } catch (error) {
       //   this.$notify.error({
       //     message:"error occured"
       //   })
-      // })
+      // }
     },
     handleAccessChange(command) {
       const fileTemp = { ...this.file }
       fileTemp.filePrivacy = String(command).toLowerCase()
       this.$emit('update-file', fileTemp)
 
-      this.$axios.patch(`/files/${fileTemp.id}`, {
-        filePrivacy: fileTemp.filePrivacy
-      }).catch(() => {
-        this.$notify.error({
-          message: "error occured"
-        })
-      })
+      // this.$axios.patch(`/files/${fileTemp.id}`, {
+      //   filePrivacy: fileTemp.filePrivacy
+      // }).catch(() => {
+      //   this.$notify.error({
+      //     message: "error occured"
+      //   })
+      // })
     },
     checkFilePrivacy() { },
     handleCommand(command) {

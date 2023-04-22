@@ -45,8 +45,7 @@ export default {
   },
   methods: {
     setBlur(){
-      // this.$emit('onBlur')
-      this.isBlur = true
+      this.$emit('onBlur')
     },
     onBlur: () => {
       console.log("onBlur")

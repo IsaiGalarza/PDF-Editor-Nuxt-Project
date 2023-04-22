@@ -5,7 +5,7 @@
     <input
       type="text"
       v-model="text"
-      v-if="(isActive || justMounted) && !isCreator && !isBlur"
+      v-if="(isActive || justMounted) && !isCreator"
       :style="style"
       class="input-annotation"
       placeholder="Type here..."
@@ -13,7 +13,7 @@
       @blur="setBlur"
     />
 
-    <p v-else ref="textbox" @click="isBlur = false" :textImageContent="svgToImageData" :style="style">{{ text || 'Type here...' }}</p>
+    <p v-else ref="textbox"  :style="style">{{ text || 'Type here...' }}</p>
     <!-- <span :style="hideStyle" ref="text_hidden">{{ text || 'Type here...' }}</span> -->
   </div>
 </template>

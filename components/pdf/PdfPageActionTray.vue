@@ -362,7 +362,7 @@ export default Vue.extend({
       const fileTemp = { ...this.file }
       fileTemp.filePrivacy = String(command).toLowerCase()
       this.$emit('update-file', fileTemp)
-
+      
       // this.$axios.patch(`/files/${fileTemp.id}`, {
       //   filePrivacy: fileTemp.filePrivacy
       // }).catch(() => {

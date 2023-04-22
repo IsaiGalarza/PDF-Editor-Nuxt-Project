@@ -158,6 +158,9 @@ export default mixins(login).extend({
     // Revoke the object URL, to allow the garbage collector to destroy the uploaded before file
   },
   mounted() {
+    this.phone = this.userInfo?.phone
+      this.address = this.userInfo?.address
+      this.name = this.userInfo?.companyName
     // this.phone = this.userInfo?.phone
     // this.address = this.userInfo?.address
     // this.name = this.userInfo?.companyName
@@ -201,11 +204,7 @@ export default mixins(login).extend({
       this.phone = this.$auth.user?.phone || ''
       // QRCode.toCanvas(this.$refs.qrcancas, this.qrCodeurl, function () {});
     },
-    userInfo: function () {
-      this.phone = this.userInfo?.phone
-      this.address = this.userInfo?.address
-      this.name = this.userInfo?.companyName
-    }
+
   }
 })
 </script>

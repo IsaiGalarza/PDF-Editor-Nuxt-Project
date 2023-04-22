@@ -10,7 +10,7 @@ export const server = axios.create({
 
 server.interceptors.request.use(
   async (config) => {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('main_user_paperdaz_token')
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
       return config

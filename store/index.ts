@@ -40,6 +40,9 @@ export const state = () => ({
 export type RootState = ReturnType<typeof state>
 
 export const getters: GetterTree<RootState, RootState> = {
+    getFileManagerFile( state: any){
+    return state.file
+  },
   getPackageInfo( state: any){
     return state.setPackage
   },

@@ -28,6 +28,7 @@
         @update-file="file = $event"
         :tools="tools"
         class="w-full"
+        @tool-change="onToolChange"
         @isDeletedFunc="isDeletedFunc"
         :pdfContainerDimension="pdfContainerDimension"
         @publishFileFunction="publishFileFunction"
@@ -424,6 +425,10 @@ export default mixins(PdfAuth).extend({
     openTypeInitialModal: false,
 
     canceled: false,
+    isResetTools: false,
+    completeTools: [],
+    signTools: [],
+    confirmTools: []
   }),
   created() {
     this.fetchPdf()
@@ -431,6 +436,7 @@ export default mixins(PdfAuth).extend({
     this.$BUS.$on('is-deleted', this.isDeletedFunc)
     this.$BUS.$on('download-pdf', this.downloadPdf)
     this.$BUS.$on('scroll-to-tools',  this.scrollToSignInitial)
+    this.$BUS.$on('reset-tools',  this.resetToolsToDefault)
     this.$BUS.$on('scrollToSignInitial', this.deactivateSignInitial)
     this.$BUS.$on('signature-update', (v) => (this.signature = v))
     this.$BUS.$on('initials-update', (v) => (this.initial = v))
@@ -456,6 +462,7 @@ export default mixins(PdfAuth).extend({
     this.$BUS.$off('initials-update')
     this.$BUS.$off('scrollToSignInitial')
     this.$BUS.$off('scroll-to-tools')
+    this.$BUS.$off('reset-tools')
     this.$store.commit('SET_EDIT_ANNOTATION', true)
     this.$store.commit('SET_FILE_SIGNATURE', null)
     this.$store.commit('SET_FILE_INITIAL', null)
@@ -620,6 +627,19 @@ export default mixins(PdfAuth).extend({
     },
   },
   methods: {
+    resetToolsToDefault(){
+        switch (this.file.fileAction) {
+          case FileAction.COMPLETE:
+            this.tools = this.completeTools
+            break;
+          case FileAction.SIGNED:
+            this.tools = this.signTools
+            break;
+          case FileAction.CONFIRM:
+            this.tools = this.confirmTools
+            break;
+        }
+    },
     showGuestModalFunc(){
       this.showGuestModal = !this.showGuestModal
     },
@@ -1526,6 +1546,11 @@ export default mixins(PdfAuth).extend({
       this.$nextTick(() => {
         this.pdfBoundingRect()
       })
+    },
+    tools(){
+      this.file.fileAction == FileAction.COMPLETE && (this.completeTools = this.tools)
+      this.file.fileAction == FileAction.SIGNED && (this.signTools = this.tools)
+      this.file.fileAction == FileAction.CONFIRM && (this.confirmTools = this.tools)
     },
     filteredAnnotationButton(value, oldValue) {
       if (value.length === 0 && oldValue.length > 0 && (this.isSign || this.isComplete)) {

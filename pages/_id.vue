@@ -273,21 +273,14 @@ export default Vue.extend({
   },
   watch: {
     '$auth.user': function () {
-      this.getUserFolders(this.returnedFolderPage, this.searchFolderParam)
       this.getUserFiles(this.returnedDataPage, this.searchFileParam)
     },
     returnedDataPage: function () {
       this.fileSpinner = true;
       this.getUserFiles(this.returnedDataPage, this.searchFolderParam)
     },
-    searchFolderParam() {
-      this.getUserFolders(this.returnedFolderPage, this.searchFolderParam)
-    },
     searchFileParam() {
       this.getUserFiles(this.returnedDataPage, this.searchFileParam)
-    },
-    returnedFolderPage() {
-      this.getUserFolders(this.returnedFolderPage, this.searchFolderParam)
     },
     returnedDataPage() {
       this.getUserFiles(this.returnedDataPage, this.searchFileParam)

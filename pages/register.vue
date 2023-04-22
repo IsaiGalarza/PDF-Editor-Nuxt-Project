@@ -160,7 +160,7 @@
         </button>
       </div>
     </div>
-  </div >
+  </section>
 </template>
 
 <script>

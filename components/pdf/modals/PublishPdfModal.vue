@@ -382,6 +382,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         editedFileLink: this.generatedPdf?.downloadLink,
         fileId: this.file?.id,
       }
+      console.log("email-requset",requestData)
       //   // return
       try {
         this.$_server.post(`/request`, requestData).then(() => {

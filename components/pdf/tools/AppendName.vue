@@ -41,6 +41,7 @@
 
 <script>
 import moment from 'moment'
+import FileAction from '~/models/FileAction'
 export default {
   data() {
     return {
@@ -62,6 +63,12 @@ export default {
     },
   },
   computed: {
+    isSign() {
+      return String(this.file?.fileAction).toLowerCase() === FileAction.SIGNED
+    },
+    isAgreedSign() {
+      return this.$store.state?.agreeSign
+    },
     nowDate() {
       return moment().format('YYYY-MM-DD')
     },
@@ -122,7 +129,7 @@ export default {
       this.isModalActive = false
     },
     confirmStarAction() {
-      if (!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest) return
+      if (!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest || (this.isAgreedSign !== 1 && this.isSign)) return
       !this.isCreator && (this.confirmStar = true)
       this.$BUS.$emit('scrollToSignInitial')
       this.notClass = ''

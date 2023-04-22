@@ -42,7 +42,7 @@
       :src="theSignature"
       :style="style"
     />
-    <span v-show="!initialimgDisplay && !isCreator && !tool.justMounted" class="toolTip hidden">Sign</span>
+    <span v-show="!initialimgDisplay && !isCreator && !tool.justMounted && (isAgreedSign == 1 && isSign || isComplete)" class="toolTip hidden">Sign</span>
     <!-- <img v-else class="absolute-image" src="../../../assets/img/sign.png" /> -->
   </div>
 </template>
@@ -132,7 +132,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     selectIsCreatorDisplay(){
       !this.isCreator ? this.setInitialImgDisplay() : null
-      setTimeout(() => {
+      this.theSignature && setTimeout(() => {
         this.$BUS.$emit('scroll-to-tools')
       }, 200);
     },

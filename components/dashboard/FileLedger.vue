@@ -22,6 +22,7 @@
           >
             <span class="el-dropdown-link left-roll1 flex-1">
               <input
+                v-show="ledgerInput"
                 type="text"
                 class="search-input h-8 sm:h-10 transition bg-transparent ps-2 flex-1 border-[1px] border-paperdazgreen-400 rounded-lg focus:border-paperdazgreen-700 outline-none float-right sm:w-3/4 w-full"
                 placeholder="Search Files"
@@ -29,6 +30,7 @@
               />
             </span>
             <button
+            @click="ledgerInput = !ledgerInput"
               class="circle circle-16 sm:circle-18 bg-paperdazgreen-400 text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150"
             >
               <search-icon width="16" height="16" currentcolor="white" />
@@ -110,7 +112,7 @@
                       class="max-sm:truncate max-sm:text-xs sm:text-base font-medium text-left sm:ml-1"
                     >
                       <nuxt-link
-                        :to="`/pdf/${file.paperLink}`"
+                        :to="`/pdf/${file?.file?.paperLink}`"
                         class="w-full block"
                       >
                         <!-- {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName  }} -->
@@ -268,6 +270,7 @@ export default Vue.extend({
       FileAction,
       debounceTimeout: null,
       ledger: [],
+      ledgerInput: false
     }
   },
   mounted() {

@@ -79,6 +79,9 @@ export default Vue.extend({
   mounted() {
     this.user.email = this.$store.getters.getSaveEmailExist
   },
+  created() {
+    this.$auth.loggedIn ? this.logout() : null
+  },
   methods: {
     onSubmit() {
       event?.preventDefault()
@@ -101,8 +104,6 @@ export default Vue.extend({
           // this.$nuxt.$router.push('/reset-sent-link');
         })
         .catch(({ response }) => {
-          console.log('Forget')
-          console.log('Forget')
           this.alertMessage.isSuccess = false
           this.alertMessage.message = response.data.message || 'unable to reset password'
         })

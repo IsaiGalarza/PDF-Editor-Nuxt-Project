@@ -43,7 +43,7 @@
        v-model="updateEmailInput"
        type="email"
        required
-       class="w-full py-4 px-4 border-[1px] border-paperdazgrey-500 rounded-md"
+       class="w-full py-2 px-2 border-[1px] border-paperdazgrey-500 rounded-md"
        placeholder="Enter email"
        />
     </p>
@@ -88,6 +88,14 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
+
+    email:{
+      type:String,
+    },
+
+    // onSend:{
+    //   type:any
+    // }
   },
   data() {
     return {
@@ -102,6 +110,7 @@ export default Vue.extend({
     visible(val) {
       this.showModal = val
       this.isLoading = false
+      this.updateEmailInput = this.email
     },
     showModal(val) {
       this.$emit('updateVisibility', val)
@@ -111,6 +120,8 @@ export default Vue.extend({
   },
   mounted() {
     this.showModal = this.visible;
+   
+    
   },
   methods: {
     closeModal() {
@@ -123,6 +134,7 @@ export default Vue.extend({
             action:"resendToken",
             email: this.updateEmailInput }) 
           .then((response)=>{
+            // this.onSend()
             this.$notify.success({
               message: 'Message sent to email successfully'
             })

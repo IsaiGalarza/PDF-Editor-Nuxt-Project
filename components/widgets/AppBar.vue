@@ -13,22 +13,17 @@
   >
     <div class="" :class="collapsed ? 'overlay' : ''"></div>
     <nav class="container h-full flex items-center justify-between">
-      <div class="flex gap-1 w-6/12 items-center">
-        <!-- <span
-          class="lg:hidden cursor-pointer p-2 transform -translate-x-2"
-          @click="collapsed = true"
-        >
-          <hamburger-icon />
-        </span> -->
+      
+      <!-- mobile -->
+      <!------>
+      <div class="text-center w-full text-[0.8rem] md:text-[1.2rem] font-semibold flex justify-end md:justify-between items-center">
+        <div class="">
         <nuxt-link to="/">
           <logo-with-text class="mr-2  h-[30px] xs:h-6 sm:h-[60px] w-auto" />
         </nuxt-link>
       </div>
-      <!-- mobile -->
-      <!------>
-      <div class="text-center w-full text-[0.8rem] md:text-[1.2rem] font-semibold flex justify-end md:justify-between items-center">
-        <abbr class="hidden md:block">Secure, Private & HIPAA Compliant!</abbr>
-        <nuxt-link v-if="!$auth.loggedIn" to="/login" class="px-4 py-2 text-white rounded-md bg-paperdazgreen-300">
+        <abbr class="hidden text-[#F30B0B] text-[1.2rem] md:block">Secure & Private! </abbr>
+        <nuxt-link v-if="!$auth.loggedIn" to="/login" class="px-4 py-2 text-black rounded-md ">
           Login
         </nuxt-link>
         <nuxt-link v-else to="/paperlink-files" class="px-4 py-2 text-paperdazgreen-300 rounded-md border-paperdazgreen-300 border-2">

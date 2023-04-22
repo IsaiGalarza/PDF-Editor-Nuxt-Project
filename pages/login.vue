@@ -2,14 +2,7 @@
   <section class="bg-paperdazgreen-300">
     <div class="container py-20">
       <div class="w-full max-w-md mx-auto bg-white shadow-2xl rounded-xl pt-6  pb-10">
-        <div v-if="isEmailVerified"
-          class="flex items-center text-[13px] w-full bg-red-500 text-white rounded-md py-3 p-2 mb-5">
-          <exclamation-icon width="18" height="18" />
-          <span class="inline-block pl-2">
-            Email is not verified, <b class="underline">
-              <button @click="showUpdateEmail = true">Click to resend</button></b>
-          </span>
-        </div>
+
 
         <p class="text-center text-[1.3rem] text-[#5FA348]">PaperLink Console</p>
           <hr class="my-4  bg-[#80808037]" />
@@ -18,6 +11,14 @@
           <message-alert-widget :message="errorMessage" v-show="errorMessage" type="error" class="mb-8" />
           <message-alert-widget :message="'Please wait, redirecting'" v-show="isRedirecting" type="success" class="mb-8"
             :isLoading="true" />
+            <div v-if="isEmailVerified"
+          class="flex items-center text-[13px] w-full bg-red-500 text-white  rounded-md py-3 p-2 mb-5">
+          <exclamation-icon width="18" height="18" />
+          <span class="inline-block pl-2">
+            Email is not verified, <b class="underline">
+              <button @click="showUpdateEmail = true">Click to resend</button></b>
+          </span>
+        </div>
 
          
           <div class="mb-6">
@@ -67,8 +68,8 @@
       </div>
     </div>
 
-    <ChangeUserEmail @updateSocialDataEmail="updateSocialDataEmail" :modalMessageError="modalMessageError"
-      v-model="showUpdateEmail" />
+    <ChangeUserEmail @onSend="onSendEmailVerified"  @updateSocialDataEmail="updateSocialDataEmail" :modalMessageError="modalMessageError"
+      v-model="showUpdateEmail" :email="user.email" />
   </section>
 </template>
 
@@ -200,7 +201,9 @@ export default Vue.extend({
   
 
   methods: {
-   
+    onSendEmailVerified(){
+      this.isEmailVerified = false
+    },
     async confirmIsEmailVerified() {
       let { verificationToken } = this.$route.query
       if (!verificationToken) return
@@ -335,6 +338,7 @@ export default Vue.extend({
       //@ts-ignore
       this.errorMessage = ''
       this.isRedirecting = false
+      this.isEmailVerified = false
 
       this.$auth
         .loginWith('local', { data: this.user })
@@ -368,7 +372,7 @@ export default Vue.extend({
         })
         .catch(({ response }: any) => {
           let message = ErrorHandler(response)
-            ; (this.errorMessage as string | undefined) = message
+            ; (this.errorMessage as string | undefined) = "Invalid login"
         })
         .finally(() => {
           this.isLoading = false

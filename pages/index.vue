@@ -1,8 +1,30 @@
 <template>
   <div class="" @click="">
-    <div class="min-h-[60vh] grid place-items-center bg-paperdazgreen-300">
+    <div class="min-h-[60vh]  place-items-center bg-paperdazgreen-300">
       <hero-page />
       <ConfirmPassword :userInfo="userDecodedInfo" v-model="showConfirmPassword" />
+      <div class=" bg-white h-full flex-col md:flex-row flex w-full items-end flex-1 py-4 px-4">
+        <div class="md:w-[80%]   text-[0.8rem] items-center flex justify-end md:pr-3 text-[#B9B8C1]">
+          <p class="text-center">© Paperdaz LLC, 1968 S Coas Hwy Suite 4302, Laguna Beach CA 92651 </p>
+        </div>
+
+        <div class=" w-full flex mt-3 md:items-end md:mt-0 items-center flex-col md:flex-row  pl-6">
+
+         
+          <nuxt-link to="/package?tablevel=1" class="text-[0.8rem]  md:py-0  px-3">
+            Terms of Use  
+          </nuxt-link>
+          <nuxt-link to="/package?tablevel=1" class="text-[0.8rem] md:py-0  px-3">
+            Privacy Policy
+          </nuxt-link>
+          <nuxt-link to="/package?tablevel=1" class="text-[0.8rem] md:py-0  px-3">
+            Contact Us
+          </nuxt-link>
+        </div>
+
+
+      </div>
+
     </div>
   </div>
 </template>
@@ -60,14 +82,14 @@ export default class LandingPage extends Vue {
     setTimeout(function () {
       sessionStorage.setItem('requestSentFlag', false)
     }, 300)
-     
-    if(!this.$route.query?.verificationToken) return
+
+    if (!this.$route.query?.verificationToken) return
     this.$route.query?.verificationToken && (this.showConfirmPassword = true)
     let encodedUser = jwt.verify(
       this.$route.query?.verificationToken,
       '+Erqnl5F0JnIsW++d9U0BfwpJ6w='
     )
-    this.userDecodedInfo =  encodedUser
+    this.userDecodedInfo = encodedUser
   }
   head() {
     return {

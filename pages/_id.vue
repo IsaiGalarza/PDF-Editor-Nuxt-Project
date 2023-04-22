@@ -1,27 +1,7 @@
 <template>
   <div class="">
     <ProfileTopInfo :userInfo="userInfo" />
-    <!-- <header class="text-paperdazgreen-400 font-semibold p-4 border-b border-[#DCDCDC]">
-        <h4 class="text-[19px]">Folders \ Files</h4>
-      </header> -->
-    <!-- <div class=" grid place-items-center p-4"> -->
-    <!-- <div>
-          <p class="text-center text-[#434242] text-md font-medium">
-            Your Public Profile is empty!
-          </p>
-          <div class="grid place-items-center">
-            <button class="text-sm font-medium text-white h-10 rounded-xl bg-paperdazgreen-400 shadow mt-2 px-5">
-              Turn files into Paperlink
-            </button>
-          </div>
-        </div> -->
-    <!-- <div v-if="!files.length">
-          <img src="@/assets/img/dashboard-bg.png" class=" mt-4 md:w-auto sm:w-[200px]" />
-          <p class="text-center text-[22px] text-[#434242] text-md font-medium mt-4 mb-16">
-            <span v-if="isAuthor">Upload files and create folders!</span>
-            <span v-else>Come back to see our files!</span>
-          </p>
-        </div> -->
+    
 
         <div v-if="fileSpinner" class=" relative h-[300px]">
         <!-- START: spinner container -->
@@ -71,20 +51,6 @@
 
     <!-- Start:: Files -->
     <div v-if="isFetched" class="bg-white rounded-xl pb-8" :class="{ 'hidden sm:block': showFolders }">
-      <div class="w-full p-4 pb-0 sm:hidden">
-        <div class="flex items-center bg-gray-100 rounded text-sm w-full">
-          <div class="flex items-center justify-center h-10 w-1/2 cursor-pointer"
-            :class="{ 'text-white bg-gray-500 rounded': !showFolders }" @click="showFolders = false">Files</div>
-          <div class="flex items-center justify-center h-10 w-1/2 cursor-pointer"
-            :class="{ 'text-white bg-gray-500 rounded': showFolders }" @click="showFolders = true">Folders</div>
-        </div>
-      </div>
-      <!-- <header v-if="files.length"
-        class="py-2 px-2 mx-4 text-paperdazgreen-400 flex flex-wrap items-center gap-2 justify-between">
-        <h4 class="text-xl font-medium hidden sm:block">Files</h4>
-
-      </header> -->
-
       <div  class="rounded-2xl min-w-[300px] overflow-x-auto custom-scrollbar relative">
         <table class="custom-table">
           <thead class="text-[#414142]">
@@ -95,7 +61,7 @@
               <th class=" font-[700]  right">Action</th>
               <th class=" font-[700]  right">Privacy</th>
               <th class=" font-[700]  right">
-                <form @submit.prevent class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
+                <form v-show="files.length > 10" @submit.prevent class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
                   <span v-if="showFile" class="el-dropdown-link max-sm:flex-1 absolute top-[-30px] ">
                     <input type="text" placeholder="Search any file..."
                       class="rounded-lg border !border-paperdazgreen-400 px-2 h-7 w-full sm:w-[165px] md:w-48  placeholder:italic"
@@ -123,11 +89,11 @@
                 </div>
               </td>
               <td>
-                {{ ((item || {}).fileAction || ' ') }}
+               <p v-show="((item || {}).fileAction) != 'doNotPost' " class="capitalize"> {{ ((item || {}).fileAction || '') }}</p>
               </td>
               <td>
                 <p class="capitalize">
-                  {{ ((item || {}).filePrivacy || ' ') }}
+                  {{ ((item || {}).filePrivacy || '') }}
                 </p>
               </td>
               <td class="flex ">

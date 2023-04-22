@@ -80,13 +80,13 @@
               <td class="text-center !pl-5 sm:!pl-16">
                 <div class="flex items-center gap-1.5">
                   <div class="">
-                    <letter-avatar
+                    <!-- <letter-avatar
                       v-if="!(file.user || {}).profile_picture && !file.isGuest"
                       style="width: 43px; height: 43px"
                       class="h-[28px] w-[28px] rounded-full object-cover cursor-pointer mr-1"
                       :username="file.user?.firstName"
-                    />
-                    <span
+                    /> -->
+                    <!-- <span
                       v-else
                       class="border !border-paperdazgreen-300 p-0.5 inline-block rounded-full h-[36px] w-[36px]"
                     >
@@ -102,7 +102,8 @@
                             : 'w-full h-full rounded-full',
                         ]"
                       />
-                    </span>
+                    </span> -->
+                    <img src="../../assets/img/user-file-icon.svg" alt="">
                   </div>
                   <div class="max-sm:w-24">
                     <p

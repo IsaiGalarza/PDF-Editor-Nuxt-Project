@@ -109,7 +109,6 @@
  * (c) 2020 Szymon Nowak | Released under the MIT license
  */
 
-
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -124,14 +123,6 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
-
-
-//! moment.js
-
-//! moment.js locale configuration
-
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation.
 
 /**
   * vue-class-component v7.2.2
@@ -169,6 +160,29 @@ Copyright (c) Microsoft Corporation.
 
 //! moment.js
 
+//! moment.js locale configuration
+
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+
+//! moment.js locale configuration
+
+
+/*!
+  Copyright (c) 2018 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+
+
 /**!
  * Sortable 1.10.2
  * @author	RubaXa   <trash@rubaxa.org>
@@ -198,13 +212,6 @@ Copyright (c) Microsoft Corporation.
  * @licend The above is the entire license notice for the
  * Javascript code in this page
  */
-
-
-/*!
-  Copyright (c) 2018 Jed Watson.
-  Licensed under the MIT License (MIT), see
-  http://jedwatson.github.io/classnames
-*/
 
 
 /**

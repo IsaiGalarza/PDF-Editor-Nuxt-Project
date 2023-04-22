@@ -194,12 +194,37 @@ export default Vue.extend({
   layout: 'profile',
   auth: false,
   // middleware: ['paid-user'],
-  asyncData({ store }) {
+  async asyncData({ store, params, $axios, error }) {
     store.commit('SET_PAGE_NAME', { name: 'Profile' })
+    const userInfo = await $axios
+      .$get(`users/?businessPage=${params?.id}`)
+      .then((response) => {
+        const [userInfo] = response.data
+        if(!userInfo)  error({ statusCode: 404 })
+        return userInfo
+      })
+      .catch((err) => {
+        error({
+          statusCode: 404,
+          message: err.message,
+        })
+      })
+
+    // const user = await $axios
+    //   .$get(`/users/${localStorage.getItem('paperdaz_userID')}`)
+    //   .then((response) => {
+    //     return response
+    //   })
+    //   .catch((err) => {})
+
+    // store.commit('SET_FILE', file)
+    return { userInfo }
   },
+ 
   mounted() {
-    this.getTeamPublicInfo()
+    this.getUserFiles(this.returnedDataPage, this.searchFileParam)
     this.generateQR()
+    console.log("player-file", this.userInfo)
     // this.totalFileFolder()
   },
   computed: {
@@ -228,7 +253,6 @@ export default Vue.extend({
       fileSpinner: true,
       folderSpinner: true,
       checkWEmptyFileFolder: false,
-      userInfo: {},
       showFolders: false,
       showSearch: false,
       isFetched: false,
@@ -257,39 +281,9 @@ export default Vue.extend({
       this.folderSpinner = true
       this.returnedFolderPage = page
     },
-    getTeamPublicInfo() {
-      const that = this;
-      this.$axios.get(`users/?businessPage=${this.$route.params?.id}`)
-        .then((response) => {
-          const user = response.data.data
-          this.userInfo = user[0]
-          this.getUserFolders(this.returnedFolderPage, this.searchFolderParam)
-          this.getUserFiles(this.returnedDataPage, this.searchFileParam)
-          //  if(user.role != UserTypeEnum.PAID)
-          //  this.$nuxt.$router.push('/dashboard')
-        })
-        .catch(() => {
-          that.$notify.error({
-            message: "Could not get user"
-          })
-        })
-    },
-    async getUserFolders(page, search) {
-      await this.$axios
-        .$get(`/folders/?userId=${this.userInfo?.id}&name[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`)
-        .then((response) => {
-          const filesData = response.data.map((el) => {
-            return el
-          })
-          this.folders = filesData
-          this.checkWEmptyFileFolder = filesData <= 0
-          this.totalFolder = response.total
-          this.folderSpinner = false
-        })
-    },
     async getUserFiles(page, search) {
       await this.$axios
-        .$get(`/files/?userId=${this.userInfo?.id}&fileName[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`, {
+        .$get(`/files/?userId=${this.userInfo?.id}&fileName[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1&filePrivacy[$ne]=doNotPost`, {
           params: {
             isEditing: 0
           }

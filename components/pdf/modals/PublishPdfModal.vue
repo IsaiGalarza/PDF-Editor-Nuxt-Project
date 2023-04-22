@@ -467,6 +467,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         .patch(`/files/${this.file?.id}`, {
           fileAction: this.file?.fileAction,
           annotaions: JSON.stringify(filteredTools),
+          filePrivacy: this.file?.filePrivacy
         })
         .then(() => {
           this.$notify.success({

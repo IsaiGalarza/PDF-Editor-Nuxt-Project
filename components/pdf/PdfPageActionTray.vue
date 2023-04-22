@@ -116,7 +116,6 @@
       </button>
 
       <button
-        v-if="!isSign"
         @click="cancelPublish"
         class="text-xs text-red-500 bg-white border rounded px-3 h-7 disabled:cursor-not-allowed"
       >

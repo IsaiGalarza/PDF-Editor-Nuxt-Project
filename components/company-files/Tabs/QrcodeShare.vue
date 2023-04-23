@@ -45,14 +45,17 @@
 
     <div class="flex justify-around pt-2">
       <button
-        class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[900%] shadow-md text-white rounded-xl bg-paperdazgreen-400 flex justify-center items-center mt-3"
+      class=" h-10 text-xs w-[40%] shadow-md text-white rounded-xl bg-paperdazgreen-400 flex justify-center items-center mt-3"
+      @click="copylink"
+    >
+        Copy QR-Code
+    </button>
+
+      <button
+        class=" h-10 text-xs w-[40%] shadow-md text-white rounded-xl bg-paperdazgreen-400 flex justify-center items-center mt-3"
         @click="downloadQRCode"
       >
-        <DownloadIconNew />
-        <span class="ml-2 inline-flex gap-1 items-center text-[16px]">
           Download QR-Code
-          <spinner-dotted-icon height="20" width="20" class="animate-spin" />
-        </span>
       </button>
     </div>
 
@@ -77,7 +80,7 @@ export default Vue.extend({
   props: {
     packagename: {},
     userFile: {},
-     link: {},
+    link: {},
     visible: {
       type: Boolean,
       default: false,
@@ -108,6 +111,12 @@ export default Vue.extend({
     this.generateQR()
   },
   methods: {
+    copylink() {
+        navigator.clipboard.writeText(this.link);
+        this.$notify.success({
+          message: 'copied successfully'
+        })
+      },
     downloadQRCode() {
       var canvas = this.$refs.qrcancas 
       var anchor = document.createElement('a') 
@@ -120,7 +129,7 @@ export default Vue.extend({
       if (!this.$refs.qrcancas) return
       QRCode.toCanvas(
         this.$refs.qrcancas,
-        (this.link || `${window.location.origin}/pdf/${this.userFile.paperLink || ''}`),
+        (this.link),
         function () {}
       )
       await this.$nextTick()

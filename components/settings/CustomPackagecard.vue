@@ -54,7 +54,8 @@
           </li>
           <li>
             <span><tick-icon width="20" height="20" /></span>
-            <span>{{ (stagingPackage || {}).cc }} CC Flow </span>
+            <!-- <span>{{ (stagingPackage || {}).cc }} Paperlink Business Page </span> -->
+            <span>Paperlink Business Page </span>
           </li>
           <li v-for="feature in stagingPackage.features">
             <span><tick-icon width="20" height="20" /></span>
@@ -68,7 +69,7 @@
         <button
           @click="setPackageData"
           :disabled="disableStart"
-          class="text-sm text-white bg-paperdazgreen-400 hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 transition duration-0 hover:duration-150 rounded-lg shadow h-9 px-5"
+          class="text-sm text-white bg-paperdazgreen-400 hover:bg-paperdazgreen-70 transition duration-0  hover:duration-150 rounded-lg shadow h-9 px-5"
         >
           Pay Now
         </button>

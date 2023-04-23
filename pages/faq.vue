@@ -212,8 +212,8 @@ export default Vue.extend({
     }
 
     &:last-child {
-      height: 80px;
-      clip-path: polygon(0.81% 25.25%, 100% 25.25%, 61.76% 73.75%, 0% 73.75%);
+      height: 42px;
+      // clip-path: polygon(0.81% 25.25%, 100% 25.25%, 61.76% 73.75%, 0% 73.75%);
 
 }
     &:hover {

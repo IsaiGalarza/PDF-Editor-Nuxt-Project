@@ -4,7 +4,12 @@
     <!-- <leaves-details-container class="mb-12" /> -->
 
     <div class="flex items-center flex-wrap gap-4 justify-between mb-6 max-sm:px-4">
-      <h5 class="text-lg font-semibold text-[#272727]">Team Members { {{ teamMembers?.length }} } </h5>
+     <div class="flex items-center">
+      <h5 class="text-lg font-semibold  text-[#272727]">Team Members  </h5>
+      <div class="min-h-[30px] border-[#77C360] text-[#77C360] ml-3 rounded-[50%] flex items-center justify-center border-[1px] min-w-[30px] bg-white">
+      <p class=""> {{ teamMembers?.length }}</p>
+      </div>
+     </div>
       <div class="text-white flex items-center">
         <form action="" class="w-full xs:max-w-[280px] text-xs font-medium flex items-center relative justify-end mr-2"
           @submit.prevent="$event.preventDefault()">
@@ -40,19 +45,43 @@
         <SpinnerDottedIcon class="animate-spin" />
       </div>
       <!-- END:Team container spinner -->
-      <div v-if="teamMembers.length === 0" class="w-full h-[200px] grid place-items-center text-[17px] font-normal">
-        You have no team member
-      </div>
+      <img  v-show="teamMembers.length === 0 && !teamSpinner &&  !updateTeamSpiunner" src="../assets/img/dashboard-bg.png" class="position-absolute mt-24 md:left-[30%] z-50 md:w-auto sm:w-[200px]" /> 
+     <table v-if="teamMembers.length === 0 && !teamSpinner &&  !updateTeamSpiunner"  key="3" ref="fileLedgerTable" class="file-ledger-table"> 
+      <thead>
+        <tr class="text-left">
+          <th class="text-left fixed-col left font-[500]">No</th>
+          <th class="text-center font-[500]">Member</th>
+          <th class="text-center font-[500]"></th>
+          <th class="text-center font-[500]" ></th>
+          <th class="text-center font-[500]">Email</th>
+          <th class="fixed-col right"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="i in 10" :key="i">
+          <td class="text-left fixed-col left">{{ i }}</td>
+          <td class="text-center">
+
+          </td>
+          <td class="text-center">
+          </td>
+          <td class="text-center" >
+
+          </td>
+          <td class="text-center">
+          </td>
+          <td class="fixed-col right">
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+     
       <table v-else class="custom-table">
         <thead class="text-[#414142]">
           <tr>
-            <!-- <th class="w-12 text-center fixed-col left">No</th> -->
             <th class="text-left font-[500] ">Member</th>
-            <!-- <th class="text-left">Access</th> -->
-            <!-- <th class="text-left">Date &amp; Time</th> -->
-            <!-- <th class="w-28 text-center"> -->
-              <!-- <p class="w-24">Status</p>
-            </th> -->
+            
             <th class="text-center font-[500]  right">Email</th>
           </tr>
         </thead>
@@ -75,53 +104,7 @@
             <td>
               {{ member.email }}
             </td>
-            <!-- <td class="text-sm">
-              {{ `${(member.createdAt || '').replace(/T|.000Z/g, ' ')}` }}
-            </td> -->
-            <!-- <td class="w-28 text-center">
-              <div
-                class="w-24 text-sm font-medium flex items-center justify-center rounded-full h-8 capitalize px-1 whitespace-nowrap"
-                :class="[getStatusClass(member.status || '')]">
-                {{ member.status }}
-              </div>
-            </td> -->
-            <!-- <td class="fixed-col right w-[50px]">
-              <div class="w-full h-full grid place-items-center">
-                <el-dropdown trigger="click">
-                  <button class="el-dropdown-link px-3">
-                    <ellipsis-icon-vertical-icon />
-                  </button>
-                  <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu">
-                    <ul class="min-w-[150px]">
-                      <li class="dropdown-item">
-                        <input hidden type="radio" :id="`team-member-${i}-dropdown-item-status`"
-                          name="team-member-dropdown-item" />
-                        <label :for="`team-member-${i}-dropdown-item-status`">Status
-                          <span class="suffix-icon"><arrow-down-icon width="12" height="12" /></span></label>
-
-                        <ul class="bg-green-600 inner-dropdown">
-                          <li class="inner-dropdown-item" @click="setStatus(member.id, 'active')">Active</li>
-                          <li class="inner-dropdown-item" @click="setStatus(member.id, 'disable')">Disable</li>
-                          <li class="inner-dropdown-item" @click="setStatus(member.id, 'pending')">Pending</li>
-                        </ul>
-                      </li>
-                      <li class="dropdown-item">
-                        <input hidden type="radio" :id="`team-member-${i}-dropdown-item-access`"
-                          name="team-member-dropdown-item" />
-                        <label :for="`team-member-${i}-dropdown-item-access`">Acces Right
-                          <span class="suffix-icon"><arrow-down-icon width="12" height="12" /></span></label>
-
-                        <ul class="bg-green-600 inner-dropdown">
-                          <li class="inner-dropdown-item" @click="setTeamAccess(member.id, 'own_files')">Own Files</li>
-                          <li class="inner-dropdown-item" @click="setTeamAccess(member.id, 'company_files')">Company
-                            Files</li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </div>
-            </td> -->
+           
           </tr>
         </tbody>
       </table>
@@ -318,3 +301,62 @@ export default Vue.extend({
   }
 })
 </script>
+
+
+<style lang="postcss" scoped>
+.file-ledger-table {
+  --background: white;
+  @apply max-sm:text-xs sm:text-base w-full whitespace-nowrap;
+  border-collapse: separate;
+  border-spacing: 0px 0px;
+  height: fit-content;
+  & tr {
+    @apply border-b border-gray-100;
+    transition: all 0.2s ease-in-out;
+    &.highlight {
+      --background: rgba(233, 254, 219, 0.46);
+    }
+  }
+  & th {
+    @apply max-sm:pt-4 max-sm:pb-1 sm:pt-8 sm:pb-3 max-sm:text-xs sm:text-base;
+    background: var(--background);
+  }
+  & td {
+    @apply py-3 max-sm:text-xs sm:text-base;
+  }
+  & td,
+  & th {
+    @apply px-1 border-b border-gray-100;
+    transition: all 0.2s ease-in-out;
+    background: var(--background);
+    &:first-child {
+      @apply pl-5;
+    }
+    &:last-child {
+      @apply pr-5;
+    }
+    &.fixed-col {
+      position: sticky;
+      background: white;
+      background: var(--background);
+      &.left {
+        left: -0.1px;
+      }
+      &.right {
+        right: -0.1px;
+      }
+    }
+  }
+}
+/* .search-input {
+  & ~ .search-dropdown {
+    @apply opacity-0 translate-y-[5%] pointer-events-none;
+  }
+  &:active,
+  &:focus {
+    & ~ .search-dropdown {
+      @apply opacity-100 translate-y-0 pointer-events-auto;
+    }
+  }
+} */
+</style>

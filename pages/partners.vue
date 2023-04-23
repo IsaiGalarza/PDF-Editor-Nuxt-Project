@@ -75,11 +75,13 @@
               :disabled="isLoading"
               class="w-full rounded-sm py-2 my-3 mb-4 text-white bg-paperdazgreen-500 text-[17px] flex justify-center items-center"
             >
-              <span class="mr-2">Send</span>
+              <span  v-show="!isLoading" class="mr-2">Send</span>
               <transition name="fade" :duration="100">
                 <span v-show="isLoading" class="animate-spin">
                   <SpinnerDottedIcon height="22" width="22" />
                 </span>
+
+                
               </transition>
             </button>
           </div>

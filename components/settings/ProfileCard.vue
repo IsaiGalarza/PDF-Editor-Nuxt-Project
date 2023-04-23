@@ -1,7 +1,6 @@
 <template>
   <div>
     <component :is="profileCardComponent" class="h-full" />
-
   </div>
 </template>
 <script>

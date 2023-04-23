@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-1 lg:grid-cols-[max-content,1fr] gap-6">
+  <div class="py-8 grid grid-cols-1 lg:grid-cols-[max-content,1fr] gap-6">
     <profile-card class="lg:w-[262px] max-w-full" />
     <profile-info />
   </div>

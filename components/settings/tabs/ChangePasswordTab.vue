@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded-2xl px-10 py-11 grid grid-cols-1 lg:grid-cols-[max-content,1fr] gap-6"
+    class="rounded-2xl py-8 grid grid-cols-1 lg:grid-cols-[max-content,1fr] gap-6"
   >
   <profile-card class="lg:w-[262px] w-full max-w-full" />
     <form class="w-full mx-auto bg-white rounded-2xl p-3" @submit.prevent="submit">

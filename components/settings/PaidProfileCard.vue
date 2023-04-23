@@ -1,55 +1,52 @@
 <template>
-  <div class="bg-white rounded-2xl">
+  <div class="bg-white py-3 min-h-[100px] rounded-2xl">
     <div class="rounded-2xl bg-white py-6 px-6 flex items-center justify-center">
       <div class="flex flex-col items-center">
-        <h3 class="uppercase text-paperdazgray-500 font-semibold text-center mb-4 text-xl">
+        <!-- <h3 class="uppercase text-paperdazgray-500 font-semibold text-center mb-4 text-xl">
           {{ userAccount }}
-        </h3>
-        <letter-avatar
-        v-if="!$auth.user.profilePicture"
-        style="width: 160px; height: 160px; font-size: 70px"
-        class="w-40 h-40 rounded-1 object-cover cursor-pointer mr-1 mb-2"
-        :username="(user.companyName || userFullName)"
-      />
+        </h3> -->
+        <letter-avatar v-if="!$auth.user.profilePicture" style="width: 120px; height: 120px; font-size: 70px"
+          class="w-40 h-40 rounded-4 object-cover cursor-pointer mr-1 mb-2"
+          :username="(user.companyName || userFullName)" />
         <div v-else class="w-40 h-40 mx-auto p-0.5 mb-2">
-          <div @click="visibleUploadImageDialog = true" class="w-full h-full border-2 border-[#B7EF94] p-2 cursor-pointer rounded-lg">
+          <div @click="visibleUploadImageDialog = true"
+            class="w-full h-full border-2 border-[#B7EF94] p-2 cursor-pointer rounded-lg">
             <img :src="profilePhoto" class="w-full h-full profilePhoto rounded-lg" alt="" />
           </div>
         </div>
-        <p class="text-lg font-semibold mb-2 capitalize">
+        <!-- <p class="text-lg font-semibold mb-2 capitalize">
           {{ `${user.firstName} ${user.lastName}` }}
-        </p>
+        </p> -->
       </div>
     </div>
-    <div class="flex justify-center">
-      <button
-      @click="visibleUploadImageDialog = true"
-      class="flex items-center py-2 px-3 shadow rounded-md w-9/12 mb-3">
-        <img src="~/assets/icons/edit-icon.svg" class="mr-3"/>
+    <div class="flex mb-3 flex-col items-center justify-center">
+      <button @click="visibleUploadImageDialog = true" style="box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);"
+        class="flex items-center py-2 px-4 justify-center rounded-lg  mb-5">
+        <img src="~/assets/icons/edit-icon.svg" class="mr-3" />
         {{ $auth.user.profilePicture ? 'Edit' : 'Upload' }}
       </button>
-      <!-- <div class="bg-white rounded-lg px-2 py-4" @click="showQrcodeFunc">
-        <barcode-icon class="w-full h-8 text-paperdazgreen-300 mb-2 cursor-pointer" />
-        <p class="text-center text-[10px] font-medium">Download</p>
-      </div>
-      <div class="bg-white rounded-lg px-2 py-4" @click="showShareCompanyFunc">
-        <share-icon class="w-full h-8 text-paperdazgreen-300 mb-2 cursor-pointer" />
-        <p class="text-center text-[10px] font-medium">Share</p>
-      </div>
-      <a :href="`/public/profile/${mainUserLink}`" target="_blanck" class="block bg-white rounded-lg px-2 py-4">
-        <building-icon class="w-full h-8 text-paperdazgreen-300 mb-2" />
-        <p class="text-center text-[10px] font-medium">View Profile</p>
-      </a> -->
+
+
+      <button 
+        class="border-[1px] mt-4 w-[85%] py-2.5 rounded-[10px] border-[#22252948] flex items-center justify-center text-[#22252948]">
+        Date format
+        <img class="ml-4 scale-75" src="../../assets/icons/arrow_down.svg" alt="">
+      </button>
+      <button 
+        class="border-[1px] mt-4 w-[85%] py-2.5 rounded-[10px] border-[#22252948] flex items-center justify-center text-[#22252948]">
+        Time format
+        <img class="ml-4 scale-75" src="../../assets/icons/arrow_down.svg" alt="">
+      </button>
+
+
+
     </div>
 
 
     <QrcodeShare :link="link" v-model="showQrcode" />
 
     <ShareFilesModal :link="link" v-model="showShareCompany" />
-    <cropper-image-upload
-      :show="visibleUploadImageDialog"
-      @visibleDialog="(show) => (visibleUploadImageDialog = show)"
-    />
+    <cropper-image-upload :show="visibleUploadImageDialog" @visibleDialog="(show) => (visibleUploadImageDialog = show)" />
   </div>
 </template>
 
@@ -77,8 +74,8 @@ export default mixins(login).extend({
     }
   },
   computed: {
-    userFullName(){
-        return `${this.user?.firstName} ${this.user?.lastName}`
+    userFullName() {
+      return `${this.user?.firstName} ${this.user?.lastName}`
     },
     profilePhoto() {
       return this.$store.getters.profilePhoto

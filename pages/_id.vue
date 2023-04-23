@@ -56,7 +56,7 @@
           <thead class="text-[#414142]">
             <tr>
               <!-- <th class="w-12 text-center fixed-col left">No</th> -->
-              <th class="text-left font-[700] ">File name </th>
+              <th class="text-left font-[700] " @click="showPermissionModal = true">File name </th>
 
               <th class=" font-[700]  right">Action</th>
               <th class=" font-[700]  right">Privacy</th>
@@ -114,6 +114,7 @@
 
     <PrivateFileModal v-model="showPrivateModal"/>
     <ShareCompanyLinkModal :userInfo="userInfo" @qrLoad="showQrcodeFileFunc" v-model="showShareCompanyName" />
+    <PermissionToView  v-model="showPermissionModal"/>
   </div>
 </template>
 
@@ -139,6 +140,7 @@ import ShareFolder from '~/components/search-strips/component/ShareFolder.vue'
 import PrivateFileModal from '~/components/profile/modal/PrivateFileModal.vue'
 import FilePrivacy from '~/models/FilePrivacy'
 import ShareCompanyLinkModal from '~/components/company-files/ShareCompanyLinkModal.vue'
+import PermissionToView from '~/components/profile/modal/PermissionToView.vue'
 
 export default Vue.extend({
   components: {
@@ -157,7 +159,8 @@ export default Vue.extend({
     ShareFileOptions,
     ShareIconFunc,
     PrivateFileModal,
-    ShareCompanyLinkModal
+    ShareCompanyLinkModal,
+    PermissionToView
   },
   name: 'PublicProfilePage',
   layout: 'profile',
@@ -226,7 +229,8 @@ export default Vue.extend({
       showSearch: false,
       isFetched: false,
       showPrivateModal: false,
-      showShareCompanyName: false
+      showShareCompanyName: false,
+      showPermissionModal: true
     }
   },
   methods: {

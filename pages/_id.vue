@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <ProfileTopInfo :userInfo="userInfo" />
+    <ProfileTopInfo :userInfo="userInfo" @openShare="showShareCompanyName = true"/>
     
 
         <div v-if="fileSpinner" class=" relative h-[300px]">
@@ -113,6 +113,7 @@
     <!-- Start:: Files -->
 
     <PrivateFileModal v-model="showPrivateModal"/>
+    <ShareCompanyLinkModal :userInfo="userInfo" @qrLoad="showQrcodeFileFunc" v-model="showShareCompanyName" />
   </div>
 </template>
 
@@ -137,6 +138,7 @@ import ShareIconFunc from '~/components/search-strips/component/ShareIconFunc.vu
 import ShareFolder from '~/components/search-strips/component/ShareFolder.vue'
 import PrivateFileModal from '~/components/profile/modal/PrivateFileModal.vue'
 import FilePrivacy from '~/models/FilePrivacy'
+import ShareCompanyLinkModal from '~/components/company-files/ShareCompanyLinkModal.vue'
 
 export default Vue.extend({
   components: {
@@ -154,7 +156,8 @@ export default Vue.extend({
     ShareFolder,
     ShareFileOptions,
     ShareIconFunc,
-    PrivateFileModal
+    PrivateFileModal,
+    ShareCompanyLinkModal
   },
   name: 'PublicProfilePage',
   layout: 'profile',
@@ -222,7 +225,8 @@ export default Vue.extend({
       showFolders: false,
       showSearch: false,
       isFetched: false,
-      showPrivateModal: false
+      showPrivateModal: false,
+      showShareCompanyName: false
     }
   },
   methods: {

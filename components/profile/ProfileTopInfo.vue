@@ -20,13 +20,8 @@
       <header class="text-600 text-[#414142] font-semibold pl-7 pb-2 border-b border-[#DCDCDC] relative">
 
         <div class="input-wrapper-title flex relative justify-center items-center">
-          <!-- <input type="text" v-model="name" placeholder="Apple Dental" :disabled="true"
-          class="text-black text-2xl" /> -->
           <span class="text-2xl text-grey pl-3"> {{ name }}</span>
-          <share-outline-icon :width="18" class="w-auto absolute right-4	 pr-3" />
-          <!-- <button v-if="isUser" @click="toggleInput" class="float-right pr-10 md:pr-20">
-            <img src="../../assets/img/pencil.png" class="cursor-pointer w-[20px] h-[20px]" />
-          </button> -->
+          <span @click="$emit('openShare')" class="cursor-pointer"><share-outline-icon  :width="18" class="w-auto absolute right-4	 pr-3" /></span>
           
         </div>
 
@@ -40,21 +35,7 @@
           Join us, complete our files on Paperlink!
         </p>
       </div>
-      <!-- <div v-else>
-       
-     
-        <div class="w-full grid place-items-center">
-          <button
-            class="w-[160px] flex justify-center items-center text-white py-2 mt-3 text-center border-none bg-paperdazgreen-400 rounded-md"
-            v-if="showUpdateButton" :class="[isLoading ? 'opacity-50' : 'opacity-100']" :disabled="isloading"
-            @click="patchUser">
-            Update
-            <SpinnerDottedIcon v-if="isLoading" height="20" width="20" class="animate-spin ml-2" />
-          </button>
-        </div>
 
-
-      </div> -->
     </div>
     <!-- end of dentals container -->
   </section>

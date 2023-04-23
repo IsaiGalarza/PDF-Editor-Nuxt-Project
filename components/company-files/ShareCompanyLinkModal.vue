@@ -19,25 +19,17 @@
       <!-- Start:: Body -->
       <form ref="form">
         <div class="text-centerfont-medium flex justify-between item mx-auto mb-4 whitespace-none">
-          <p class="w-[87%]">
-            <input v-for="input in inputs" :key="input" type="email"
+          <p class="w-full">
+            <input type="email"
               class="py-2 focus:border-paperdazgray-500 px-4 w-full mb-2 rounded-md border-[1px] border-paperdazgray-500"
-              v-model="input.value"
-              placeholder="E-mail" />
+              v-model="email"
+              placeholder="E-mail"
+              />
           </p>
-          <div 
-            class="w-[35px] h-[35px] rounded-full bg-paperdazgray-500 grid place-content-center cursor-pointer">
-            <span @click="addEmailinputs" class="text-white text-[30px]">&plus;</span>
-          </div>
         </div>
-  
-        <p v-if="link == undefined" class="text-center block font-medium  mx-auto mb-4 whitespace-none">
-          <textarea v-model="folderTextareaData"
-            class="w-full py-2 px-4 focus:border-paperdazgray-500 outline-none rounded-md h-28 resize-none border-[1px] border-paperdazgray-500"
-            placeholder="Note..."></textarea>
-        </p>
+
         <div class="flex justify-around">
-          <button class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] 
+          <button class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-full 
            text-white rounded shadow bg-paperdazgreen-400"
            @click="onSubmit"
            :disabled="loading">
@@ -48,22 +40,21 @@
           </button>
         </div>
       </form>
-      <div class="w-full flex justify-around pt-6 items-center py-4 icons-container">
+      <div class="w-full flex justify-around pt-6 items-center py-4">
   
-        <button @click="setLinkCopy" v-if="emailWithLink">
-          <link-icon width="24" height="24" color="rgb(96,98,102)" class="cursor-pointer" />
+        <button @click="setLinkCopy" class="w-[40%] flex bg-paperdazgray-300/20 items-center py-2 px-2 rounded">
+          <link-icon width="20" height="20" color="rgb(96,98,102)" class="cursor-pointer" />
+          <abbr class="pl-2">Copy link</abbr>
         </button>
   
-        <button @click="setFacebookShare">
-          <facebook-icon height="24" class="cursor-pointer" />
-        </button>
-  
-        <button @click="setTwitterShare">
-          <twitter-icon height="24" class="cursor-pointer" />
+        <button @click="showQrcode = true" class="w-[40%] flex bg-paperdazgray-300/20 items-center py-2 px-2 rounded">
+          <qrcode-icon width="20" height="20" class="cursor-pointer" />
+          <abbr class="pl-2">Open QR</abbr>
         </button>
   
       </div>
   
+   <QrcodeShare :link="qrcodeLink" v-model="showQrcode"/>
       <!-- end :: body -->
     </el-dialog>
   </template>
@@ -123,6 +114,8 @@
         showQrcodeFiles: false,
         folderTextareaData: '',
         showModal: false,
+        showQrcode: false,
+        email: "",
         // userFile:{},
         loading: false,
         twiterLink: '',
@@ -149,6 +142,9 @@
     },
   
     computed: {
+      qrcodeLink(){
+        return `${window.location.origin}/${this.userInfo?.businessPage}`
+      },
       emailWithLink() {
         return ((this.link) == undefined)
       }
@@ -202,7 +198,7 @@
         this.$emit('refresh')
       },
       setLinkCopy() {
-        navigator.clipboard.writeText(this.link || `${window.location.origin}/pdf/${this.userFile.paperLink}`);
+        navigator.clipboard.writeText(`${window.location.origin}/${this.userInfo?.businessPage}`);
         this.$notify.success({
           message: 'copied successfully'
         })
@@ -235,7 +231,7 @@
             this.$emit('refresh')
             this.$nuxt.refresh()
   
-            // ------ set the input field to empty ----- --- >>
+            // ------ set the input field to empty ----- 
             this.folderTextareaData = '';
             this.inputs = [0];
           })
@@ -287,8 +283,6 @@
     padding-bottom: 0 !important;
   }
   
-  .icons-container button {
-    @apply w-[40px] h-[40px] rounded-full bg-paperdazgreen-300/20 inline-flex justify-center items-center
-  }
+
   </style>
   

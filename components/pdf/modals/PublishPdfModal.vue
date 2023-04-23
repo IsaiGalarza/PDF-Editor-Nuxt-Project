@@ -330,7 +330,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         )
     },
     async confirmRequest() {
-      await this.$axios
+      await this.$_server
         .post('/pdf-generator', {
           ...ExtractFormPdf({
             downloadLink: this.file?.downloadLink,
@@ -350,7 +350,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         })
     },
     async otherRequest() {
-      await this.$axios
+      await this.$_server
         .post('/pdf-generator', {
           ...ExtractFormPdf({
             downloadLink: this.file?.downloadLink,

@@ -5,15 +5,16 @@
     <input
       type="text"
       v-model="text"
-      v-if="(isActive || justMounted) && !isCreator"
+      v-if="(isActive || justMounted) && !isCreator && isBlur"
       :style="style"
       class="input-annotation"
       placeholder="Type here..."
       ref="text_box"
+      @input="changeWidth"
       @blur="setBlur"
     />
 
-    <p v-else ref="textbox"  :style="style">{{ text || 'Type here...' }}</p>
+    <p v-else ref="textbox" @click="isBlur = !isBlur" :style="style">{{ text || 'Type here...' }}</p>
     <!-- <span :style="hideStyle" ref="text_hidden">{{ text || 'Type here...' }}</span> -->
   </div>
 </template>
@@ -44,8 +45,12 @@ export default {
     this.$refs.text_box && this.$refs.text_box.focus()
   },
   methods: {
+    changeWidth(){
+      this.$refs.text_box.style.width = this.$refs.text_box.scrollWidth + 'px'
+    },
     setBlur(){
       this.$emit('onBlur')
+      this.isBlur = !this.isBlur
     },
     onBlur: () => {
       console.log("onBlur")
@@ -141,7 +146,7 @@ export default {
 .input-annotation:focus {
   border:none;
   border-left: 1px solid #5FA348;
-  border-bottom: 1px solid #5FA348;
+  border-bottom: 1px solid transparent;
   background: transparent;
 }
 

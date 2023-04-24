@@ -157,13 +157,13 @@
             <!--START: No files container-->
             <section class="px-0 min-w-[700px] w-full">
                <div class="border-b-[1px] border-gray-200 flex items-center py-3">
-                 <b class="w-1/12  inline-block text-center">Order</b>
-                  <b class="text-left inline-block w-3/12">File name</b>
-                  <b class="text-left inline-block w-1/12">Pages</b>
-                  <b class="text-center inline-block w-2/12">Action required</b>
-                  <b class="text-center inline-block w-2/12">Privacy</b>
-                  <b class="text-center inline-block w-2/12">Date &amp; Time</b>
-                  <b class="text-center inline-block w-1/12"></b>
+                 <p class="w-1/12  inline-block text-center">Order</p>
+                  <p class="text-left inline-block w-3/12">File name</p>
+                  <p class="text-left inline-block w-1/12">Pages</p>
+                  <p class="text-center inline-block w-2/12">Action required</p>
+                  <p class="text-center inline-block w-2/12">Privacy</p>
+                  <p class="text-center inline-block w-2/12">Date &amp; Time</p>
+                  <p class="text-center inline-block w-1/12"></p>
                </div>
                <draggable v-model="files" group="paperlink" @change="onChange" class="px-0">
                 <div v-for="(file, i) in files" :key="file.id" class="py-2 border-b-[1px] border-gray-200 list-none px-0 flex items-center  min-w-[700px] w-full">

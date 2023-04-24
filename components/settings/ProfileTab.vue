@@ -17,7 +17,7 @@
     <div
       v-for="(tab, i) in tabs"
       :key="i"
-      class="w-6/12 py-3 text-center sm:rounded-lg text-sm sm:text-base"
+      class="w-6/12 py-3 cursor-pointer text-center sm:rounded-lg text-sm sm:text-base"
       :class="[
         currentTab == tab.value
           ? 'bg-paperdazgreen-300 text-white'

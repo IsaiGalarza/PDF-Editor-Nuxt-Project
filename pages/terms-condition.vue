@@ -1,9 +1,9 @@
-<template>
+<template >
   <html>
     <head>
       <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
     </head>
-    <body class="c13 doc-content c-none">
+    <body  class="c13 doc-content c-none bg-white">
       <p class="c10"><span class="c3 c15">TERMS AND CONDITIONS</span></p>
       <p class="c2"><span class="c3 c1">INTRODUCTION</span></p>
       <p class="c2" id="h.gjdgxs">

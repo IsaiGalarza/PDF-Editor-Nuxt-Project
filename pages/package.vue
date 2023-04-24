@@ -14,8 +14,11 @@
           />
         </keep-alive>
       </div>
+     
     </section>
+    <Footer />
   </div>
+
 </template>
 
 <script>
@@ -27,10 +30,12 @@ import MailIcon from '~/components/svg-icons/MailIcon.vue'
 import PaymentCardIcon from '~/components/svg-icons/PaymentCardIcon.vue'
 import UserProfileSolidIcon from '~/components/svg-icons/UserProfileSolidIcon.vue'
 import axios from "axios"
+import Footer from '~/components/footer.vue'
+
 
 
 export default Vue.extend({
-  components: { UserProfileSolidIcon, MailIcon, PaymentCardIcon },
+  components: { UserProfileSolidIcon, MailIcon, PaymentCardIcon, Footer },
   name: 'PackagesLandingPage',
   layout: 'landing',
   auth: false,

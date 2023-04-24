@@ -1,31 +1,22 @@
 <template>
   <div class="grid md:grid-cols-[1fr,max-content] mb-12 gap-5">
-    <div
-      class="border-2 border-paperdazgreen-400 w-full rounded-2xl overflow-hidden relative bg-white text-[#505050]"
-    >
+    <div class="border-2 border-paperdazgreen-400 w-full rounded-2xl overflow-hidden relative bg-white text-[#505050]">
       <div class="p-5 overflow-x-auto custom-scrollbar">
         <table class="custom-table">
           <thead>
             <tr class="text-lg">
               <th class="text-left">
-                <span class="inline-block border-b-2 border-paperdazgreen-400"
-                  >Feature</span
-                >
+                <span class="inline-block border-b-2 border-paperdazgreen-400">Feature</span>
               </th>
               <th>
-                <span class="inline-block border-b-2 border-paperdazgreen-400"
-                  >Price <span class="text-xxs font-normal">/unit</span></span
-                >
+                <span class="inline-block border-b-2 border-paperdazgreen-400">Price <span
+                    class="text-xxs font-normal">/unit</span></span>
               </th>
               <th>
-                <span class="inline-block border-b-2 border-paperdazgreen-400"
-                  >Quantity</span
-                >
+                <span class="inline-block border-b-2 border-paperdazgreen-400">Quantity</span>
               </th>
               <th>
-                <span class="inline-block border-b-2 border-paperdazgreen-400"
-                  >Amount</span
-                >
+                <span class="inline-block border-b-2 border-paperdazgreen-400">Amount</span>
               </th>
             </tr>
           </thead>
@@ -43,20 +34,14 @@
                           type="number"
                           min="1"
                         /> -->
-                  <el-input-number
-                    v-model.number="customPackage.paperlink"
-                    :step="1"
-                    size="small"
-                    :min="1"
-                    :max="20"
-                  />
+                  <el-input-number v-model.number="customPackage.paperlink" :step="1" size="small" :min="1" :max="20" />
                 </div>
               </td>
               <td class="text-center">
                 {{
                   formatPrice(
                     Number(settings.custom_paperlink_price) *
-                      Number(customPackage.paperlink)
+                    Number(customPackage.paperlink)
                   )
                 }}
               </td>
@@ -74,62 +59,39 @@
                           type="number"
                           min="1"
                         /> -->
-                  <el-input-number
-                    v-model.number="customPackage.teamMembers"
-                    :step="1"
-                    size="small"
-                    :min="0"
-                    :max="20"
-                  />
+                  <el-input-number v-model.number="customPackage.teamMembers" :step="1" size="small" :min="1" :max="20" />
                 </div>
               </td>
               <td class="text-center">
                 {{
                   formatPrice(
                     Number(settings.custom_team_members_price) *
-                      Number(customPackage.teamMembers)
+                    Number(customPackage.teamMembers)
                   )
                 }}
               </td>
             </tr>
 
             <tr>
-              <td>PWA Business Profile</td>
+              <td>Paperlink Business Page</td>
               <td>
                 <div class="grid place-items-center">
-                  <label
-                    for="public-profile-checkbox"
-                    class="inline-grid place-items-center h-7 w-7 rounded border border-gray-300 p-1 cursor-pointer"
-                  >
+                  <label for="public-profile-checkbox"
+                    class="inline-grid place-items-center h-7 w-7 rounded border border-gray-300 p-1 cursor-pointer">
                     <transition name="fade" :duration="100">
-                      <check-icon
-                        height="12"
-                        width="16"
-                        v-show="customPackage.publicProfile"
-                      />
+                      <check-icon height="12" width="16" v-show="customPackage.publicProfile" />
                     </transition>
                   </label>
                 </div>
               </td>
               <td>
                 <div class="grid place-items-center">
-                  <input
-                    type="checkbox"
-                    hidden
-                    id="public-profile-checkbox"
-                    :disabled="true"
-                    v-model="customPackage.publicProfile"
-                  />
-                  <label
-                    for="public-profile-checkbox"
-                    class="inline-grid place-items-center h-7 w-7 rounded border border-gray-300 p-1 cursor-pointer"
-                  >
+                  <input type="checkbox" hidden id="public-profile-checkbox" :disabled="true"
+                    v-model="customPackage.publicProfile" />
+                  <label for="public-profile-checkbox"
+                    class="inline-grid place-items-center h-7 w-7 rounded border border-gray-300 p-1 cursor-pointer">
                     <transition name="fade" :duration="100">
-                      <check-icon
-                        height="12"
-                        width="16"
-                        v-show="customPackage.publicProfile"
-                      />
+                      <check-icon height="12" width="16" v-show="customPackage.publicProfile" />
                     </transition>
                   </label>
                 </div>
@@ -183,24 +145,14 @@
           </tbody>
         </table>
       </div>
-      <div
-        class="border-t-2 border-paperdazgreen-400 py-4 px-10 text-lg font-bold flex justify-between"
-      >
+      <div class="border-t-2 border-paperdazgreen-400 py-4 px-10 text-lg font-bold flex justify-between">
         <span>Total Amount</span>
         <span class="text-[#606060]">{{ formatPrice(totalCost) }}</span>
       </div>
     </div>
     <div class="md:min-w-[300px] lg:min-w-[320px] bg-white rounded-[20px] p-3">
-      <custom-packagecard
-        show-bottom-button
-        class="w-full"
-        @setName="setname"
-        :staging-package="stagingPackage"
-        @bottom-button-clicked="$emit('next-tab', $event)"
-        :edited="true"
-        :create="true"
-        :isLight="true"
-      />
+      <custom-packagecard show-bottom-button class="w-full" @setName="setname" :staging-package="stagingPackage"
+        @bottom-button-clicked="$emit('next-tab', $event)" :edited="true" :create="true" :isLight="true" />
     </div>
   </div>
 </template>

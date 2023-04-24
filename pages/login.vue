@@ -69,6 +69,8 @@
 
     <ChangeUserEmail @updateSocialDataEmail="updateSocialDataEmail" :modalMessageError="modalMessageError"
       v-model="showUpdateEmail" />
+
+      <Footer />
   </section>
 </template>
 
@@ -88,6 +90,8 @@ import { ErrorHandler } from '~/types/ErrorFunction'
 import ChangeUserEmail from '~/components/company-files/Tabs/ChangeUserEmail.vue'
 import { NoAuthpages } from '~/types/NoAuthPages'
 import { Route } from 'vue-router'
+import Footer from '~/components/footer.vue'
+
 
 
 
@@ -115,6 +119,7 @@ export default Vue.extend({
     MessageAlertWidget,
     CheckIcon,
     ChangeUserEmail,
+    Footer
   },
   layout: 'landing',
   // beforeRouteEnter(to, from, next) {

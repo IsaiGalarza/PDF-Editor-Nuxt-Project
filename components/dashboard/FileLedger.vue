@@ -55,7 +55,7 @@
         </div>
         <!-- Start:: empty file ledger -->
         <!-- End:: empty file ledger -->
-        <table key="3" ref="fileLedgerTable" class="file-ledger-table" v-else>
+        <table v-show="ledger.length != 0" key="3" ref="fileLedgerTable" class="file-ledger-table" v-else>
           <thead class="text-sm sm:text-base">
             <tr class="text-left">
               <th class="w-12 text-left fixed-col left">No</th>
@@ -157,6 +157,40 @@
             </tr>
           </tbody>
         </table>
+
+      <img  v-show="!spinner && ledger.length === 0" src="../../assets/img/dashboard-bg.png" class="position-absolute mt-24 md:left-[30%] md:w-auto sm:w-[200px]" /> 
+     <table v-show="!spinner && ledger.length === 0" key="3" ref="fileLedgerTable" class="file-ledger-table"> 
+      <thead>
+        <tr class="text-left">
+          <th class="text-left fixed-col left font-[500]">No</th>
+          <th class="text-center font-[500]">File Name</th>
+          <th class="text-center font-[500]">Action</th>
+          <th class="text-center font-[500]" v-if="isPaidUser">Action By</th>
+          <th class="text-center font-[500]">Date & Time</th>
+          <th class="fixed-col right"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="i in 10" :key="i">
+          <td class="text-left fixed-col left">{{ i }}</td>
+          <td class="text-center">
+
+          </td>
+          <td class="text-center">
+          </td>
+          <td class="text-center" v-if="isPaidUser">
+
+          </td>
+          <td class="text-center">
+          </td>
+          <td class="fixed-col right">
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+        
       </div>
 
       <!-- </transition> -->

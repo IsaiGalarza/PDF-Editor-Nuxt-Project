@@ -1,7 +1,13 @@
 <template>
-  <el-dialog :visible.sync="showModal" :append-to-body="true" style="" :show-close="false" center
+  <el-dialog :close-on-click-modal="false" :visible.sync="showModal" style="" :show-close="false" center
     class="relative text-[#414042]">
     <template #title>
+
+      <div class="flex justify-end">
+        <button @click="closeModal()" class="">
+          <img src="../../assets/icons/x.svg" alt="">
+        </button>
+      </div>
       <span class="text-center  text-xl block w-full">Create Password</span>
     </template>
     <!-- Start:: Body -->
@@ -13,40 +19,40 @@
       <div class="">
         <div class="error-wrapper">
           <div :class="[
-            alphabet.test(this.password) ? 'bg-[green]' : 'bg-[#808080b8]',
-          ]" class="error-indicator"></div>
+              alphabet.test(this.password) ? 'bg-[green]' : 'bg-[#808080b8]',
+            ]" class="error-indicator"></div>
           <span class="text-[11px]" :class="[
-            alphabet.test(this.password)
-              ? 'text-[green]'
-              : 'text-[#808080b8]',
-          ]">
+              alphabet.test(this.password)
+                ? 'text-[green]'
+                : 'text-[#808080b8]',
+            ]">
             Password must contain upper</span>
         </div>
         <div class="error-wrapper">
           <div :class="[
-            number.test(this.password) ? 'bg-[green]' : 'bg-[#808080b8]',
-          ]" class="error-indicator"></div>
+              number.test(this.password) ? 'bg-[green]' : 'bg-[#808080b8]',
+            ]" class="error-indicator"></div>
           <span class="text-[11px]" :class="[
-            number.test(this.password) ? 'text-[green]' : 'text-[#808080b8]',
-          ]">
+              number.test(this.password) ? 'text-[green]' : 'text-[#808080b8]',
+            ]">
             Password must contain number</span>
         </div>
         <div class="error-wrapper">
           <div :class="[
-            charac.test(this.password) ? 'bg-[green]' : 'bg-[#808080b8]',
-          ]" class="error-indicator"></div>
+              charac.test(this.password) ? 'bg-[green]' : 'bg-[#808080b8]',
+            ]" class="error-indicator"></div>
           <span class="text-[11px]" :class="[
-            charac.test(this.password) ? 'text-[green]' : 'text-[#808080b8]',
-          ]">
+              charac.test(this.password) ? 'text-[green]' : 'text-[#808080b8]',
+            ]">
             Password must contain symbol</span>
         </div>
         <div class="error-wrapper">
           <div :class="[
-            this.password?.length > 8 ? 'bg-[green]' : 'bg-[#808080b8]',
-          ]" class="error-indicator"></div>
+              this.password?.length > 8 ? 'bg-[green]' : 'bg-[#808080b8]',
+            ]" class="error-indicator"></div>
           <span class="text-[11px]" :class="[
-            this.password?.length > 8 ? 'text-[green]' : 'text-[#808080b8]',
-          ]">
+              this.password?.length > 8 ? 'text-[green]' : 'text-[#808080b8]',
+            ]">
             Password must be morethan 8 characters</span>
         </div>
         <div class="error-wrapper">
@@ -154,7 +160,9 @@ export default Vue.extend({
     this.showModal = this.visible
   },
   methods: {
-
+    closeModal(){
+      this.showModal = false
+    },
     loginUserFunc() {
       let user = {
         "email": this.email,
@@ -165,7 +173,7 @@ export default Vue.extend({
         .loginWith('local', { data: user })
         .then(async (response) => {
           let { user } = response.data
-         let bussinessName =  this.$auth.user?.businessPage
+          let bussinessName = this.$auth.user?.businessPage
 
           //@ts-ignore
           await this.loginUser(response)
@@ -205,7 +213,7 @@ export default Vue.extend({
           this.loading = false
           // console.log(err)
         })
-       
+
     },
   },
 })

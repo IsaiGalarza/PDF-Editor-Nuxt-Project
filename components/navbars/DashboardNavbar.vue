@@ -340,7 +340,7 @@ export default mixins(GlobalMixin, login).extend({
         .then(async response => {
           this.$auth.strategy.token.set(response.accessToken)
           localStorage.setItem('paperdaz_userID', response.user.id)
-          window.location.assign('/paperlink-files')
+          window.location.assign('/paperlink-pages')
           // this.$auth.strategy.token.set('...')
           //@ts-ignore
           // await this.loginUser(response)
@@ -360,7 +360,7 @@ export default mixins(GlobalMixin, login).extend({
           this.$nuxt.$router.push('/settings?tab=account')
           break
         case 'dashboard':
-          this.$nuxt.$router.push('/paperlink-files')
+          this.$nuxt.$router.push('/paperlink-pages')
           break
         case 'settings':
           this.$nuxt.$router.push('/settings')

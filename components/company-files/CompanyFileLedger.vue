@@ -3,7 +3,7 @@
     <!-- Start:: header -->
     <header class="flex flex-col xs:flex-row xs:items-center justify-between whitespace-nowrap px-2 mt-3 mb-2">
       <h5 class="text-lg font-semibold text-[#272727] hidden sm:inline-flex w-full items-center gap-2 my-2">
-        Paperlink Files
+        Paperlink Pages
       </h5>
       <div class="w-full text-white flex items-center justify-end my-2 pl-2">
         <button @click="showUploadModalFunction"

@@ -8,7 +8,7 @@
           type="error"
           class="my-2 w-[80%] ml-[0%]"
         />
-        <p class=" md:text-[2rem] text-white">business_name</p>
+        <p class=" md:text-[2rem] text-white">Account Information</p>
         <span class="text-[0.9rem] mb-10 text-white"
           >Enter the required information to continue</span
         >
@@ -17,8 +17,9 @@
             :disabled="loading"
             class="text-input"
             placeholder="Business name"
-            required     
-            v-model="business_name"
+            required
+            @input="setBusinessName"
+            :value="business_name"
           />
           <el-input
             :disabled="loading"
@@ -159,10 +160,7 @@
         </button>
       </div>
     </div>
-    <Footer />
   </section>
-
- 
 </template>
 
 <script>
@@ -170,14 +168,13 @@ import Vue from 'vue'
 import axios from 'axios'
 import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
 import MessageAlertWidget from '~/components/widgets/MessageAlertWidget.vue'
-import Footer from '~/components/footer.vue'
 import { ErrorHandler } from '~/types/ErrorFunction'
 
 export default Vue.extend({
   name: 'RegisterPage',
   auth: false,
   layout: 'landing',
-  components: { SpinnerDottedIcon, MessageAlertWidget, Footer  },
+  components: { SpinnerDottedIcon, MessageAlertWidget },
   data() {
     return {
       isLoading: false,
@@ -198,7 +195,7 @@ export default Vue.extend({
   computed: {
     checkFilledInput() {
       return (
-        this.business_email &&
+        this.business_email.trim() &&
         this.contact_name &&
         this.business_number &&
         this.business_name &&

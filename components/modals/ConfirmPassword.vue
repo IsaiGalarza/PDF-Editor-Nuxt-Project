@@ -183,7 +183,7 @@ export default Vue.extend({
             if (fromFileManger?.isGuest) {
               this.$nuxt.$router.push(fromFileManger.path)
             } else {
-              // this.$nuxt.$router.push('/paperlink-files')
+              // this.$nuxt.$router.push('/paperlink-pages')
               this.closeModal()
               this.$nuxt.$router.push(`/${user.businessPage}`)
             }

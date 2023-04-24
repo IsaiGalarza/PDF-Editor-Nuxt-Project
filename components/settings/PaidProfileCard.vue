@@ -10,7 +10,7 @@
           :username="(user.companyName || userFullName)" />
         <div v-else class="w-40 h-40 mx-auto p-0.5 mb-2">
           <div @click="visibleUploadImageDialog = true"
-            class="w-full h-full border-2 border-[#B7EF94] p-2 cursor-pointer rounded-lg">
+            class="w-full h-full border-2 border-[#679b46] p-2 cursor-pointer rounded-lg">
             <img :src="profilePhoto" class="w-full h-full profilePhoto rounded-lg" alt="" />
           </div>
         </div>
@@ -27,16 +27,17 @@
       </button>
 
 
-      <button 
+      <button
         class="border-[1px] mt-4 w-[85%] py-2.5 rounded-[10px] border-[#22252948] flex items-center justify-center text-[#22252948]">
         Date format
         <img class="ml-4 scale-75" src="../../assets/icons/arrow_down.svg" alt="">
       </button>
-      <button 
+      <button
         class="border-[1px] mt-4 w-[85%] py-2.5 rounded-[10px] border-[#22252948] flex items-center justify-center text-[#22252948]">
         Time format
         <img class="ml-4 scale-75" src="../../assets/icons/arrow_down.svg" alt="">
       </button>
+
 
 
 

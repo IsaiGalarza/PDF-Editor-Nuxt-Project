@@ -92,10 +92,10 @@ export default Vue.extend({
           exact: true,
         },
         {
-          label: 'Paperlink Files',
+          label: 'Paperlink Pages',
           icon: 'DocumentIcon',
           openNew: false,
-          link: '/paperlink-files',
+          link: '/paperlink-pages',
           exact: false,
         },
         {

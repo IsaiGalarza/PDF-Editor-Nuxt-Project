@@ -27,10 +27,10 @@
         <nuxt-link  v-show="!$auth.loggedIn && routeName !== 'login'" to="/login" class="px-4 py-2 capitalize text-black rounded-md ">
           Login
         </nuxt-link>
-        <nuxt-link  v-show="!$auth.loggedIn && routeName === 'login'" to="/register" class="px-4 py-2 capitalize text-black rounded-md ">
+        <nuxt-link  v-show="!$auth.loggedIn && routeName === 'login'" to="/package?tablevel=1" class="px-4 py-2 capitalize text-black rounded-md ">
           Register
         </nuxt-link>
-        <nuxt-link v-show="$auth.loggedIn" to="/paperlink-files" class="px-4 py-2 text-paperdazgreen-300 rounded-md border-paperdazgreen-300 border-2">
+        <nuxt-link v-show="$auth.loggedIn" to="/paperlink-pages" class="px-4 py-2 text-paperdazgreen-300 rounded-md border-paperdazgreen-300 border-2">
           Dashboard
         </nuxt-link>
        </div>

@@ -396,7 +396,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.$store.commit("UN_SET_AGREE_SIGN")
           console.log(this.file)
           this.$auth.loggedIn
-            ? this.$nuxt.$router.push('/paperlink-files')
+            ? this.$nuxt.$router.push('/paperlink-pages')
             : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
         })
       } catch (error) {
@@ -476,7 +476,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           })
           this.closeModal()
           this.$store.commit('SET_PDF_EXIT', true)
-          this.$nuxt.$router.push('/paperlink-files')
+          this.$nuxt.$router.push('/paperlink-pages')
         })
         .catch(() => {
           this.$notify.error({

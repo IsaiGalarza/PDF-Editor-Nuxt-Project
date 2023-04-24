@@ -3,8 +3,7 @@
     <div
       class="ledger-container bg-white rounded-2xl flex-1 min-h-[50vh] lg:min-h-[40vh] position-relative pt-4"
     >
-      <!-- <transition name="fade" mode="out-in"> -->
-      {{ $store.getters.getLedgerParams }}
+
       <div class="search-container">
         <h3
           class="text-paperdazgray-700 font-semibold text-xl flex xs:items-center justify-between whitespace-nowrap px-3 mb-1"
@@ -70,7 +69,7 @@
               <th class="fixed-col right text-right"></th>
             </tr>
           </thead>
-          <tbody v-if="pdfUser.length && !spinner">
+          <tbody >
             <tr
               v-for="(file, i) in ledger"
               :key="file.id"
@@ -200,7 +199,6 @@
     <FilePagination
       :totalFile="totalFile"
       @setPage="setPage"
-      v-if="pdfUser.length > 10"
     />
     <ShareFilesModal
       :userFile="userFile"
@@ -386,8 +384,8 @@ export default Vue.extend({
       await this.$axios
         .get(acct)
         .then((response) => {
+          console.log(response.data)
           this.ledger = response.data.data
-          this.$store.commit('ADD_USER', files)
           this.totalFile = response.data.total
         })
         .finally(() => {
@@ -539,8 +537,8 @@ export default Vue.extend({
     },
   },
   watch: {
-    '$store.getters.getLedgerParams'() {
-      this.fetchFiles(this.returnedDataPage, this.searchParam)
+    '$store.getters.getLedgerParams': async function() {
+      await this.fetchFiles(this.returnedDataPage, this.searchParam)
     },
     '$auth.user': function () {
       if (this.debounceTimeout) clearTimeout(this.debounceTimeout)

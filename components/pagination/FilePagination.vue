@@ -4,7 +4,7 @@
     <div>
 
       <paginate
-      :page-count="arrayPages.length + 1"
+      :page-count="arrayPages.length"
       :click-handler="buttonFilePage"
       :prev-text="'&#8249;'"
       :next-text="'&#8250;'"

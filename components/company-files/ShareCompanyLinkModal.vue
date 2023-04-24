@@ -143,7 +143,7 @@
   
     computed: {
       qrcodeLink(){
-        return `${window.location.origin}/${this.userInfo?.businessPage}`
+        return this.link
       },
       emailWithLink() {
         return ((this.link) == undefined)
@@ -198,7 +198,7 @@
         this.$emit('refresh')
       },
       setLinkCopy() {
-        navigator.clipboard.writeText(`${window.location.origin}/${this.userInfo?.businessPage}`);
+        navigator.clipboard.writeText(this.link);
         this.$notify.success({
           message: 'copied successfully'
         })
@@ -217,7 +217,7 @@
 
         let requestData = {
                 action: "invite_link",
-                emails: this.inputs.map((item)=> { return item.value}),
+                emails: [this.email],
                 link: `${window.location.origin}/${this.userInfo?.businessPage}`
             };
 

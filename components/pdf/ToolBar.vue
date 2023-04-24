@@ -7,7 +7,12 @@
     </div> -->
     <div class="w-full py-1 pb-2 bg-gray-200 sm:bg-lime-200 flex items-center justify-between" v-if="isConfirm && !isCreator && (!isConfirmChecked || !isScrollBottom)">
       <!-- <span class="float-left pt-2 px-2">Scroll to the bottom of file to confirm that you have read.</span> -->
-      <span class="float-left py-1 px-2">Click here to start Confirm
+      <span class="float-left py-1 px-2" v-if="!agreedConfirmPolicy">
+        <input type="checkbox" class="ml-1"  v-model="agreedConfirmPolicy" />
+        I  agree to confirm that I have read this file by applying my e-signature to this document. 
+      </span>
+      <span class="float-left py-1 px-2" v-if="agreedConfirmPolicy">
+        Click here to start Confirm
         <input type="checkbox" class="ml-1" @change="confrimStart" />
       </span>
       <!-- <button class="text-white bg-zinc-500 rounded px-4 py-2 float-right mr-2" @click="cancelConfrim">Cancel</button> -->
@@ -364,6 +369,7 @@ export default {
     showInsertTools: false,
     isConfirmChecked: false,
     showDropDown: false,
+    agreedConfirmPolicy: false,
     initialIcon:  {
         type: TOOL_TYPE.tick,
         component: 'pdf-tick-icon',

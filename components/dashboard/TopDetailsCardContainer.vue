@@ -4,7 +4,7 @@
       v-for="(tab, i) in topDetail"
       :key="i"
       :isActive="tab.key === activeTab"
-      @click.native="searchFilter(tab.key, tab.action, tab.params)"
+      @click.native="searchFilter(tab.key, tab.action, tab.action)"
     >
       <template #icon>
         <component :is="tab.icon" />
@@ -54,7 +54,7 @@ export default Vue.extend({
           label: 'ledger',
           params: "",
           key: 'ledger',
-          action: 'ledger',
+          action: '',
           count: 896,
           icon: LedgerIcon,
         },
@@ -67,20 +67,20 @@ export default Vue.extend({
           icon: PageIconVue,
         },
         {
-          label: 'confirmed',
-          key: 'confirmed',
-          count: 25,
-          params: "confirm",
-          action: 'confirm',
-          icon: TickCircleIconVue,
-        },
-        {
           label: 'signed',
           key: 'signed',
           count: 25,
           params: "sign",
           action: 'sign',
           icon: NoteAndPenIconVue,
+        },
+        {
+          label: 'confirmed',
+          key: 'confirmed',
+          count: 25,
+          params: "confirm",
+          action: 'confirm',
+          icon: TickCircleIconVue,
         },
       ],
     }
@@ -115,7 +115,6 @@ export default Vue.extend({
         Promise.all([ledgers, completeFiles, signFiles, confirmFiles]).then(
           (res) => {
             this.topDetail = res.map((item, index) => {
-              console.log(item?.data?.total, index)
               return {
                 total: item?.data?.total,
                 label: this.labels[index].label,
@@ -151,6 +150,7 @@ export default Vue.extend({
       this.$store.commit('FILTER_USERs', label)
       this.$store.commit("SET_LEDGER_PARAMS", params)
       this.$router.push('file-ledger')
+
     },
   },
 })

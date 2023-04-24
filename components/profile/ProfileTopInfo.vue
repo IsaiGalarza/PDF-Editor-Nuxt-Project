@@ -21,7 +21,7 @@
 
         <div class="input-wrapper-title flex relative justify-center items-center">
           <span class="text-2xl text-grey pl-3"> {{ name }}</span>
-          <span @click="$emit('openShare')" class="cursor-pointer"><share-outline-icon  :width="18" class="w-auto absolute right-4	 pr-3" /></span>
+          <span @click="openShareModal" class="cursor-pointer"><share-outline-icon  :width="18" class="w-auto absolute right-4	 pr-3" /></span>
           
         </div>
 
@@ -93,6 +93,9 @@ export default mixins(login).extend({
     ShareOutlineIcon
   },
   methods: {
+    openShareModal(){
+      this.$emit('openShare', `${window.location.origin}/${this.userInfo.businessPage}`)
+    },
     showImageCropperModal() {
       this.isCreator ? this.visibleUploadImageDialog = true : null
     },

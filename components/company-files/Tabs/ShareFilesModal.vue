@@ -14,30 +14,25 @@
     <!--End:: Close Button -->
     <template #title>
       <h4 class="text-center font-semibold text-xl">Share</h4>
-      <div class="w-full text-center font-semibold py-2 pt-3 text-paperdazgreen-250">{{ (userFile?.fileName || "").replace('.pdf', '') }}</div>
+      <div class="w-full text-center font-semibold py-2 pt-3 text-paperdazgreen-250"></div>
     </template>
     <!-- Start:: Body -->
-    <form ref="form" @submit.prevent="onSubmit">
+    <form ref="form">
       <div class="text-centerfont-medium flex justify-between item mx-auto mb-4 whitespace-none">
-        <p class="w-[87%]">
-          <input v-for="input in inputs" :key="input" type="email"
+        <p class="w-full">
+          <input type="email"
             class="py-2 focus:border-paperdazgray-500 px-4 w-full mb-2 rounded-md border-[1px] border-paperdazgray-500"
-            placeholder="E-mail" />
+            v-model="email"
+            placeholder="E-mail"
+            />
         </p>
-        <div @click="addEmailinputs"
-          class="w-[35px] h-[35px] rounded-full bg-paperdazgray-500 grid place-content-center cursor-pointer">
-          <span class="text-white text-[30px]">&plus;</span>
-        </div>
       </div>
 
-      <p v-if="link == undefined" class="text-center block font-medium  mx-auto mb-4 whitespace-none">
-        <textarea v-model="folderTextareaData"
-          class="w-full py-2 px-4 focus:border-paperdazgray-500 outline-none rounded-md h-28 resize-none border-[1px] border-paperdazgray-500"
-          placeholder="Note..."></textarea>
-      </p>
       <div class="flex justify-around">
-        <button class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] 
-         text-white rounded shadow bg-paperdazgreen-400" :disabled="loading">
+        <button class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-full 
+         text-white rounded shadow bg-paperdazgreen-400"
+         @click="onSubmit"
+         :disabled="loading">
           <span class="inline-flex gap-1 items-center text-[16px]">
             Send
             <spinner-dotted-icon v-show="loading" height="20" width="20" class="animate-spin" />
@@ -45,22 +40,21 @@
         </button>
       </div>
     </form>
-    <div class="w-full flex justify-around pt-6 items-center py-4 icons-container">
+    <div class="w-full flex justify-around pt-6 items-center py-4">
 
-      <button @click="setLinkCopy" v-if="emailWithLink">
-        <link-icon width="24" height="24" color="rgb(96,98,102)" class="cursor-pointer" />
+      <button @click="setLinkCopy" class="w-[40%] flex bg-paperdazgray-300/20 items-center py-2 px-2 rounded">
+        <link-icon width="20" height="20" color="rgb(96,98,102)" class="cursor-pointer" />
+        <abbr class="pl-2">Copy link</abbr>
       </button>
 
-      <button @click="setFacebookShare">
-        <facebook-icon height="24" class="cursor-pointer" />
-      </button>
-
-      <button @click="setTwitterShare">
-        <twitter-icon height="24" class="cursor-pointer" />
+      <button @click="showQrcode = true" class="w-[40%] flex bg-paperdazgray-300/20 items-center py-2 px-2 rounded">
+        <qrcode-icon width="20" height="20" class="cursor-pointer" />
+        <abbr class="pl-2">Open QR</abbr>
       </button>
 
     </div>
 
+ <QrcodeShare :link="qrcodeLink" v-model="showQrcode"/>
     <!-- end :: body -->
   </el-dialog>
 </template>
@@ -68,14 +62,14 @@
 <script>
 import Vue from 'vue'
 import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
-import FacebookIcon from '../../svg-icons/FacebookIcon.vue'
-import TwitterIcon from '../../svg-icons/TwitterIcon.vue'
-import EnvelopeIcon from '../../svg-icons/EnvelopeIcon.vue'
+import FacebookIcon from '~/components/svg-icons/FacebookIcon.vue'
+import TwitterIcon from '~/components/svg-icons/TwitterIcon.vue'
+import EnvelopeIcon from '~/components/svg-icons/EnvelopeIcon.vue'
 import PlusIcon from '~/components/svg-icons/PlusIcon.vue'
 import LinkIcon from '~/components/svg-icons/LinkIcon.vue'
 import EnvelopeIconShare from '~/components/svg-icons/EnvelopeIconShare.vue'
-import QrcodeIcon from '../../svg-icons/QrcodeIcon.vue'
-import QrcodeShare from "./QrcodeShare.vue"
+import QrcodeIcon from '~/components/svg-icons/QrcodeIcon.vue'
+import QrcodeShare from './QrcodeShare.vue'
 import { ExtractFormPdf } from '~/types/extractFormPdf'
 
 
@@ -104,6 +98,9 @@ export default Vue.extend({
     userFile: {
       type: Object
     },
+    userInfo: {
+      type: Object
+    },
     link: {
       type: String
     },
@@ -117,10 +114,14 @@ export default Vue.extend({
       showQrcodeFiles: false,
       folderTextareaData: '',
       showModal: false,
+      showQrcode: false,
+      email: "",
       // userFile:{},
       loading: false,
       twiterLink: '',
-      inputs: [0],
+      inputs: [{
+        value: ""
+      }],
       generateFileProperty: {},
       proceedToRequest: true,
       generatedFile: {}
@@ -141,6 +142,9 @@ export default Vue.extend({
   },
 
   computed: {
+    qrcodeLink(){
+      return this.link
+    },
     emailWithLink() {
       return ((this.link) == undefined)
     }
@@ -148,27 +152,16 @@ export default Vue.extend({
 
   methods: {
     addEmailinputs() {
-      let addEmail = true;
-      Array.from(this.$refs.form.elements).forEach(element => {
-        if (element.type == 'email' && !element.value.trim())
-          addEmail = false
-      });
-      if (!addEmail) return
-      this.inputs.push(this.inputs.length)
+      // let addEmail = true;
+      // Array.from(this.$refs.form.elements).forEach(element => {
+      //   if (element.type == 'email' && !element.value.trim())
+      //     addEmail = false
+      // });
+      // if (!addEmail) return
+      
+      this.inputs.push({ value : ""})
     },
-    async _generatePdf(val) {
-      val.pdf_url = `${window.location.origin}/pdf/${this.userFile.paperLink}`;
-      val.pdf_url = this.userFile?.downloadLink ?? '';
-      if (val.data.length < 1 && !this.userFile) return
 
-      await this.$axios.$post(`/pdf-generator`, { ...val })
-        .then((response) => {
-          this.generateFileProperty = response
-        })
-        .catch((err) => {
-          this.proceedToRequest = false
-        })
-    },
     // async uploadGeneratedFile(val){
     //   if(Object.keys(this.generateFileProperty).length < 1 ) return
     //   // console.log(this.packagename)
@@ -198,14 +191,14 @@ export default Vue.extend({
     },
     async setFacebookShare() {
       await this.$axios.patch(`/files/${this.userFile.id}`, { shared: 'facebook' })
-      await this.$emit('refresh')
+       this.$emit('refresh')
       window.open(
         this.link ||
         `https://www.facebook.com/sharer/sharer.php?u=${window.location.origin}/pdf/${this.userFile.paperLink}`)
       this.$emit('refresh')
     },
     setLinkCopy() {
-      navigator.clipboard.writeText(this.link || `${window.location.origin}/pdf/${this.userFile.paperLink}`);
+      navigator.clipboard.writeText(this.link);
       this.$notify.success({
         message: 'copied successfully'
       })
@@ -222,37 +215,13 @@ export default Vue.extend({
 
       this.loading = true
 
-      let requestData = {}
-      let emails = []
+      let requestData = {
+              action: "invite_link",
+              emails: [this.email],
+              link: this.link
+          };
 
-      //<---------START: looping through the form data elements --------->>
-      Array.from(event.target.elements).forEach(element => {
-        if (element.type == 'email')
-          emails.push(element.value)
-      });
-
-      //<---------END: looping through the form data elements --------->>
-
-      //<---------START: generating edited Pdf --------->>
-      await this._generatePdf(ExtractFormPdf(this.userFile?.downloadLink || [])[0])     //this issue
-
-      // await this.uploadGeneratedFile(this.generateFileProperty)
-      //<---------END: generating edited Pdf --------->>
-
-      if (!this.proceedToRequest) return
-
-      //<---------START:  setting request data payload --------->>
-      requestData = {
-        ...requestData,
-        action: (this.link == undefined ? 'share_file' : 'referral_link'),
-        editedFileLink: this.generateFileProperty?.downloadLink || this.userFile?.downloadLink,
-        fileId: this.userFile?.id || '',
-        emails,
-        note: this.folderTextareaData || '',
-        link: this.link,
-      }
-      //<---------END: setting request data payload --------->>
-      this.$axios.$post(`/request`, requestData)
+      this.$_server.post(`/request`, requestData)
         .then((response) => {
           this.$notify.success({
             title: 'Request',
@@ -262,7 +231,7 @@ export default Vue.extend({
           this.$emit('refresh')
           this.$nuxt.refresh()
 
-          // ------ set the input field to empty ----- --- >>
+          // ------ set the input field to empty ----- 
           this.folderTextareaData = '';
           this.inputs = [0];
         })
@@ -314,7 +283,5 @@ export default Vue.extend({
   padding-bottom: 0 !important;
 }
 
-.icons-container button {
-  @apply w-[40px] h-[40px] rounded-full bg-paperdazgreen-300/20 inline-flex justify-center items-center
-}
+
 </style>

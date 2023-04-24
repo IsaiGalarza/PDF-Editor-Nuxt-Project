@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <ProfileTopInfo :userInfo="userInfo" @openShare="showShareCompanyName = true"/>
+    <ProfileTopInfo :userInfo="userInfo" @openShare="shareLink"/>
     
 
         <div v-if="fileSpinner" class=" relative h-[300px]">
@@ -97,8 +97,8 @@
                 </p>
               </td>
               <td class="flex ">
-                <div class="flex  w-full justify-end ">
-                  <ShareIconFunc  :file="item"  />
+                <div @click="shareLinkFunc(item.paperLink)" class="flex  w-full justify-end ">
+                  <ShareOutlineIcon />
                 </div>
               </td>
             </tr>
@@ -110,11 +110,16 @@
       </div>
       <FilePagination :totalFile="totalFile" @setPage="setFilePage" />
     </div>
-    <!-- Start:: Files -->
+
+
+    <PopUpWrapper @count="increaseCount" :showModal="showGuideModal">
+      <component :is="popUps[keepCount]" />
+    </PopUpWrapper>
+
 
     <PrivateFileModal v-model="showPrivateModal"/>
-    <ShareCompanyLinkModal :userInfo="userInfo" @qrLoad="showQrcodeFileFunc" v-model="showShareCompanyName" />
-    <PermissionToView  v-model="showPermissionModal"/>
+    <ShareCompanyLinkModal :link="link" v-model="showShareCompanyName" />
+    <PermissionToView  v-model="showPermissionModal" :isCreator="isAuthor"/>
   </div>
 </template>
 
@@ -129,9 +134,7 @@ import ShareIcon from '~/components/svg-icons/ShareIcon.vue'
 import ShareOutlineIcon from '~/components/svg-icons/ShareOutlineIcon.vue'
 import HeartOutlineIcon from '~/components/svg-icons/HeartOutlineIcon.vue'
 import ForwardOutlineIcon from '~/components/svg-icons/ForwardOutlineIcon.vue'
-import FreeUser from '~/middleware/free-user'
 import SpinnerDottedIcon from '../components/svg-icons/SpinnerDottedIcon.vue'
-import Paid_User from '~/mixins/Paid_User'
 import ArrowDownIcon from '~/components/svg-icons/ArrowDownIcon.vue'
 import FilePagination from '~/components/pagination/FilePagination.vue'
 import ShareFileOptions from '~/components/profile/components/ShareFileOptions.vue'
@@ -141,6 +144,13 @@ import PrivateFileModal from '~/components/profile/modal/PrivateFileModal.vue'
 import FilePrivacy from '~/models/FilePrivacy'
 import ShareCompanyLinkModal from '~/components/company-files/ShareCompanyLinkModal.vue'
 import PermissionToView from '~/components/profile/modal/PermissionToView.vue'
+import PopUpWrapper from '~/components/dashboard/PopUps/PopUpWrapper.vue'
+import PG_Tutorial_1 from "~/components/profile/modal/PopUps/PG_Tutorial_1.vue"
+import PG_Tutorial_2 from "~/components/profile/modal/PopUps/PG_Tutorial_2.vue"
+import PG_Tutorial_3 from "~/components/profile/modal/PopUps/PG_Tutorial_3.vue"
+import PG_Tutorial_4 from "~/components/profile/modal/PopUps/PG_Tutorial_4.vue"
+import PG_Tutorial_5 from "~/components/profile/modal/PopUps/PG_Tutorial_5.vue"
+
 
 export default Vue.extend({
   components: {
@@ -160,7 +170,14 @@ export default Vue.extend({
     ShareIconFunc,
     PrivateFileModal,
     ShareCompanyLinkModal,
-    PermissionToView
+    PermissionToView,
+    ShareOutlineIcon,
+    PopUpWrapper,
+    PG_Tutorial_1,
+    PG_Tutorial_2,
+    PG_Tutorial_3,
+    PG_Tutorial_4,
+    PG_Tutorial_5
   },
   name: 'PublicProfilePage',
   layout: 'profile',
@@ -182,14 +199,6 @@ export default Vue.extend({
         })
       })
 
-    // const user = await $axios
-    //   .$get(`/users/${localStorage.getItem('paperdaz_userID')}`)
-    //   .then((response) => {
-    //     return response
-    //   })
-    //   .catch((err) => {})
-
-    // store.commit('SET_FILE', file)
     return { userInfo }
   },
  
@@ -202,9 +211,8 @@ export default Vue.extend({
   computed: {
     isAuthor() {
       return this.$auth?.user?.id == this.userInfo?.id
-    }
+    },
   },
-  // middleware:['paid_user'],
   filters: {
     removeExtension(filename) {
       return filename?.replace(/\.[^\/.]+$/, '');
@@ -230,10 +238,36 @@ export default Vue.extend({
       isFetched: false,
       showPrivateModal: false,
       showShareCompanyName: false,
-      showPermissionModal: true
+      showPermissionModal: false,
+      link: "",
+      keepCount: 4,
+      showGuideModal: false,
+      popUps: [
+        'PG_Tutorial_1',
+        'PG_Tutorial_2',
+        'PG_Tutorial_3',
+        'PG_Tutorial_4',
+        'PG_Tutorial_5'
+       ]
     }
   },
   methods: {
+    async increaseCount() {
+      this.keepCount = this.keepCount + 1
+      if (this.keepCount == this.popUps.length) {
+        this.showGuideModal = false
+        await this.updateTutorialStatus()
+        await this.filterUsers()
+        document.body.style.overflow = 'auto'
+      }
+    },
+    shareLinkFunc(val){
+      this.shareLink(`${window.location.origin}/pdf/${val}`)
+    },
+    shareLink(val){
+      this.link = val
+      this.showShareCompanyName = true
+    },
     routeToFileManager(val, privacy) {
       if(privacy == FilePrivacy.PRIVATE) this.showPrivateModal = true
       else {
@@ -241,12 +275,12 @@ export default Vue.extend({
       this.$router.push(val)
       }
     },
-    getMainPaidUser(val) {
-      this.$axios.get(`/users/?mainAccountId=${val}&role=${UserTypeEnum.PAID}`)
-        .then((response) => {
-          this.userInfo = response.data.data[0]
-        })
-    },
+    // getMainPaidUser(val) {
+    //   this.$axios.get(`/users/?mainAccountId=${val}&role=${UserTypeEnum.PAID}`)
+    //     .then((response) => {
+    //       this.userInfo = response.data.data[0]
+    //     })
+    // },
     setFilePage(page) {
       this.fileSpinner = true
       this.returnedDataPage = page

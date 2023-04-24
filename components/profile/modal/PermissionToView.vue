@@ -6,6 +6,7 @@
       :show-close="false"
       center
       class="relative text-[#414042]"
+      v-if="isCreator"
     >
       <!--Start:: Close Button -->
       <div class="absolute -top-3 -right-3" style="padding: inherit">
@@ -47,7 +48,7 @@
       </p>
 
          <div class="mt-10">
-            <div class="flex items-center mb-4" v-for="invite in [1,2,3,4,5,6,7,8,9,10,11,12,13]" :key="index">
+            <div class="flex items-center mb-4" v-for="invite in [1,2,3,4,5,6]" :key="index">
                 <div class="w-5/12">mai@yahoo.com</div>
                 <div class="w-3/12">Janet Jackton</div>
                 <div class="w-2/12">Pending</div>
@@ -94,6 +95,9 @@
         type: Boolean,
         default: false,
       },
+      isCreator: {
+        type: Boolean,
+      }
     },
     data() {
       return {

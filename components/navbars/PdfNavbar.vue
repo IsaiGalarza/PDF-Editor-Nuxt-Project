@@ -73,7 +73,14 @@
             <!-- <--- START: navbar dropdown --- -->
             <el-dropdown trigger="click" @command="handleCommand">
                 <span class="flex items-center el-dropdown-link">
+                    <letter-avatar
+                    v-if="!$auth.user.profilePicture"
+                    style="width: 40px; height: 40px"
+                    class="h-[28px] w-[28px] rounded-1 object-cover cursor-pointer mr-1"
+                    :username="(user.companyName)"
+                  />
                     <span
+                    v-else
                         class="border border-paperdazgreen-300 mr-2 p-0.5 overflow-hidden relative"
                         :class="[
                             isPaidUser
@@ -202,7 +209,7 @@
         </div>
         <div v-if="$store.getters.getFillAsGuest && !$auth.loggedIn" class="flex items-center">
             <span class="mr-3">Guest</span>
-            <img src="/img/placeholder_picture.png" width="30" class="rounded-full mr-2"/>
+            <img src="~/assets/img/user-file-icon.svg" width="30" class="rounded-full mr-2"/>
         </div>
         <landing-page-search-modal v-model="showLandingPageSearchModal" />
     </nav>
@@ -229,6 +236,7 @@ import SpinnerDottedIcon from '../svg-icons/SpinnerDottedIcon.vue'
 import StatusUser from '~/models/StatusUser'
 import LandingPageSearchModal from '../landing/LandingPageSearchModal.vue'
 import SearchShare from '../search-strips/component/SearchShare.vue'
+import LetterAvatar from '../widgets/LetterAvatar.vue'
 
 // email-acout emauil,password-referal-code
 export default mixins(GlobalMixin, login).extend({
@@ -251,6 +259,7 @@ export default mixins(GlobalMixin, login).extend({
         SearchIcon,
         LandingPageSearchModal,
         SearchShare,
+        LetterAvatar
     },
     props: {
         compact: {

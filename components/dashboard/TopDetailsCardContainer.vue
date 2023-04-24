@@ -9,7 +9,7 @@
       <template #icon>
         <component :is="tab.icon" />
       </template>
-      <template #count>{{ isTabAction(tab.action) }}</template>
+      <template #count>{{ tab.total}}</template>
       <!-- <template #count v-else>{{ originalPdfFiles.length }}</template> -->
       <template #name>{{ tab.label }}</template>
     </top-details-card>
@@ -89,6 +89,9 @@ export default Vue.extend({
     ...mapState(['originalPdfFiles']),
   },
   watch: {
+    topDetail(val){
+        console.log(val)
+    },
     '$auth.user': function () {
       this.getTopContainerDetails()
     },
@@ -112,8 +115,9 @@ export default Vue.extend({
         Promise.all([ledgers, completeFiles, signFiles, confirmFiles]).then(
           (res) => {
             this.topDetail = res.map((item, index) => {
+              console.log(item?.data?.total, index)
               return {
-                total: item?.total,
+                total: item?.data?.total,
                 label: this.labels[index].label,
                 action: this.labels[index].action,
                 icon: this.labels[index].icon,
@@ -125,24 +129,6 @@ export default Vue.extend({
       } catch ({ response }) {}
     },
 
-    isTabAction(label) {
-      switch ((label || '').toLowerCase()) {
-        case FileAction.COMPLETE:
-          return this.isFilterActions(FileAction.COMPLETE)
-        case FileAction.SHARED:
-          return this.isFilterActions(FileAction.SHARED)
-        case FileAction.SIGNED:
-          return this.isFilterActions(FileAction.SIGNED)
-        case FileAction.LEDGER:
-          return this.isFilterActions(FileAction.LEDGER)
-        case FileAction.CONFIRM:
-          return this.isFilterActions(FileAction.CONFIRM)
-        case FileAction.SAVED:
-          return this.isFilterActions(FileAction.SAVED)
-        default:
-          return ''
-      }
-    },
     isFilterActions(val) {
       switch (val) {
         case FileAction.LEDGER:

@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-paperdazgreen-300 pt-10">
+  <section class="bg-paperdazgreen-300 reg-container pt-10">
     <div class="flex flex-wrap p-3 justify-around items-center">
       <div class="w-full sm:w-6/12 md:w-5/12">
         <message-alert-widget
@@ -394,6 +394,15 @@ export default Vue.extend({
 .width-full {
   width: 100%;
   text-align: left;
+}
+
+.reg-container {
+  margin-right: auto;
+  margin-left: auto;
+  @apply px-[3%] md:px-[7%];
+ 
+  // max-width: unset;
+  // max-width: 1200px;
 }
 .text-input {
   @apply  py-3 border-none outline-none rounded-[0.6rem] w-full;

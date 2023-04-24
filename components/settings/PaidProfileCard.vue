@@ -26,18 +26,67 @@
         {{ $auth.user.profilePicture ? 'Edit' : 'Upload' }}
       </button>
 
+      <el-dropdown trigger="click" class=" w-full ">
+        <div class="flex w-full items-center justify-center">
+          <button
+            class="border-[1px]  w-[85%] py-2.5 rounded-[10px] border-[#22252948] flex items-center justify-center text-[#22252948]">
+            Date format
+            <img class="ml-4 scale-75" src="../../assets/icons/arrow_down.svg" alt="">
+          </button>
+        </div>
+        <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu hidden sm:block">
+          <ul class="min-w-[150px]">
 
-      <button
-        class="border-[1px] mt-4 w-[85%] py-2.5 rounded-[10px] border-[#22252948] flex items-center justify-center text-[#22252948]">
-        Date format
-        <img class="ml-4 scale-75" src="../../assets/icons/arrow_down.svg" alt="">
-      </button>
-      <button
-        class="border-[1px] mt-4 w-[85%] py-2.5 rounded-[10px] border-[#22252948] flex items-center justify-center text-[#22252948]">
-        Time format
-        <img class="ml-4 scale-75" src="../../assets/icons/arrow_down.svg" alt="">
-      </button>
+            <li class="dropdown-item">
+              <div class="flex justify-between w-full border-t border-gray-200">
+                <span class="ml-1">Edit</span>
+              </div>
+            </li>
 
+            <li class="dropdown-item" divided>
+              <div class="flex justify-between w-full">
+                <span>Share</span>
+              </div>
+            </li>
+
+            <li class="dropdown-item">
+              <div class="flex justify-between w-full border-t border-gray-200">
+                <span>Remove</span>
+              </div>
+            </li>
+          </ul>
+        </el-dropdown-menu>
+      </el-dropdown>
+
+
+
+      <el-dropdown trigger="click" class=" w-full ">
+        <div class="flex w-full items-center justify-center">
+          <button
+            class="border-[1px]  w-[85%] py-2.5 rounded-[10px] border-[#22252948] flex items-center justify-center text-[#22252948]">
+            Time format
+            <img class="ml-4 scale-75" src="../../assets/icons/arrow_down.svg" alt="">
+          </button>
+        </div>
+        <el-dropdown-menu slot="drokkpdown" class="table-menu-dropdown-menu hidden sm:block">
+          <ul class="min-w-[150px]">
+
+            <li class="dropdown-item">
+              <div class="flex justify-between w-full border-t border-gray-200">
+                <span class="ml-1">Edit</span>
+              </div>
+            </li>
+
+        
+
+            <li class="dropdown-item">
+              <div class="flex justify-between w-full border-t border-gray-200">
+                <span>Remove</span>
+              </div>
+            </li>
+          </ul>
+        </el-dropdown-menu>
+      </el-dropdown>
 
 
 

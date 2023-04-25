@@ -37,7 +37,7 @@
     />
   
     <img
-      v-else-if="theInitial"
+      v-else-if="theInitial && !isCreator"
       class="absolute-image"
       :src="theInitial"
       :style="style"

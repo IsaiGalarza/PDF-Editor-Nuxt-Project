@@ -197,12 +197,12 @@ export const ExtractFormPdf = ({
   if (canvasPdf.length) {
     pdfScrappedData.pdfHeight =
       canvasPdf[0].children[0].tagName == 'CANVAS'
-        ? canvasPdf[0].children[0].getBoundingClientRect().height
-        : canvasPdf[0].children[1].getBoundingClientRect().height
+        ? canvasPdf[0].children[0].getBoundingClientRect()?.height
+        : canvasPdf[0].children[1].getBoundingClientRect()?.height
     pdfScrappedData.pdfWidth =
       canvasPdf[0].children[0].tagName == 'CANVAS'
-        ? canvasPdf[0].children[0].getBoundingClientRect().width
-        : canvasPdf[0].children[1].getBoundingClientRect().width
+        ? canvasPdf[0].children[0].getBoundingClientRect()?.width
+        : canvasPdf[0].children[1].getBoundingClientRect()?.width
   } else {
     pdfScrappedData.pdfHeight = 0;
     pdfScrappedData.pdfWidth = 0;
@@ -245,8 +245,8 @@ export const ExtractFormPdf = ({
                     elem: element,
                     type: tools.children[0].getAttribute('type'),
                     axisY: [
-                      element.getBoundingClientRect().top,
-                      item.getBoundingClientRect().top - pdfOffset_y,
+                      element.getBoundingClientRect()?.top,
+                      item.getBoundingClientRect()?.top - pdfOffset_y,
                     ],
 
                     axisX: [
@@ -257,8 +257,8 @@ export const ExtractFormPdf = ({
                     top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                     length: item.getBoundingClientRect().width,
                     svgImagePath: tools.children[0].getAttribute('svgToImage'),
-                    svgWidth: tools.getBoundingClientRect().width,
-                    svgHeight: tools.getBoundingClientRect().height,
+                    svgWidth: tools.getBoundingClientRect()?.width,
+                    svgHeight: tools.getBoundingClientRect()?.height,
                   })
                   break
 

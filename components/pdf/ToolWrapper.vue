@@ -391,7 +391,7 @@ export default {
         this.lastPosX = elem.offsetLeft
         this.lastPosY = elem.offsetTop
         // console.log(elem.parentElement.getBoundingClientRect().width / elem.parentElement.clientWidth)
-        this.pageScale = elem.parentElement.getBoundingClientRect().width / elem.parentElement.clientWidth
+        this.pageScale = elem.parentElement?.getBoundingClientRect()?.width / elem.parentElement.clientWidth
       } else {
         elem.style.cursor = 'move'
       }

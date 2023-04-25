@@ -27,11 +27,18 @@
         fill="#FFCF27" />
     </svg> -->
     <img
-      v-if="!confirmStar"
-      class="annot-button w-[50px]"
-      src="../../../assets/img/require_tag.svg"
+      v-if="!confirmStar && isCreator"
+      style="width: 18px"
+      class="annot-button"
+      src="../../../assets/img/require-icon.png"
     />
-    <!-- <span v-show="!confirmStar" class="toolTip hidden">Require</span> -->
+
+    <img
+    v-if="!confirmStar && !isCreator"
+    class="annot-button w-[47px]"
+    src="../../../assets/img/require_tag.svg"
+    />
+
     <!-- <div v-if="!isCreator && isModalActive && !confirmStar"
       class="w-[240px] h-[26px] z-10 bg-white rounded-[12px] text-[12px] absolute border-[2px] border-[#84C870] px-2 ml-[-16px] mt-[-50px]">
       Click on star when this line is completed.</div> -->

@@ -7,6 +7,9 @@
         @blur="focus = false"
         @click="focus = true"
         @keyup="keyUp"
+        @input="changeWidth"
+        ref="text_box"
+        placeholder="Type here..."
         v-model="inputText"
         class="w-[200px]"
         :class="[
@@ -93,6 +96,9 @@ export default {
     },
   },
   methods: {
+    changeWidth(){
+      this.$refs.text_box.style.width = this.$refs.text_box.scrollWidth + 'px'
+    },
     removeFocus(){
       this.focus = false
       setTimeout(() => {

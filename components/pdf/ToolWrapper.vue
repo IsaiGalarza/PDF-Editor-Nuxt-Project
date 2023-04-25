@@ -335,6 +335,9 @@ export default {
     //   }
     // },
     onClick() {
+      if (!this.isCreator) return;
+      this.setActiveToolId(this.id)
+      return
       this.$emit('resetJustMounted', this.id)
       if (!this.isCreator) return;
       this.setActiveToolId(this.id)

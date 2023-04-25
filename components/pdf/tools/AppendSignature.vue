@@ -12,7 +12,6 @@
       attr="sign"
       :elemFill="uploaded && initialimgDisplay"
       :uploaded="uploaded"
-      @click="selectIsCreatorDisplay"
       class="annot-button"
       ref="annotbutton"
       :class="[
@@ -74,7 +73,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     this.changeSignToBase64()
     this.completed && this.changeSignToBase64(this.completed)
     !this.initialimgDisplay && !this.isCreator && this.tool.justMounted ? this.popUpIfNoSign() : null
-    this.checkToolIndex()
+    // this.checkToolIndex()
   },
   computed: {
     ...mapState(['loadedPdfFile']),
@@ -91,7 +90,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
        return this.file.userId == this.$auth?.user?.id  
     },
     theSignature(){
-       return this.$store.getters?.getUserSignature || this.signature
+       return this.$store.getters?.getUserSignature || this.signature || this.$auth?.user?.signatureURL
     },
     isSign() {
       return String(this.file.fileAction).toLowerCase() === FileAction.SIGNED
@@ -131,9 +130,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     selectIsCreatorDisplay(){
       !this.isCreator ? this.setInitialImgDisplay() : null
-      this.theSignature && setTimeout(() => {
-        this.$BUS.$emit('scroll-to-tools')
-      }, 200);
+      // this.theSignature && setTimeout(() => {
+      //   this.$BUS.$emit('scroll-to-tools')
+      // }, 200);
     },
     popUpIfNoSign(){
       !this.theSignature && !this.isCreator && this.setInitialSignType('sign')

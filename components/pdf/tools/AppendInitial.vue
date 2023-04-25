@@ -12,7 +12,6 @@
       attr="initial"
       :elemFill="uploaded && initialimgDisplay"
       :uploaded="uploaded"
-      @click="selectIsCreatorDisplay"
       ref="annotbutton"
       class="annot-button"
       :class="[
@@ -79,7 +78,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
        return this.file.userId == this.$auth?.user?.id  
     },
     theInitial(){
-       return this.$store.getters?.getUserInitial || this.initial
+       return this.$store.getters?.getUserInitial || this.initial || this.$auth?.user?.initialURL
     },
     isSign() {
       return String(this.file.fileAction).toLowerCase() === FileAction.SIGNED
@@ -149,7 +148,6 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       }
       this.$auth?.user?.initialURL && toDataURL(this.$auth?.user?.initialURL).then((dataUrl) => {
         this.initial = dataUrl
-        console.log("alert",this.initial)
       })
     },
     imageExportedLocal(image, isSignature) {
@@ -166,7 +164,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       if (!this.uploaded) this.showInitialModal = true
     },
     setInitialImgDisplay() {
-      if(!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest) return
+      if(!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest && this.theInitial) return
       !this.isOwner && (this.initialimgDisplay = true)
       this.$BUS.$emit('scrollToSignInitial', 'appendinitial')
       !this.uploaded && !this.theInitial && this.setInitialSignType('initial')
@@ -177,7 +175,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     this.changeInitialToBase64()
     this.completed && this.changeInitialToBase64(this.completed)
     !this.initialimgDisplay && !this.isCreator && this.tool.justMounted ? this.popUpIfNoinitial() : null;
-    this.checkToolIndex()
+    // this.checkToolIndex()
   },
   watch: {
     theInitial(){

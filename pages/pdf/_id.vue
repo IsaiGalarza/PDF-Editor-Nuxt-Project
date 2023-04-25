@@ -761,6 +761,7 @@ export default mixins(PdfAuth).extend({
           this.InitialNumber = initialNum
         }
         if (this.filteredAnnotationButton.length) {
+          if((this.isAgreedSign !== 1 && this.isSign)) return
           this.filteredAnnotationButton[0].classList.add('pulse')
           window.selem = this.filteredAnnotationButton[0]
           // this.filteredAnnotationButton[0].scrollIntoView({ block: 'center' })

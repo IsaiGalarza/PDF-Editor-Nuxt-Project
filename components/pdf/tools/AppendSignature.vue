@@ -23,18 +23,17 @@
     />
     <img
       v-else-if="!initialimgDisplay && !isCreator && !tool.justMounted"
-      src="../../../assets/img/sign-icon.png"
+      src="../../../assets/img/sign_tag.svg"
       attr="sign"
       :elemFill="uploaded && initialimgDisplay"
       :uploaded="uploaded"
       @click="selectIsCreatorDisplay"
-      class="annot-button"
+      class="annot-button w-[30px]"
       ref="annotbutton"
       :class="[
         $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
         isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
       ]"
-      :width="(tool?.pageScaleY || 1) * 18"
     />
     <img
       v-else-if="theSignature"
@@ -42,7 +41,7 @@
       :src="theSignature"
       :style="style"
     />
-    <span v-show="!initialimgDisplay && !isCreator && !tool.justMounted && (isAgreedSign == 1 && isSign || isComplete)" class="toolTip hidden">Sign</span>
+    <!-- <span v-show="!initialimgDisplay && !isCreator && !tool.justMounted && (isAgreedSign == 1 && isSign || isComplete)" class="toolTip hidden">Sign</span> -->
     <!-- <img v-else class="absolute-image" src="../../../assets/img/sign.png" /> -->
   </div>
 </template>

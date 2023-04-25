@@ -331,8 +331,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         )
     },
     async confirmRequest() {
-      await this.$_server
-        .post('/pdf-generator', {
+      await this.$_server.post('/pdf-generator', {
           ...ExtractFormPdf({
             downloadLink: this.file?.downloadLink,
             file: this.confirmAnnotation,
@@ -363,7 +362,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         })
         .then((response) => {
           this.isLoading = false
-          this.addToLedger()
+          // this.addToLedger()
           this.generatedPdf = response.data
         })
         .catch(() => {

@@ -28,11 +28,10 @@
         </svg> -->
     <img
       v-if="!confirmStar"
-      style="width: 18px"
-      class="annot-button"
-      src="../../../assets/img/name_icon.svg"
+      class="annot-button w-[80px]"
+      src="../../../assets/img/name_tag.svg"
     />
-    <span v-show="!confirmStar" class="toolTip hidden">Name</span>
+    <!-- <span v-show="!confirmStar" class="toolTip hidden">Name</span> -->
     <!-- <div v-if="!isCreator && isModalActive && !confirmStar"
           class="w-[240px] h-[26px] z-10 bg-white rounded-[12px] text-[12px] absolute border-[2px] border-[#84C870] px-2 ml-[-16px] mt-[-50px]">
           Click on star when this line is completed.</div> -->

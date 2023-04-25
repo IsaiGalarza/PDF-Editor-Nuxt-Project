@@ -7,13 +7,9 @@
     </div> -->
     <div class="w-full py-1 pb-2 bg-gray-200 sm:bg-lime-200 flex items-center justify-between" v-if="isConfirm && !isCreator && (!isConfirmChecked || !isScrollBottom)">
       <!-- <span class="float-left pt-2 px-2">Scroll to the bottom of file to confirm that you have read.</span> -->
-      <span class="float-left py-1 px-2" v-if="!agreedConfirmPolicy">
-        <input type="checkbox" class="ml-1"  v-model="agreedConfirmPolicy" />
-        I  agree to confirm that I have read this file by applying my e-signature to this document. 
-      </span>
-      <span class="float-left py-1 px-2" v-if="agreedConfirmPolicy">
-        Click here to start Confirm
+      <span class="float-left py-1 px-2">
         <input type="checkbox" class="ml-1" @change="confrimStart" />
+        I  agree to confirm that I have read this file by applying my e-signature to this document. 
       </span>
       <!-- <button class="text-white bg-zinc-500 rounded px-4 py-2 float-right mr-2" @click="cancelConfrim">Cancel</button> -->
       <button class="bg-red-500 w-4 h-4 rounded-full text-xs text-white lg:mr-4 mr-2 sm:hidden" @click="cancelConfrim">x</button>
@@ -486,7 +482,7 @@ export default {
     },
     signContinue() {
       if (this.signAgreeChecked) {
-        this.$store.commit('SET_AGREE_SIGN');
+        this.$store.commit('SET_AGREE_SIGN', 1);
         this.$emit('check-active-tools')
       } else {
         this.showAlert = true;

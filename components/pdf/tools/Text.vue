@@ -14,7 +14,7 @@
       @blur="setBlur"
     />
 
-    <p v-else ref="textbox" @click="isBlur = !isBlur" :style="style">{{ text || 'Type here...' }}</p>
+    <p v-else ref="textbox" @click="isBlur = !isBlur" :style="style" class="whitespace-nowrap">{{ text || 'Type here...' }}</p>
     <!-- <span :style="hideStyle" ref="text_hidden">{{ text || 'Type here...' }}</span> -->
   </div>
 </template>

@@ -246,7 +246,7 @@ export default Vue.extend({
       showPermissionModal: false,
       link: "",
       keepCount: 0,
-      showGuideModal: true,
+      showGuideModal: false,
       popUps: [
         'PG_Tutorial_1',
         'PG_Tutorial_2',

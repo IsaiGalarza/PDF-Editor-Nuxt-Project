@@ -1,6 +1,6 @@
 <template>
   <div class="tool">
-    <p ref="datebox" :textImageContent="svgToImageData" :style="style">{{ value }}</p>
+    <p ref="datebox" class="whitespace-nowrap" :textImageContent="svgToImageData" :style="style">{{ value }}</p>
   </div>
 </template>
 

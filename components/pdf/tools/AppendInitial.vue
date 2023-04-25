@@ -24,18 +24,17 @@
 
     <img
     v-if="!initialimgDisplay  && !isCreator && !tool.justMounted"
-    src="../../../assets/img/initial-icon.png"
+    src="../../../assets/img/initial_tag.svg"
     attr="initial"
     :elemFill="uploaded && initialimgDisplay"
     :uploaded="uploaded"
     @click="selectIsCreatorDisplay"
     ref="annotbutton"
-    class="annot-button"
+    class="annot-button w-[43px]"
     :class="[
       $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
       isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
     ]"
-    :width="(tool?.pageScaleY || 1) * 18"
     />
   
     <img
@@ -44,7 +43,7 @@
       :src="theInitial"
       :style="style"
     />
-    <span v-show="!initialimgDisplay  && !isCreator && !tool.justMounted && (isAgreedSign == 1 && isSign || isComplete)" class="toolTip hidden">Initial</span>
+    <!-- <span v-show="!initialimgDisplay  && !isCreator && !tool.justMounted && (isAgreedSign == 1 && isSign || isComplete)" class="toolTip hidden">Initial</span> -->
     <!-- <img v-else class="absolute-image" src="../../../assets/img/initials.png" /> -->
   </div>
 </template>

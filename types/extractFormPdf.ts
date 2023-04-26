@@ -44,6 +44,7 @@ export const appendEditText = ({
   top,
   textImageContent,
   fontsize,
+  lineHeight,
   isLabel
 }: any) => {
   ; (parent.data as any).push({
@@ -59,6 +60,7 @@ export const appendEditText = ({
     size: formatStyleTop('font-size', fontsize),
     left,
     top,
+    lineHeight
   })
 }
 
@@ -360,10 +362,11 @@ export const ExtractFormPdf = ({
                           element.getBoundingClientRect().left,
                           item.getBoundingClientRect().left - pdfOffset_x,
                         ],
+                        lineHeight: parseInt(getComputedStyle(tools.children[0]).getPropertyValue('line-height').replace('px', '')),
                         left: formatStyle("left",(item as any).getAttribute('style')) - pdfOffset_x,
                         top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                         textImageContent: tools.children[0].getAttribute('textImageContent'),
-                        tools: tools.children[0].textContent,
+                        tools: tools.children[0].innerText,
                         elem: element,
                         fontsize: (tools.children[0] as any).getAttribute(
                           'style'

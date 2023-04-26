@@ -2,19 +2,19 @@
   <div
     class="text-field tool"
   >
-    <input
+  <!-- v-if="(isActive || justMounted) && !isCreator && isBlur" -->
+    <p
       type="text"
-      v-model="text"
-      v-if="(isActive || justMounted) && !isCreator && isBlur"
+      contenteditable="true"
       :style="style"
-      class="input-annotation"
+      class="input-annotation whitespace-nowrap"
       placeholder="Type here..."
       ref="text_box"
       @input="changeWidth"
-      @blur="setBlur"
-    />
+      @keyup="keyUp"
+    ></p>
 
-    <p v-else ref="textbox" @click="isBlur = !isBlur" :style="style" class="whitespace-nowrap">{{ text || 'Type here...' }}</p>
+    <!-- <p v-else ref="textbox" @click="isBlur = !isBlur" :style="style" class="whitespace-nowrap">{{ text || 'Type here...' }}</p> -->
     <!-- <span :style="hideStyle" ref="text_hidden">{{ text || 'Type here...' }}</span> -->
   </div>
 </template>
@@ -45,6 +45,9 @@ export default {
     this.$refs.text_box && this.$refs.text_box.focus()
   },
   methods: {
+    keyUp(e){
+       e.keyCode === 13 && e.preventDefault()
+    },
     changeWidth(){
       this.$refs.text_box.style.width = this.$refs.text_box.scrollWidth + 'px'
     },
@@ -149,8 +152,15 @@ export default {
   border-bottom: 1px solid transparent;
   background: transparent;
 }
-
+ .input-annotation{
+  outline: none;
+ }
 .input-annotation:blur {
   border: transparent;
+}
+.input-annotation[placeholder]:empty:before {
+  content: 'Type here...';
+  opacity: 0.5;
+  color: #555; 
 }
 </style>

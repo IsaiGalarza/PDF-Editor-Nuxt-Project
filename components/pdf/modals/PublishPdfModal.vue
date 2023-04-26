@@ -362,7 +362,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         })
         .then((response) => {
           this.isLoading = false
-          this.addToLedger()
+          // this.addToLedger()
           this.generatedPdf = response.data
         })
         .catch(() => {

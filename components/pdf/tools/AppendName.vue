@@ -1,27 +1,19 @@
 <template>
   <div class="text-field tool" @click="confirmStarAction" attr="star">
-    <p v-if="confirmStar" :style="style">
-      <input
-        v-if="focus"
+    <p 
+    v-if="confirmStar" :style="style"
         @focus="focus = true"
         @blur="focus = false"
         @click="focus = true"
         @keyup="keyUp"
+        contenteditable="true"
         @input="changeWidth"
-        ref="text_box"
+        ref="name_box"
         placeholder="Type here..."
-        v-model="inputText"
-        class="w-[200px]"
+        class="text-container"
         :class="[
           focus ? 'border-[1px] border-paperdazgreen-200 rounded py-[2px]' : '',
         ]"
-      />
-      <span
-        v-else
-        ref="namebox"
-        :textImageContent="svgToImageData"
-        @click="focus = true"
-        >{{ inputText }}</span
       >
     </p>
     <!-- <svg v-if="!confirmStar" :style="style" viewBox="0 0 37 36" fill="black" xmlns="http://www.w3.org/2000/svg" @mouseover="overHandler" @mouseleave="leaveHandler">
@@ -102,9 +94,7 @@ export default {
     },
   },
   methods: {
-    changeWidth(){
-      this.$refs.text_box.style.width = this.$refs.text_box.scrollWidth + 'px'
-    },
+
     removeFocus(){
       this.focus = false
       setTimeout(() => {
@@ -114,8 +104,9 @@ export default {
     onBlur() {
       this.removeFocus()
     },
-    keyUp() {
+    keyUp(event) {
       if (event.keyCode === 13) {
+        event.preventDefault()
         this.removeFocus()
       }
     },
@@ -154,5 +145,13 @@ input {
   border: 0.5px solid #e9e9e9;
   background-color: transparent;
   border-radius: 4px;
+}
+.text-container{
+  @apply outline-none border-none border-l-[1px] border-paperdazgreen-300/50 whitespace-nowrap
+}
+.text-container[placeholder]:empty:before {
+  content: 'Type here...';
+  opacity: 0.5;
+  color: #555; 
 }
 </style>

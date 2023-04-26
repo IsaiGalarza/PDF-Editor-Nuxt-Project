@@ -182,6 +182,11 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   },
   components: { DrawOrTypeModal },
   watch: {
+    initialimgDisplay(){
+      if(this.theSignature) setTimeout(() => {
+        this.$BUS.$emit('scroll-to-tools')
+      }, 100);
+    },
     theSignature(){
       this.$BUS.$emit('scroll-to-tools')
     },

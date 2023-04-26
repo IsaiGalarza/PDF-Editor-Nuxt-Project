@@ -171,15 +171,19 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
   },
   mounted() {
-    console.log(this.$store.state.agreeSign)
     this.changeInitialToBase64()
     this.completed && this.changeInitialToBase64(this.completed)
     !this.initialimgDisplay && !this.isCreator && this.tool.justMounted ? this.popUpIfNoinitial() : null;
     // this.checkToolIndex()
   },
   watch: {
+    initialimgDisplay(){
+      if(this.theInitial) setTimeout(() => {
+        this.$BUS.$emit('scroll-to-tools')
+      }, 100);
+    },
     theInitial(){
-      this.$BUS.$emit('scroll-to-tools')
+        this.$BUS.$emit('scroll-to-tools')
     },
     '$auth.user.initialURL': async function () {
       this.changeInitialToBase64()

@@ -3,16 +3,13 @@
     <p 
     v-if="confirmStar" :style="style"
         @focus="focus = true"
-        @blur="focus = false"
-        @click="focus = true"
-        @keyup="keyUp"
+        @blur="onBlur"
         contenteditable="true"
-        @input="changeWidth"
         ref="name_box"
         placeholder="Type here..."
         class="text-container"
         :class="[
-          focus ? 'border-[1px] border-paperdazgreen-200 rounded py-[2px]' : '',
+          focus ? 'border-[1px] border-paperdazgreen-200 bg-yellow-300' : 'bg-transparent border-none',
         ]"
       >
     </p>
@@ -28,7 +25,6 @@
     />
     <img
     v-if="!confirmStar && isCreator"
-    class="annot-button"
     style="width: 18px"
     src="../../../assets/img/name_icon.svg"
   />
@@ -61,6 +57,9 @@ export default {
     generatePDF: function () {
       if (this.generatePDF) this.svgToImage()
     },
+  },
+  mounted() {
+    this.confirmStar && this.$refs.name_box.focus()
   },
   computed: {
     isSign() {
@@ -103,12 +102,6 @@ export default {
     },
     onBlur() {
       this.removeFocus()
-    },
-    keyUp(event) {
-      if (event.keyCode === 13) {
-        event.preventDefault()
-        this.removeFocus()
-      }
     },
     async svgToImage() {
       this.svgToImageData = ''

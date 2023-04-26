@@ -26,7 +26,7 @@
         {{ $auth.user.profilePicture ? 'Edit' : 'Upload' }}
       </button>
 
-      <el-dropdown trigger="click" class=" w-full ">
+      <el-dropdown trigger="click" class=" w-full mb-3">
         <div class="flex w-full items-center justify-center">
           <button
             class="border-[1px]  w-[85%] py-2.5 rounded-[10px] border-[#22252948] flex items-center justify-center text-[#22252948]">

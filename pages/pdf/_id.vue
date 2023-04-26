@@ -737,11 +737,10 @@ export default mixins(PdfAuth).extend({
           // console.log(element.parentElement.children[1])
           // }
         })
-  
+
         this.filteredAnnotationButton = Array.from(annotationButton).filter(
           (item, index) => !item.hasAttribute('elemFill')
         )
-        console.log(this.filteredAnnotationButton)
         // if (this.filteredAnnotationButton.length == 0 && this.isSign && type === "appendsigninitial") {
         //   this.showDoneModal = true;
         // }
@@ -1549,7 +1548,6 @@ export default mixins(PdfAuth).extend({
       })
     },
     tools(){
-      console.log(this.tools)
       this.file.fileAction == FileAction.COMPLETE && (this.completeTools = this.tools)
       this.file.fileAction == FileAction.SIGNED && (this.signTools = this.tools)
       this.file.fileAction == FileAction.CONFIRM && (this.confirmTools = this.tools)

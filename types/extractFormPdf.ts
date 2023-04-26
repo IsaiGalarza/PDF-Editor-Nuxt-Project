@@ -438,7 +438,9 @@ export const ExtractFormPdf = ({
                           tools.children[0].getBoundingClientRect().height,
                           item.getBoundingClientRect().top - pdfOffset_y,
                         ],
-
+                        lineHeight: 18,
+                        left: formatStyle("left",(item as any).getAttribute('style')) - pdfOffset_x,
+                        top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                         axisX: [
                           element.getBoundingClientRect().left,
                           item.getBoundingClientRect().left - pdfOffset_x,

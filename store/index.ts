@@ -34,7 +34,9 @@ export const state = () => ({
   agreeSign: -1,
   file: {},
   ledgerParams: "",
-  clickAction: null
+  clickAction: null,
+  dateFormat: "dd/mm/yyy",
+  timeFormat: "h:MM TT"
 })
 
 export type RootState = ReturnType<typeof state>
@@ -101,12 +103,25 @@ export const getters: GetterTree<RootState, RootState> = {
     // //     return UserTypeEnum.FREE
     // // }
   },
+
+  getDateFormat(state:any){
+    return state.dateFormat
+  },
+  getTimeFormat(state:any){
+    return state.timeFormat
+  }
 }
 
 export const mutations: MutationTree<RootState> = {
   // -- Setting the user --
   SET_PAGE_USER(state, user) {
     state.initialUser = user
+  },
+  SET_DATEFORMAT(state, date) {
+    state.dateFormat = date
+  },
+  SET_TIMEFORMAT(state, time) {
+    state.timeFormat = time
   },
   CLICK_TOOL_ACTION(state, payload) {
     state.clickAction = payload

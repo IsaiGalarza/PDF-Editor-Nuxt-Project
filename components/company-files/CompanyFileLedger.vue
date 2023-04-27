@@ -1,4 +1,4 @@
-<template>
+git <template>
   <div>
     <!-- Start:: header -->
     <header class="flex flex-col xs:flex-row xs:items-center justify-between whitespace-nowrap px-2 mt-3 mb-2">
@@ -294,6 +294,7 @@
             {{ actionFile.fileName | removeExtension }}
           </p>
           <p class="font-bold mb-0">
+          {{ this.date }}
             {{ formatDateTime(actionFile.updatedAt) }}
           </p>
           <p class="font-bold mt-2">
@@ -468,6 +469,7 @@ import ArrowDownIcon from '../svg-icons/ArrowDownIcon.vue'
 import EyeIcon from '../svg-icons/EyeIcon.vue'
 import MaxInviteModal from '../teams/MaxInviteModal.vue'
 import DragIcon from "../svg-icons/DragIcon.vue"
+import dateFormat from "dateformat";
 
 export default Vue.extend({
   components: {
@@ -558,6 +560,8 @@ export default Vue.extend({
       FileAction,
       debounceTimeout: null,
       maxInviteTeam: false,
+      date:'',
+      time: '',,
       allowCopy: true
     }
   },
@@ -567,6 +571,7 @@ export default Vue.extend({
         allowCopy: this.allowCopy ? 1 : 0
        })
     },
+    
     onChange(){
         this.$forceUpdate()
     },
@@ -739,6 +744,8 @@ export default Vue.extend({
     },
   },
   mounted() {
+    this.date =  this.$store.getters.getDateFormat ,
+    this.time =  this.$store.getters.getTimeFormat ,
     this.fetchFiles(this.returnedDataPage, this.folderSearch)
     this.fetchFolder(this.returnedFolderPage, this.folderSearch)
     this.maxFileUpload()

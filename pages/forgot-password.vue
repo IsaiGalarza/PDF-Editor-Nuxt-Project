@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-gradient-to-t from-white to-transparent">
+  <section class="bg-paperdazgreen-300 to-transparent">
     <div class="container py-20">
       <div class="w-full max-w-lg mx-auto bg-white shadow-2xl rounded-xl px-6 py-10">
         <h4 class="text-[24px] font-medium mb-2">Forgot your password?</h4>

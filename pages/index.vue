@@ -1,6 +1,6 @@
 <template>
-  <div class="" @click="">
-    <div class="min-h-[60vh]  place-items-center bg-paperdazgreen-300">
+
+  <div class="min-h-[60vh]  bg-paperdazgreen-300">
       <hero-page />
       <ConfirmPassword :userInfo="userDecodedInfo" v-model="showConfirmPassword" />
 
@@ -8,7 +8,6 @@
 
     </div>
 
-  </div>
 </template>
 
 <script>

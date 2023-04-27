@@ -227,7 +227,7 @@
         UNDO</button>
     </div>
 
-    <div v-if="isComplete && isCreator" class="flex items-center justify-between py-1">
+    <div v-if="isComplete && isCreator && $auth.loggedIn" class="flex items-center justify-between py-1">
       <button class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm"
       :class="[activeTool == TOOL_TYPE.appendSignature ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onSignClick">
         <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
@@ -255,7 +255,7 @@
       </button>
     </div>
 
-    <div v-if="isSign && isCreator" class="flex items-center justify-between py-1">
+    <div v-if="isSign && isCreator && $auth.loggedIn" class="flex items-center justify-between py-1">
       <button v-if="isSign && isCreator" @click="onSignClick"
         class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm"
         :class="[activeTool == TOOL_TYPE.appendSignature ? 'bg-paperdazgreen-300 text-white' : 'bg-white']">

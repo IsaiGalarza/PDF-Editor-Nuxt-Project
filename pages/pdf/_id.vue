@@ -1528,6 +1528,22 @@ export default mixins(PdfAuth).extend({
     },
   },
   watch: {
+    selectedToolType(val){
+      if(val){
+      let getAllPdfPages = document.querySelectorAll('.pdf-single-page-outer')
+      Array.from(getAllPdfPages).forEach(element => {
+        element.style.setProperty('touch-action', 'none', 'important');
+        console.log(element.getAttribute('style'))
+      });
+    }
+     else {
+      let getAllPdfPages = document.querySelectorAll('.pdf-single-page-outer')
+      Array.from(getAllPdfPages).forEach(element => {
+        element.style.setProperty('touch-action', 'auto', 'important');
+        console.log(element.getAttribute('style'))
+      });
+     }
+    },
     isConfirmChecked(val) {
       $('.pdf-editor-view').animate(
         { scrollTop: $('#bottom').offset().top },
@@ -1614,7 +1630,7 @@ export default mixins(PdfAuth).extend({
     border: 5px solid rgb(107 114 128);
   }
 }
-  * {
+  *{
     touch-action: auto !important;
   }
 </style>

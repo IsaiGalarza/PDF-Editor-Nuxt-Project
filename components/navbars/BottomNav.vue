@@ -6,7 +6,7 @@
     <span class="h-full flex items-center justify-center flex-1 px-3" @click="$emit('open-sidebar')">
       <hamburger-icon />
     </span>
-    <a v-if="!appIsFreeUser" :href="`/${$auth.user.businessPage}`" target="_blank"  class="h-full flex items-center justify-center flex-1 px-1" >
+    <a v-if="!appIsFreeUser" :href="`/${$auth?.user?.businessPage}`" target="_blank"  class="h-full flex items-center justify-center flex-1 px-1" >
       <public-profile class="w-4 h-4" />
     </a>
     <nuxt-link to="/" class="h-full flex items-center justify-center flex-1 px-1" >

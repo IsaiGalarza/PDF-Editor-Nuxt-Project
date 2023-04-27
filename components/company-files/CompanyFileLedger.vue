@@ -2,10 +2,15 @@
   <div>
     <!-- Start:: header -->
     <header class="flex flex-col xs:flex-row xs:items-center justify-between whitespace-nowrap px-2 mt-3 mb-2">
-      <h5 class="text-lg font-semibold text-[#272727] hidden sm:inline-flex w-full items-center gap-2 my-2">
-        Paperlink Pages
+      <h5 class="text-lg font-semibold text-[#272727] hidden sm:inline-flex w-10/12 gap-2 my-2 flex-wrap items-center">
+        <abbr class="w-full md:w-3/12">Paperlink Pages</abbr>
+
+        <span class="mr-5 font-normal text-sm flex items-center w-full md:w-7/12">
+          <input type="checkbox" v-model="allowCopy" class="mr-3 transform scale-125"/>
+        Click here to allow guest to request copy
+        </span>
       </h5>
-      <div class="w-full text-white flex items-center justify-end my-2 pl-2">
+      <div class="w-2/12 text-white flex items-center justify-end my-2 pl-2">
         <button @click="showUploadModalFunction"
           class="hidden sm:circle sm:circle-18 p-2 ml-2 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
           <plus-icon />
@@ -552,10 +557,16 @@ export default Vue.extend({
       actionFolder: null,
       FileAction,
       debounceTimeout: null,
-      maxInviteTeam: false
+      maxInviteTeam: false,
+      allowCopy: true
     }
   },
   methods: {
+    async setAllowCopy(){
+       await this.$_server.patch(`/users/${this.$auth?.user?.id}`, {
+        allowCopy: this.allowCopy ? 1 : 0
+       })
+    },
     onChange(){
         this.$forceUpdate()
     },
@@ -731,6 +742,7 @@ export default Vue.extend({
     this.fetchFiles(this.returnedDataPage, this.folderSearch)
     this.fetchFolder(this.returnedFolderPage, this.folderSearch)
     this.maxFileUpload()
+    this.allowCopy = this.$auth?.user?.allowCopy
   },
   filters: {
     removeExtension(filename) {
@@ -775,6 +787,9 @@ export default Vue.extend({
     }
   },
   watch: {
+    allowCopy(){
+        this.setAllowCopy()
+    },
     refresh: function () {
       this.$nuxt.refresh()
       this.fetchFiles(this.returnedDataPage, this.folderSearch)
@@ -801,6 +816,7 @@ export default Vue.extend({
       this.fetchFiles(this.returnedDataPage, this.folderSearch)
       this.fetchFolder(this.returnedFolderPage, this.folderSearch)
       this.maxFileUpload()
+      this.allowCopy = this.$auth?.user?.allowCopy
     }
   },
 })
@@ -856,5 +872,8 @@ export default Vue.extend({
       }
     }
   }
+}
+input[type="checkbox"] {
+  filter: hue-rotate(250deg) 
 }
 </style>

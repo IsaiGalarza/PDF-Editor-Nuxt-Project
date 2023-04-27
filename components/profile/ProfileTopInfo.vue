@@ -1,32 +1,43 @@
 <template>
-  <section class="font-family grid grid-cols-1 md:grid-cols-[max-content,1fr] gap-6">
+  <section
+    class="font-family grid grid-cols-1 md:grid-cols-[max-content,1fr] gap-6"
+  >
     <!-- logo container -->
     <div class="bg-white md:w-[250px] w-full profile-image-container !py-0">
-      <div class="icon-img md:mx-7 my-7 relative" >
-        <img v-if="profilePhoto != null" :src="profilePhoto" id="referenceImg" class="top-profile-image cursor-pointer" />
-        <span v-else>
+      <div class="icon-img md:mx-7 my-7 relative">
+        <img
+          v-if="profilePhoto != null"
+          :src="profilePhoto"
+          id="referenceImg"
+          class="top-profile-image cursor-pointer"
+        />
+        <span v-else :style="`fontSize: ${(108/(firstCompanyName.length))*1.75}px`">
           {{ firstCompanyName }}
         </span>
       </div>
 
-      <cropper-image-upload :show="visibleUploadImageDialog"
-        @visibleDialog="(show) => (visibleUploadImageDialog = show)" />
-
+      <cropper-image-upload
+        :show="visibleUploadImageDialog"
+        @visibleDialog="(show) => (visibleUploadImageDialog = show)"
+      />
     </div>
     <!-- end of logo container -->
     <!-- dentals container -->
     <div class="bg-white sm:w-12/12 profile-dental-container">
       <!-- <h1>{{user.companyName || ''}}</h1> -->
-      <header class="text-600 text-[#414142] font-semibold pl-7 pb-2 border-b border-[#DCDCDC] relative">
-
-        <div class="input-wrapper-title flex relative justify-center items-center">
+      <header
+        class="text-600 text-[#414142] font-semibold pl-7 pb-2 border-b border-[#DCDCDC] relative"
+      >
+        <div
+          class="input-wrapper-title flex relative justify-center items-center"
+        >
           <span class="text-2xl text-grey pl-3"> {{ name }}</span>
-          <span @click="openShareModal" class="cursor-pointer"><share-outline-icon  :width="18" class="w-auto absolute right-4	 pr-3" /></span>
-          
+          <span @click="openShareModal" class="cursor-pointer"
+            ><share-outline-icon
+              :width="18"
+              class="w-auto absolute right-4 pr-3"
+          /></span>
         </div>
-
-        
-       
       </header>
       <!--<div class="text-sm px-2 border-b w-full py-2 text-gray-400"><i>@hookname</i></div>-->
       <div class="flex min-h-0 justify-center px-2 items-end h-28">
@@ -35,7 +46,6 @@
           Join us, complete our files on Paperlink!
         </p>
       </div>
-
     </div>
     <!-- end of dentals container -->
   </section>
@@ -52,9 +62,9 @@ import SpinnerDottedIcon from '../svg-icons/SpinnerDottedIcon.vue'
 import ballloader from '../loader/ballloader.vue'
 import { ErrorHandler } from '~/types/ErrorFunction'
 import CropperImageUpload from '../cropper/CropperImageUpload.vue'
-import { Cropper } from 'vue-advanced-cropper';
-import VerticalButtons from './cropper/VerticalButtons';
-import SquareButton from './cropper/SquareButton';
+import { Cropper } from 'vue-advanced-cropper'
+import VerticalButtons from './cropper/VerticalButtons'
+import SquareButton from './cropper/SquareButton'
 import ShareOutlineIcon from '~/components/svg-icons/ShareOutlineIcon.vue'
 import UploadFileIcon from '~/components/svg-icons/UploadFileIcon.vue'
 //import 'vue-advanced-cropper/dist/style.css';
@@ -90,14 +100,17 @@ export default mixins(login).extend({
     SquareButton,
     ballloader,
     UploadFileIcon,
-    ShareOutlineIcon
+    ShareOutlineIcon,
   },
   methods: {
-    openShareModal(){
-      this.$emit('openShare', `${window.location.origin}/${this.userInfo.businessPage}`)
+    openShareModal() {
+      this.$emit(
+        'openShare',
+        `${window.location.origin}/${this.userInfo.businessPage}`
+      )
     },
     showImageCropperModal() {
-      this.isCreator ? this.visibleUploadImageDialog = true : null
+      this.isCreator ? (this.visibleUploadImageDialog = true) : null
     },
     getTeamPublicFolder() {
       this.$axios.get()
@@ -112,11 +125,11 @@ export default mixins(login).extend({
       this.$axios
         .$patch(`/users/${this.$auth.user.id}`, {
           address: this.address,
-          phone: this.phone
+          phone: this.phone,
         })
         .then(() => {
           this.$notify.success({
-            message: 'Updated successfully'
+            message: 'Updated successfully',
           })
           this.initialInput = true
           this.initialInput2 = true
@@ -127,7 +140,7 @@ export default mixins(login).extend({
           let message = ErrorHandler(response)
           this.$notify
             .error({
-              message: message
+              message: message,
             })
             .finally(() => {
               this.isLoading = false
@@ -143,8 +156,8 @@ export default mixins(login).extend({
   },
   mounted() {
     this.phone = this.userInfo?.phone
-      this.address = this.userInfo?.address
-      this.name = this.userInfo?.companyName
+    this.address = this.userInfo?.address
+    this.name = this.userInfo?.companyName
     // this.phone = this.userInfo?.phone
     // this.address = this.userInfo?.address
     // this.name = this.userInfo?.companyName
@@ -161,7 +174,12 @@ export default mixins(login).extend({
       return this.user?.id == this.userInfo?.id
     },
     firstCompanyName() {
-      return (this.userInfo?.companyName || '').charAt(0).toUpperCase()
+      let myString = this.userInfo?.companyName 
+      let splitString = myString.split(' ') // Split the string by space
+
+      let firstLetters = splitString.map((word) => word.charAt(0)) // Extract the first letter of each word using charAt()
+
+      return firstLetters.join().replace(/,/g, '').toUpperCase()
     },
     showUpdateButton() {
       return !this.editEnalble || !this.editEnalble
@@ -188,8 +206,7 @@ export default mixins(login).extend({
       this.phone = this.$auth.user?.phone || ''
       // QRCode.toCanvas(this.$refs.qrcancas, this.qrCodeurl, function () {});
     },
-
-  }
+  },
 })
 </script>
 <style lang="scss" scoped>
@@ -201,7 +218,7 @@ export default mixins(login).extend({
   @apply bg-white flex justify-center flex-wrap items-center py-4 rounded-[20px];
 
   .icon-img {
-    @apply w-[195px] h-[195px] font-[900] text-[6em] text-white cursor-pointer bg-[#77B550] grid place-items-center rounded-[30px];
+    @apply w-[195px] h-[195px] font-[900] text-white cursor-pointer bg-[#77B550] grid place-items-center rounded-[30px];
     // text-shadow: 1px 5px 7px rgb(148 148 148);
   }
 
@@ -226,7 +243,8 @@ export default mixins(login).extend({
       outline: none !important;
     }
 
-    button {}
+    button {
+    }
   }
 
   .input-wrapper-title {

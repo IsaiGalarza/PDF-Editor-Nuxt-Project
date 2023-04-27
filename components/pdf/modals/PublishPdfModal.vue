@@ -93,7 +93,7 @@
         </button>
       </div>
       <span
-        v-if="!isCreator && $store.getters?.getFillAsGuest"
+        v-if="!isCreator && $store.getters?.getFillAsGuest && file?.user?.allowCopy"
         class="w-full text-center block py-0 px-2 pb-8 text-[16px] pt-4"
       >
         <input v-model="nonUserRecieveEmail" type="checkbox" /> Click here if

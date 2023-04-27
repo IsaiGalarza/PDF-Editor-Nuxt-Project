@@ -18,8 +18,7 @@
             class="text-input"
             placeholder="Business name"
             required
-            @input="setBusinessName"
-            :value="business_name"
+            v-model="business_name"
           />
           <el-input
             :disabled="loading"

@@ -61,6 +61,10 @@ export default {
       }
     },
   },
+  mounted() {
+    if(!this.isCreator)
+    this.$emit('addOffset', 10)
+  },
   watch: {
     generatePDF: function () {
       if (this.generatePDF)

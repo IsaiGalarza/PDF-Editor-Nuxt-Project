@@ -125,6 +125,7 @@ export default {
     },
     confirmStarAction() {
       if (!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest || (this.isAgreedSign !== 1 && this.isSign)) return
+      !this.confirmStar && this.$emit('addOffset', 7)
       !this.isCreator && (this.confirmStar = true)
       this.$BUS.$emit('scrollToSignInitial')
       this.notClass = ''

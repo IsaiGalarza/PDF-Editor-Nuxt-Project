@@ -49,7 +49,9 @@
         :isActive="isActive" :fontSize="fontSize" :scale="scale" :file="file" :value="value" :justMounted="justMounted"
         @input="onInp" :generatePDF="generatePDF" :showPublishModal="showPublishModal"
         :selectedToolType="selectedToolType" :mouseUp="mouseUp" :lineStart="lineStart" :toolLength="toolLength"
-        :drawingStart="drawingStart" :setInitialSignType="setInitialSignType" @onBlur="onBlur" />
+        :drawingStart="drawingStart" :setInitialSignType="setInitialSignType" @onBlur="onBlur" 
+        @addOffset="addOffset"
+        />
       
     </div>
   </div>
@@ -375,6 +377,10 @@ export default {
     checkAndSetPosition() {
       if (this.tool.top) this.top = this.tool.top
       if (this.tool.left) this.left = this.tool.left
+    },
+    addOffset(val) {
+      if(this.tool.type == this.TOOL_TYPE.appendDate || this.tool.type == this.TOOL_TYPE.appendName)
+       val ? this.top = this.top + val : null
     },
     draggingMouseover(event) {
       if (this.isDragging) {

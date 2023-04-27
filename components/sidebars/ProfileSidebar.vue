@@ -1,33 +1,37 @@
 <template>
   <nav class="flex  flex-col bg-white h-full  w-full rounded-2xl ">
-    <div class="flex justify-end px-8">
-      <span class="py-2 mb-3 cursor-pointer inline-block lg:hidden" @click="$emit('close')">
-        <times-icon width="12" height="12" />
-      </span>
-    </div>
-    <nuxt-link to="/" class="flex items-center justify-center mb-4 px-8">
-      <logo-with-text class="h-14 w-auto" />
-    </nuxt-link>
+   <div>
+      <div class="flex justify-end px-8">
+        <span class="py-2 mb-3 cursor-pointer inline-block lg:hidden" @click="$emit('close')">
+          <times-icon width="12" height="12" />
+        </span>
+      </div>
+      <nuxt-link to="/" class="flex items-center justify-center mb-4 px-8">
+        <logo-with-text class="h-14 w-auto" />
+      </nuxt-link>
+   </div>
 
-    <section class="text-white overflow-hidden  bg-[#77B550] h-full rounded-[inherit] py-[15px]">
+    <section class="text-white overflow-hidden  bg-[#77B550] h-full rounded-[inherit] flex-1 flex flex-col">
       <!-- SCANNER CONTAINER -->
-      <div class="flex justify-center mt-4">
+      <div class="flex justify-center py-4">
         <canvas ref="qrcancas" width="200" height="200" class="object-contain rounded-[20px]"></canvas>
       </div>
       <!-- END OF SCANNER CONTAINER -->
 
 
-      <div class=" h-[100%] text-center px-2 relative    ">
+      <div class="flex-1 flex flex-col text-center px-2 relative">
 
-        <div class="row-span-2 h-[60%]">
+        <div class="row-span-2 flex-3 h-[60%]">
           <p class="py-[2em]  font-[700] text-center text-[19px]">Paperless Paper</p>
           <span class="py-1  text-[18px]">Keep everyone <br /> safe and the <br /> world green.</span>
         </div>
 
-        <div class="  ">
+        <div class="flex-1 flex item-end justify-center">
+         <div class="flex justify-center items-end pb-4">
           <nuxt-link to="/login" target="_blank"
           class="font-[600] text-center  text-[20px] hover:text-white">Paperlink Console</nuxt-link>
         </div>
+         </div>
       </div> 
 
 

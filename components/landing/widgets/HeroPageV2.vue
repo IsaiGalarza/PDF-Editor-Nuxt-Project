@@ -1,8 +1,8 @@
 <template>
   <div >
     <div class="container lg:py-20 sm:pb-15 sm:pt-10">
-    <div class="flex justify-between flex-wrap">
-      <div class="text-center sm:text-left md:w-6/12 sm:w-full">
+    <div class="flex justify-between flex-wrap mt-12 lg:mt-0 items-center">
+      <div class="text-center sm:text-left lg:w-6/12 sm:w-full">
         <div class="max-w-[740px] flex flex-col justify-between w-full transform duration-150">
           <div class="py-lg-4 py-2 slide-in relative" v-for="(content, index) in contents" :key="index"
             v-if="activeContent == index">
@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="h-fit sm:pt-0 pt-4 lg:w-6/12 sm:w-full md:text-right">
-        <img class="w-full md:w-[90%]" src="/img/hero_diplay.svg" />
+        <img class="w-full lg:w-[90%]" src="/img/hero_diplay.svg" />
       </div>
     </div>
     <div class="flex flex-col justify-between mt-2 mb-6">
@@ -74,7 +74,7 @@ export default Vue.extend({
         {
           article:
             `Perfect for all size offices  to go paperless in minutes!`,
-          note: `20, 200, 2000 or more people can<br/> 
+          note: `20, 200, 2000 or more people can <br/>
           complete a Paperlink for just $2.00`,
         },
       ],

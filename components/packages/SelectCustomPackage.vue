@@ -59,7 +59,7 @@
                           type="number"
                           min="1"
                         /> -->
-                  <el-input-number v-model.number="customPackage.teamMembers" :step="1" size="small" :min="0" :max="20" />
+                  <el-input-number v-model.number="customPackage.teamMembers" :step="1" size="small" :min="1" :max="20" />
                 </div>
               </td>
               <td class="text-center">

@@ -52,7 +52,19 @@
         :drawingStart="drawingStart" :setInitialSignType="setInitialSignType" @onBlur="onBlur" 
         @addOffset="addOffset"
         />
-      
+
+        <!-- <div :class="[
+          'dr__right',
+          { line: type == TOOL_TYPE.line },
+          { 'line-alt': (x1 < x2 && y1 < y2) || (x1 > x2 && y1 > y2) },
+        ]" ref="drRight" v-hammer:pan="(ev) => handleToolDrag(ev, TOOL_DIRECTION.right)"
+          v-if="isAvailableDrRight && isCreator"></div>
+        <div :class="[
+          'dr__left',
+          { line: type == TOOL_TYPE.line },
+          { 'line-alt': (x1 < x2 && y1 < y2) || (x1 > x2 && y1 > y2) },
+        ]" v-hammer:pan="(ev) => handleToolDrag(ev, TOOL_DIRECTION.left)" v-if="isAvailableDrLeft && isCreator"></div>
+       -->
     </div>
   </div>
 </template>
@@ -324,7 +336,7 @@ export default {
     //         ? this.TOOL_DIRECTION.right
     //         : this.TOOL_DIRECTION.left
     //   }
-    //   console.log('hhh');
+    //   console.log(direction, event)
     //   this.dragHandler(event, this.id, direction, this.pageNumber)
     //   if (event.isFinal) {
     //     if (

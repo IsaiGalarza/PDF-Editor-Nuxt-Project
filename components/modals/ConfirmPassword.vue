@@ -163,16 +163,6 @@ export default Vue.extend({
     closeModal(){
       this.showModal = false
     },
-    getUser() {
-        try {
-          this.$_server.get(`/users/${this.userInfo.data?.user_id}`)
-          .then((res)=> this.$router.push(`/${res.data?.businessPage}`))
-        } catch (error) {
-          //
-        } finally {
-          this.loading = false
-        }
-    },
     closeModal() {
       this.$emit('updateVisibility', false)
     },
@@ -183,7 +173,7 @@ export default Vue.extend({
       await this.$_server
         .patch(`/users/${this.userInfo.data?.user_id}`, this.userPayload)
         .then((res) => {
-          this.getUser()
+          this.$router.push(`/${this.userInfo.data?.businessPage}`)
         })
         .catch((err) => {
           this.loading = false

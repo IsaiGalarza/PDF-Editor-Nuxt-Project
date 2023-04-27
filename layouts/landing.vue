@@ -6,7 +6,7 @@
     <app-bar />
     
     <main
-      class="flex-1 flex flex-col bg-paperdazgreen-300"
+      class="flex-1 flex flex-col bg-white"
       
     >
     <LandingToast/>

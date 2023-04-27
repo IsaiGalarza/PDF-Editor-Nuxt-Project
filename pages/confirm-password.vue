@@ -276,8 +276,6 @@ export default Vue.extend({
             message: "Password comfirm success"
           })
           this.$nuxt.$router.push('/login')
-
-
         })
         .catch(({ response }) => {
 

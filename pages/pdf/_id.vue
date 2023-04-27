@@ -1614,4 +1614,7 @@ export default mixins(PdfAuth).extend({
     border: 5px solid rgb(107 114 128);
   }
 }
+  * {
+    touch-action: auto !important;
+  }
 </style>

@@ -44,6 +44,7 @@ export const appendEditText = ({
   top,
   textImageContent,
   fontsize,
+  lineHeight,
   isLabel
 }: any) => {
   ; (parent.data as any).push({
@@ -59,6 +60,7 @@ export const appendEditText = ({
     size: formatStyleTop('font-size', fontsize),
     left,
     top,
+    lineHeight
   })
 }
 
@@ -197,12 +199,12 @@ export const ExtractFormPdf = ({
   if (canvasPdf.length) {
     pdfScrappedData.pdfHeight =
       canvasPdf[0].children[0].tagName == 'CANVAS'
-        ? canvasPdf[0].children[0].getBoundingClientRect().height
-        : canvasPdf[0].children[1].getBoundingClientRect().height
+        ? canvasPdf[0].children[0].getBoundingClientRect()?.height
+        : canvasPdf[0].children[1].getBoundingClientRect()?.height
     pdfScrappedData.pdfWidth =
       canvasPdf[0].children[0].tagName == 'CANVAS'
-        ? canvasPdf[0].children[0].getBoundingClientRect().width
-        : canvasPdf[0].children[1].getBoundingClientRect().width
+        ? canvasPdf[0].children[0].getBoundingClientRect()?.width
+        : canvasPdf[0].children[1].getBoundingClientRect()?.width
   } else {
     pdfScrappedData.pdfHeight = 0;
     pdfScrappedData.pdfWidth = 0;
@@ -245,8 +247,8 @@ export const ExtractFormPdf = ({
                     elem: element,
                     type: tools.children[0].getAttribute('type'),
                     axisY: [
-                      element.getBoundingClientRect().top,
-                      item.getBoundingClientRect().top - pdfOffset_y,
+                      element.getBoundingClientRect()?.top,
+                      item.getBoundingClientRect()?.top - pdfOffset_y,
                     ],
 
                     axisX: [
@@ -257,8 +259,8 @@ export const ExtractFormPdf = ({
                     top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                     length: item.getBoundingClientRect().width,
                     svgImagePath: tools.children[0].getAttribute('svgToImage'),
-                    svgWidth: tools.getBoundingClientRect().width,
-                    svgHeight: tools.getBoundingClientRect().height,
+                    svgWidth: tools.getBoundingClientRect()?.width,
+                    svgHeight: tools.getBoundingClientRect()?.height,
                   })
                   break
 
@@ -360,10 +362,11 @@ export const ExtractFormPdf = ({
                           element.getBoundingClientRect().left,
                           item.getBoundingClientRect().left - pdfOffset_x,
                         ],
+                        lineHeight: parseInt(getComputedStyle(tools.children[0]).getPropertyValue('line-height').replace('px', '')),
                         left: formatStyle("left",(item as any).getAttribute('style')) - pdfOffset_x,
                         top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                         textImageContent: tools.children[0].getAttribute('textImageContent'),
-                        tools: tools.children[0].textContent,
+                        tools: tools.children[0].innerText,
                         elem: element,
                         fontsize: (tools.children[0] as any).getAttribute(
                           'style'
@@ -435,7 +438,9 @@ export const ExtractFormPdf = ({
                           tools.children[0].getBoundingClientRect().height,
                           item.getBoundingClientRect().top - pdfOffset_y,
                         ],
-
+                        lineHeight: 18,
+                        left: formatStyle("left",(item as any).getAttribute('style')) - pdfOffset_x,
+                        top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                         axisX: [
                           element.getBoundingClientRect().left,
                           item.getBoundingClientRect().left - pdfOffset_x,

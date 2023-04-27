@@ -150,8 +150,8 @@ export const mutations: MutationTree<RootState> = {
   SET_CONGRAT_SUCCESS(state) {
     state.showCongratulationsModal = true
   },
-  SET_AGREE_SIGN(state) {
-    state.agreeSign = 1
+  SET_AGREE_SIGN(state, payload) {
+    state.agreeSign = payload ?? 0
   },
   UN_SET_AGREE_SIGN(state) {
     state.agreeSign = 0

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <p class="w-full text-center px-3 relative top-[50px] text-white">
+    <p class="w-full text-center px-3 relative top-[50px] text-white text-[24px] font-semibold">
       Displays Privacy settings for each file
     </p>
-    <img class="right-[18%] top-[200px] z-10 absolute lg:right-[15%] w-32 sm:w-48 sm:top-[140px] rotate-[70deg]" src="@/assets/icons/spiral_arrow_white.svg"/>
+    <img class="right-[18%] top-[200px] z-10 absolute lg:right-[17%] w-32 sm:w-48 sm:top-[90px]" src="@/assets/icons/spiral_arrow_green.svg"/>
     <img
-      class="relative left-2 lg:left-[300px] w-[calc(100%-8px)] lg:w-[calc(100%-290px)] top-[250px]"
+      class="relative left-2 lg:left-[300px] w-[calc(100%-8px)] lg:w-[calc(100%-320px)] top-[250px]"
       src="@/assets/icons/pwa-files-table.svg"
     />
   </div>

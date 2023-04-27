@@ -1,24 +1,16 @@
 <template>
   <div class="text-field tool" @click="confirmStarAction" attr="star">
-    <p v-if="confirmStar" :style="style">
-      <input
-        v-if="focus"
+    <p 
+    v-if="confirmStar" :style="style"
         @focus="focus = true"
-        @blur="focus = false"
-        @click="focus = true"
-        @keyup="keyUp"
-        v-model="inputText"
-        class="w-[200px]"
+        @blur="onBlur"
+        contenteditable="true"
+        ref="name_box"
+        placeholder="Type here..."
+        class="text-container"
         :class="[
-          focus ? 'border-[1px] border-paperdazgreen-200 rounded py-[2px]' : '',
+          focus ? 'border-[1px] border-paperdazgreen-200 bg-yellow-300' : 'bg-transparent border-none',
         ]"
-      />
-      <span
-        v-else
-        ref="namebox"
-        :textImageContent="svgToImageData"
-        @click="focus = true"
-        >{{ inputText }}</span
       >
     </p>
     <!-- <svg v-if="!confirmStar" :style="style" viewBox="0 0 37 36" fill="black" xmlns="http://www.w3.org/2000/svg" @mouseover="overHandler" @mouseleave="leaveHandler">
@@ -27,12 +19,16 @@
             fill="#FFCF27" />
         </svg> -->
     <img
-      v-if="!confirmStar"
-      style="width: 18px"
-      class="annot-button"
-      src="../../../assets/img/name_icon.svg"
+      v-if="!confirmStar && !isCreator"
+      class="annot-button w-[80px]"
+      src="../../../assets/img/name_tag.svg"
     />
-    <span v-show="!confirmStar" class="toolTip hidden">Name</span>
+    <img
+    v-if="!confirmStar && isCreator"
+    style="width: 18px"
+    src="../../../assets/img/name_icon.svg"
+  />
+    <!-- <span v-show="!confirmStar" class="toolTip hidden">Name</span> -->
     <!-- <div v-if="!isCreator && isModalActive && !confirmStar"
           class="w-[240px] h-[26px] z-10 bg-white rounded-[12px] text-[12px] absolute border-[2px] border-[#84C870] px-2 ml-[-16px] mt-[-50px]">
           Click on star when this line is completed.</div> -->
@@ -61,6 +57,9 @@ export default {
     generatePDF: function () {
       if (this.generatePDF) this.svgToImage()
     },
+  },
+  mounted() {
+    this.confirmStar && this.$refs.name_box.focus()
   },
   computed: {
     isSign() {
@@ -94,6 +93,7 @@ export default {
     },
   },
   methods: {
+
     removeFocus(){
       this.focus = false
       setTimeout(() => {
@@ -102,11 +102,6 @@ export default {
     },
     onBlur() {
       this.removeFocus()
-    },
-    keyUp() {
-      if (event.keyCode === 13) {
-        this.removeFocus()
-      }
     },
     async svgToImage() {
       this.svgToImageData = ''
@@ -130,6 +125,7 @@ export default {
     },
     confirmStarAction() {
       if (!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest || (this.isAgreedSign !== 1 && this.isSign)) return
+      !this.confirmStar && this.$emit('addOffset', 7)
       !this.isCreator && (this.confirmStar = true)
       this.$BUS.$emit('scrollToSignInitial')
       this.notClass = ''
@@ -143,5 +139,13 @@ input {
   border: 0.5px solid #e9e9e9;
   background-color: transparent;
   border-radius: 4px;
+}
+.text-container{
+  @apply outline-none border-none border-l-[1px] border-paperdazgreen-300/50 whitespace-nowrap
+}
+.text-container[placeholder]:empty:before {
+  content: 'Type here...';
+  opacity: 0.5;
+  color: #555; 
 }
 </style>

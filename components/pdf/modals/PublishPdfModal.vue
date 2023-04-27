@@ -260,6 +260,11 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     }
   },
   watch: {
+    "$store.getters.getUserSignature"(){
+      this.showInitialModal = false
+       if(!this.isConfirm) return
+       this.onSubmit()
+    },
     visible(val) {
       this.showModal = val
     },
@@ -331,8 +336,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         )
     },
     async confirmRequest() {
-      await this.$_server
-        .post('/pdf-generator', {
+      await this.$_server.post('/pdf-generator', {
           ...ExtractFormPdf({
             downloadLink: this.file?.downloadLink,
             file: this.confirmAnnotation,

@@ -12,7 +12,6 @@
       attr="initial"
       :elemFill="uploaded && initialimgDisplay"
       :uploaded="uploaded"
-      @click="selectIsCreatorDisplay"
       ref="annotbutton"
       class="annot-button"
       :class="[
@@ -24,27 +23,26 @@
 
     <img
     v-if="!initialimgDisplay  && !isCreator && !tool.justMounted"
-    src="../../../assets/img/initial-icon.png"
+    src="../../../assets/img/initial_tag.svg"
     attr="initial"
     :elemFill="uploaded && initialimgDisplay"
     :uploaded="uploaded"
     @click="selectIsCreatorDisplay"
     ref="annotbutton"
-    class="annot-button"
+    class="annot-button w-[43px]"
     :class="[
       $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
       isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
     ]"
-    :width="(tool?.pageScaleY || 1) * 18"
     />
   
     <img
-      v-else-if="theInitial"
+      v-else-if="theInitial && !isCreator"
       class="absolute-image"
       :src="theInitial"
       :style="style"
     />
-    <span v-show="!initialimgDisplay  && !isCreator && !tool.justMounted && (isAgreedSign == 1 && isSign || isComplete)" class="toolTip hidden">Initial</span>
+    <!-- <span v-show="!initialimgDisplay  && !isCreator && !tool.justMounted && (isAgreedSign == 1 && isSign || isComplete)" class="toolTip hidden">Initial</span> -->
     <!-- <img v-else class="absolute-image" src="../../../assets/img/initials.png" /> -->
   </div>
 </template>
@@ -80,7 +78,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
        return this.file.userId == this.$auth?.user?.id  
     },
     theInitial(){
-       return this.$store.getters?.getUserInitial || this.initial
+       return this.$store.getters?.getUserInitial || this.initial || this.$auth?.user?.initialURL
     },
     isSign() {
       return String(this.file.fileAction).toLowerCase() === FileAction.SIGNED
@@ -150,7 +148,6 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       }
       this.$auth?.user?.initialURL && toDataURL(this.$auth?.user?.initialURL).then((dataUrl) => {
         this.initial = dataUrl
-        console.log("alert",this.initial)
       })
     },
     imageExportedLocal(image, isSignature) {
@@ -167,22 +164,26 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       if (!this.uploaded) this.showInitialModal = true
     },
     setInitialImgDisplay() {
-      if(!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest) return
+      if(!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest && this.theInitial) return
       !this.isOwner && (this.initialimgDisplay = true)
       this.$BUS.$emit('scrollToSignInitial', 'appendinitial')
       !this.uploaded && !this.theInitial && this.setInitialSignType('initial')
     },
   },
   mounted() {
-    console.log(this.$store.state.agreeSign)
     this.changeInitialToBase64()
     this.completed && this.changeInitialToBase64(this.completed)
     !this.initialimgDisplay && !this.isCreator && this.tool.justMounted ? this.popUpIfNoinitial() : null;
-    this.checkToolIndex()
+    // this.checkToolIndex()
   },
   watch: {
+    initialimgDisplay(){
+      if(this.theInitial) setTimeout(() => {
+        this.$BUS.$emit('scroll-to-tools')
+      }, 100);
+    },
     theInitial(){
-      this.$BUS.$emit('scroll-to-tools')
+        this.$BUS.$emit('scroll-to-tools')
     },
     '$auth.user.initialURL': async function () {
       this.changeInitialToBase64()

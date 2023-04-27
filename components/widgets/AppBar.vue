@@ -1,6 +1,6 @@
 <template>
   <div
-    class="sticky z-20 h-14 py-lg-5 pt-4 pb-4 transition ease-in-out bg-white"
+    class="sticky z-20 h-[70px] py-lg-5 pt-4 pb-4 transition ease-in-out bg-white"
     :class="[
       {
         'shadow-md': scrolled,
@@ -16,21 +16,21 @@
       
       <!-- mobile -->
       <!------>
-      <div class="text-center w-full text-[0.8rem] md:text-[1.2rem] font-semibold flex justify-end md:justify-between items-center">
+      <div class="text-center w-full text-[0.8rem] md:text-[1.2rem] font-semibold flex justify-between items-center">
         <div class="">
         <nuxt-link to="/">
           <logo-with-text class="mr-2  h-[30px] xs:h-6 sm:h-[60px] w-auto" />
         </nuxt-link>
       </div>
-        <abbr class="hidden text-[#F30B0B] text-[1.2rem] md:block">Secure & Private! </abbr>
+        <abbr class="hidden text-[#F30B0B] text-[1.2rem] lg:block">Secure & Private! </abbr>
        
-        <nuxt-link  v-show="!$auth.loggedIn && routeName !== 'login'" to="/login" class="px-4 py-2 capitalize text-black rounded-md ">
+        <nuxt-link  v-if="!$auth.loggedIn && routeName !== 'login'" to="/login" class="px-4 py-2 capitalize text-black rounded-md ">
           Login
         </nuxt-link>
-        <nuxt-link  v-show="!$auth.loggedIn && routeName === 'login'" to="/package?tablevel=1" class="px-4 py-2 capitalize text-black rounded-md ">
+        <nuxt-link  v-if="!$auth.loggedIn && routeName === 'login'" to="/package?tablevel=1" class="px-4 py-2 capitalize text-black rounded-md ">
           Register
         </nuxt-link>
-        <nuxt-link v-show="$auth.loggedIn" to="/paperlink-pages" class="px-4 py-2 text-paperdazgreen-300 rounded-md border-paperdazgreen-300 border-2">
+        <nuxt-link v-if="$auth.loggedIn" to="/paperlink-pages" class="px-4 py-2 text-paperdazgreen-300 rounded-md border-paperdazgreen-300 border-2">
           Dashboard
         </nuxt-link>
        </div>

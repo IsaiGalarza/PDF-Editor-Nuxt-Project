@@ -163,40 +163,6 @@ export default Vue.extend({
     closeModal(){
       this.showModal = false
     },
-    loginUserFunc() {
-      let user = {
-        "email": this.email,
-        "password": this.password,
-        "strategy": "local"
-      }
-      this.$auth
-        .loginWith('local', { data: user })
-        .then(async (response) => {
-          let { user } = response.data
-          let bussinessName = this.$auth.user?.businessPage
-
-          //@ts-ignore
-          await this.loginUser(response)
-
-          setTimeout(() => {
-            let fromFileManger = JSON.parse(localStorage.getItem('isGuest'))
-            if (fromFileManger?.isGuest) {
-              this.$nuxt.$router.push(fromFileManger.path)
-            } else {
-              // this.$nuxt.$router.push('/paperlink-pages')
-              this.closeModal()
-              this.$nuxt.$router.push(`/${user.businessPage}`)
-            }
-          }, 2000)
-        })
-        .catch(({ response }) => {
-          let message = ErrorHandler(response)
-            ; (this.errorMessage) = message
-        })
-        .finally(() => {
-          this.isLoading = false
-        })
-    },
     closeModal() {
       this.$emit('updateVisibility', false)
     },
@@ -204,10 +170,10 @@ export default Vue.extend({
       if (!this.getIsFormValid) return
 
       this.loading = true
-      await this.$axios
-        .$patch(`/users/${this.userInfo.data?.user_id}`, this.userPayload)
+      await this.$_server
+        .patch(`/users/${this.userInfo.data?.user_id}`, this.userPayload)
         .then((res) => {
-          this.loginUserFunc()
+          this.$router.push(`/${this.userInfo.data?.businessPage}`)
         })
         .catch((err) => {
           this.loading = false

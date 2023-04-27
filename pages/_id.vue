@@ -150,6 +150,9 @@ import PG_Tutorial_2 from "~/components/profile/modal/PopUps/PG_Tutorial_2.vue"
 import PG_Tutorial_3 from "~/components/profile/modal/PopUps/PG_Tutorial_3.vue"
 import PG_Tutorial_4 from "~/components/profile/modal/PopUps/PG_Tutorial_4.vue"
 import PG_Tutorial_5 from "~/components/profile/modal/PopUps/PG_Tutorial_5.vue"
+import PG_Tutorial_6 from "~/components/profile/modal/PopUps/PG_Tutorial_6.vue"
+import PG_Tutorial_7 from "~/components/profile/modal/PopUps/PG_Tutorial_7.vue"
+import PG_Tutorial_8 from "~/components/profile/modal/PopUps/PG_Tutorial_8.vue"
 
 
 export default Vue.extend({
@@ -177,7 +180,10 @@ export default Vue.extend({
     PG_Tutorial_2,
     PG_Tutorial_3,
     PG_Tutorial_4,
-    PG_Tutorial_5
+    PG_Tutorial_5,
+    PG_Tutorial_6,
+    PG_Tutorial_7,
+    PG_Tutorial_8
   },
   name: 'PublicProfilePage',
   layout: 'profile',
@@ -205,8 +211,7 @@ export default Vue.extend({
   mounted() {
     this.getUserFiles(this.returnedDataPage, this.searchFileParam)
     this.generateQR()
-    console.log("player-file", this.userInfo)
-    // this.totalFileFolder()
+    document.body.style.overflow = 'auto'
   },
   computed: {
     isAuthor() {
@@ -240,14 +245,17 @@ export default Vue.extend({
       showShareCompanyName: false,
       showPermissionModal: false,
       link: "",
-      keepCount: 4,
+      keepCount: 0,
       showGuideModal: false,
       popUps: [
         'PG_Tutorial_1',
         'PG_Tutorial_2',
         'PG_Tutorial_3',
         'PG_Tutorial_4',
-        'PG_Tutorial_5'
+        'PG_Tutorial_5',
+        'PG_Tutorial_6',
+        "PG_Tutorial_7",
+        'PG_Tutorial_8'
        ]
     }
   },
@@ -256,8 +264,8 @@ export default Vue.extend({
       this.keepCount = this.keepCount + 1
       if (this.keepCount == this.popUps.length) {
         this.showGuideModal = false
-        await this.updateTutorialStatus()
-        await this.filterUsers()
+        // await this.updateTutorialStatus()
+        // await this.filterUsers()
         document.body.style.overflow = 'auto'
       }
     },

@@ -99,7 +99,7 @@
                   curSignInitialPage == 'sign' + (pI + 1) &&
                   isAgreedSign == 1
                 "
-                class="flex absolute"
+                class="flex absolute hidden"
                 :style="signAlaram"
               >
                 <div
@@ -119,7 +119,7 @@
                   isAgreedSign == 1
                 "
                 :style="signAlaram"
-                class="absolute flex"
+                class="absolute flex hidden"
               >
                 <div
                   class="bg-[#77B550] py-1 text-white text-[12px] border-rounded-lg"
@@ -466,7 +466,7 @@ export default mixins(PdfAuth).extend({
     this.$store.commit('SET_EDIT_ANNOTATION', true)
     this.$store.commit('SET_FILE_SIGNATURE', null)
     this.$store.commit('SET_FILE_INITIAL', null)
-    this.$store.commit("UN_SET_AGREE_SIGN")
+    this.$store.commit("SET_AGREE_SIGN", -1)
   },
   async asyncData({ $axios, params, error, store }) {
     const file = await $axios
@@ -731,17 +731,16 @@ export default mixins(PdfAuth).extend({
         let annotationButton = document.querySelectorAll('.annot-button')
         Array.from(annotationButton).forEach((element, index) => {
           if (element) element.classList.remove('pulse')
-          if(element.parentElement.children[1]?.tagName == 'SPAN'){
-          element.parentElement.children[1]?.classList.add('hidden')
-          index == 0 && element.parentElement.children[1].classList.remove('hidden')
-          console.log(element.parentElement.children[1])
-          }
+          // if(element.parentElement.children[1]?.tagName == 'SPAN'){
+          // element.parentElement.children[1]?.classList.add('hidden')
+          // index == 0 && element.parentElement.children[1].classList.remove('hidden')
+          // console.log(element.parentElement.children[1])
+          // }
         })
-  
+
         this.filteredAnnotationButton = Array.from(annotationButton).filter(
           (item, index) => !item.hasAttribute('elemFill')
         )
-        console.log(this.filteredAnnotationButton)
         // if (this.filteredAnnotationButton.length == 0 && this.isSign && type === "appendsigninitial") {
         //   this.showDoneModal = true;
         // }
@@ -761,6 +760,7 @@ export default mixins(PdfAuth).extend({
           this.InitialNumber = initialNum
         }
         if (this.filteredAnnotationButton.length) {
+          if((this.isAgreedSign !== 1 && this.isSign)) return
           this.filteredAnnotationButton[0].classList.add('pulse')
           window.selem = this.filteredAnnotationButton[0]
           // this.filteredAnnotationButton[0].scrollIntoView({ block: 'center' })
@@ -1614,4 +1614,7 @@ export default mixins(PdfAuth).extend({
     border: 5px solid rgb(107 114 128);
   }
 }
+  * {
+    touch-action: auto !important;
+  }
 </style>

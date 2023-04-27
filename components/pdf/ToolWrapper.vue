@@ -49,8 +49,22 @@
         :isActive="isActive" :fontSize="fontSize" :scale="scale" :file="file" :value="value" :justMounted="justMounted"
         @input="onInp" :generatePDF="generatePDF" :showPublishModal="showPublishModal"
         :selectedToolType="selectedToolType" :mouseUp="mouseUp" :lineStart="lineStart" :toolLength="toolLength"
-        :drawingStart="drawingStart" :setInitialSignType="setInitialSignType" @onBlur="onBlur" />
-      
+        :drawingStart="drawingStart" :setInitialSignType="setInitialSignType" @onBlur="onBlur" 
+        @addOffset="addOffset"
+        />
+
+        <!-- <div :class="[
+          'dr__right',
+          { line: type == TOOL_TYPE.line },
+          { 'line-alt': (x1 < x2 && y1 < y2) || (x1 > x2 && y1 > y2) },
+        ]" ref="drRight" v-hammer:pan="(ev) => handleToolDrag(ev, TOOL_DIRECTION.right)"
+          v-if="isAvailableDrRight && isCreator"></div>
+        <div :class="[
+          'dr__left',
+          { line: type == TOOL_TYPE.line },
+          { 'line-alt': (x1 < x2 && y1 < y2) || (x1 > x2 && y1 > y2) },
+        ]" v-hammer:pan="(ev) => handleToolDrag(ev, TOOL_DIRECTION.left)" v-if="isAvailableDrLeft && isCreator"></div>
+       -->
     </div>
   </div>
 </template>
@@ -322,7 +336,7 @@ export default {
     //         ? this.TOOL_DIRECTION.right
     //         : this.TOOL_DIRECTION.left
     //   }
-    //   console.log('hhh');
+    //   console.log(direction, event)
     //   this.dragHandler(event, this.id, direction, this.pageNumber)
     //   if (event.isFinal) {
     //     if (
@@ -335,6 +349,9 @@ export default {
     //   }
     // },
     onClick() {
+      if (!this.isCreator) return;
+      this.setActiveToolId(this.id)
+      return
       this.$emit('resetJustMounted', this.id)
       if (!this.isCreator) return;
       this.setActiveToolId(this.id)
@@ -373,6 +390,10 @@ export default {
       if (this.tool.top) this.top = this.tool.top
       if (this.tool.left) this.left = this.tool.left
     },
+    addOffset(val) {
+      if(this.tool.type == this.TOOL_TYPE.appendDate || this.tool.type == this.TOOL_TYPE.appendName)
+       val ? this.top = this.top + val : null
+    },
     draggingMouseover(event) {
       if (this.isDragging) {
         event.target.style.cursor = 'move'
@@ -388,7 +409,7 @@ export default {
         this.lastPosX = elem.offsetLeft
         this.lastPosY = elem.offsetTop
         // console.log(elem.parentElement.getBoundingClientRect().width / elem.parentElement.clientWidth)
-        this.pageScale = elem.parentElement.getBoundingClientRect().width / elem.parentElement.clientWidth
+        this.pageScale = elem.parentElement?.getBoundingClientRect()?.width / elem.parentElement.clientWidth
       } else {
         elem.style.cursor = 'move'
       }

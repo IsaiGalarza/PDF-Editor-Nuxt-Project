@@ -561,7 +561,7 @@ export default Vue.extend({
       debounceTimeout: null,
       maxInviteTeam: false,
       date:'',
-      time: '',,
+      time: '',
       allowCopy: true
     }
   },

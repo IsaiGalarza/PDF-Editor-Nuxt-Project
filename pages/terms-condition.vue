@@ -1,9 +1,7 @@
-<template >
-  <html>
-    <head>
-      <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
-    </head>
-    <body  class="c13 doc-content c-none bg-white">
+<template>
+   <div class="flex justify-center bg-white ">
+  <div style="background-color: #fff;" class="c13 doc-content ">
+ 
       <p class="c10"><span class="c3 c15">TERMS AND CONDITIONS</span></p>
       <p class="c2"><span class="c3 c1">INTRODUCTION</span></p>
       <p class="c2" id="h.gjdgxs">
@@ -579,8 +577,10 @@
       <p class="c2 c5"><span class="c3 c0"></span></p>
       <p class="c2 c5"><span class="c3 c0"></span></p>
       <p class="c8 c5"><span class="c3 c20"></span></p>
-    </body>
-  </html>
+
+    </div>
+  </div>
+   
 </template>
 
 <script>

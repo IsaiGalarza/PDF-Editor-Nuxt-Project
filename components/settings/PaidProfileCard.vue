@@ -19,6 +19,8 @@
         </p> -->
       </div>
     </div>
+
+
     <div class="flex mb-3 flex-col items-center justify-center">
       <button @click="visibleUploadImageDialog = true" style="box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);"
         class="flex items-center py-2 px-4 justify-center rounded-lg  mb-5">
@@ -27,7 +29,7 @@
       </button>
 
       <el-dropdown trigger="click" class=" w-full ">
-        <div class="flex w-full items-center justify-center">
+        <div class="flex w-full  mb-4 items-center justify-center">
           <button
             class="border-[1px]  w-[85%] py-2.5 rounded-[10px] border-[#22252948] flex items-center justify-center text-[#22252948]">
             Date format
@@ -37,22 +39,11 @@
         <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu hidden sm:block">
           <ul class="min-w-[150px]">
 
-            <li class="dropdown-item">
-              <div class="flex justify-between w-full border-t border-gray-200">
-                <span class="ml-1">Edit</span>
-              </div>
-            </li>
-
-            <li class="dropdown-item" divided>
-              <div class="flex justify-between w-full">
-                <span>Share</span>
-              </div>
-            </li>
-
-            <li class="dropdown-item">
-              <div class="flex justify-between w-full border-t border-gray-200">
-                <span>Remove</span>
-              </div>
+            <li  v-for="(value, key, index) in dateFormat" 
+            :key="key" class="dropdown-item">
+              <button  @click="()=> onDateFormatSelected(value)" class="flex justify-between w-full border-t border-gray-200">
+                <span class="ml-1">{{ value }}</span>
+              </button>
             </li>
           </ul>
         </el-dropdown-menu>
@@ -68,22 +59,15 @@
             <img class="ml-4 scale-75" src="../../assets/icons/arrow_down.svg" alt="">
           </button>
         </div>
-        <el-dropdown-menu slot="drokkpdown" class="table-menu-dropdown-menu hidden sm:block">
+        <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu hidden sm:block">
           <ul class="min-w-[150px]">
 
-            <li class="dropdown-item">
+            <li  v-for="(value, key, index) in timeFormat" :key="key" class="dropdown-item">
               <div class="flex justify-between w-full border-t border-gray-200">
-                <span class="ml-1">Edit</span>
+                <span class="ml-1">{{ value }}</span>
               </div>
             </li>
-
-        
-
-            <li class="dropdown-item">
-              <div class="flex justify-between w-full border-t border-gray-200">
-                <span>Remove</span>
-              </div>
-            </li>
+           
           </ul>
         </el-dropdown-menu>
       </el-dropdown>
@@ -121,6 +105,18 @@ export default mixins(login).extend({
       showQrcode: false,
       showShareCompany: false,
       visibleUploadImageDialog: false,
+      dateFormat:[
+        'dd-mm-yyyy',
+        'dd/mm/yyyy',
+        'dd/mm/yy',
+        'dd.mm.yyyy',
+      ],
+      timeFormat:[
+        'h:MM TT',
+        'h:MM:ss TT',
+        'h:MM:ss TT Z',
+        'HH:MM:ss'
+      ]
     }
   },
   computed: {
@@ -136,6 +132,7 @@ export default mixins(login).extend({
     link() {
       return (`${window.origin}/public-profile/${this.$auth.user.id}`)
     },
+  
     userAccount() {
       switch ((this.$auth.user).role) {
         case UserTypeEnum.PAID:
@@ -156,6 +153,12 @@ export default mixins(login).extend({
     }
   },
   methods: {
+    onDateFormatSelected(value){
+      this.$store.commit('SET_DATEFORMAT', value)
+    },
+    onTimeFormatSelected(value){
+      this.$store.commit('SET_TIMEFORMAT', value)
+    },
     showQrcodeFunc() {
       this.showQrcode = true
     },

@@ -60,20 +60,20 @@ export default Vue.extend({
       contents: [
         {
           article:
-            'Save time and money for everyone!',
+            'Going Paperless  save   time and money for everyone!',
             note: `20, 200, 2000 or more people can <br/>
           complete a Paperlink for just $2.00`,
         },
         {
           article:
           
-            `Register, upload and  Paperlink is created! `,
+            `Register, upload and a  Paperlink is created! `,
           note: `20, 200, 2000 or more people can <br/>
           complete a Paperlink for just $2.00`,
         },
         {
           article:
-            `Perfect for all size offices  to go paperless in minutes!`,
+            `Perfect for all size offices  to go paperless in minutes!`,
           note: `20, 200, 2000 or more people can<br/> 
           complete a Paperlink for just $2.00`,
         },

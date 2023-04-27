@@ -10,7 +10,7 @@
             <nuxt-link to="/terms-condition" class="text-[0.8rem]  md:py-0  px-3">
                 Terms of Use
             </nuxt-link>
-            <nuxt-link to="/package?tablevel=1" class="text-[0.8rem] md:py-0  px-3">
+            <nuxt-link to="/privacy-policy" class="text-[0.8rem] md:py-0  px-3">
                 Privacy Policy
             </nuxt-link>
             <nuxt-link to="/contact-us-landing" class="text-[0.8rem] md:py-0  px-3">

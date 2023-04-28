@@ -211,7 +211,7 @@ export default Vue.extend({
   mounted() {
     this.getUserFiles(this.returnedDataPage, this.searchFileParam)
     this.generateQR()
-    document.body.style.overflow = 'auto'
+    // document.body.style.overflow = 'auto'
   },
   computed: {
     isAuthor() {
@@ -302,7 +302,7 @@ export default Vue.extend({
     },
     async getUserFiles(page, search) {
       await this.$axios
-        .$get(`/files/?userId=${this.userInfo?.id}&fileName[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1&filePrivacy[$ne]=doNotPost`, {
+        .$get(`/files/?userId=${this.userInfo?.id}&fileName[$like]=${search}%&$skip=${page}&$sort[position]=1&filePrivacy[$ne]=doNotPost`, {
           params: {
             isEditing: 0
           }

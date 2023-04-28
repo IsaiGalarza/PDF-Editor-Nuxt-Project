@@ -18,10 +18,6 @@ export default {
       //@ts-ignore
       this.$store.commit('SET_TOAST', val)
     },
-    async partialLogout(){
-      // @ts-ignore
-      await this.$auth.logout()
-    },
     async logout(shouldRedirect: boolean = true) {
       // @ts-ignore
       if (shouldRedirect) await this.$nuxt.$router.push('/login')

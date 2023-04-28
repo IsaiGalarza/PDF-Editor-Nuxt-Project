@@ -52,8 +52,10 @@ export default mixins(login).extend({
   },
   mounted() {
     // disable scrolling
-     this.updateTutorialStatus();
-    this.$auth.user.isTutorialPassed == 0 && this.popTutorial()
+    //  this.updateTutorialStatus();
+   if(this.$auth.user?.isTutorialPassed == 0 || this.$auth.user?.isTutorialPassed == false){
+      this.popTutorial()
+    } 
   },
   beforeDestroy() {
     localStorage.setItem('newUser', "true")
@@ -82,7 +84,7 @@ export default mixins(login).extend({
     return {
       // ledger, confirmed, signed, saved, shared
       activeTab: 'ledger',
-      showGuideModal: localStorage.getItem('newUser') ? false : true,
+      showGuideModal: false,
       keepCount: 0,
       popUps: [
         'WelcomePopUp',

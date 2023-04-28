@@ -12,7 +12,7 @@
           website (hereafter referred to as "Site")
           and the services that are made available through the Site.
           Please email us at
-          <span class="c4 c0"><a class="c17" href="https://www.paperdaz.com"> hello@paperdaz.com </a></span>
+          <span class="c4 c0"><a class="c17" href="mailto:mai@paperdaz.com"> hello@paperdaz.com </a></span>
           if you have any questions concerning
           our privacy statement, our data collection policies, how we handle user
           information, or if you want to immediately report a security breach.</span>
@@ -45,8 +45,8 @@
           governs the basis of our collection, storage and use of personal information collected by Paperdaz. We are
           always
           looking to improve the information we provide to our users so if you have any feedback on this privacy policy,
-          please let us know using our contact details above or by emailing us as at <span class="c4 c0"><a class="c17"
-              href="https://www.paperdaz.com"> hello@paperdaz.com </a></span>
+          please let us know using our contact details above or by emailing us as at 
+          <span class="c4 c0"><a class="c17" href="mailto:mai@paperdaz.com"> hello@paperdaz.com </a></span>
         </span>
       </p>
       <p class="c2 mb-3 ">
@@ -394,20 +394,428 @@
         content or websites.
       </p>
       </p>
-      <p class="c2 mb-2 mt-4" id="h.1fob9te"><span class="mr-4 text-[1rem]">4.</span><span class="c3 c1">Your Choices
+      <p class="c2 mb-2 mt-4" id="h.1fob9te"><span class="mr-4 text-[1rem]">5.</span><span class="c3 c1">Your Choices
           Regarding Information
         </span>
+      </p>
       <p class="c3 c0   mb-3 pl-[38px] ">
-        Our Site may contain links to third party websites. When you click on a link to any other website or location, you
-        automatically exit our Site or Services and go to another site, and another entity may collect personal
-        information or anonymous data from you. We have no control over, do not review, and are not responsible for, these
-        outside websites or their contents. Please, be aware that the terms of this Privacy Policy, do not apply to these
-        outside websites or contents, or to any collection of your personal information after you click on links to such
-        outside websites. We encourage you to read the privacy policies of every website you visit. The links to third
-        party websites or locations are for your convenience and do not signify our endorsement of such third parties or,
-        content or websites.
+        <span class="c3 c0">
+          <span class="c3 c1">Choices:</span>
+          We offer you choices regarding the collection, use, and sharing of your personal information. We may
+          periodically send you emails that directly promote the use of our Services. When you receive promotional
+          communications from us, you may indicate a preference to stop receiving further communications from us and you
+          will have the opportunity to “opt-out” by following the unsubscribe instructions provided in the email you
+          receive or by contacting us directly. Despite your indicated email preferences, we may send you service-related
+          communications, including notices of any updates to our Terms of Use or Privacy Policy.
+        </span>
       </p>
+
+      <p class="c3 c0   mb-3  ">
+        <span class="c3 c0">
+          <span class="c3 c1">Cookies:</span>
+          If you decide at any time that you no longer wish to accept cookies from our Services for any of the purposes
+          described above, then you can instruct your browser, by changing its settings, to stop accepting cookies or to
+          prompt you before accepting a cookie from the websites you visit. Consult your browser’s technical information.
+          If you do not accept cookies, however, you may not be able to use all portions of the Services or all
+          functionality of the Services. If you have any questions about how to disable or modify cookies, please contact
+          us at <span class="c4 c0"><a class="c17" href="mailto:mai@paperdaz.com"> hello@paperdaz.com </a></span>
+        </span>
       </p>
+
+      <p class="c2 mb-2 mt-4" id="h.1fob9te"><span class="mr-4 text-[1rem]">6.</span><span class="c3 c1">Your Rights
+        </span>
+      </p>
+
+      <p class="c3 c0   mb-3  ">
+        <span class="c3 c0">
+          As a user of our Site, you have the following rights, any of which you may exercise by contacting us at
+          <span class="c4 c0"><a class="c17" href="mailto:mai@paperdaz.com"> hello@paperdaz.com </a></span>
+        </span>
+      </p>
+
+      <ul class="c7 lst-kix_list_3-0 start mb-4">
+        <li class="c14 c6 li-bullet-0">
+          <span class="c3 c0">
+            The right to ask what personal data that we hold about you at any time. Extra requests (particularly
+            repetitive) for data may result in a fee being charged to the user.
+          </span>
+        </li>
+        <li class="c14 c6 li-bullet-0">
+          <span class="c3 c0">
+            The right to ask us to update and correct any out-of-date or incorrect personal data that we hold about you
+            free of charge.
+          </span>
+        </li>
+        <li class="c14 c6 li-bullet-0">
+          <span class="c3 c0">
+            As set out above, the right to opt out of any marketing communications that we may send you.
+
+          </span>
+        </li>
+
+      </ul>
+
+
+      <div class=" pl-[38px">
+        <p class="c2 my-2" id="h.1fob9te"><span class="mr-3 c3 c1 ">A.</span><span class="c3 c1">Right of access</span>
+        </p>
+        <p class="c2  mb-2 pl-[38px]">
+          <span class="c3 c0">
+            You have a right of access to any personal information we hold about you. You can ask us for a copy of your
+            personal information; confirmation whether your personal information is being used by us; details about how
+            and why it is being used; and details of what safeguards are in place if we transfer your information outside
+            of the United States and European Economic Area ("EEA").
+          </span>
+        </p>
+      </div>
+      <div class=" pl-[38px">
+        <p class="c2 my-2" id="h.1fob9te"><span class="mr-3 c3 c1 ">B.</span><span class="c3 c1">Right to update your
+            information</span>
+        </p>
+        <p class="c2  mb-2 pl-[38px]">
+          <span class="c3 c0">
+            You have a right to request an update to any of your personal information which is out of date or incorrect.
+
+          </span>
+        </p>
+      </div>
+      <div class=" pl-[38px">
+        <p class="c2 my-2" id="h.1fob9te"><span class="mr-3 c3 c1 ">C.</span><span class="c3 c1">Right to delete your
+            information
+          </span>
+        </p>
+        <p class="c2  mb-2 ">
+          <span class="c3 c0">
+            You have a right to ask us to delete any personal information which we are holding about you in certain
+            specific circumstances. You can ask us for further information on these specific circumstances by contacting
+            us via email at <span class="c4 c0"><a class="c17" href="mailto:mai@paperdaz.com"> hello@paperdaz.com </a></span>
+          </span>
+        </p>
+
+
+        <ul class="c7 lst-kix_list_3-0 start mb-4">
+          <li class="c14 c6 li-bullet-0">
+            <span class="c3 c0">We will pass your request onto other recipients of your personal information unless that
+              is impossible or
+              involves disproportionate effort. You can ask us who the recipients are using the email address above.
+
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div class=" pl-[38px">
+        <p class="c2 my-2" id="h.1fob9te"><span class="mr-3 c3 c1 ">D.</span><span class="c3 c1">Right to restrict use of
+            your information
+          </span>
+        </p>
+        <p class="c2  mb-2 ">
+          <span class="c3 c0">
+            You have a right to ask us to restrict the way that we process your personal information in certain specific
+            circumstances. You can ask us for further information on these specific circumstances by contacting us via
+            email at <span class="c4 c0"><a class="c17" href="mailto:mai@paperdaz.com"> hello@paperdaz.com </a></span>
+
+          </span>
+        </p>
+
+
+        <ul class="c7 lst-kix_list_3-0 start mb-4">
+          <li class="c14 c6 li-bullet-0">
+            <span class="c3 c0">We will pass your request onto other recipients of your personal information unless that
+              is impossible or
+              involves disproportionate effort. You can ask us who the recipients are using the email address above.
+            </span>
+          </li>
+        </ul>
+      </div>
+      <p class="c2 my-3" id="h.1fob9te"><span class="c3 c1">Standard Security</span></p>
+      <p class="c2 mb-3">
+        <span class="c3 c0">
+          We use standard security measures on our site. We will treat your information in strict confidence and endeavor
+          to take all reasonable steps to protect your personal information. However, we cannot guarantee the security of
+          any data you disclose online. You accept inherent security risks of providing information and other internet
+          activities and will not hold us responsible for any breach of security unless it is due to our negligence or
+          willful default.
+
+          <br>
+          <br>
+
+          We keep personal information as long as it is necessary for the practices described in this Policy. We also keep
+          information as otherwise required by law.
+
+        </span>
+      </p>
+
+      <p class="c2 my-3" id="h.1fob9te"><span class="c3 c1">California Online Privacy Protection Act (CaloPPA)</span></p>
+      <p class="c2 mb-3">
+        <span class="c3 c0">
+          CaloPPA is the first state law in the country to mandate the posting of a privacy statement on commercial
+          websites and online services. The law's reach extends well beyond California, requiring anyone or any
+          organization operating websites in the United States (or perhaps the entire world) that collect personally
+          identifiable information from California consumers to post a clear privacy statement on their website, adhere to
+          it, and disclose exactly what information is being collected and with whom it will be shared.
+
+          <br>
+          <br>
+
+          According to CalOPPA we agree to the following:
+          <br>
+          <br>
+          Access to our website is open to anonymous users. As soon as this privacy statement is finished, a link to it
+          will be added to our home page or, at the very least, the first important page you see when you visit our
+          website. The phrase "Privacy" appears in our Privacy Policy link, which is prominently displayed on the page
+          mentioned above.
+          <br>
+          <br>
+          Users will be notified of any privacy policy changes:
+          <br>
+          <br>
+          • On our Privacy Policy Page
+          <br>
+          <br>
+          Users are able to change their personal information:
+          <br>
+          <br>
+          • By emailing us
+          <br>
+          <br>
+          • By calling us
+          <br>
+          <br>
+          How does our site handle not track signals?
+
+          <br>
+          <br>
+          We honor do not track signals and do not track, plant cookies, or use advertising when a Do Not Track (DNT)
+          browser mechanism is in place.
+          <br>
+          <br>
+
+          Does our site allow third-party behavioral tracking?
+          <br>
+          <br>
+
+          It’s also important to note that we do not allow third-party behavioral tracking
+        </span>
+      </p>
+
+      <p class="c2 my-3" id="h.1fob9te"><span class="c3 c1">Fair Information Practices</span></p>
+      <p class="c2 mb-3">
+        <span class="c3 c0">
+          The Fair Information Practices Principles are the cornerstone of American privacy legislation, and the ideas
+          they encompass have had a big impact on the evolution of data protection laws all over the world. Compliance
+          with the different privacy regulations that safeguard personal information requires an understanding of the Fair
+          Information Practice Principles and how they should be put into practice.
+          <br>
+          <br>
+
+          In order to be in line with Fair Information Practices we will take the following responsive action, should a
+          data breach occur:
+        </span>
+      </p>
+
+      <ul class="c7 lst-kix_list_3-0 start mb-4">
+        <li class="c14 c6 li-bullet-0">
+          <span class="c3 c0">
+            We will notify the users via emai
+          </span>
+        </li>
+        <li class="c14 c6 li-bullet-0">
+          <span class="c3 c0">
+            Within 7 business days
+          </span>
+        </li>
+        <li class="c14 c6 li-bullet-0">
+          <span class="c3 c0">
+            We will notify the users via in-site notification
+          </span>
+        </li>
+        <li class="c14 c6 li-bullet-0">
+          <span class="c3 c0">
+            Within 1 business day
+          </span>
+        </li>
+
+      </ul>
+
+      <p class="c2 mb-3">
+        <span class="c3 c0">
+          We also concur with the Individual Redress Principle, which mandates that people have the ability to legally
+          hold negligent data collectors and processors accountable. This concept mandates that people have recourse to
+          courts or government entities to investigate and/or prosecute non-compliance by data processors, in addition to
+          having enforceable rights against data users.
+
+        </span>
+      </p>
+      <p class="c2 my-3" id="h.1fob9te"><span class="c3 c1">Cookie Usage</span></p>
+      <p class="c2 mb-3">
+        <span class="c3 c0">
+          This section describes how we use the cookies, and why these cookies are stored on your device. We will also
+          share how you can prevent these cookies from being stored. However, this may downgrade or ‘break’ certain
+          elements of the site’s functionality.
+
+          <br>
+          <br>
+          A ‘cookie’ is a bit of information that a website sends to your web browser that helps the site remember
+          information about you and your preferences.
+          <br>
+          <br>
+
+          ‘Session’ cookies are temporary bits of information that are used to improve navigation, block visitors from
+          providing information that is inappropriate (the site ‘remembers’ previous entries of age or country of origin
+          that were outside the specified parameters and blocks subsequent changes), and collect aggregate statistical
+          information on the site. They are erased once you exit your web browser or otherwise turn off your computer.
+
+        </span>
+      </p>
+      <p class="c2 my-3" id="h.1fob9te"><span class="c3 c1">How We Use Cookies</span></p>
+      <p class="c2 mb-3">
+        <span class="c3 c0">
+          If you create an account with us, we will use cookies for the management of the sign-up process and general
+          administration. We usually store cookies on your computer during the registration process for you to resume
+          where you left off, remembering your registered login, preferences, and other customization functions. These
+          cookies will usually be deleted when you log out; however, in some cases they may remain afterwards to remember
+          your site preferences when logged out.
+
+        </span>
+      </p>
+      <p class="c2 my-3" id="h.1fob9te"><span class="c3 c1">Third-Party Cookies</span></p>
+      <p class="c2 mb-3">
+        <span class="c3 c0">
+          In some cases, cookies provided by trusted third parties might be used. The sections below detail which third
+          party cookies you might encounter through this site.
+          <br>
+          <br>
+          We use third-party analytics to help us track and measure usage of the site so that we can continue to produce
+          engaging content. These cookies may track things such as how long you spend on the site, or pages you visit.
+          This will help inform us how to improve the site for you.
+
+          <br>
+          <br>
+
+          Our site also uses social media buttons and/or plugins that allow you to connect with your social platforms in
+          various ways. For these to work, social media sites, such as Facebook, Twitter, Pinterest, etc., will set
+          cookies through our site that may be used to enhance your profile on their site or contribute to the data they
+          hold for various purposes outlined in their respective privacy policies.
+
+
+        </span>
+      </p>
+      <p class="c2 my-3" id="h.1fob9te"><span class="c3 c1">Removing or Disabling Cookies</span></p>
+      <p class="c2 mb-3">
+        <span class="c3 c0">
+          In most cases, there are no industry standard options for disabling cookies without completely disabling the
+          functionality and features of the site. You have the option to disable or selectively turn off our cookies or
+          third-party cookies in your browser settings or manage preferences in internet security programmes. However,
+          doing so may affect how you are able to navigate our site. This may include the inability to log in to services
+          or programmes, such as logging into your “paperdaz.com” account. It is recommended that you leave on all cookies
+          if you are not sure whether you need them or not, in case they are used to provide a service that is useful to
+          you.
+
+        </span>
+      </p>
+      <p class="c2 my-3" id="h.1fob9te"><span class="c3 c1">Your rights as a data subject
+        </span></p>
+      <p class="c2 mb-3">
+        <span class="c3 c0">
+          At any point whilst “paperdaz.com” is in possession of or processing your Personal Data, you may have the
+          following rights:
+        </span>
+      </p>
+
+
+      <ul class="c7 lst-kix_list_3-0 start mb-4">
+        <li class="c14 c6 li-bullet-0 mb-2">
+          <span class="c3 c0">
+            <span class="c3 c1">Right of access</span>
+            – you have the right to request a copy of the Personal Data that we hold about you.
+          </span>
+        </li>
+        <li class="c14 c6 li-bullet-0 mb-2">
+          <span class="c3 c0">
+            <span class="c3 c1">Right of rectification</span>
+            – you have a right to correct Personal Data that we hold about you that is inaccurate or incomplete.
+          </span>
+        </li>
+        <li class="c14 c6 li-bullet-0 mb-2">
+          <span class="c3 c0">
+            <span class="c3 c1">Right to be forgotten</span>
+            – in certain circumstances you can ask for the Personal Data we hold about you to be erased from our records.
+          </span>
+        </li>
+        <li class="c14 c6 li-bullet-0 mb-2">
+          <span class="c3 c0">
+            <span class="c3 c1">Right to restriction of processing</span>
+            – where certain conditions apply you have a right to restrict the processing of your Personal Data.
+          </span>
+        </li>
+        <li class="c14 c6 li-bullet-0 mb-2">
+          <span class="c3 c0">
+            <span class="c3 c1">Right of portability</span>
+            – you have the right to have the Personal Data we hold about you transferred to another organization.
+          </span>
+        </li>
+        <li class="c14 c6 li-bullet-0 mb-2">
+          <span class="c3 c0">
+            <span class="c3 c1">Right to object </span>
+            – you have the right to object to certain types of processing such as direct marketing, as well as processing
+            we undertake based on our legitimate interests.
+          </span>
+        </li>
+        <li class="c14 c6 li-bullet-0 mb-2">
+          <span class="c3 c0">
+            <span class="c3 c1">Right to object to automated processing, including profiling </span>
+            – you also have the righ ot to be subject to the legal effects of automated processing or profiling.
+
+          </span>
+        </li>
+      </ul>
+
+      <p class="c2 my-3" id="h.1fob9te"><span class="c3 c1">Children’s Online Privacy and Protection Act
+        </span></p>
+      <p class="c2 mb-3">
+        <span class="c3 c0">
+          Federal laws impose special restrictions and obligations on commercial website operators who direct their
+          operations toward, and collect and use information from, children under the age of 16. Paperdaz takes such
+          restrictions seriously, and does not intend for our website or resources to be used by children under the age of
+          16 without first obtaining the verifiable consent of such child’s parent or legal guardian. We do not knowingly
+          collect personal information from minors under the age of 16, only a parent or legal guardian may provide such
+          information after adhering to our verification process for submitting such information
+        </span>
+      </p>
+      <p class="c2 my-3" id="h.1fob9te"><span class="c3 c1">Policy Update
+        </span></p>
+      <p class="c2 mb-3">
+        <span class="c3 c0">
+          “paperdaz.com” reserves the right to change, amend, or modify our Privacy Policy without notice. We will post
+          the amended Policy on this page and indicate at the top of the page the date the Policy was revised. Please
+          check our site and this page periodically for updates
+        </span>
+      </p>
+      <p class="c2 my-3" id="h.1fob9te"><span class="c3 c1">Contact Us
+        </span></p>
+      <p class="c2 mb-3">
+        <span class="c3 c0">
+          To contact us regarding anything in this privacy policy or how we collect or store your personal data, please
+          get in touch with us by using the ‘Contact Us’ page on our website. <span class="c4 c0"><a class="c17" href="mailto:mai@paperdaz.com"> hello@paperdaz.com </a></span>
+        </span>
+      </p>
+      <p class="c2 mb-3">
+        <span class="c3 c0">
+          Office Address
+          <br>
+          <br>
+
+          Paperdaz LLC
+          <br>
+          DBA Paperlink
+          <br>
+          1968 S Coast Hwy Suite 4302,
+          <br>
+          Laguna Beach CA 92651
+
+        </span>
+      </p>
+
     </div>
   </div>
 </template>
@@ -956,7 +1364,7 @@ table th {
 }
 
 .c6 {
-  margin-left: 46.4pt;
+  @apply ml-[0pt] md:ml-[46.4pt];
   padding-left: 10.4pt;
 }
 
@@ -1079,3 +1487,4 @@ h6 {
   text-align: left;
 }
 </style>
+

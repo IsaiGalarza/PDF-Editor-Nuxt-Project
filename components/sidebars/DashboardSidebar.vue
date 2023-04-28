@@ -133,6 +133,24 @@ export default Vue.extend({
     }
   },
   methods: {
+    openIncognitoWindow() {
+      let width = window.innerWidth;
+      let height = window.innerHeight;
+      if (typeof window.chrome !== 'undefined') {
+        // Chrome
+        window.open(`${location.origin}/${this.userPage}`, '_blank', `toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=${width},height=${height},incognito=yes`);
+      } else if (typeof window.browser !== 'undefined') {
+        // Firefox
+        window.browser.windows.create({
+          url: `${location.origin}/${this.userPage}`,
+          incognito: true
+        });
+      } else {
+        // Other browsers
+        window.open(`${location.origin}/${this.userPage}`, '_blank', `toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=100%,width=${widthe},height=${height}`);
+      }
+    },
+  
     socialShareFunction(val) {
       switch (val) {
         case 'linkedin':
@@ -164,7 +182,8 @@ export default Vue.extend({
     },
     shuffleRoute(index, link, name, openNew) {
        if(openNew){
-        window.open(`${location.origin}/${this.userPage}`)
+        // window.open(`${location.origin}/${this.userPage}`)
+        this.openIncognitoWindow()
         return
        }
       (this.links) = this.links.map((item, i) => {

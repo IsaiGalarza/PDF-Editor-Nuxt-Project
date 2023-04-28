@@ -451,6 +451,7 @@ export default mixins(PdfAuth).extend({
     }else{
       this.isMobile = false;
     }
+    this.shouldBeGuest = (localStorage.getItem("from_businesspage") == "true")
     document.addEventListener('keyup', this.keyupHandler)
     window.onresize = () => {
       this.handleScale()

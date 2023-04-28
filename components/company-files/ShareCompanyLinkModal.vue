@@ -92,7 +92,7 @@
       event: 'updateVisibility',
     },
     props: {
-      packagename: {
+      type: {
         type: String
       },
       userFile: {
@@ -216,11 +216,12 @@
         this.loading = true
 
         let requestData = {
-                action: "invite_link",
-                emails: [this.email],
-                link: `${window.location.origin}/${this.userInfo?.businessPage}`
+                action: "shareLink",
+                email: this.email,
+                link: this.link,
+                title: this.type,
+                userId:0
             };
-
         this.$_server.post(`/request`, requestData)
           .then((response) => {
             this.$notify.success({

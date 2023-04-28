@@ -106,7 +106,7 @@ export default mixins(login).extend({
     openShareModal() {
       this.$emit(
         'openShare',
-        `${window.location.origin}/${this.userInfo.businessPage}`
+        `${window.location.origin}/${this.userInfo.businessPage}`, this.userInfo.businessPage
       )
     },
     showImageCropperModal() {

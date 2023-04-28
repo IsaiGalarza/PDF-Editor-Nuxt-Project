@@ -573,7 +573,17 @@ export default Vue.extend({
     },
     
     onChange(){
-        this.$forceUpdate()
+       let orders = this.files.map((item, index)=>{ return {
+        fileId: item.id,
+        postion: index
+       }})
+
+       let payload = {
+        action:"orderFiles",
+        order: orders
+       }
+      this.$forceUpdate()
+      this.$_server.post('/files', payload)
     },
     async maxFileUpload() {
       this.$auth.user.subscriptionId && await this.$axios.get(`/subscriptions/${this.$auth.user.subscriptionId}`)
@@ -794,6 +804,9 @@ export default Vue.extend({
     }
   },
   watch: {
+    files(){
+       alert('yuisd')
+    },
     allowCopy(){
         this.setAllowCopy()
     },

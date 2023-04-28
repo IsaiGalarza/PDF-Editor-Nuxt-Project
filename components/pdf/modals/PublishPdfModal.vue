@@ -366,7 +366,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           // actionBy: `${this.$auth.user.firstName} ${this.$auth.user.lastName}`.toUpperCase()
         })
         .then((response) => {
-          this.isLoading = false
+          // this.isLoading = false
           this.addToLedger()
           this.generatedPdf = response.data
         })

@@ -211,7 +211,7 @@ export default Vue.extend({
   mounted() {
     this.getUserFiles(this.returnedDataPage, this.searchFileParam)
     this.generateQR()
-    document.body.style.overflow = 'auto'
+    // document.body.style.overflow = 'auto'
   },
   computed: {
     isAuthor() {

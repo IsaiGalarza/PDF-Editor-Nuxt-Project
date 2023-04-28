@@ -575,7 +575,7 @@ export default Vue.extend({
     onChange(){
        let orders = this.files.map((item, index)=>{ return {
         fileId: item.id,
-        postion: index
+        position: ++index
        }})
 
        let payload = {
@@ -718,8 +718,9 @@ export default Vue.extend({
           const filesData = response.data.map((el) => {
             return el
           })
-          // set the data.file
-          this.files = filesData
+        
+          this.files = filesData.sort((a, b) => a.position - b.position);
+          console.log("files>>>>>>>>",filesData, this.files)
           // push files to store
           this.$store.commit('ADD_USER', this.files)
           // to stop spinner

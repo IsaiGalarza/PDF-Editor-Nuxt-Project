@@ -281,6 +281,7 @@ export default Vue.extend({
       else {
       localStorage.setItem('store_public_profile_path', this.$route.fullPath)
       this.$router.push(val)
+      localStorage.setItem("from_businesspage", "true")
       }
     },
     // getMainPaidUser(val) {
@@ -324,6 +325,7 @@ export default Vue.extend({
   watch: {
     '$auth.user': function () {
       this.getUserFiles(this.returnedDataPage, this.searchFileParam)
+      this.$auth.setUser({})
     },
     returnedDataPage: function () {
       this.fileSpinner = true;

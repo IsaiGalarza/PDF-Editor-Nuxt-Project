@@ -82,7 +82,7 @@
             <button
               class="rounded-full h-8 w-20 flex items-center gap-2 py-1 px-4 tool-item text-xs"
               :class="[activeTool == TOOL_TYPE.appendInitial ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-        isCreator ? 'opacity-40' : '']"  @click="onInitialsClick">
+        isCreator ? 'opacity-40' : '']"  @click="onIƒƒnitialsClick">
               Initial
               <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
             </button>

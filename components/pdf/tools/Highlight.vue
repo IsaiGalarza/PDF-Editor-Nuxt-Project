@@ -1,6 +1,6 @@
 <template>
-  <svg preserveAspectRatio="none" :viewBox="viewBox" :style="style">
-    <path options="opacity" :x="x1" :y="y1" :y2="y2" :x2="x2" :d="d" stroke-linecap="round"
+  <svg preserveAspectRatio="none" :viewBox="viewBox" ref="highlightBox" :style="style">
+    <path options="draw" :svgToImage="svgToImageData" :x="x1" :y="y1" :y2="y2" :x2="x2" :d="d" stroke-linecap="round"
       style="fill: rgb(255, 255, 0); opacity: 0.4; stroke-width: 0"></path>
   </svg>
 </template>
@@ -13,6 +13,35 @@ export default {
     x2: Number,
     y2: Number,
     tool: Object,
+    generatePDF:Boolean
+  },
+  data() {
+    return {
+      svgToImageData: ''
+    }
+  },
+  watch: {
+    generatePDF: function () {
+      if (this.generatePDF) {
+        this.convertImage();
+      }
+    },
+  },
+  methods:{
+    convertImage: function () {
+      const svgElem = this.$refs.highlightBox
+      let img = new Image(),
+        serializer = new XMLSerializer(),
+        svgStr = serializer.serializeToString(svgElem);
+      let canvas = document.createElement("canvas");
+      img.onload = () => {
+      	canvas.width = img.width;
+	      canvas.height = img.height;
+        canvas.getContext("2d").drawImage(img, 0, 0);
+        this.svgToImageData = canvas.toDataURL("image/png")
+      }
+      img.src = 'data:image/svg+xml;base64,' + window.btoa(svgStr);
+    },
   },
   computed: {
     d() {

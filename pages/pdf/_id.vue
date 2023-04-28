@@ -57,12 +57,14 @@
         v-if="pdf"
         ref="scrollingElement"
       >
-        <!-- <pinch-zoom
+        <pinch-zoom
           ref="pinch"
           :limitPan="true"
           :limitZoom="1000"
+          :disabled="!isMobile"
+          overflow="scroll"
           disableZoomControl="disable"
-        > -->
+        >
         <!-- <pinch-scroll-zoom
           ref="zoomer"
           :width="$refs.scrollingElement?.offsetWidth -4 || 0"
@@ -71,7 +73,7 @@
           @scaling="scalingHandler"
           style="overflow: hidden;"
         > -->
-        <div class="pdf-pages-outer relative" ref="PagesOuter">
+        <div class="pdf-pages-outer relative" ref="PagesOuter" id="PagesOuter">
           <div
             class="pdf-single-pages-outer w-full"
             ref="pdf-single-pages-outer"
@@ -186,8 +188,8 @@
           </div>
         </div>
 
-        <!-- </pinch-scroll-zoom> -->
-        <!-- </pinch-zoom> -->
+        <!-- </pinch-scroll-zoom>  -->
+       </pinch-zoom>
         <!-- <button   @click="downloadPdf">download</button> -->
         <button
           class="w-full bg-paperdazgreen-400 py-2 text-white overflow-hidden duration-300"
@@ -428,7 +430,8 @@ export default mixins(PdfAuth).extend({
     isResetTools: false,
     completeTools: [],
     signTools: [],
-    confirmTools: []
+    confirmTools: [],
+    isMobile: false
   }),
   created() {
     this.fetchPdf()
@@ -443,6 +446,11 @@ export default mixins(PdfAuth).extend({
   },
 
   mounted() {
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+     this.isMobile = true;
+    }else{
+      this.isMobile = false;
+    }
     document.addEventListener('keyup', this.keyupHandler)
     window.onresize = () => {
       this.handleScale()
@@ -1552,7 +1560,7 @@ export default mixins(PdfAuth).extend({
       this.isConfirm = true
     },
     setContainerPage: function () {
-      this.$refs.PagesOuter.style.width = this.setContainerPage + 'px'
+      this.$refs.PagesOuter.style.setProperty('width', `${this.setContainerPage + 'px'}`, 'important');
     },
     '$auth.user': function () {
       this.checkFilePrivacyOnload()

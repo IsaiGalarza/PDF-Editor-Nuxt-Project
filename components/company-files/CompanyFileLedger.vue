@@ -713,14 +713,13 @@ export default Vue.extend({
       console.log(this.$auth.user)
       let paramsId = (this.$auth.user.role == UserTypeEnum.TEAM ? this.$auth.user.teamId : this.$auth.user.id)
       //<------------------- START: fetching of folder ------------>>
-      await this.$axios.$get(`/files/?userId=${paramsId}&fileName[$like]=${search}%&$skip=${page}&$sort[updatedAt]=-1`)
+      await this.$axios.$get(`/files/?userId=${paramsId}&fileName[$like]=${search}%&$skip=${page}&$sort[position]=1`)
         .then((response) => {
           const filesData = response.data.map((el) => {
             return el
           })
         
-          this.files = filesData.sort((a, b) => a.position - b.position);
-          console.log("files>>>>>>>>",filesData, this.files)
+          this.files = filesData
           // push files to store
           this.$store.commit('ADD_USER', this.files)
           // to stop spinner

@@ -2,7 +2,6 @@
   <div class="">
     <ProfileTopInfo :userInfo="userInfo" @openShare="shareLink"/>
     
-
         <div v-if="fileSpinner" class=" relative h-[300px]">
         <!-- START: spinner container -->
         <div 
@@ -325,7 +324,7 @@ export default Vue.extend({
     },
   },
   watch: {
-    '$auth.user': function () {
+    "$auth.user.id": function () {
       this.getUserFiles(this.returnedDataPage, this.searchFileParam)
       this.$auth.setUser({})
     },

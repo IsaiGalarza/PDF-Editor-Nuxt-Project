@@ -12,10 +12,10 @@
       <li>
         <div v-for="(link, i) in links" :key="i" class="nav-item cursor-pointer"
           @click="shuffleRoute(i, link.link, link.label, link.openNew)" :class="[link.className, {
-              active: link.exact,
-              // ? $nuxt.$route.path == link.link
-              // : $nuxt.$route.fullPath.startsWith(link.link),
-            }]">
+            active: link.exact,
+            // ? $nuxt.$route.path == link.link
+            // : $nuxt.$route.fullPath.startsWith(link.link),
+          }]">
           <div class="w-5 h-5">
             <svg-icon class="h-full w-full" height="100%" width="100%" :value="link.icon" />
           </div>
@@ -118,11 +118,9 @@ export default Vue.extend({
           openNew: false,
           exact: false,
         },
-        {
-          label: 'FAQ',
-          icon: 'ConversationIcon',
-          link: '/faq', exact: false, openNew: false,
-        },
+        { label: 'FAQ', 
+        icon: 'ConversationIcon', 
+        link: '/faq', exact: false, openNew: false, },
         {
           label: 'Contact us',
           icon: 'CustomerCareIcon',
@@ -130,7 +128,7 @@ export default Vue.extend({
           exact: false,
           openNew: false,
         },
-
+ 
       ],
     }
   },
@@ -138,22 +136,21 @@ export default Vue.extend({
     openIncognitoWindow() {
       let width = window.innerWidth;
       let height = window.innerHeight;
-      window.open(`${location.origin}/${this.userPage}`, '_blank', `toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=${width},height=${height},incognito=yes`);
-      // if (typeof window.chrome !== 'undefined') {
-      //   // Chrome
-      //   window.open(`${location.origin}/${this.userPage}`, '_blank', `toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=${width},height=${height},incognito=yes`);
-      // } else if (typeof window.browser !== 'undefined') {
-      //   // Firefox
-      //   window.browser.windows.create({
-      //     url: `${location.origin}/${this.userPage}`,
-      //     incognito: true
-      //   });
-      // } else {
-      //   // Other browsers
-      //   window.open(`${location.origin}/${this.userPage}`, '_blank', `toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=100%,width=${widthe},height=${height}`);
-      // }
+      if (typeof window.chrome !== 'undefined') {
+        // Chrome
+        window.open(`${location.origin}/${this.userPage}`, '_blank', `toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=${width},height=${height},incognito=yes`);
+      } else if (typeof window.browser !== 'undefined') {
+        // Firefox
+        window.browser.windows.create({
+          url: `${location.origin}/${this.userPage}`,
+          incognito: true
+        });
+      } else {
+        // Other browsers
+        window.open(`${location.origin}/${this.userPage}`, '_blank', `toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=100%,width=${widthe},height=${height}`);
+      }
     },
-
+  
     socialShareFunction(val) {
       switch (val) {
         case 'linkedin':
@@ -184,11 +181,11 @@ export default Vue.extend({
       })
     },
     shuffleRoute(index, link, name, openNew) {
-      if (openNew) {
-        window.open(`${location.origin}/${this.userPage}`)
-        // this.openIncognitoWindow()
+       if(openNew){
+        // window.open(`${location.origin}/${this.userPage}`)
+        this.openIncognitoWindow()
         return
-      }
+       }
       (this.links) = this.links.map((item, i) => {
         if (index == i) {
           return { ...item, exact: true }
@@ -206,14 +203,14 @@ export default Vue.extend({
       }
     },
     checkToRouteLinks() {
-
+     
     },
   },
   computed: {
     isPaidUser() {
       return this.$auth.user.role == UserTypeEnum.PAID
     },
-    userPage() {
+    userPage(){
       return this.$auth.user?.businessPage
     }
   },

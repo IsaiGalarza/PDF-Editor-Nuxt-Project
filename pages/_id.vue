@@ -97,7 +97,7 @@
                 </p>
               </td>
               <td class="flex ">
-                <div @click="shareLinkFunc(item.paperLink)" class="flex  w-full justify-end ">
+                <div @click="shareLinkFunc(item.paperLink, item.fileName)" class="flex  w-full justify-end ">
                   <ShareOutlineIcon />
                 </div>
               </td>
@@ -118,7 +118,7 @@
 
 
     <PrivateFileModal v-model="showPrivateModal"/>
-    <ShareCompanyLinkModal :link="link" v-model="showShareCompanyName" />
+    <ShareCompanyLinkModal :link="link" :type="type" v-model="showShareCompanyName" />
     <PermissionToView  v-model="showPermissionModal" :isCreator="isAuthor"/>
   </div>
 </template>
@@ -247,6 +247,7 @@ export default Vue.extend({
       link: "",
       keepCount: 0,
       showGuideModal: false,
+      type: "",
       popUps: [
         'PG_Tutorial_1',
         'PG_Tutorial_2',
@@ -269,11 +270,12 @@ export default Vue.extend({
         document.body.style.overflow = 'auto'
       }
     },
-    shareLinkFunc(val){
-      this.shareLink(`${window.location.origin}/pdf/${val}`)
+    shareLinkFunc(val, type){
+      this.shareLink(`${window.location.origin}/pdf/${val}`, type)
     },
-    shareLink(val){
+    shareLink(val, type){
       this.link = val
+      this.type = type
       this.showShareCompanyName = true
     },
     routeToFileManager(val, privacy) {

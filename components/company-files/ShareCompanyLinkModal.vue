@@ -92,7 +92,7 @@
       event: 'updateVisibility',
     },
     props: {
-      packagename: {
+      type: {
         type: String
       },
       userFile: {
@@ -219,11 +219,9 @@
                 action: "shareLink",
                 email: this.email,
                 link: this.link,
-                title: "Typeline",
+                title: this.type,
                 userId:0
             };
-
-        console.log(requestData)
         this.$_server.post(`/request`, requestData)
           .then((response) => {
             this.$notify.success({

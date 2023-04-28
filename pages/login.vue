@@ -1,5 +1,6 @@
 <template>
-  <section class="bg-paperdazgreen-300">
+  <div class="bg-white">
+    <section class="bg-paperdazgreen-300 min-h-[80vh]">
     <div class="container py-20">
       <div class="w-full max-w-md mx-auto bg-white shadow-2xl rounded-xl pt-6  pb-10">
         <div v-if="isEmailVerified"
@@ -69,9 +70,11 @@
 
     <ChangeUserEmail @updateSocialDataEmail="updateSocialDataEmail" :modalMessageError="modalMessageError"
       v-model="showUpdateEmail" />
-
-      <Footer />
+      
   </section>
+  <Footer />
+  </div>
+ 
 </template>
 
 <script lang="ts">

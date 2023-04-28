@@ -7,7 +7,7 @@
       <button
         @click="editingDetails = !editingDetails"
         type="button"
-        class="absolute right-0 top-1/2 transform -translate-y-1/2 px-2 py-1"
+        class="absolute scale-50 md:scale-100 bg-white-400 right-0 top-1/2 transform -translate-y-1/2 px-2 py-1"
       >
         <edit-pen-icon v-show="!editingDetails" />
         <times-icon v-show="editingDetails" width="14" height="14" />

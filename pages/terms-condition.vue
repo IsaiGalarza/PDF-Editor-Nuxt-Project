@@ -1009,8 +1009,10 @@ table th {
   text-decoration: none;
 }
 .c6 {
-  margin-left: 46.4pt;
+  .c6 {
+  @apply ml-[0pt] md:ml-[46.4pt];
   padding-left: 10.4pt;
+}
 }
 .c5 {
   height: 11pt;

@@ -261,8 +261,8 @@ git <template>
     <PdfPapertagsModal @refresh="setRefresh" :file="userFile" v-model="showPapertagsModal" />
     <MoveCompanyFiles @refresh="setRefresh" :userFile="userFile" @resetUserFile="resetUserFile"
       @createFolderEmit="showCreateCompanyFolderFunc" v-model="showMoveCompanyFiles" />
-    <ShareFilesModal @refresh="setRefresh" :userFile="userFile" @qrLoad="showQrcodeFileFunc"
-      v-model="showShareCompanyFiles" />
+    <ShareFilesModal @refresh="setRefresh" :userFile="userFile" :type="type" @qrLoad="showQrcodeFileFunc"
+      v-model="showShareCompanyFiles" :link="link"/>
     <RequestModal @refresh="setRefresh" :userFile="userFile" @qrLoad="showQrcodeFileFunc" v-model="showRequestModal" />
     <AddCompanyfiles @refresh="setRefresh" :file="fileProps" :totalFile="totalFile"
       @createFile="showUploadDocumentModal = true" v-model="showAddCompanyFiles" />
@@ -451,7 +451,7 @@ import DeleteCompanyFolder from './Tabs/DeleteCompanyFolder.vue'
 import AddCompanyfiles from './Tabs/AddCompanyfiles.vue'
 import RemoveCompanyFile from './Tabs/RemoveCompanyFile.vue'
 import MoveCompanyFiles from './Tabs/MoveCompanyFiles.vue'
-import ShareFilesModal from './Tabs/ShareFilesModal.vue'
+import ShareFilesModal from './ShareCompanyLinkModal.vue'
 import FolderPlusIcon from '../svg-icons/FolderPlusIcon.vue'
 import PlusIcon from '../svg-icons/PlusIcon.vue'
 import { mapState } from 'vuex'
@@ -562,7 +562,9 @@ export default Vue.extend({
       maxInviteTeam: false,
       date:'',
       time: '',
-      allowCopy: true
+      allowCopy: true,
+      link: "",
+      type: "",
     }
   },
   methods: {
@@ -681,10 +683,11 @@ export default Vue.extend({
       this.actionFile = null
     },
     showShareCompanyFileFunc(file) {
-      console.log(file)
       this.userFile = file
       this.showShareCompanyFiles = true
       this.actionFile = null
+      this.link = `${window.origin}/pdf/${file.paperLink}`
+      this.type = `${file.fileName}`
     },
     showPapertagsModalFunc(file) {
       this.userFile = file

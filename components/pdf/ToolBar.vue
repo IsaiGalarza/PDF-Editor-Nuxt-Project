@@ -423,6 +423,7 @@ export default {
       return TOOL_TYPE
     },
     isCreator() {
+      if(this.$store.getters.getFrombusinessPage) return false
       try {
         return (this.file.userId == this.$auth?.user?.id) ||
           ((this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE) && this.$auth?.user?.teamId == this.file.userId)

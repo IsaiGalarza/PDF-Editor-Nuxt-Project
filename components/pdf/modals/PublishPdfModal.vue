@@ -208,6 +208,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       return String(this.file.fileAction).toLowerCase() === FileAction.CONFIRM
     },
     isCreator() {
+      if(this.$store.getters.getFrombusinessPage) return false
       return (
         this.file.userId == this.$auth?.user?.id ||
         (this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE &&
@@ -400,7 +401,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.$store.commit('SET_FILE_INITIAL', null)
           this.$store.commit("UN_SET_AGREE_SIGN")
           console.log(this.file)
-          this.$auth.loggedIn
+          this.$auth.loggedIn && this.isCreator
             ? this.$nuxt.$router.push('/paperlink-pages')
             : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
         })

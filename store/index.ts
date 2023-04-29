@@ -33,15 +33,23 @@ export const state = () => ({
   showCongratulationsModal: false,
   agreeSign: -1,
   file: {},
+  saveUser: {},
   ledgerParams: "",
   clickAction: null,
   dateFormat: "dd/mm/yyy",
-  timeFormat: "h:MM TT"
+  timeFormat: "h:MM TT",
+  isFromBusinessPage: false,
 })
 
 export type RootState = ReturnType<typeof state>
 
 export const getters: GetterTree<RootState, RootState> = {
+  getSaveUser( state: any){
+    return state.saveUser
+  },
+  getFrombusinessPage( state: any){
+    return state.isFromBusinessPage
+  },
     getFileManagerFile( state: any){
     return state.file
   },
@@ -114,6 +122,12 @@ export const getters: GetterTree<RootState, RootState> = {
 
 export const mutations: MutationTree<RootState> = {
   // -- Setting the user --
+  SET_SAVE_USER(state, payload) {
+    state.saveUser = payload
+  },
+  SET_BUSINESS_PAGE(state, payload) {
+    state.isFromBusinessPage = payload
+  },
   SET_PAGE_USER(state, user) {
     state.initialUser = user
   },

@@ -292,6 +292,7 @@ export default Vue.extend({
       return ((this.$auth?.user)?.role == UserTypeEnum.TEAM)
     },
     isCreator() {
+      if(this.$store.getters.getFrombusinessPage) return false
       return (this.file.userId == this.$auth?.user?.id) || ((this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE) && this.$auth?.user?.teamId == this.file.userId)
     },
     teamAccess() {
@@ -327,7 +328,7 @@ export default Vue.extend({
       // Toolbar function - cancelConfrim
       if (this.isConfirm) {
         this.$store.commit('SET_PDF_EXIT', true)
-        this.$auth.loggedIn
+        this.$auth.loggedIn && this.isCreator
             ? this.$nuxt.$router.push('/paperlink-pages')
             : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
         return;
@@ -335,13 +336,13 @@ export default Vue.extend({
       if (this.upload_state) {
             this.$store.commit('SET_UPLOAD_STATE', false);
             this.$store.commit('SET_PDF_EXIT', true)
-            this.$auth.loggedIn
+            this.$auth.loggedIn && this.isCreator
             ? this.$nuxt.$router.push('/paperlink-pages')
             : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
       } else {
         this.$store.commit('SET_UPLOAD_STATE', false);
         this.$store.commit('SET_PDF_EXIT', true)
-        this.$auth.loggedIn
+        this.$auth.loggedIn && this.isCreator
             ? this.$nuxt.$router.push('/paperlink-pages')
             : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
         localStorage.removeItem('store_public_profile_path')

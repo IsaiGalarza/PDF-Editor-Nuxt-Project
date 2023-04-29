@@ -219,7 +219,7 @@
                 action: "shareLink",
                 email: this.email,
                 link: this.link,
-                title: this.type,
+                title: this.type.replace(".pdf", ''),
                 userId:0
             };
         this.$_server.post(`/request`, requestData)

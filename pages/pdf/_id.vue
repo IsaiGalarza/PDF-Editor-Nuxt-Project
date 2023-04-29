@@ -265,7 +265,6 @@ import * as pdfJs from 'pdfjs-dist/build/pdf'
 import * as worker from 'pdfjs-dist/build/pdf.worker.entry'
 pdfJs.GlobalWorkerOptions.workerSrc = worker
 
-import PinchZoom from 'vue-pinch-zoom'
 import PinchScrollZoom from '@coddicat/vue-pinch-scroll-zoom'
 
 import jsPDF from 'jspdf'
@@ -348,7 +347,6 @@ export default mixins(PdfAuth).extend({
     BlockDonotPostFile,
     AddToPageDrawOrType,
     DoneModal,
-    PinchZoom,
     PinchScrollZoom,
     GuestModal
   },
@@ -431,7 +429,8 @@ export default mixins(PdfAuth).extend({
     completeTools: [],
     signTools: [],
     confirmTools: [],
-    isMobile: false
+    isMobile: false,
+    saveUser: {}
   }),
   created() {
     this.fetchPdf()
@@ -451,7 +450,7 @@ export default mixins(PdfAuth).extend({
     }else{
       this.isMobile = false;
     }
-    this.shouldBeGuest = (localStorage.getItem("from_businesspage") == "true")
+    this.setIsFromBusinessPage()
     document.addEventListener('keyup', this.keyupHandler)
     window.onresize = () => {
       this.handleScale()
@@ -463,6 +462,7 @@ export default mixins(PdfAuth).extend({
   },
   destroyed() {
     document.removeEventListener('keyup', this.keyupHandler)
+    this.$store.state.pdfExit  && this.clearBusinessData() 
   },
 
   beforeDestroy() {
@@ -636,6 +636,12 @@ export default mixins(PdfAuth).extend({
     },
   },
   methods: {
+    setIsFromBusinessPage(){
+      let isFromBusinessPage = localStorage.getItem("from_businesspage") == 'true'
+     if(isFromBusinessPage){
+      this.$store.commit("SET_BUSINESS_PAGE", isFromBusinessPage)
+     } 
+    },
     resetToolsToDefault(){
         switch (this.file.fileAction) {
           case FileAction.COMPLETE:
@@ -1561,7 +1567,7 @@ export default mixins(PdfAuth).extend({
       this.isConfirm = true
     },
     setContainerPage: function () {
-      this.$refs.PagesOuter.style.setProperty('width', `${this.setContainerPage + 'px'}`, 'important');
+      // this.$refs.PagesOuter.style.setProperty('width', `${this.setContainerPage + 'px'}`, 'important');
     },
     '$auth.user': function () {
       this.checkFilePrivacyOnload()

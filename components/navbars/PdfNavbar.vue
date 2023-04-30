@@ -38,6 +38,13 @@
             
           </div> -->
                 <span
+                    v-if="isPaidUser"
+                    class="text-black text-[13px] font-[600] text-nowrap capitalize text-left"
+                >
+                    File Manager
+                </span>
+                <span
+                    v-else
                     class="text-black text-[13px] font-[600] text-nowrap capitalize text-left"
                 >
                     {{ businessName }}
@@ -46,7 +53,7 @@
         </div>
 
         <div
-            v-if="!$store.getters.getFrombusinessPage"
+            v-if="$auth.loggedIn"
             class="h-full self-stretch flex items-center"
         >
             <!-- container for user name -->
@@ -67,10 +74,10 @@
             <el-dropdown trigger="click" @command="handleCommand">
                 <span class="flex items-center el-dropdown-link">
                     <letter-avatar
-                    v-if="!$auth.user?.profilePicture"
+                    v-if="!$auth.user.profilePicture"
                     style="width: 40px; height: 40px"
                     class="h-[28px] w-[28px] rounded-1 object-cover cursor-pointer mr-1"
-                    :username="(user?.companyName)"
+                    :username="(user.companyName)"
                   />
                     <span
                     v-else
@@ -149,9 +156,9 @@
                                 <span
                                     class="text-[12px] truncate font-[500] capitalize inline-block my-0 w-full"
                                     >{{
-                                        account?.teamName ||
-                                        account?.companyName ||
-                                        account?.firstName ||
+                                        account.teamName ||
+                                        account.companyName ||
+                                        account.firstName ||
                                         ''
                                     }}</span
                                 >
@@ -193,14 +200,14 @@
             </el-dropdown>
         </div>
 
-        <div v-if="$store.getters.getFrombusinessPage" class="h-full self-stretch flex items-center">
+        <div v-else class="h-full self-stretch flex items-center">
             <button
                 v-if="!$store.getters.getFillAsGuest && !$auth.loggedIn"
                 @click="$store.getters.showGuestModal"
                 class="bg-paperdazgreen-300 text-white h-7 xs:h-8 rounded shadow px-4 sm:px-3 hidden sm:flex items-center justify-center whitespace-nowrap mx-2"
                 >Start</button>
         </div>
-        <div v-if="$store.getters.getFrombusinessPage" class="flex items-center">
+        <div v-if="$store.getters.getFillAsGuest && !$auth.loggedIn" class="flex items-center">
             <span class="mr-3">Guest</span>
             <img src="~/assets/img/user-file-icon.svg" width="30" class="rounded-full mr-2"/>
         </div>
@@ -332,10 +339,10 @@ export default mixins(GlobalMixin, login).extend({
             return this.$store.getters.profilePhoto
         },
         companyPhoto() {
-            return this.$store.state.file?.user?.profile_picture
+            return this.$store.state.file.user.profile_picture
         },
         businessName() {
-            return this.$store.state.file?.user?.company_name || ''
+            return this.$store.state.file.user.company_name || ''
         },
     },
     methods: {
@@ -382,7 +389,7 @@ export default mixins(GlobalMixin, login).extend({
                         if (
                             (element.role == UserTypeEnum.TEAM ||
                                 element.role == UserTypeEnum.PAID) &&
-                            element.id == this.$auth?.user?.id
+                            element.id == this.$auth.user.id
                         )
                             return
 
@@ -394,9 +401,9 @@ export default mixins(GlobalMixin, login).extend({
 
                         if (element.role == UserTypeEnum.TEAM) {
                             element.teamName =
-                                response.data?.companyName ||
-                                response.data?.firstName
-                            element.teampicture = response.data?.profilePicture
+                                response.data.companyName ||
+                                response.data.firstName
+                            element.teampicture = response.data.profilePicture
                         }
 
                         fetchUserArray.push(element)
@@ -434,7 +441,7 @@ export default mixins(GlobalMixin, login).extend({
                     break
             }
 
-            this.account = initialAccount?.filter(
+            this.account = initialAccount.filter(
                 (item) => item.role != UserTypeEnum.TEAM
             )
         },
@@ -479,7 +486,7 @@ export default mixins(GlobalMixin, login).extend({
                     localStorage.getItem('main_user_paperdaz_token')
                 )
                 localStorage.setItem('paperdaz_userID', filteredAccount.id)
-                window.location.assign('/paperlink-pages')
+                window.location.assign('/dashboard')
                 return
             }
             // get switching account user details
@@ -493,7 +500,7 @@ export default mixins(GlobalMixin, login).extend({
                 .$post(`/authentication`, user)
                 .then(async (response) => {
                     this.$auth.strategy.token.set(response.accessToken)
-                    localStorage.setItem('paperdaz_userID', response.user?.id)
+                    localStorage.setItem('paperdaz_userID', response.user.id)
                     window.location.assign('/dashboard')
                 })
                 .catch((error) => {})
@@ -533,7 +540,7 @@ export default mixins(GlobalMixin, login).extend({
     mounted() {
         if (!this.user?.id) return
         this.fetchUsersInitialAccount()
-        // this.getUsersAccount()
+        this.getUsersAccount()
     },
 })
 </script>

@@ -1,80 +1,79 @@
 <template>
   <div class="bg-white">
     <section class="bg-paperdazgreen-300 min-h-[80vh]">
-    <div class="container py-20">
-      <div class="w-full max-w-md mx-auto bg-white shadow-2xl rounded-xl pt-6  pb-10">
-        <div v-if="isEmailVerified"
-          class="flex items-center text-[13px] w-full bg-red-500 text-white rounded-md py-3 p-2 mb-5">
-          <exclamation-icon width="18" height="18" />
-          <span class="inline-block pl-2">
-            Email is not verified, <b class="underline">
-              <button @click="showUpdateEmail = true">Click to resend</button></b>
-          </span>
-        </div>
+      <div class="container py-20">
+        <div class="w-full max-w-md mx-auto bg-white shadow-2xl rounded-xl pt-6  pb-10">
+          <div v-if="isEmailVerified"
+            class="flex items-center text-[13px] w-full bg-red-500 text-white rounded-md py-3 p-2 mb-5">
+            <exclamation-icon width="18" height="18" />
+            <span class="inline-block pl-2">
+              Email is not verified, <b class="underline">
+                <button @click="showUpdateEmail = true">Click to resend</button></b>
+            </span>
+          </div>
 
-        <p class="text-center text-[1.3rem] text-[#5FA348]">PaperLink Console</p>
+          <p class="text-center text-[1.3rem] text-[#5FA348]">PaperLink Console</p>
           <hr class="my-4  bg-[#80808037]" />
 
-        <form action="" class="text-sm px-6" @submit.prevent="login">
-          <message-alert-widget :message="errorMessage" v-show="errorMessage" type="error" class="mb-8" />
-          <message-alert-widget :message="'Please wait, redirecting'" v-show="isRedirecting" type="success" class="mb-8"
-            :isLoading="true" />
+          <form action="" class="text-sm px-6" @submit.prevent="login">
+            <message-alert-widget :message="errorMessage" v-show="errorMessage" type="error" class="mb-8" />
+            <message-alert-widget :message="'Please wait, redirecting'" v-show="isRedirecting" type="success" class="mb-8"
+              :isLoading="true" />
 
-         
-          <div class="mb-6">
-            <label for="" class="mb-2 block">Email</label>
-            <input-field v-model="user.email" :showAsError="!!errorMessage" :disabled="isLoading || isRedirecting"
-              type="email" placeholder="example@email.com" required />
-          </div>
-          <div class="mb-10">
-            <label for="" class="mb-2 block">Password</label>
-            <password-field :showAsError="!!errorMessage" v-model="user.password" :disabled="isLoading || isRedirecting"
-              required placeholder="xxxxxxxxxxxxxxxxxxxx" />
-          </div>
 
-          <div class="flex justify-between text-xs mb-10">
-            <div class="text-paperdazgray-400 font-medium flex items-center gap-2">
-              <input id="remember-me-checkbox" type="checkbox" hidden />
-              <label for="remember-me-checkbox" class="cursor-pointer circle circle-8 text-white relative">
-                <div class="overlay circle circle-18"></div>
-                <check-icon class="relative" style="z-index: 1;" height="8" width="8" />
-              </label>
-              <label for="remember-me-checkbox" class="cursor-pointer">Remember me</label>
+            <div class="mb-6">
+              <label for="" class="mb-2 block">Email</label>
+              <input-field v-model="user.email" :showAsError="!!errorMessage" :disabled="isLoading || isRedirecting"
+                type="email" placeholder="example@email.com" required />
             </div>
-            <nuxt-link to="/forgot-password" class="text-[#FF7373]">Forgot Password</nuxt-link>
-          </div>
-          <div class="flex w-full  flex-col items-center">
-            <button
-              class="h-10 w-[80%] rounded-lg shadow px-5 text-white text-sm bg-paperdazgreen-300 disabled:bg-opacity-70"
-              :class="[isLoading ? 'cursor-progress' : '']" :disabled="isLoading || checkingEmailVerified">
-              <span class="inline-flex items-center gap-3">
-                <span>Sign in</span>
-                <transition name="fade" :duration="100">
-                  <span v-show="isLoading" class="animate-spin">
-                    <spinner-dotted-icon height="22" width="22" />
-                  </span>
-                </transition>
-              </span>
-            </button>
+            <div class="mb-10">
+              <label for="" class="mb-2 block">Password</label>
+              <password-field :showAsError="!!errorMessage" v-model="user.password" :disabled="isLoading || isRedirecting"
+                required placeholder="xxxxxxxxxxxxxxxxxxxx" />
+            </div>
 
-            <!-- <span class="text-xs inline-block mt-6"
+            <div class="flex justify-between text-xs mb-10">
+              <div class="text-paperdazgray-400 font-medium flex items-center gap-2">
+                <input id="remember-me-checkbox" type="checkbox" hidden />
+                <label for="remember-me-checkbox" class="cursor-pointer circle circle-8 text-white relative">
+                  <div class="overlay circle circle-18"></div>
+                  <check-icon class="relative" style="z-index: 1;" height="8" width="8" />
+                </label>
+                <label for="remember-me-checkbox" class="cursor-pointer">Remember me</label>
+              </div>
+              <nuxt-link to="/forgot-password" class="text-[#FF7373]">Forgot Password</nuxt-link>
+            </div>
+            <div class="flex w-full  flex-col items-center">
+              <button
+                class="h-10 w-[80%] rounded-lg shadow px-5 text-white text-sm bg-paperdazgreen-300 disabled:bg-opacity-70"
+                :class="[isLoading ? 'cursor-progress' : '']" :disabled="isLoading || checkingEmailVerified">
+                <span class="inline-flex items-center gap-3">
+                  <span>Sign in</span>
+                  <transition name="fade" :duration="100">
+                    <span v-show="isLoading" class="animate-spin">
+                      <spinner-dotted-icon height="22" width="22" />
+                    </span>
+                  </transition>
+                </span>
+              </button>
+
+              <!-- <span class="text-xs inline-block mt-6"
               >Not a member yet?
               <nuxt-link to="/" class="text-paperdazgreen-300"
                 >Join Now</nuxt-link
               >
               </span> -->
-          </div>
-        </form>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
 
-    <ChangeUserEmail @updateSocialDataEmail="updateSocialDataEmail" :modalMessageError="modalMessageError"
-      v-model="showUpdateEmail" />
-      
-  </section>
-  <Footer />
+      <ChangeUserEmail @updateSocialDataEmail="updateSocialDataEmail" :modalMessageError="modalMessageError"
+        v-model="showUpdateEmail" />
+
+    </section>
+    <Footer />
   </div>
- 
 </template>
 
 <script lang="ts">
@@ -138,7 +137,7 @@ export default Vue.extend({
   data() {
     return {
       user: {
-        email:  (this as any).$route.query.email ?  (this as any).$route.query.email : undefined,
+        email: (this as any).$route.query.email ? (this as any).$route.query.email : undefined,
         password: undefined,
         strategy: 'local',
       },
@@ -201,14 +200,14 @@ export default Vue.extend({
     this.socialLogin()
     this.confirmIsEmailVerified()
     // this.user.email = this.$store.getters.getSaveEmailExist
-    let email = (this as any).$route.query.email ?  (this as any).$route.query.email : undefined
+    let email = (this as any).$route.query.email ? (this as any).$route.query.email : undefined
     this.user.email = email
   },
 
-  
+
 
   methods: {
-   
+
     async confirmIsEmailVerified() {
       let { verificationToken } = this.$route.query
       if (!verificationToken) return
@@ -251,7 +250,7 @@ export default Vue.extend({
     async loginInSocialUser(data) {
       ; (this.user as any).email = data.email
         ; (this.user as any).password = data.secret + data.socialId
-      console.log('about to log in these user')
+      // console.log('about to log in these user')
       //@ts-ignore
       await this.login()
     },
@@ -376,7 +375,8 @@ export default Vue.extend({
         })
         .catch(({ response }: any) => {
           let message = ErrorHandler(response)
-            ; (this.errorMessage as string | undefined) = message
+
+            ; (this.errorMessage as string | undefined) = message === "Network error" ? 'Invalid login' : message
         })
         .finally(() => {
           this.isLoading = false

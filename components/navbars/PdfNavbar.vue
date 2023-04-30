@@ -71,7 +71,6 @@
                     style="width: 40px; height: 40px"
                     class="h-[28px] w-[28px] rounded-1 object-cover cursor-pointer mr-1"
                     :username="(user?.companyName)"
-                    :username="(user?.companyName)"
                   />
                     <span
                     v-else

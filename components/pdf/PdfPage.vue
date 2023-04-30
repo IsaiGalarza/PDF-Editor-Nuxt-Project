@@ -133,4 +133,8 @@ export default {
   animation: pageIn 1s ease;
   transition: all 1s ease, width 0.2s ease;
 }
+.annotationLayer{
+  width: 100%;
+  height: 100%;
+}
 </style>

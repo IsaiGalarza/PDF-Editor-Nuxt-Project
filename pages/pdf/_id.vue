@@ -7,6 +7,7 @@
   <div
     class="grid grid-cols-1 md:grid-cols-[max-content,1fr] grid-rows-1 h-full max-h-full overflow-hidden"
     id="pdf-page-vue"
+    :style="`width: ${width}px`"
   >
     <!-- pdf page aside has hidden md:grid -->
     <pdf-page-aside
@@ -434,7 +435,8 @@ export default mixins(PdfAuth).extend({
     signTools: [],
     confirmTools: [],
     isMobile: false,
-    saveUser: {}
+    saveUser: {},
+    width: 0
   }),
   created() {
     this.fetchPdf()
@@ -446,6 +448,8 @@ export default mixins(PdfAuth).extend({
     this.$BUS.$on('scrollToSignInitial', this.deactivateSignInitial)
     this.$BUS.$on('signature-update', (v) => (this.signature = v))
     this.$BUS.$on('initials-update', (v) => (this.initial = v))
+    window.addEventListener("resize", this.resizeHandler);
+
   },
   mounted() {
     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
@@ -453,6 +457,7 @@ export default mixins(PdfAuth).extend({
     }else{
       this.isMobile = false;
     }
+    this.width =  window.innerWidth;
     this.setIsFromBusinessPage()
     document.addEventListener('keyup', this.keyupHandler)
     window.onresize = () => {
@@ -479,6 +484,7 @@ export default mixins(PdfAuth).extend({
     this.$store.commit('SET_FILE_SIGNATURE', null)
     this.$store.commit('SET_FILE_INITIAL', null)
     this.$store.commit("SET_AGREE_SIGN", -1)
+    window.removeEventListener("resize", this.resizeHandler);
   },
   async asyncData({ $axios, params, error, store }) {
     const file = await $axios
@@ -639,6 +645,9 @@ export default mixins(PdfAuth).extend({
     },
   },
   methods: {
+    resizeHandler()  {
+        this.width =  window.innerWidth;
+    },
     setIsFromBusinessPage(){
       let isFromBusinessPage = localStorage.getItem("from_businesspage") == 'true'
      if(isFromBusinessPage){

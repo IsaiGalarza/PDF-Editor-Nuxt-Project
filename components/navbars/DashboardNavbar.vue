@@ -325,7 +325,7 @@ export default mixins(GlobalMixin, login).extend({
           localStorage.getItem('main_user_paperdaz_token')
         )
         localStorage.setItem('paperdaz_userID', filteredAccount.id)
-        window.location.assign('/dashboard')
+        window.location.assign('/paperlink-pages')
         return
       }
       // get switching account user details

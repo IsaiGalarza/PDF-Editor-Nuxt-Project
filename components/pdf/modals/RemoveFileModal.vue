@@ -86,7 +86,7 @@
         this.loading = true
          this.$axios.delete(`/files/${this.fileId}`)
          .then(()=>{
-            this.$nuxt.$router.push('/dashboard')
+            this.$nuxt.$router.push('/paperlink-pages')
             this.$notify.success({
                 message:'File deleted successfully'
             })

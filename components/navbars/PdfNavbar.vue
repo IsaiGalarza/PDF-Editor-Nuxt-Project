@@ -67,10 +67,10 @@
             <el-dropdown trigger="click" @command="handleCommand">
                 <span class="flex items-center el-dropdown-link">
                     <letter-avatar
-                    v-if="!$auth.user.profilePicture"
+                    v-if="!$auth.user?.profilePicture"
                     style="width: 40px; height: 40px"
                     class="h-[28px] w-[28px] rounded-1 object-cover cursor-pointer mr-1"
-                    :username="(user.companyName)"
+                    :username="(user?.companyName)"
                   />
                     <span
                     v-else
@@ -479,7 +479,7 @@ export default mixins(GlobalMixin, login).extend({
                     localStorage.getItem('main_user_paperdaz_token')
                 )
                 localStorage.setItem('paperdaz_userID', filteredAccount.id)
-                window.location.assign('/dashboard')
+                window.location.assign('/paperlink-pages')
                 return
             }
             // get switching account user details
@@ -494,7 +494,7 @@ export default mixins(GlobalMixin, login).extend({
                 .then(async (response) => {
                     this.$auth.strategy.token.set(response.accessToken)
                     localStorage.setItem('paperdaz_userID', response.user.id)
-                    window.location.assign('/dashboard')
+                    window.location.assign('/paperlink-pages')
                 })
                 .catch((error) => {})
                 .finally(() => {

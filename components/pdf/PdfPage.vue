@@ -25,7 +25,7 @@ export default {
     isCreator: Boolean
   },
   data: () => ({
-    scaleZ: 2,
+    scaleZ: 3,
     currentPage: 1
   }),
   mounted() {

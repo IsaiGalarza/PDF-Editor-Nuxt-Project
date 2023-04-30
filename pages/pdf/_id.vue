@@ -263,9 +263,12 @@
 // import demoPdf from '@/assets/pdf/sample.pdf'
 import * as pdfJs from 'pdfjs-dist/build/pdf'
 import * as worker from 'pdfjs-dist/build/pdf.worker.entry'
+// import * as pdfJs from '~/services/build/pdf'
+// import * as worker from '~/services/build/pdf.worker'
 pdfJs.GlobalWorkerOptions.workerSrc = worker
 
 import PinchScrollZoom from '@coddicat/vue-pinch-scroll-zoom'
+import PinchZoom from 'vue-pinch-zoom';
 
 import jsPDF from 'jspdf'
 
@@ -348,6 +351,7 @@ export default mixins(PdfAuth).extend({
     AddToPageDrawOrType,
     DoneModal,
     PinchScrollZoom,
+    PinchZoom,
     GuestModal
   },
   data: () => ({
@@ -443,7 +447,6 @@ export default mixins(PdfAuth).extend({
     this.$BUS.$on('signature-update', (v) => (this.signature = v))
     this.$BUS.$on('initials-update', (v) => (this.initial = v))
   },
-
   mounted() {
     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
      this.isMobile = true;

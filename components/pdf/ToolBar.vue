@@ -568,7 +568,7 @@ export default {
       this.setSelectedType(this.TOOL_TYPE.appendInitial)
     },
     cancelConfrim() {
-      window.location.assign('/dashboard')
+      window.location.assign('/paperlink-pages')
     },
     changeInitialToBase64() {
       const toDataURL = (url) =>

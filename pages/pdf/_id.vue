@@ -63,8 +63,8 @@
           :limitPan="true"
           :limitZoom="1000"
           overflow="scroll"
-          :disableZoomControl="isMobile ? 'never' : 'disable'"
-          :listeners="isMobile ? 'auto' : 'touch'"
+          :disableZoomControl="'disable'"
+          :listeners="'auto'"
           :wheel="false"
         >
         <!-- <pinch-scroll-zoom

@@ -182,8 +182,8 @@ export default Vue.extend({
     },
     shuffleRoute(index, link, name, openNew) {
        if(openNew){
-        // window.open(`${location.origin}/${this.userPage}`)
-        this.openIncognitoWindow()
+        window.open(`${location.origin}/${this.userPage}`)
+        // this.openIncognitoWindow()
         return
        }
       (this.links) = this.links.map((item, i) => {

@@ -22,11 +22,8 @@ git <template>
       <!-- <empty-file-ledger class="min-h-[55vh]" v-if="pdfUser < 1" :isPaidUser= "isPaidUser"/> -->
       <div class="bg-white rounded h-full sm:rounded-3xl pb-4 text-[#272727] overflow-hidden">
         <div class="flex sm:hidden items-center justify-between px-4 py-3 border-b border-gray-100">
-          <div class="flex items-center bg-gray-100 rounded text-sm" v-if="!folderSelected">
-            <div class="flex items-center justify-center h-8 w-24 cursor-pointer" :class="{'text-white bg-gray-500 rounded': !showFolders}" @click="showFolders = false">Files</div>
-            <div class="flex items-center justify-center h-8 w-24 cursor-pointer" :class="{'text-white bg-gray-500 rounded': showFolders}" @click="showFolders = true">Folders</div>
-          </div>
-          <div v-else
+          
+          <div v-if="folderSelected"
             class="font-medium flex items-center">
             <div class="" @click="backFolder">
               <arrow-down-icon class="h-2 w-3 rotate-90" />

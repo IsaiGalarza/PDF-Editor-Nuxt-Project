@@ -1,15 +1,15 @@
 <template>
-  <div class="">
-    <ProfileTopInfo :userInfo="userInfo" @openShare="shareLink"/>
-    
-        <div v-if="fileSpinner" class=" relative h-[300px]">
-        <!-- START: spinner container -->
-        <div 
-          class="absolute z-10 w-full h-full top-0 left-0 rounded-lg flex justify-center items-center">
-          <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
-        </div>
-        <!-- END: spinner container -->
+  <div class="mt-[70px] lg:mt-0 px-2">
+  
+    <ProfileTopInfo :userInfo="userInfo" @openShare="shareLink" />
+
+    <div v-if="fileSpinner" class=" relative h-[300px]">
+      <!-- START: spinner container -->
+      <div class="absolute z-10 w-full h-full top-0 left-0 rounded-lg flex justify-center items-center">
+        <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
       </div>
+      <!-- END: spinner container -->
+    </div>
 
 
     <div class="mt-4">
@@ -36,7 +36,7 @@
               <nuxt-link :to="`/public-profile/${item.id}`" class="cursor-pointer">{{ (item || {}).name }}</nuxt-link>
             </p>
           </div>
-          <ShareFolder :folder="item"  :showShareIcon="false" />
+          <ShareFolder :folder="item" :showShareIcon="false" />
         </div>
         <!-- End:: Single row -->
       </div>
@@ -49,18 +49,19 @@
 
 
     <!-- Start:: Files -->
-    <div v-if="isFetched" class="bg-white rounded-xl pb-8" :class="{ 'hidden sm:block': showFolders }">
-      <div  class="rounded-2xl min-w-[300px] overflow-x-auto custom-scrollbar relative">
+    <div v-if="isFetched" class="bg-white rounded-xl pb-8 px-2" :class="{ 'hidden sm:block': showFolders }">
+      <div class="rounded-2xl min-w-[300px] overflow-x-auto custom-scrollbar relative">
         <table class="custom-table">
           <thead class="text-[#414142]">
             <tr>
               <!-- <th class="w-12 text-center fixed-col left">No</th> -->
               <th class="text-left font-[700] " @click="showPermissionModal = true">File name </th>
 
-              <th class=" font-[700]  right">Action</th>
-              <th class=" font-[700]  right">Privacy</th>
+              <th class="hidden lg:table-cell">Action</th>
+              <th class="hidden lg:table-cell">Privacy</th>
               <th class=" font-[700]  right">
-                <form v-show="files.length > 10" @submit.prevent class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
+                <form v-show="files.length > 10" @submit.prevent
+                  class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
                   <span v-if="showFile" class="el-dropdown-link max-sm:flex-1 absolute top-[-30px] ">
                     <input type="text" placeholder="Search any file..."
                       class="rounded-lg border !border-paperdazgreen-400 px-2 h-7 w-full sm:w-[165px] md:w-48  placeholder:italic"
@@ -87,15 +88,16 @@
                   </p>
                 </div>
               </td>
-              <td>
-               <p v-show="((item || {}).fileAction) != 'doNotPost' " class="capitalize"> {{ ((item || {}).fileAction || '') }}</p>
+              <td class="hidden lg:table-cell">
+                <p v-show="((item || {}).fileAction) != 'doNotPost'" class="capitalize"> {{ ((item || {}).fileAction ||
+                  '') }}</p>
               </td>
               <td>
-                <p class="capitalize">
+                <p  class="capitalize hidden lg:table-cell">
                   {{ ((item || {}).filePrivacy || '') }}
                 </p>
               </td>
-              <td class="flex ">
+              <td class=" ">
                 <div @click="shareLinkFunc(item.paperLink, item.fileName)" class="flex  w-full justify-end ">
                   <ShareOutlineIcon />
                 </div>
@@ -116,9 +118,9 @@
     </PopUpWrapper>
 
 
-    <PrivateFileModal v-model="showPrivateModal"/>
+    <PrivateFileModal v-model="showPrivateModal" />
     <ShareCompanyLinkModal :link="link" :type="type" v-model="showShareCompanyName" />
-    <PermissionToView  v-model="showPermissionModal" :isCreator="isAuthor"/>
+    <PermissionToView v-model="showPermissionModal" :isCreator="isAuthor" />
   </div>
 </template>
 
@@ -194,7 +196,7 @@ export default Vue.extend({
       .$get(`users/?businessPage=${params?.id}`)
       .then((response) => {
         const [userInfo] = response.data
-        if(!userInfo)  error({ statusCode: 404 })
+        if (!userInfo) error({ statusCode: 404 })
         return userInfo
       })
       .catch((err) => {
@@ -206,7 +208,7 @@ export default Vue.extend({
 
     return { userInfo }
   },
- 
+
   mounted() {
     this.getUserFiles(this.returnedDataPage, this.searchFileParam)
     this.generateQR()
@@ -256,7 +258,7 @@ export default Vue.extend({
         'PG_Tutorial_6',
         "PG_Tutorial_7",
         'PG_Tutorial_8'
-       ]
+      ]
     }
   },
   methods: {
@@ -269,20 +271,20 @@ export default Vue.extend({
         document.body.style.overflow = 'auto'
       }
     },
-    shareLinkFunc(val, type){
+    shareLinkFunc(val, type) {
       this.shareLink(`${window.location.origin}/pdf/${val}`, type)
     },
-    shareLink(val, type){
+    shareLink(val, type) {
       this.link = val
       this.type = type
       this.showShareCompanyName = true
     },
     routeToFileManager(val, privacy) {
-      if(privacy == FilePrivacy.PRIVATE) this.showPrivateModal = true
+      if (privacy == FilePrivacy.PRIVATE) this.showPrivateModal = true
       else {
-      localStorage.setItem('store_public_profile_path', this.$route.fullPath)
-      this.$router.push(val)
-      localStorage.setItem("from_businesspage", "true")
+        localStorage.setItem('store_public_profile_path', this.$route.fullPath)
+        this.$router.push(val)
+        localStorage.setItem("from_businesspage", "true")
       }
     },
     // getMainPaidUser(val) {

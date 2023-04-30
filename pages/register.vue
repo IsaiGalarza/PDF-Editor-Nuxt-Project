@@ -68,19 +68,19 @@
                 Credit Card
                 <div class="row flex items-center">
                   <img
-                  class="w-[70px] mr-[-15px]"
+                  class="w-[70px] mb-1 mr-[-15px]"
                   src="~/assets/icons/Mastercard.svg"
                 />
                 <img
-                  class="w-[70px] mr-[-15px]"
+                  class="w-[70px] mb-1 mr-[-15px]"
                   src="~/assets/icons/Visa.svg"
                 />
                 <img
-                  class="w-[70px] mr-[-15px]"
+                  class="w-[70px] mb-1 mr-[-15px]"
                   src="~/assets/icons/Amex.svg"
                 />
                 <img
-                  class="w-[70px]"
+                  class="w-[70px] mb-1"
                   src="~/assets/icons/Discover.svg"
                 />
                 </div>

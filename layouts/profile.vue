@@ -12,7 +12,7 @@
      <!-- <ProfileTab/> -->
      <LandingPublicToast/>
     <div id="main-container" class="overflow-y-auto overflow-x-hidden">
-      <Nuxt class="py-4 flex-1 px-3 px-lg-0 lg:pb-10" />
+      <Nuxt class=" flex-1 px-3 px-lg-0 lg:pb-10" />
     </div>
     <bottom-nav
       id="bottom-nav"

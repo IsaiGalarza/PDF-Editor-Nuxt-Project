@@ -62,9 +62,10 @@
           ref="pinch"
           :limitPan="true"
           :limitZoom="1000"
-          :disabled="!isMobile"
           overflow="scroll"
-          disableZoomControl="disable"
+          :disableZoomControl="isMobile ? 'never' : 'disable'"
+          :listeners="isMobile ? 'auto' : 'touch'"
+          :wheel="false"
         >
         <!-- <pinch-scroll-zoom
           ref="zoomer"
@@ -436,7 +437,8 @@ export default mixins(PdfAuth).extend({
     confirmTools: [],
     isMobile: false,
     saveUser: {},
-    width: 0
+    width: 0,
+    is_equal: true
   }),
   created() {
     this.fetchPdf()
@@ -880,10 +882,10 @@ export default mixins(PdfAuth).extend({
       }
     },
     exitFileManager(val) {
-      let is_equal =
+      this.is_equal =
         this.file.annotaions == JSON.stringify(this.tools) ||
         JSON.stringify(this.tools) == JSON.stringify(this.initialFileAnnotation)
-      if (is_equal) {
+      if (this.is_equal) {
         this.nextRoute = val
         this.$nuxt.$router.push(val)
       } else this.showExitFileManager = true
@@ -1608,6 +1610,9 @@ export default mixins(PdfAuth).extend({
       return next(true)
     }
     if (!this.displayPDF) {
+      return next(true)
+    }
+    if(this.is_equal){
       return next(true)
     }
     if (this.isCreator) {

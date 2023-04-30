@@ -1,7 +1,7 @@
 <template>
   <div class="pdf-page" ref="PdfPage">
     <div class="annotationLayer" ref="annotationLayer"></div>
-    <canvas v-show="!pdfLoaded" @click="e => onCLickSinglePageOuter(e, pageNumber)" ref="canvas" class="pdf-canvas"></canvas>
+    <canvas  @click="e => onCLickSinglePageOuter(e, pageNumber)" ref="canvas" class="pdf-canvas"></canvas>
   </div>
 </template>
 
@@ -27,7 +27,6 @@ export default {
   data: () => ({
     scaleZ: 3,
     currentPage: 1,
-    pdfLoaded: false
   }),
   mounted() {
     this.getPage()
@@ -83,9 +82,11 @@ export default {
             canvasContext: context,
             viewport: viewport
           }).promise.then(function(){
-            this.pdfLoaded = true
+            console.log('pdf is rendered')
           });
-
+     page.getTextContent().then(function(text){
+              console.log(text);
+          });
       // page.render({
       //   canvasContext: context,
       //   viewport: originalviewport

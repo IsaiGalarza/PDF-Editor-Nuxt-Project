@@ -67,10 +67,10 @@
             <el-dropdown trigger="click" @command="handleCommand">
                 <span class="flex items-center el-dropdown-link">
                     <letter-avatar
-                    v-if="!$auth.user.profilePicture"
+                    v-if="!$auth.user?.profilePicture"
                     style="width: 40px; height: 40px"
                     class="h-[28px] w-[28px] rounded-1 object-cover cursor-pointer mr-1"
-                    :username="(user.companyName)"
+                    :username="(user?.companyName)"
                   />
                     <span
                     v-else
@@ -149,9 +149,9 @@
                                 <span
                                     class="text-[12px] truncate font-[500] capitalize inline-block my-0 w-full"
                                     >{{
-                                        account.teamName ||
-                                        account.companyName ||
-                                        account.firstName ||
+                                        account?.teamName ||
+                                        account?.companyName ||
+                                        account?.firstName ||
                                         ''
                                     }}</span
                                 >
@@ -332,10 +332,10 @@ export default mixins(GlobalMixin, login).extend({
             return this.$store.getters.profilePhoto
         },
         companyPhoto() {
-            return this.$store.state.file.user.profile_picture
+            return this.$store.state.file?.user?.profile_picture
         },
         businessName() {
-            return this.$store.state.file.user.company_name || ''
+            return this.$store.state.file?.user?.company_name || ''
         },
     },
     methods: {
@@ -382,7 +382,7 @@ export default mixins(GlobalMixin, login).extend({
                         if (
                             (element.role == UserTypeEnum.TEAM ||
                                 element.role == UserTypeEnum.PAID) &&
-                            element.id == this.$auth.user.id
+                            element.id == this.$auth?.user?.id
                         )
                             return
 
@@ -394,9 +394,9 @@ export default mixins(GlobalMixin, login).extend({
 
                         if (element.role == UserTypeEnum.TEAM) {
                             element.teamName =
-                                response.data.companyName ||
-                                response.data.firstName
-                            element.teampicture = response.data.profilePicture
+                                response.data?.companyName ||
+                                response.data?.firstName
+                            element.teampicture = response.data?.profilePicture
                         }
 
                         fetchUserArray.push(element)
@@ -493,7 +493,7 @@ export default mixins(GlobalMixin, login).extend({
                 .$post(`/authentication`, user)
                 .then(async (response) => {
                     this.$auth.strategy.token.set(response.accessToken)
-                    localStorage.setItem('paperdaz_userID', response.user.id)
+                    localStorage.setItem('paperdaz_userID', response.user?.id)
                     window.location.assign('/dashboard')
                 })
                 .catch((error) => {})

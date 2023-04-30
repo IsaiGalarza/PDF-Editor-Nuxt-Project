@@ -71,11 +71,14 @@ export default {
       canvas.style.width = '100%'
       canvas.style.height = '100%'
       context.setTransform(ratio, 0, 0, ratio, 0, 0)
-
+      page.getTextContent().then(function(text){
+              console.log(text);
+          });
       page.render({
         canvasContext: context,
         viewport: originalviewport
       })
+
 
       this.renderAnnotation(page)
       this.$emit('setPageWidth', { width: canvas.width, height: canvas.height })

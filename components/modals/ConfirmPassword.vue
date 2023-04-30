@@ -15,6 +15,9 @@
       <el-input placeholder="user email" disabled class="w-full  " v-model="email" />
       <el-input placeholder="Create password" type="password" class="w-full rounded-[100px] mt-3" v-model="password" />
       <el-input placeholder="Retype password" class="w-full mt-3 mb-3" type="password" v-model="confirm_pasword" />
+      <password-field  
+      v-model="password"  placeholder="Create password" />
+      
 
       <div class="">
         <div class="error-wrapper">
@@ -81,12 +84,14 @@ import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
 import CheckedFillIcon from '../svg-icons/CheckedFillIcon.vue'
 import jwt, { decode, JsonWebTokenError } from 'jsonwebtoken'
 import login from '~/mixins/login'
+import PasswordField from '~/components/widgets/PasswordFieldTwo.vue'
+
 
 
 export default Vue.extend({
   name: 'ResetPasswordModal',
   mixins: [login],
-  components: { SpinnerDottedIcon, CheckedFillIcon },
+  components: { SpinnerDottedIcon, CheckedFillIcon, PasswordField },
   model: {
     prop: 'visible',
     event: 'updateVisibility',

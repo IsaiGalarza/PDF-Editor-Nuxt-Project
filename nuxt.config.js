@@ -88,8 +88,10 @@ export default {
     // '~/plugins/tawkto.client.js',
     '~/plugins/axios',
     "~/plugins/GlobalPlugin.js",
+    
     // "~plugins/slider.client.js",
     { src: '~/plugins/nuxt-hammer.js', ssr: false },    
+    { src: "~/plugins/clipboard.js", },    
     { src: '~/plugins/bus.js' },
     { src: '~/plugins/paginate.js'},
     { src: '~/plugins/outside-click.js' },

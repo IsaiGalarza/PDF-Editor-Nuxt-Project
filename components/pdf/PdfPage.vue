@@ -1,7 +1,7 @@
 <template>
   <div class="pdf-page" ref="PdfPage">
     <div class="annotationLayer" ref="annotationLayer"></div>
-    <canvas @click="e => onCLickSinglePageOuter(e, pageNumber)" ref="canvas" class="pdf-canvas"></canvas>
+    <canvas v-show="!pdfLoaded" @click="e => onCLickSinglePageOuter(e, pageNumber)" ref="canvas" class="pdf-canvas"></canvas>
   </div>
 </template>
 
@@ -26,7 +26,8 @@ export default {
   },
   data: () => ({
     scaleZ: 3,
-    currentPage: 1
+    currentPage: 1,
+    pdfLoaded: false
   }),
   mounted() {
     this.getPage()
@@ -51,31 +52,44 @@ export default {
 
       let context = canvas.getContext('2d')
 
-      let dpr = window.devicePixelRatio || 1
-      let bsr =
-        context.webkitBackingStorePixelRatio ||
-        context.mozBackingStorePixelRatio ||
-        context.msBackingStorePixelRatio ||
-        context.oBackingStorePixelRatio ||
-        context.backingStorePixelRatio ||
-        1
-      let ratio = dpr / bsr
-      let originalviewport = page.getViewport({ scale: this.scaleZ })
-      var viewport = page.getViewport({
-        scale: this.$refs.PdfPage.clientWidth / originalviewport.width
-      })
-      viewport = originalviewport
-      canvas.width = viewport.width * ratio
-      canvas.height = viewport.height * ratio
-      this.$emit('setPageHeight', canvas.height)
-      canvas.style.width = '100%'
-      canvas.style.height = '100%'
-      context.setTransform(ratio, 0, 0, ratio, 0, 0)
+      // let dpr = window.devicePixelRatio || 1
+      // let bsr =
+      //   context.webkitBackingStorePixelRatio ||
+      //   context.mozBackingStorePixelRatio ||
+      //   context.msBackingStorePixelRatio ||
+      //   context.oBackingStorePixelRatio ||
+      //   context.backingStorePixelRatio ||
+      //   1
+      // let ratio = dpr / bsr
+      // let originalviewport = page.getViewport({ scale: this.scaleZ })
+      // var viewport = page.getViewport({
+      //   scale: this.$refs.PdfPage.clientWidth / originalviewport.width
+      // })
+      // viewport = originalviewport
+      // canvas.width = viewport.width * ratio
+      // canvas.height = viewport.height * ratio
+      // this.$emit('setPageHeight', canvas.height)
+      // canvas.style.width = '100%'
+      // canvas.style.height = '100%'
+      // context.setTransform(ratio, 0, 0, ratio, 0, 0)
+
+      var viewport = page.getViewport(5.0);
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+      canvas.classList.add('page')
+
 
       page.render({
-        canvasContext: context,
-        viewport: originalviewport
-      })
+            canvasContext: context,
+            viewport: viewport
+          }).promise.then(function(){
+            this.pdfLoaded = true
+          });
+
+      // page.render({
+      //   canvasContext: context,
+      //   viewport: originalviewport
+      // })
 
       this.renderAnnotation(page)
       this.$emit('setPageWidth', { width: canvas.width, height: canvas.height })
@@ -110,4 +124,12 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped></style>
+<style lang="scss" scoped>
+
+.page{
+  width: 100%;
+  box-shadow: 0px 0px 5px #000;
+  animation: pageIn 1s ease;
+  transition: all 1s ease, width 0.2s ease;
+}
+</style>

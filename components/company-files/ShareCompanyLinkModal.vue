@@ -42,7 +42,7 @@
       </form>
       <div class="w-full flex justify-around pt-6 items-center py-4">
   
-        <button @click="setLinkCopy" class="w-[40%] flex bg-paperdazgray-300/20 items-center py-2 px-2 rounded">
+        <button @click="copyToClipboard" class="w-[40%] flex bg-paperdazgray-300/20 items-center py-2 px-2 rounded">
           <link-icon width="20" height="20" color="rgb(96,98,102)" class="cursor-pointer" />
           <abbr class="pl-2">Copy link</abbr>
         </button>
@@ -203,6 +203,16 @@
           message: 'copied successfully'
         })
       },
+
+      
+      async copyToClipboard() {
+      try {
+        await navigator.clipboard.writeText('hello');
+        console.log('Text copied to clipboard!');
+      } catch (err) {
+        console.error('Failed to copy text: ', err);
+      }
+    },
       showQrcodeFileFuncEmit() {
         this.$emit('qrLoad');
         this.$emit('updateVisibility', false)

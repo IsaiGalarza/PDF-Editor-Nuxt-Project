@@ -11,10 +11,15 @@
       <span class="text-center  text-xl block w-full">Create Password</span>
     </template>
     <!-- Start:: Body -->
-    <div class="justify-center pb-2">
+    <div class="justify-center input-fill pb-2">
       <el-input placeholder="user email" disabled class="w-full  " v-model="email" />
-      <el-input placeholder="Create password" type="password" class="w-full rounded-[100px] mt-3" v-model="password" />
-      <el-input placeholder="Retype password" class="w-full mt-3 mb-3" type="password" v-model="confirm_pasword" />
+      <!-- <el-input placeholder="Create password" type="password" class="w-full rounded-[100px] mt-3" v-model="password" />
+      <el-input placeholder="Retype password" class="w-full mt-3 mb-3" type="password" v-model="confirm_pasword" /> -->
+      <password-field  
+      v-model="password"  placeholder="Create password" />
+      <password-field  
+      v-model="confirm_pasword"  placeholder="Retype password" />
+      
 
       <div class="">
         <div class="error-wrapper">
@@ -81,12 +86,14 @@ import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
 import CheckedFillIcon from '../svg-icons/CheckedFillIcon.vue'
 import jwt, { decode, JsonWebTokenError } from 'jsonwebtoken'
 import login from '~/mixins/login'
+import PasswordField from '~/components/widgets/PasswordField.vue'
+
 
 
 export default Vue.extend({
   name: 'ResetPasswordModal',
   mixins: [login],
-  components: { SpinnerDottedIcon, CheckedFillIcon },
+  components: { SpinnerDottedIcon, CheckedFillIcon, PasswordField },
   model: {
     prop: 'visible',
     event: 'updateVisibility',
@@ -185,7 +192,9 @@ export default Vue.extend({
 })
 </script>
 
-<style scoped>
+<style ang="scss" scoped>
+
+
 *>>>.el-dialog {
   width: 416px !important;
   max-width: 95% !important;
@@ -221,5 +230,10 @@ export default Vue.extend({
 
 .error-indicator {
   @apply mr-2 w-[10px] overflow-hidden h-[10px] rounded-[100%] p-[2px];
+}
+
+.input-field{
+  @apply mt-4;
+  border-radius: 4px !important;
 }
 </style>

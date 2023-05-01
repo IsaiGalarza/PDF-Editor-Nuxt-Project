@@ -1,19 +1,22 @@
 <template>
-  <section class="font-family grid mt-0   grid-cols-[max-content,1fr] lg:gap-6">
+  <div class="">
     <div class="h-[50px] lg:hidden flex justify-between items-center px-2 w-[100%] left-0 bg-white shadow-sm fixed z-20 top-0">
       <img src="/icon.png" width="35" height="35" />
       <p class="font-[500] text-[1rem]">Business Profile</p>
       <span @click="openShareModal" class="cursor-pointer"><share-outline-icon :width="18"
           class="w-auto" /></span>
     </div>
+    <section class="font-family bg-white lg:!bg-transparent md:py-2 lg:!py-0 grid  rounded-[20px]  px-2 lg:!px-0 mt-0 min-h-[100px]  grid-cols-[max-content,1fr] lg:gap-6">
     <!-- logo container -->
-    <div class="bg-white lg:w-[250px] w-full profile-image-container !py-0">
-      <div class="icon-img md:mx-7 my-7 relative">
+   <div class="h-full w-full bg-white pl-2 lg:p-4  lg:rounded-[20px] flex justify-center items-center">
+    <div class="  w-full profile-image-container !py-0">
+      <div class="icon-img relative">
         <img v-if="profilePhoto != null" :src="profilePhoto" id="referenceImg" class="top-profile-image cursor-pointer" />
-        <span class="hidden lg:block " v-else :style="`fontSize: ${(108 / (firstCompanyName.length)) * 1.75}px`">
+        <p class="hidden lg:block " v-else :style="`fontSize: ${(108 / (firstCompanyName.length)) * 1.7}px`">
           {{ firstCompanyName }}
-        </span>
-        <span  v-if="profilePhoto === null" class=" lg:hidden" :style="`fontSize: ${(108 / (firstCompanyName.length)) * 1.2}px`">
+        </p>
+        <!-- <h1>;fm;fm</h1> -->
+        <span  v-if="profilePhoto === null" class=" lg:hidden" :style="`fontSize: ${(108 / (firstCompanyName.length)) * 0.5}px`">
           {{ firstCompanyName }}
         </span>
       </div>
@@ -21,20 +24,21 @@
       <cropper-image-upload :show="visibleUploadImageDialog"
         @visibleDialog="(show) => (visibleUploadImageDialog = show)" />
     </div>
+   </div>
     <!-- end of logo container -->
     <!-- dentals container -->
-    <div class="bg-white sm:w-12/12 profile-dental-container">
+    <div class="bg-white  px-4 sm:w-12/12 h-full flex flex-col profile-dental-container">
       <!-- <h1>{{user.companyName || ''}}</h1> -->
-      <header class="text-600 text-[#414142] font-semibold lg:pl-7 lg:pb-2 lg:border-b border-[#DCDCDC] relative">
+      <div class="text-600 text-[#414142] font-semibold lg:pl-7 lg:pb-2 lg:border-b border-[#DCDCDC] relative">
         <div class="input-wrapper-title flex relative lg:justify-center items-center">
           <span class="text-2xl text-grey lg:pl-3"> {{ name }}</span>
           <span @click="openShareModal" class="cursor-pointer"><share-outline-icon :width="18"
               class="w-auto absolute right-4 hidden lg:block pr-3" /></span>
         </div>
-      </header>
+      </div>
       <!--<div class="text-sm px-2 border-b w-full py-2 text-gray-400"><i>@hookname</i></div>-->
-      <div class="flex min-h-0 lg:justify-center lg:px-2 lg:items-end h-28">
-        <p class="lg:text-center text-[0.8rem] leading-6 lg:leading-8">
+      <div class="flex h-full lg:justify-center lg:px-2 lg:items-center ">
+        <p class="lg:text-center text-[0.9rem] leading-6 lg:leading-6">
           We are doing our part to reduce carbon footprint. <br class="hidden lg:block" />
           Join us, complete our files on Paperlink!
         </p>
@@ -42,6 +46,8 @@
     </div>
     <!-- end of dentals container -->
   </section>
+  </div>
+ 
 </template>
 <style src="~/assets/cropper.css"></style>
 <script>
@@ -208,10 +214,10 @@ export default mixins(login).extend({
 }
 
 .profile-image-container {
-  @apply bg-white flex justify-center flex-wrap px-4 items-center py-4 rounded-l-[20px] lg:rounded-[20px];
+  @apply bg-white w-[100px] h-[100px] lg:w-[180px] lg:h-[180px] flex justify-center flex-wrap   items-center py-6 rounded-l-[20px] lg:rounded-[20px];
 
   .icon-img {
-    @apply px-4 py-4  text-[10px]  font-[900] text-white cursor-pointer bg-[#77B550] grid place-items-center rounded-[20px] ;
+    @apply  h-[100%] w-[100%]  text-[10px]  font-[900] text-white cursor-pointer bg-[#77B550] flex justify-center items-center rounded-[20px] ;
     // text-shadow: 1px 5px 7px rgb(148 148 148);
   }
 

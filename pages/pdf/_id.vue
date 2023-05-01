@@ -7,6 +7,7 @@
   <div
     class="grid grid-cols-1 md:grid-cols-[max-content,1fr] grid-rows-1 h-full max-h-full overflow-hidden"
     id="pdf-page-vue"
+    :style="`width: ${width}px`"
   >
     <!-- pdf page aside has hidden md:grid -->
     <pdf-page-aside
@@ -61,9 +62,10 @@
           ref="pinch"
           :limitPan="true"
           :limitZoom="1000"
-          :disabled="!isMobile"
           overflow="scroll"
-          disableZoomControl="disable"
+          :disableZoomControl="'disable'"
+          :listeners="'auto'"
+          :wheel="false"
         >
         <!-- <pinch-scroll-zoom
           ref="zoomer"
@@ -263,9 +265,12 @@
 // import demoPdf from '@/assets/pdf/sample.pdf'
 import * as pdfJs from 'pdfjs-dist/build/pdf'
 import * as worker from 'pdfjs-dist/build/pdf.worker.entry'
+// import * as pdfJs from '~/services/build/pdf'
+// import * as worker from '~/services/build/pdf.worker'
 pdfJs.GlobalWorkerOptions.workerSrc = worker
 
 import PinchScrollZoom from '@coddicat/vue-pinch-scroll-zoom'
+import PinchZoom from 'vue-pinch-zoom';
 
 import jsPDF from 'jspdf'
 
@@ -348,6 +353,7 @@ export default mixins(PdfAuth).extend({
     AddToPageDrawOrType,
     DoneModal,
     PinchScrollZoom,
+    PinchZoom,
     GuestModal
   },
   data: () => ({
@@ -430,7 +436,9 @@ export default mixins(PdfAuth).extend({
     signTools: [],
     confirmTools: [],
     isMobile: false,
-    saveUser: {}
+    saveUser: {},
+    width: 0,
+    is_equal: true
   }),
   created() {
     this.fetchPdf()
@@ -442,14 +450,16 @@ export default mixins(PdfAuth).extend({
     this.$BUS.$on('scrollToSignInitial', this.deactivateSignInitial)
     this.$BUS.$on('signature-update', (v) => (this.signature = v))
     this.$BUS.$on('initials-update', (v) => (this.initial = v))
-  },
+    window.addEventListener("resize", this.resizeHandler);
 
+  },
   mounted() {
     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
      this.isMobile = true;
     }else{
       this.isMobile = false;
     }
+    this.width =  window.innerWidth;
     this.setIsFromBusinessPage()
     document.addEventListener('keyup', this.keyupHandler)
     window.onresize = () => {
@@ -476,6 +486,7 @@ export default mixins(PdfAuth).extend({
     this.$store.commit('SET_FILE_SIGNATURE', null)
     this.$store.commit('SET_FILE_INITIAL', null)
     this.$store.commit("SET_AGREE_SIGN", -1)
+    window.removeEventListener("resize", this.resizeHandler);
   },
   async asyncData({ $axios, params, error, store }) {
     const file = await $axios
@@ -636,6 +647,9 @@ export default mixins(PdfAuth).extend({
     },
   },
   methods: {
+    resizeHandler()  {
+        this.width =  window.innerWidth;
+    },
     setIsFromBusinessPage(){
       let isFromBusinessPage = localStorage.getItem("from_businesspage") == 'true'
      if(isFromBusinessPage){
@@ -868,10 +882,10 @@ export default mixins(PdfAuth).extend({
       }
     },
     exitFileManager(val) {
-      let is_equal =
+      this.is_equal =
         this.file.annotaions == JSON.stringify(this.tools) ||
         JSON.stringify(this.tools) == JSON.stringify(this.initialFileAnnotation)
-      if (is_equal) {
+      if (this.is_equal) {
         this.nextRoute = val
         this.$nuxt.$router.push(val)
       } else this.showExitFileManager = true

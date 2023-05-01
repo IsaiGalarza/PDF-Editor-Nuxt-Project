@@ -1612,9 +1612,6 @@ export default mixins(PdfAuth).extend({
     if (!this.displayPDF) {
       return next(true)
     }
-    if(this.is_equal){
-      return next(true)
-    }
     if (this.isCreator) {
       this.nextRoute ? next(true) : next(false)
       this.exitFileManager(to.fullPath)

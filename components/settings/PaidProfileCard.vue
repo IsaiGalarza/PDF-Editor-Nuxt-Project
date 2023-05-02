@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <p>{{ this.$store?.getters?.getDateFormat }}</p>
+    
 
 
     <div class="flex mb-3 flex-col items-center justify-center">
@@ -33,10 +33,10 @@
      
 
       <el-dropdown 
-      @command="onTimeFormatSelected"
+      @command="onDateFormatSelected"
       trigger="click" class=" w-full ">
         <div class="flex w-full  mb-4 items-center justify-center">
-          <button @click="() => onDateFormatSelected(value)"
+          <button
             class="border-[1px]  w-[85%] py-2.5 rounded-[10px] border-[#22252948] flex items-center justify-center text-[#22252948]">
             Date format
             <img class="ml-4 scale-75" src="../../assets/icons/arrow_down.svg" alt="">
@@ -45,23 +45,38 @@
         <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu hidden sm:block">
           <el-dropdown-item
           v-for="(value, key, index) in dateFormat" 
-            command="complete"
+          :key="index"
+          :command="value"
             ><p  >{{ value }}</p></el-dropdown-item
           >
         </el-dropdown-menu>
        
       </el-dropdown>
 
-
-
-
-
-
+      <el-dropdown 
+      @command="onTimeFormatSelected"
+      trigger="click" class=" w-full ">
+        <div class="flex w-full  mb-4 items-center justify-center">
+          <button
+            class="border-[1px]  w-[85%] py-2.5 rounded-[10px] border-[#22252948] flex items-center justify-center text-[#22252948]">
+            Time format
+            <img class="ml-4 scale-75" src="../../assets/icons/arrow_down.svg" alt="">
+          </button>
+        </div>
+        <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu hidden sm:block">
+          <el-dropdown-item
+          v-for="(value, key, index) in timeFormat" 
+          :key="index"
+          :command="value"
+            ><p  >{{ value }}</p></el-dropdown-item
+          >
+        </el-dropdown-menu>
+       
+      </el-dropdown>
     </div>
 
 
     <QrcodeShare :link="link" v-model="showQrcode" />
-
     <ShareFilesModal :link="link" v-model="showShareCompany" />
     <cropper-image-upload :show="visibleUploadImageDialog" @visibleDialog="(show) => (visibleUploadImageDialog = show)" />
   </div>
@@ -140,6 +155,7 @@ export default mixins(login).extend({
       this.$store.commit('SET_DATEFORMAT', value)
     },
     onTimeFormatSelected(value) {
+
       this.$store.commit('SET_TIMEFORMAT', value)
     },
     showQrcodeFunc() {

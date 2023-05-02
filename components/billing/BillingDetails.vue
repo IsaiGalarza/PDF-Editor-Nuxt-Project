@@ -44,6 +44,8 @@
 
 <script>
 import moment from 'moment'
+import dateFormat from "dateformat";
+
 export default {
   data() {
     return {
@@ -55,7 +57,7 @@ export default {
   },
   methods: {
     formatDate(val){
-      return moment(val).format("YYYY/MM/DD")
+      return dateFormat(val,  this.$store?.getters?.getDateFormat )
     },
     openReciept(val){
       window.open(val, '_blank')

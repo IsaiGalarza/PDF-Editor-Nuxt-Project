@@ -39,9 +39,8 @@
   
     <img
       v-else-if="theInitial && !isCreator"
-      class="absolute-image"
+      :width="`${70 * (tool.justMounted ? responsiveToolDim.width: responsiveDim.width)}px`"
       :src="theInitial"
-      :style="style"
     />
     <!-- <span v-show="!initialimgDisplay  && !isCreator && !tool.justMounted && (isAgreedSign == 1 && isSign || isComplete)" class="toolTip hidden">Initial</span> -->
     <!-- <img v-else class="absolute-image" src="../../../assets/img/initials.png" /> -->

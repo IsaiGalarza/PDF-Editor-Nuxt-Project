@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-2 lg:py-10 relative">
+  <div class="pt-2 px-4 lg:py-10 relative">
     <!-- spinner before page loaded -->
     <div
       v-if="windowOnLoad"

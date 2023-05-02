@@ -710,9 +710,12 @@ export default Vue.extend({
       this.showQrcodeFiles = true
     },
     formatDateTime(dateVal) {
-      return `${DateFormatter.getDateString(
-        dateVal
-      )}  ${DateFormatter.getFormattedTime(dateVal)}`
+      let date = dateFormat(dateVal,  this.$store?.getters?.getDateFormat )
+      let time =  dateFormat(dateVal,  this.$store?.getters?.getTimeFormat )
+      return `${date}, ${time}`
+      // return `${DateFormatter.getDateString(
+      //   dateVal
+      // )}  ${DateFormatter.getFormattedTime(dateVal)}`
     },
     async fetchFiles(page, search) {
       console.log(this.$auth.user)

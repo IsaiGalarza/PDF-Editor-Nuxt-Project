@@ -36,7 +36,7 @@ export const state = () => ({
   saveUser: {},
   ledgerParams: "",
   clickAction: null,
-  dateFormat: "dd/mm/yyy",
+  dateFormat: "dd/mm/yyyy",
   timeFormat: "h:MM TT",
   isFromBusinessPage: true,
   pdfpagesDim: {

@@ -245,6 +245,7 @@ import EmptyFileLedger from '../widgets/EmptyFileLedger.vue'
 import FileAction from '~/models/FileAction'
 import _ from 'lodash'
 import LetterAvatar from '../widgets/LetterAvatar.vue'
+import dateFormat from 'dateformat'
 
 export default Vue.extend({
   components: {
@@ -480,9 +481,9 @@ export default Vue.extend({
       this.scrollObserver = observer
     },
     formatDateTime(dateVal) {
-      return `${DateFormatter.getDateString(
-        dateVal
-      )}  ${DateFormatter.getFormattedTime(dateVal)}`
+      let date = dateFormat(dateVal,  this.$store?.getters?.getDateFormat )
+      let time =  dateFormat(dateVal,  this.$store?.getters?.getTimeFormat )
+      return `${date}, ${time}`
     },
     handleShowingLedger() {
       const ledgerContainer = this.$refs.ledgerContainer

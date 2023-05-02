@@ -18,7 +18,7 @@
         $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
         isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
       ]"
-      :width="(tool?.pageScaleY || 1) * 18 * (tool.justMounted ? responsiveToolDim.width: responsiveDim.width)"
+      :width="`${(tool?.pageScaleY || 1) * 18 * (tool.justMounted ? responsiveToolDim.width: responsiveDim.width)}px`"
     />
     <img
       v-else-if="!initialimgDisplay && !isCreator && !tool.justMounted"
@@ -37,9 +37,8 @@
     />
     <img
       v-else-if="theSignature"
-      class="absolute-image"
       :src="theSignature"
-      :style="style"
+      :width="`${70 * (tool.justMounted ? responsiveToolDim.width: responsiveDim.width)}px`"
     />
     <!-- <span v-show="!initialimgDisplay && !isCreator && !tool.justMounted && (isAgreedSign == 1 && isSign || isComplete)" class="toolTip hidden">Sign</span> -->
     <!-- <img v-else class="absolute-image" src="../../../assets/img/sign.png" /> -->
@@ -197,8 +196,6 @@ export default mixins(SaveSignatureInitialsMixin).extend({
 <style scoped>
 .absolute-image {
   transition: 0.25s;
-  max-width: 200px;
-  width: 70px;
   height: auto;
   @apply absolute top-0 left-[5%] opacity-100;
 }

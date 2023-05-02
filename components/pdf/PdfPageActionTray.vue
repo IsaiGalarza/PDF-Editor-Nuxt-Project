@@ -76,18 +76,6 @@
       </span>
 
       <div class="flex items-center sm:hidden">
-        <button
-        v-if="
-          ($auth.loggedIn || $store.getters?.getFillAsGuest) &&
-          !isCreator &&
-          !isConfirm &&
-          !isSign
-        "
-        @click="saveChanges"
-        class="mr-2 text-xs bg-white rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed"
-      >
-        Done
-      </button>
         <span class="cursor-pointer" @click="showPdfInfo = true">
           <img :src="require('~/assets/icons/info-circle.svg')" />
         </span>
@@ -407,6 +395,7 @@ export default Vue.extend({
       }
     },
     saveChanges() {
+      this.$emit('pinchZoomOut')
       this.$store.commit('SET_UPLOAD_STATE', false);
       this.saveFunction = 'saved'
       this.$emit('publishFileFunction')

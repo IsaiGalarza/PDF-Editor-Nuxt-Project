@@ -7,7 +7,7 @@
     :style="style"
   />
     <img
-      v-else-if="!initialimgDisplay && isCreator"
+      v-else-if="!initialimgDisplay && isCreator && !tool.justMounted"
       src="../../../assets/img/sign-icon.png"
       attr="sign"
       :elemFill="uploaded && initialimgDisplay"
@@ -18,7 +18,7 @@
         $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
         isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
       ]"
-      :width="(tool?.pageScaleY || 1) * 18"
+      :width="(tool?.pageScaleY || 1) * 18 * (tool.justMounted ? responsiveToolDim.width: responsiveDim.width)"
     />
     <img
       v-else-if="!initialimgDisplay && !isCreator && !tool.justMounted"
@@ -27,12 +27,13 @@
       :elemFill="uploaded && initialimgDisplay"
       :uploaded="uploaded"
       @click="selectIsCreatorDisplay"
-      class="annot-button w-[30px]"
+      class="annot-button"
       ref="annotbutton"
       :class="[
         $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
         isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
       ]"
+      :width="`${30 * responsiveDim.width}px`"
     />
     <img
       v-else-if="theSignature"
@@ -60,6 +61,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     completed: String,
     setInitialSignType: Function,
     tool: Object,
+    isCreator: Boolean,
+    responsiveDim: Object,
+    responsiveToolDim: Object
   },
   data() {
     return {
@@ -101,19 +105,11 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     isAgreedSign() {
       return this.$store.state.agreeSign
     },
-    isCreator() {
-      if(!this.$auth?.user?.id) return false
-      return (
-        this.$auth?.user?.id == this.file?.userId ||
-        (this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE &&
-          this.$auth?.user?.teamId == this.file.userId)
-      )
-    },
     style() {
       return {
-        width: 'auto',
+        width: `${70 * this.responsiveDim.width}px`,
         // height: `${((this.scale || 1) * 20)}px`,
-        height: `${(this.tool?.pageScaleY || 1) * 20}px`,
+        height: `${((this.tool?.pageScaleY || 1) * 20)  * this.responsiveDim.height}px`,
       }
     },
   },
@@ -129,7 +125,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       });
     },
     selectIsCreatorDisplay(){
-      !this.isCreator ? this.setInitialImgDisplay() : null
+       this.setInitialImgDisplay() 
       // this.theSignature && setTimeout(() => {
       //   this.$BUS.$emit('scroll-to-tools')
       // }, 200);
@@ -174,10 +170,10 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       if (!this.uploaded) this.showSignatureModal = true
     },
     setInitialImgDisplay() {
-      if(!this.$auth.loggedIn && !this.$store.getters?.getFillAsGuest) return
-      !this.isOwner && (this.initialimgDisplay = true)
+      // if(!this.$auth.loggedIn && !this.$store.getters?.getFillAsGuest) return
+      this.initialimgDisplay = true
       this.$BUS.$emit('scrollToSignInitial', 'appendsign')
-      !this.uploaded &&  !this.theSignature && this.setInitialSignType('sign')
+      !this.theSignature && this.setInitialSignType('sign')
     },
   },
   components: { DrawOrTypeModal },

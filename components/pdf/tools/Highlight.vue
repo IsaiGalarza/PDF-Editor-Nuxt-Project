@@ -13,7 +13,8 @@ export default {
     x2: Number,
     y2: Number,
     tool: Object,
-    generatePDF:Boolean
+    generatePDF:Boolean,
+    responsiveToolDim: Object,
   },
   data() {
     return {
@@ -61,7 +62,7 @@ export default {
       return Math.abs(this.x2 - this.x1)
     },
     height() {
-      return Math.abs(this.y2 - this.y1)
+      return Math.abs(this.y2 - this.y1) * this.responsiveToolDim.height
     },
   },
 }

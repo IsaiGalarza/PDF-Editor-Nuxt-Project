@@ -3,9 +3,9 @@ import FileAction from '~/models/FileAction'
 import $ from 'jquery'
 
 export const formatStyleTop = (x: string, String: string) => {
-  let sliceString = String.substring(
-    String.indexOf(x) + x.length + 1,
-    String.indexOf('px')
+  let sliceString = (String || '').substring(
+    (String || '').indexOf(x) + x.length + 1,
+    (String || '').indexOf('px')
   )
   return parseFloat(sliceString.trim())
 }
@@ -24,9 +24,9 @@ return Number(string)
 }
 
 let formatStyleLeft = (x: string, String: string) => {
-  let sliceString = String.substring(
-    String.indexOf(x) + x.length + 1,
-    String.lastIndexOf('px')
+  let sliceString = (String || '').substring(
+    (String || '').indexOf(x) + x.length + 1,
+    (String || '').lastIndexOf('px')
   )
   return parseFloat(sliceString.trim())
 }
@@ -43,7 +43,9 @@ export const appendEditText = ({
   left,
   top,
   textImageContent,
+  mainHeight,
   fontsize,
+  scaleFactor,
   lineHeight,
   isLabel
 }: any) => {
@@ -52,15 +54,17 @@ export const appendEditText = ({
     type: isLabel ? 'DrawText' : 'DrawText',
     text: tools,
     isLabel: isLabel,
-    height: height,
+    height: Number(height),
     width,
     textImageContent,
     axisX: axisX[1] - axisX[0],
     axisY: axisY[1] > axisY[0] ? axisY[1] - axisY[0] : axisY[0] - axisY[1],
-    size: formatStyleTop('font-size', fontsize),
+    size: formatStyleTop('font-size', (fontsize || "")),
     left,
     top,
-    lineHeight
+    lineHeight,
+    mainHeight,
+    scaleFactor: scaleFactor ? scaleFactor : 1
   })
 }
 
@@ -349,6 +353,7 @@ export const ExtractFormPdf = ({
                       })
                       break
                     case 'P':
+                      console.log("font>>>>>>>>>>>>>",tools)
                       appendEditText({
                         parent: pdfScrappedData,
                         subParent: totalArray,
@@ -356,7 +361,8 @@ export const ExtractFormPdf = ({
                           element.getBoundingClientRect().top,
                           item.getBoundingClientRect().top - pdfOffset_y,
                         ],
-                        height: tools.children[0].getBoundingClientRect().height,
+                        height: tools.children[0].getAttribute('height') ?? tools.children[0].getBoundingClientRect().height,
+                        mainHeight: tools.children[0].getBoundingClientRect().height,
                         width: tools.children[0].getBoundingClientRect().width,
                         axisX: [
                           element.getBoundingClientRect().left,
@@ -368,8 +374,9 @@ export const ExtractFormPdf = ({
                         textImageContent: tools.children[0].getAttribute('textImageContent'),
                         tools: tools.children[0].innerText,
                         elem: element,
-                        fontsize: (tools.children[0] as any).getAttribute(
-                          'style'
+                        scaleFactor: tools.getAttribute('scalefactor'),
+                        fontsize: tools.children[0].getAttribute(
+                          'initialFontSize'
                         ),
                       })
                       break

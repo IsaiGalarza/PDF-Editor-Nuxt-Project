@@ -44,12 +44,15 @@
       <div v-else-if="(type == 'appendInitial' && tool.completed && isCreator)" ref="apsign">
         <img :src="tool.completed" style="height:25px" />
       </div>
-      <component v-else :is="`${type}-tool`" :x1="x1" :y1="y1" :x2="x2" :y2="y2" :id="id" :tool="tool"
+      <component v-else :scalefactor="responsiveDim.width" :is="`${type}-tool`" :x1="x1" :y1="y1" :x2="x2" :y2="y2" :id="id" :tool="tool"
        :elemScale="elemScale" :incDecCount="incDecCount" :points="points"
         :isActive="isActive" :fontSize="fontSize" :scale="scale" :file="file" :value="value" :justMounted="justMounted"
         @input="onInp" :generatePDF="generatePDF" :showPublishModal="showPublishModal"
         :selectedToolType="selectedToolType" :mouseUp="mouseUp" :lineStart="lineStart" :toolLength="toolLength"
         :drawingStart="drawingStart" :setInitialSignType="setInitialSignType" @onBlur="onBlur" 
+        :isCreator="isCreator"
+        :responsiveDim="responsiveDim"
+        :responsiveToolDim="responsiveToolDim"
         @addOffset="addOffset"
         />
 
@@ -234,18 +237,41 @@ export default {
     isActive() {
       return this.id == this.activeToolId
     },
+    FrombusinessPage(){
+            return JSON.parse(localStorage.getItem("from_businesspage"))?.fromBusiness
+        },
     isCreator() {
-      return (this.$auth?.user?.id == this.tool.user) || ((this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE) && this.$auth?.user?.teamId == this.tool.user)
+      if(this.FrombusinessPage &&  !this.tool.justMounted) return false
+      else if(this.FrombusinessPage &&  this.tool.justMounted) return true
+      else { return true}
+      if(!this.$auth?.user?.id) return false
+      return (
+        this.$auth?.user?.id == this.file?.userId ||
+        (this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE &&
+          this.$auth?.user?.teamId == this.file.userId)
+      )
     },
     elemScale() {
       return this.incDecCount / 11
+    },
+    responsiveDim(){
+      return {
+        width: (this.$store.getters.getPdfpagesDim.parentWidth/this.tool.parentWidth),
+        height: (this.$store.getters.getPdfpagesDim.parentHeight/this.tool.parentHeight)
+      }
+    },
+    responsiveToolDim(){
+      return {
+        width: (this.tool.parentWidth/961),
+        height: (this.tool.parentHeight/1243)
+      }
     },
     wrpStyle() {
       let top = this.top
       let left = this.left
       return {
-        top: `${top}px`,
-        left: `${left}px`,
+        top: `${this.tool.parentHeight ? top * this.responsiveDim.height : top}px`,
+        left: `${this.tool.parentWidth ? left * this.responsiveDim.width : left}px`,
       }
     },
     TOOL_TYPE() {
@@ -472,6 +498,7 @@ export default {
     },
   },
   mounted: function () {
+    console.log("store-pages-getter", this.$store.getters.getPdfpagesDim)
   }
 }
 </script>

@@ -4,7 +4,10 @@
     v-if="confirmStar" :style="style"
         @focus="focus = true"
         @blur="onBlur"
+        :height="initialFontSize * 1.5"
+        :textImageContent="svgToImageData"
         contenteditable="true"
+        :initialFontSize="initialFontSize"
         ref="name_box"
         placeholder="Type here..."
         class="text-container"
@@ -20,12 +23,13 @@
         </svg> -->
     <img
       v-if="!confirmStar && !isCreator"
-      class="annot-button w-[80px]"
+      class="annot-button"
+      :width="`${80 * responsiveDim.width}px`"
       src="../../../assets/img/name_tag.svg"
     />
     <img
     v-if="!confirmStar && isCreator"
-    style="width: 18px"
+    :width="`${18 * (tool.justMounted ? responsiveToolDim.width: responsiveDim.width)}px`"
     src="../../../assets/img/name_icon.svg"
   />
     <!-- <span v-show="!confirmStar" class="toolTip hidden">Name</span> -->
@@ -52,6 +56,10 @@ export default {
     scale: Number,
     file: { type: Object, required: true },
     generatePDF: Boolean,
+    tool: Object,
+    isCreator: Boolean,
+    responsiveDim: Object,
+    responsiveToolDim: Object
   },
   watch: {
     generatePDF: function () {
@@ -71,26 +79,19 @@ export default {
     nowDate() {
       return moment().format('YYYY-MM-DD')
     },
+    initialFontSize(){
+      return (this.fontSize || 11) * (this.tool?.pageScaleX || 1)
+    },
     style() {
       return {
         // fontSize: `${this.fontSize || 11}px`,
-        fontSize: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1)}px`,
+        fontSize: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveDim.width}px`,
       }
     },
     notBtn() {
       return this.notClass
     },
-    isCreator() {
-      try {
-        return (
-          this.file.userId == this.$auth?.user?.id ||
-          (this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE &&
-            this.$auth?.user?.teamId == this.file.userId)
-        )
-      } catch (e) {
-        return false
-      }
-    },
+  
   },
   methods: {
 
@@ -125,7 +126,7 @@ export default {
     },
     confirmStarAction() {
       if (!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest || (this.isAgreedSign !== 1 && this.isSign)) return
-      !this.confirmStar && this.$emit('addOffset', 7)
+      !this.confirmStar &&  !this.isCreator && this.$emit('addOffset', 7)
       !this.isCreator && (this.confirmStar = true)
       this.$BUS.$emit('scrollToSignInitial')
       this.notClass = ''

@@ -355,4 +355,8 @@ export default Vue.extend({
     border: none
   }
 }
+
+#bottom-nav{
+  display: none !important;
+}
 </style>

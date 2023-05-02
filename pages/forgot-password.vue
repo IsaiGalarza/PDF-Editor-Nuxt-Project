@@ -102,7 +102,12 @@ export default Vue.extend({
           localStorage.removeItem('main_user_paperdaz_token')
           localStorage.setItem("reset_user_mail", this.user.email)
           this.$auth.loggedIn ? this.logout() : null
-          // this.$nuxt.$router.push('/reset-sent-link');
+          this.$nuxt.$router.push('/');
+
+          this.toggleToast({
+            msg: 'Check email to reset password',
+            active: true,
+          })
         })
         .catch(({ response }) => {
           this.alertMessage.isSuccess = false

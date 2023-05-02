@@ -7,7 +7,7 @@
     :style="style"
   />
     <img
-      v-else-if="!initialimgDisplay && isCreator && !tool.justMounted"
+      v-else-if="!initialimgDisplay && isCreator"
       src="../../../assets/img/sign-icon.png"
       attr="sign"
       :elemFill="uploaded && initialimgDisplay"
@@ -75,6 +75,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   },
   mounted() {
     this.changeSignToBase64()
+    console.log(this.isCreator, this.tool.justMounted, this.initialimgDisplay)
     this.completed && this.changeSignToBase64(this.completed)
     !this.initialimgDisplay && !this.isCreator && this.tool.justMounted ? this.popUpIfNoSign() : null
     // this.checkToolIndex()

@@ -29,7 +29,7 @@
     <img
       v-if="!confirmStar && isCreator"
       :width="`${18 * (tool.justMounted ? responsiveToolDim.width: responsiveDim.width)}px`"
-      src="../../../assets/img/require-icon.png"
+      src="../../../assets/img/require-icon.svg"
     />
 
     <img

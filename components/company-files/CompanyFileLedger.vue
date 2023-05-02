@@ -567,8 +567,7 @@ export default Vue.extend({
   methods: {
     routeToFileManager(val){
         this.$router.push(val)
-        localStorage.setItem("from_businesspage", JSON.stringify({fromBusiness: false}))
-        this.$store.commit("SET_BUSINESS_PAGE", false)
+        localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: false}))
     },
     async setAllowCopy(){
        await this.$_server.patch(`/users/${this.$auth?.user?.id}`, {

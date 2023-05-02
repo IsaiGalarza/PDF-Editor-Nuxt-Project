@@ -38,7 +38,7 @@
     />
   
     <img
-      v-else-if="theInitial && initialimgDisplay"
+      v-else-if="theInitial && !isCreator"
       class="absolute-image"
       :src="theInitial"
       :style="style"
@@ -169,7 +169,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   mounted() {
     this.changeInitialToBase64()
     this.completed && this.changeInitialToBase64(this.completed)
-    !this.initialimgDisplay && this.isCreator && this.tool.justMounted ? this.popUpIfNoinitial() : null;
+    !this.initialimgDisplay && !this.isCreator && this.tool.justMounted ? this.popUpIfNoinitial() : null;
     // this.checkToolIndex()
   },
   watch: {

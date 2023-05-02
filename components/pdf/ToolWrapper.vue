@@ -3,7 +3,7 @@
     <!-- <div class="tool-wrapper" :style="wrpStyle" ref="Wrp" :id="getToolWrapperId"> -->
     <div
       class="h-8 border text-black inline-flex items-center gap-1.5 px-1 backdrop-blur-sm bg-white/30 absolute tool-menu"
-      v-show="isActive" ref="toolMenu" v-if="isCreator || $store.getters?.getFillAsGuest" v-hammer:pan="handleDrag">
+      v-show="isActive" ref="toolMenu" v-if="(tool.user != file.userId) || (tool.user == file.userId && tool.justMounted)" v-hammer:pan="handleDrag">
       <button class="h-full cursor-move" >
         <Move-icon />
       </button>
@@ -238,18 +238,23 @@ export default {
       return this.id == this.activeToolId
     },
     FrombusinessPage(){
-            return JSON.parse(localStorage.getItem("from_businesspage"))?.fromBusiness
+      console.log(localStorage.getItem("from_publicpage"))
+            return JSON.parse(localStorage.getItem("from_publicpage"))?.fromBusiness ?? true
         },
     isCreator() {
-      if(this.FrombusinessPage &&  !this.tool.justMounted) return false
-      else if(this.FrombusinessPage &&  this.tool.justMounted) return true
-      else { return true}
-      if(!this.$auth?.user?.id) return false
-      return (
-        this.$auth?.user?.id == this.file?.userId ||
-        (this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE &&
-          this.$auth?.user?.teamId == this.file.userId)
-      )
+      console.log(localStorage.getItem("from_publicpage"))
+      if(this.FrombusinessPage == null) return false
+      if(this.FrombusinessPage){
+        return false
+      } else{
+        return true
+      }
+      // if(!this.$auth?.user?.id) return false
+      // return (
+      //   this.$auth?.user?.id == this.file?.userId ||
+      //   (this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE &&
+      //     this.$auth?.user?.teamId == this.file.userId)
+      // )
     },
     elemScale() {
       return this.incDecCount / 11
@@ -375,7 +380,7 @@ export default {
     //   }
     // },
     onClick() {
-      if (!this.isCreator) return;
+      if (!this.tool.justMounted) return;
       this.setActiveToolId(this.id)
       return
       this.$emit('resetJustMounted', this.id)

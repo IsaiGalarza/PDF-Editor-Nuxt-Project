@@ -367,8 +367,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           // actionBy: `${this.$auth.user.firstName} ${this.$auth.user.lastName}`.toUpperCase()
         })
         .then((response) => {
-          // this.isLoading = false
-          this.addToLedger()
+          this.isLoading = false
+          // this.addToLedger()
           this.generatedPdf = response.data
         })
         .catch(() => {
@@ -469,7 +469,6 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     publishAsCreator() {
       let filteredTools = this.tools.filter((e) => e.isDeleted != true)
-
       this.$axios
         .patch(`/files/${this.file?.id}`, {
           fileAction: this.file?.fileAction,
@@ -480,9 +479,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.$notify.success({
             message: 'File publish successfully',
           })
-          this.closeModal()
-          this.$store.commit('SET_PDF_EXIT', true)
-          this.$nuxt.$router.push('/paperlink-pages')
+          // this.closeModal()
+          // this.$store.commit('SET_PDF_EXIT', true)
+          // this.$nuxt.$router.push('/paperlink-pages')
         })
         .catch(() => {
           this.$notify.error({

@@ -38,7 +38,11 @@ export const state = () => ({
   clickAction: null,
   dateFormat: "dd/mm/yyy",
   timeFormat: "h:MM TT",
-  isFromBusinessPage: false,
+  isFromBusinessPage: true,
+  pdfpagesDim: {
+    width: 0,
+    height: 0
+  }
 })
 
 export type RootState = ReturnType<typeof state>
@@ -46,6 +50,9 @@ export type RootState = ReturnType<typeof state>
 export const getters: GetterTree<RootState, RootState> = {
   getSaveUser( state: any){
     return state.saveUser
+  },
+  getPdfpagesDim( state: any){
+    return state.pdfpagesDim
   },
   getFrombusinessPage( state: any){
     return state.isFromBusinessPage
@@ -124,6 +131,9 @@ export const mutations: MutationTree<RootState> = {
   // -- Setting the user --
   SET_SAVE_USER(state, payload) {
     state.saveUser = payload
+  },
+  SET_PDF_DIMENSIONS(state, payload) {
+    state.pdfpagesDim = payload
   },
   SET_BUSINESS_PAGE(state, payload) {
     state.isFromBusinessPage = payload

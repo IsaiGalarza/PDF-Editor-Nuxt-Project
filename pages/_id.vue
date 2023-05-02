@@ -284,7 +284,7 @@ export default Vue.extend({
       else {
         localStorage.setItem('store_public_profile_path', this.$route.fullPath)
         this.$router.push(val)
-        localStorage.setItem("from_businesspage", "true")
+        localStorage.setItem("from_businesspage", JSON.stringify({fromBusiness: true}))
       }
     },
     // getMainPaidUser(val) {

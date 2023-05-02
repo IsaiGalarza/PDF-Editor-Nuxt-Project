@@ -1,6 +1,10 @@
 <template>
   <div class="tool">
-    <p ref="datebox" class="whitespace-nowrap" :textImageContent="svgToImageData" :style="style">{{ value }}</p>
+    <p ref="datebox"
+    :initialFontSize="initialFontSize"
+    :height="initialFontSize * 1.5"
+    :scalefactor="responsiveToolDim.width"
+    class="whitespace-nowrap" :textImageContent="svgToImageData" :style="style">{{ value }}</p>
   </div>
 </template>
 
@@ -12,6 +16,7 @@ export default {
     value: String,
     generatePDF: Boolean,
     tool: Object,
+    responsiveToolDim: Object,
   },
   data() {
     return {
@@ -19,8 +24,11 @@ export default {
     }
   },
   computed: {
+    initialFontSize(){
+       return (this.fontSize || 12)*(this.tool?.pageScaleX || 1) 
+    },
     computedFontSize(){
-     return `${(this.fontSize || 12)*(this.tool?.pageScaleX || 1)}px`
+     return `${(this.fontSize || 12)*(this.tool?.pageScaleX || 1) * this.responsiveToolDim.width}px`
     },
     style() {
       return {

@@ -28,14 +28,14 @@
     </svg> -->
     <img
       v-if="!confirmStar && isCreator"
-      style="width: 18px"
-      class="annot-button"
+      :width="`${18 * (tool.justMounted ? responsiveToolDim.width: responsiveDim.width)}px`"
       src="../../../assets/img/require-icon.png"
     />
 
     <img
     v-if="!confirmStar && !isCreator"
-    class="annot-button w-[47px]"
+    class="annot-button"
+    :width="`${47 * responsiveDim.width}px`"
     src="../../../assets/img/require_tag.svg"
     />
 
@@ -58,6 +58,10 @@ export default {
   props: {
     scale: Number,
     file: { type: Object, required: true },
+    isCreator: Boolean,
+    tool: Object,
+    responsiveDim: Object,
+    responsiveToolDim: Object
   },
   mounted() {
     this.checkToolIndex()
@@ -65,24 +69,14 @@ export default {
   computed: {
     style() {
       return {
-        width: `${(this.scale || 1) * 18}px`,
-        height: `${(this.scale || 1) * 24}px`,
+        width: `${(this.scale || 1) * 18 * this.responsiveDim.width}px`,
+        height: `${(this.scale || 1) * 24 * this.responsiveDim.height}px`,
       }
     },
     notBtn() {
       return this.notClass
     },
-    isCreator() {
-      try {
-        return (
-          this.file.userId == this.$auth?.user?.id ||
-          (this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE &&
-            this.$auth?.user?.teamId == this.file.userId)
-        )
-      } catch (e) {
-        return false
-      }
-    },
+
   },
   methods: {
     checkToolIndex(){

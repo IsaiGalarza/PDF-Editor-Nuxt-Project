@@ -48,11 +48,11 @@
     <div v-if="(!isLoading && !isCreator && isComplete)"
       class="tools-container-wrapper flex flex-wrap items-center justify-between w-full gap-x-1 gap-y-2 text-[#757575] text-base sm:text-2xl sm:hidden px-2"
       :class="[isConfirm ? 'py-0' : 'py-2']">
-      <div v-if="showInsertTools" class="overflow-x-auto">
-        <button class="rounded-full h-8 w-20 text-xs" :class="[activeTool == TOOL_TYPE.name ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+      <div v-if="showInsertTools" class="overflow-x-auto flex">
+        <!-- <button class="rounded-full h-8 w-20 text-xs" :class="[activeTool == TOOL_TYPE.name ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
         isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.name)">
           <user-profile-solid-icon class="mr-1" /> Name
-        </button>
+        </button> -->
         <button class="rounded-full h-8 w-20 text-xs" :class="[activeTool == TOOL_TYPE.date ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
         isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.date)">
           <calendar-icon class="mr-1" /> Date
@@ -423,13 +423,14 @@ export default {
       return TOOL_TYPE
     },
     isCreator() {
-      if(this.$store.getters.getFrombusinessPage) return false
-      try {
-        return (this.file.userId == this.$auth?.user?.id) ||
-          ((this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE) && this.$auth?.user?.teamId == this.file.userId)
-      } catch (e) {
-        return false
-      }
+      let getBusinesspage = JSON.parse(localStorage.getItem("from_businesspage"))
+      return !(getBusinesspage?.fromBusiness)
+      // try {
+      //   return (this.file.userId == this.$auth?.user?.id) ||
+      //     ((this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE) && this.$auth?.user?.teamId == this.file.userId)
+      // } catch (e) {
+      //   return false
+      // }
     },
     isConfirm() {
       return String(this.file.fileAction).toLowerCase() === FileAction.CONFIRM
@@ -606,6 +607,9 @@ export default {
     },
   },
   watch: {
+    "$store.getters.getFrombusinessPage"(val){
+      console.log(">>>>>>>>>>>>>>>>store-business",val)
+    },
     selectedType(){
        if(this.selectedType == TOOL_TYPE.appendDate ||
         this.selectedType == TOOL_TYPE.appendInitial || 

@@ -7,7 +7,7 @@
     :style="style"
   />
     <img
-      v-if="!initialimgDisplay  && isCreator"
+      v-if="!initialimgDisplay  && isCreator && !tool.justMounted"
       src="../../../assets/img/initial-icon.png"
       attr="initial"
       :elemFill="uploaded && initialimgDisplay"
@@ -18,26 +18,27 @@
         $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
         isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
       ]"
-      :width="(tool?.pageScaleY || 1) * 18"
+      :width="(tool?.pageScaleY || 1) * 18 * (tool.justMounted ? responsiveToolDim.width: responsiveDim.width)"
     />
 
     <img
     v-if="!initialimgDisplay  && !isCreator && !tool.justMounted"
     src="../../../assets/img/initial_tag.svg"
     attr="initial"
-    :elemFill="uploaded && initialimgDisplay"
+    :elemFill="initialimgDisplay"
     :uploaded="uploaded"
     @click="selectIsCreatorDisplay"
     ref="annotbutton"
-    class="annot-button w-[43px]"
+    class="annot-button"
     :class="[
       $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
       isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
     ]"
+    :width="`${43 * responsiveDim.width}px`"
     />
   
     <img
-      v-else-if="theInitial && !isCreator"
+      v-else-if="theInitial && initialimgDisplay"
       class="absolute-image"
       :src="theInitial"
       :style="style"
@@ -63,17 +64,12 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     completed: String,
     setInitialSignType: Function,
     tool: Object,
+    isCreator: Boolean,
+    responsiveDim: Object,
+    responsiveToolDim: Object
   },
   computed: {
     ...mapState(['loadedPdfFile']),
-    isCreator() {
-      if(!this.$auth?.user?.id) return false
-      return (
-        this.$auth?.user?.id == this.file?.userId ||
-        (this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE &&
-          this.$auth?.user?.teamId == this.file.userId)
-      )
-    },
     isOwner(){
        return this.file.userId == this.$auth?.user?.id  
     },
@@ -99,9 +95,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     style() {
       return {
-        width: 'auto',
+        width: `${70 * this.responsiveDim.width}px`,
         // height: `${(this.scale || 1) * 20}px`,
-        height: `${(this.tool?.pageScaleY || 1) * 20}px`,
+        height: `${((this.tool?.pageScaleY || 1) * 20) * this.responsiveDim.height}px`,
       }
     },
   },
@@ -123,7 +119,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       });
     },
     selectIsCreatorDisplay(){
-      !this.isCreator ? this.setInitialImgDisplay() : null
+      this.setInitialImgDisplay() 
     },
     popUpIfNoinitial(){
       !this.theInitial && !this.isCreator && this.setInitialSignType('initial')
@@ -165,15 +161,15 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     setInitialImgDisplay() {
       if(!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest && this.theInitial) return
-      !this.isOwner && (this.initialimgDisplay = true)
+      this.initialimgDisplay = true
       this.$BUS.$emit('scrollToSignInitial', 'appendinitial')
-      !this.uploaded && !this.theInitial && this.setInitialSignType('initial')
+      !this.theInitial && this.setInitialSignType('initial')
     },
   },
   mounted() {
     this.changeInitialToBase64()
     this.completed && this.changeInitialToBase64(this.completed)
-    !this.initialimgDisplay && !this.isCreator && this.tool.justMounted ? this.popUpIfNoinitial() : null;
+    !this.initialimgDisplay && this.isCreator && this.tool.justMounted ? this.popUpIfNoinitial() : null;
     // this.checkToolIndex()
   },
   watch: {
@@ -196,7 +192,6 @@ export default mixins(SaveSignatureInitialsMixin).extend({
 .absolute-image {
   transition: 0.25s;
   max-width: 200px;
-  width: 70px;
   height: auto;
   @apply absolute top-0 left-[5%] opacity-100;
 }

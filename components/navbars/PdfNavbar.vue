@@ -30,7 +30,7 @@
                 <span
                     v-else
                     class="text-3xl font-bold w-full h-full text-center text-paperdazgreen-300 rounded-md"
-                    style="text-shadow: 1px 2px 3px grey"
+                    style="text-shadow: 1px 2px 3px rgb(200,200,200)"
                     >{{ (userCompanyName || '').charAt(0).toUpperCase() }}</span
                 >
 
@@ -38,13 +38,6 @@
             
           </div> -->
                 <span
-                    v-if="isPaidUser"
-                    class="text-black text-[13px] font-[600] text-nowrap capitalize text-left"
-                >
-                    File Manager
-                </span>
-                <span
-                    v-else
                     class="text-black text-[13px] font-[600] text-nowrap capitalize text-left"
                 >
                     {{ businessName }}
@@ -53,7 +46,7 @@
         </div>
 
         <div
-            v-if="$auth.loggedIn"
+            v-if="!FrombusinessPage"
             class="h-full self-stretch flex items-center"
         >
             <!-- container for user name -->
@@ -200,14 +193,7 @@
             </el-dropdown>
         </div>
 
-        <div v-else class="h-full self-stretch flex items-center">
-            <button
-                v-if="!$store.getters.getFillAsGuest && !$auth.loggedIn"
-                @click="$store.getters.showGuestModal"
-                class="bg-paperdazgreen-300 text-white h-7 xs:h-8 rounded shadow px-4 sm:px-3 hidden sm:flex items-center justify-center whitespace-nowrap mx-2"
-                >Start</button>
-        </div>
-        <div v-if="$store.getters.getFillAsGuest && !$auth.loggedIn" class="flex items-center">
+        <div v-else class="flex items-center">
             <span class="mr-3">Guest</span>
             <img src="~/assets/img/user-file-icon.svg" width="30" class="rounded-full mr-2"/>
         </div>
@@ -286,6 +272,9 @@ export default mixins(GlobalMixin, login).extend({
         }
     },
     computed: {
+        FrombusinessPage(){
+            return JSON.parse(localStorage.getItem("from_businesspage"))?.fromBusiness
+        },
         searchResult() {
             if (!this.searchString) return []
             return [

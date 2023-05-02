@@ -422,9 +422,16 @@ export default {
     TOOL_TYPE() {
       return TOOL_TYPE
     },
+    FrombusinessPage(){
+        return JSON.parse(localStorage.getItem("from_publicpage"))?.fromBusiness ?? true
+    },
     isCreator() {
-      let getBusinesspage = JSON.parse(localStorage.getItem("from_businesspage"))
-      return !(getBusinesspage?.fromBusiness)
+      if(this.FrombusinessPage == null) return false
+      if(this.FrombusinessPage){
+        return false
+      } else{
+        return true
+      }
       // try {
       //   return (this.file.userId == this.$auth?.user?.id) ||
       //     ((this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE) && this.$auth?.user?.teamId == this.file.userId)

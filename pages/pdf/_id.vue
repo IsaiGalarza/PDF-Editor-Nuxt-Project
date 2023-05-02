@@ -539,9 +539,16 @@ export default mixins(PdfAuth).extend({
     getAllPdfPages() {
       return document.querySelectorAll('.pdf-single-page-outer').length
     },
+    FrombusinessPage(){
+        return JSON.parse(localStorage.getItem("from_publicpage"))?.fromBusiness ?? true
+    },
     isCreator() {
-      let getBusinesspage = JSON.parse(localStorage.getItem("from_businesspage"))
-      return !(getBusinesspage?.fromBusiness)
+      if(this.FrombusinessPage == null) return false
+      if(this.FrombusinessPage){
+        return false
+      } else{
+        return true
+      }
       // return (
       //   this.file.userId == this.$auth?.user?.id ||
       //   (this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE &&
@@ -657,7 +664,7 @@ export default mixins(PdfAuth).extend({
         // this.width =  window.innerWidth;
     },
     setIsFromBusinessPage(){
-      let getBusinesspage = JSON.parse(localStorage.getItem("from_businesspage"))
+      let getBusinesspage = JSON.parse(localStorage.getItem("from_publicpage"))
       if(getBusinesspage.fromBusiness){
         this.$store.commit("SET_BUSINESS_PAGE", true)
       } else {
@@ -1497,6 +1504,7 @@ export default mixins(PdfAuth).extend({
         const pdf = canvasBoundingRects.find(
           (val) => val.pageNumber === tool.pageNumber
         )
+
         // obj.top = obj._top * (pdf.height / obj.pdfHeight) // * 1.08
         // obj.left = obj._left * (pdf.width / obj.pdfWidth) // * 0.95
         // obj.pageScaleX = pdf.width / obj.pdfWidth

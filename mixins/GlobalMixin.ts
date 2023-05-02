@@ -14,9 +14,9 @@ export default {
   },
   methods: {
     clearBusinessData(){
-      localStorage.setItem("from_businesspage", "false")
+      // localStorage.setItem("from_businesspage", "false")
       //@ts-ignore
-      this.$store.commit("SET_BUSINESS_PAGE", false)
+      // this.$store.commit("SET_BUSINESS_PAGE", false)
     },
     toggleToast(val: any) {
       console.log(val)

@@ -273,7 +273,7 @@ export default mixins(GlobalMixin, login).extend({
     },
     computed: {
         FrombusinessPage(){
-            return JSON.parse(localStorage.getItem("from_businesspage"))?.fromBusiness
+            return JSON.parse(localStorage.getItem("from_publicpage"))?.fromBusiness
         },
         searchResult() {
             if (!this.searchString) return []

@@ -1132,10 +1132,10 @@ export default mixins(PdfAuth).extend({
           i % 2 == 0 ? p - dx : p - dy
         )
       } else {
-        this.tools[index].left -= dx
-        this.tools[index].top -= dy
+        this.tools[index].left = dx
+        this.tools[index].top = dy
       }
-      console.log("from-loaded>>>>>>>>>>>>>>>>>",dx, dy)
+ 
     },
     handleIncrease(id) {
       let index = this.tools.findIndex((t) => t.id == id)

@@ -66,7 +66,7 @@ export default {
   },
   mounted() {
    setTimeout(() => {
-    this.$emit('addOffset', !this.isCreator ? 0 : 0)
+    this.$emit('addOffset', !this.isCreator ? 7 : 0)
    }, 300);
   },
   watch: {

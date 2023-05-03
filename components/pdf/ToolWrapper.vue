@@ -489,7 +489,7 @@ export default {
 
       let toolMenuHeight = this.$refs.toolMenu.clientHeight +2
       let toolMenuWidth = this.$refs.toolMenu.clientWidth
-      const initFontSize = 12
+      const initFontSize = 11
       const fontSize = this.fontSize || initFontSize
       if (this.top < toolMenuHeight) {
         this.$refs.toolMenu.style.top = 'unset'

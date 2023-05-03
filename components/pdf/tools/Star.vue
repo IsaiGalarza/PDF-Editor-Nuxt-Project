@@ -28,7 +28,7 @@
     </svg> -->
     <img
       v-if="!confirmStar && isCreator"
-      :width="`${18 * (tool.justMounted ? responsiveToolDim.width: responsiveDim.width)}px`"
+      :width="`${18 * responsiveToolDim.width}px`"
       src="../../../assets/img/require-icon.svg"
     />
 

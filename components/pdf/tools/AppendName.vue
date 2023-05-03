@@ -29,7 +29,7 @@
     />
     <img
     v-if="!confirmStar && isCreator"
-    :width="`${18 * (tool.justMounted ? responsiveToolDim.width: responsiveDim.width)}px`"
+    :width="`${18 * responsiveToolDim.width}px`"
     src="../../../assets/img/name_icon.svg"
   />
     <!-- <span v-show="!confirmStar" class="toolTip hidden">Name</span> -->

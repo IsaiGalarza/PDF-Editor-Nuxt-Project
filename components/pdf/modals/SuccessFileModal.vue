@@ -15,7 +15,7 @@
       <div class="flex justify-center pb-2">
         <CheckedFillIcon width="70"/>
       </div>
-       <span class="w-full text-center block py-0 px-2 pb-8 text-[16px] break-normal">File {{`${(file.fileAction+'ed').replace('ee','e')}`}}, a copy sent to <span class=" text-paperdazgreen-300">{{file.user.firstName}} {{file.user.lastName}}</span> another sent to your email.</span>
+       <span class="w-full text-center block py-0 px-2 pb-8 text-[16px] break-normal">File {{`${(file.fileAction+'ed').replace('ee','e')}`}}, a copy sent to <span class=" text-paperdazgreen-300">{{file.user?.firstName}} {{file.user?.lastName}}</span> another sent to your email.</span>
       <div class="flex justify-around">
         <button
           class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400"

@@ -17,7 +17,7 @@
       </svg> -->
     <img
       v-if="isCreator"
-      :width="`${18 * (tool.justMounted ? responsiveToolDim.width: responsiveDim.width)}px`"
+      :width="`${18 * responsiveToolDim.width}px`"
       src="../../../assets/img/date_icon.svg"
     />
     <!-- <div v-if="!isCreator && isModalActive && !confirmStar"

@@ -7,7 +7,7 @@
     :style="style"
   />
     <img
-      v-if="!initialimgDisplay  && isCreator && !tool.justMounted"
+      v-if="!initialimgDisplay  && isCreator"
       src="../../../assets/img/initial-icon.png"
       attr="initial"
       :elemFill="uploaded && initialimgDisplay"
@@ -18,7 +18,7 @@
         $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
         isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
       ]"
-      :width="(tool?.pageScaleY || 1) * 18 * (tool.justMounted ? responsiveToolDim.width: responsiveDim.width)"
+      :width="(tool?.pageScaleY || 1) * 18 * responsiveToolDim.width"
     />
 
     <img

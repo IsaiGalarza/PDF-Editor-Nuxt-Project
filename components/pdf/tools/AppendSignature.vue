@@ -18,7 +18,7 @@
         $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
         isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
       ]"
-      :width="`${(tool?.pageScaleY || 1) * 18 * (tool.justMounted ? responsiveToolDim.width: responsiveDim.width)}px`"
+      :width="`${(tool?.pageScaleY || 1) * 18 * responsiveToolDim.width}px`"
     />
     <img
       v-else-if="!initialimgDisplay && !isCreator && !tool.justMounted"

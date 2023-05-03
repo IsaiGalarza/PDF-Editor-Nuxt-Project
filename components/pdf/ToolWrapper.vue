@@ -3,7 +3,11 @@
     <!-- <div class="tool-wrapper" :style="wrpStyle" ref="Wrp" :id="getToolWrapperId"> -->
     <div
       class="h-8 border text-black inline-flex items-center gap-1.5 px-1 backdrop-blur-sm bg-white/30 absolute tool-menu"
-      v-show="isActive" ref="toolMenu" v-if="(tool.user != file.userId) || (tool.user == file.userId && tool.justMounted)" v-hammer:pan="handleDrag">
+      v-show="isActive" ref="toolMenu" 
+      v-if="(tool.user != file.userId) ||
+       (tool.user == file.userId && tool.justMounted) ||
+       (isCreator && tool.user == file.userId && !tool.justMounted)"
+       v-hammer:pan="handleDrag">
       <button class="h-full cursor-move" >
         <Move-icon />
       </button>
@@ -171,7 +175,8 @@ export default {
     incDecMax: 15,
     incDecMin: 7,
     toolWrapperId: '',
-    pageScale: 1
+    pageScale: 1,
+    firstRender: false
   }),
   head() {
     return {
@@ -238,11 +243,9 @@ export default {
       return this.id == this.activeToolId
     },
     FrombusinessPage(){
-      console.log(localStorage.getItem("from_publicpage"))
             return JSON.parse(localStorage.getItem("from_publicpage"))?.fromBusiness ?? true
         },
     isCreator() {
-      console.log(localStorage.getItem("from_publicpage"))
       if(this.FrombusinessPage == null) return false
       if(this.FrombusinessPage){
         return false
@@ -267,16 +270,16 @@ export default {
     },
     responsiveToolDim(){
       return {
-        width: (this.tool.parentWidth/961),
-        height: (this.tool.parentHeight/1243)
+        width: (this.$store.getters.getPdfpagesDim.parentWidth/961),
+        height: (this.$store.getters.getPdfpagesDim.parentHeight/1243)
       }
     },
     wrpStyle() {
       let top = this.top
       let left = this.left
       return {
-        top: `${this.tool.parentHeight ? top * this.responsiveDim.height : top}px`,
-        left: `${this.tool.parentWidth ? left * this.responsiveDim.width : left}px`,
+        top: `${top * (this.firstRender ? 1 : this.responsiveDim.height)}px`,
+        left: `${left *  (this.firstRender ? 1 : this.responsiveDim.width)}px`,
       }
     },
     TOOL_TYPE() {
@@ -380,7 +383,7 @@ export default {
     //   }
     // },
     onClick() {
-      if (!this.tool.justMounted) return;
+      if (!this.tool.justMounted && !this.isCreator) return;
       this.setActiveToolId(this.id)
       return
       this.$emit('resetJustMounted', this.id)
@@ -433,7 +436,9 @@ export default {
       }
     },
     async handleDrag(event) {
+      this.firstRender = true
       var elem = this.$refs.Wrp
+      if(!this.tool.justMounted) this.$emit('reAdjust', true, this.id)
 
       if (!this.isDragging) {
         this.isDragging = true
@@ -447,6 +452,7 @@ export default {
 
       let posX = event.deltaX/this.pageScale + this.lastPosX
       let posY = event.deltaY/this.pageScale + this.lastPosY
+      
 
       // Set Boundary
       if (posX > 0 && posX + elem.clientWidth < elem.parentElement.clientWidth)
@@ -456,10 +462,15 @@ export default {
 
       if (event.isFinal) {
         this.isDragging = false
+        let dx, dy;
+        if(this.tool.type ==  this.TOOL_TYPE.line || this.tool.type ==  this.TOOL_TYPE.highlight ||  this.tool.type ==  this.TOOL_TYPE.draw ){
+         dx = (this.lastPosX - this.left)
+         dy = (this.lastPosY - this.top)
+        } else {     
+         dx = this.left
+         dy = this.top
+        }
 
-        let dx = (this.lastPosX - this.left)
-        let dy = (this.lastPosY - this.top)
-         console.log(dx, dy, this.tool)
         this.$emit('pos-change', {
           dx,
           dy,
@@ -503,7 +514,7 @@ export default {
     },
   },
   mounted: function () {
-    console.log("store-pages-getter", this.$store.getters.getPdfpagesDim)
+    // ..
   }
 }
 </script>

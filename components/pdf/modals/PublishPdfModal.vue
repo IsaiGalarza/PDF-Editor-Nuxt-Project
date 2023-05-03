@@ -479,8 +479,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
             message: 'File publish successfully',
           })
           this.closeModal()
-          // this.$store.commit('SET_PDF_EXIT', true)
-          // this.$nuxt.$router.push('/paperlink-pages')
+          this.$store.commit('SET_PDF_EXIT', true)
+          this.$nuxt.$router.push('/paperlink-pages')
         })
         .catch(() => {
           this.$notify.error({

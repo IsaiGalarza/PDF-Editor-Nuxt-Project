@@ -46,6 +46,7 @@ export default {
       { name: 'format-detection', content: 'telephone=no' },
     ],
     link: [
+      { rel: 'manifest', type: 'application/json', href: '/manifest.json' },
       { rel: 'icon', type: 'image/png', href: '/icon.png' },
       {
         rel: 'stylesheet',
@@ -87,15 +88,16 @@ export default {
     '~/plugins/vue-carosel.client.js',
     // '~/plugins/tawkto.client.js',
     '~/plugins/axios',
-    "~/plugins/GlobalPlugin.js",
-    
+    '~/plugins/GlobalPlugin.js',
+
     // "~plugins/slider.client.js",
-    { src: '~/plugins/nuxt-hammer.js', ssr: false },    
-    { src: "~/plugins/clipboard.js", },    
+    { src: '~/plugins/nuxt-hammer.js', ssr: false },
+    { src: '~/plugins/clipboard.js' },
     { src: '~/plugins/bus.js' },
-    { src: '~/plugins/paginate.js'},
+    { src: '~/plugins/paginate.js' },
     { src: '~/plugins/outside-click.js' },
     { src: '~/plugins/html2pdf.js', ssr: false },
+    { src: '~/plugins/register-service-worker.js', ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -109,7 +111,7 @@ export default {
     // '@nuxtjs/tailwindcss',
     '@nuxt/postcss8',
     // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa',
+    //'@nuxtjs/pwa',
   ],
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -148,9 +150,9 @@ export default {
     ],
   ],
   axios: {
-     baseURL: process.env.NEW_API_URL,
+    baseURL: process.env.NEW_API_URL,
     // baseURL: 'http://localhost:4040',
-  //  baseURL:'https://cfeb-197-210-76-168.ngrok-free.app/',
+    //  baseURL:'https://cfeb-197-210-76-168.ngrok-free.app/',
   },
   auth: {
     watchLoggedIn: false,
@@ -184,16 +186,21 @@ export default {
     },
   },
 
+  // Set server to localhost so that service worker can be installed
+  //TODO: Remove server setting when building the application for production!!! <<<<<<==================
+  server: {
+    port: 4001, // default: 3000
+    host: 'localhost', // default value is an IP Address of localhost which does not allow service worker file to run, mention 'localhost' explicitly
+  },
+
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
+    meta: {
+      title: 'PaperLink',
+      author: 'Ali',
+    },
     manifest: {
-      lang: 'en',
-      name: 'Paperdaz',
-      start_url: '/',
-      background_color: '#ffffff',
-      theme_color: '#ffffff',
-      display: 'standalone',
-      scope: '/',
+      path: '/manifest.json',
     },
   },
 

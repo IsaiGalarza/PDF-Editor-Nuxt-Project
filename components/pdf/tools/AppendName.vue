@@ -99,6 +99,7 @@ export default {
       this.focus = false
       setTimeout(() => {
         this.$BUS.$emit('scroll-to-tools')
+        this.$BUS.$emit('scrollToSignInitial')
       }, 200)
     },
     onBlur() {
@@ -128,7 +129,6 @@ export default {
       if (!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest || (this.isAgreedSign !== 1 && this.isSign)) return
       !this.confirmStar &&  !this.isCreator && this.$emit('addOffset', 5)
       !this.isCreator && (this.confirmStar = true)
-      this.$BUS.$emit('scrollToSignInitial')
       this.notClass = ''
     },
   },

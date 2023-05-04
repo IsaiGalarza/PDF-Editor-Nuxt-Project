@@ -99,7 +99,7 @@ export default {
     confirmStarAction() {
       if (!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest) return
       !this.isCreator && (this.confirmStar = true)
-      this.$BUS.$emit('scrollToSignInitial')
+     
       this.notClass = ''
     },
   },

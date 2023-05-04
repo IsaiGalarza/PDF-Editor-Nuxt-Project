@@ -99,7 +99,6 @@ export default {
       this.focus = false
       setTimeout(() => {
         this.$BUS.$emit('scroll-to-tools')
-        this.$BUS.$emit('scrollToSignInitial')
       }, 200)
     },
     onBlur() {

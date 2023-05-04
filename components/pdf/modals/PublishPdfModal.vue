@@ -263,8 +263,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   watch: {
     "$store.getters.getUserSignature"(){
       this.showInitialModal = false
-       if(!this.isConfirm) return
-       this.onSubmit()
+      //  if(!this.isConfirm) return
+      //  this.onSubmit()
     },
     visible(val) {
       this.showModal = val

@@ -22,7 +22,7 @@
     />
     <main
       v-if="displayPDF"
-      class="grid grid-rows-[max-content,max-content,1fr] sm:gap-1 max-w-[950px] mx-auto sm:px-[2%] sm:pb-[2%]"
+      class="grid grid-rows-[max-content,max-content,1fr] sm:gap-1 max-w-5xl mx-auto sm:px-[2%] sm:pb-[2%]"
     >
       <pdf-page-action-tray
         :file="file"
@@ -198,7 +198,7 @@
           class="w-full bg-paperdazgreen-400 py-2 text-white overflow-hidden duration-300"
           v-if="($auth.loggedIn && !isCreator && isConfirmChecked) ||  ($store.getters?.getFillAsGuest && !isCreator && isConfirmChecked)"
           id="confirmButtton"
-          @click="publishFileFunction"
+          @click="comfirmedFile"
         >
           Confirm
         </button>
@@ -751,6 +751,7 @@ export default mixins(PdfAuth).extend({
         this.filteredAnnotationButton = Array.from(annotationButton).filter(
           (item, index) => !item.hasAttribute('elemFill')
         )
+        console.log("???????????????????",annotationButton.length)
         if (type == 'mounted' && this.filteredAnnotationButton.length > 0) {
           let signNum = 0,
             initialNum = 0
@@ -771,38 +772,33 @@ export default mixins(PdfAuth).extend({
 
     scrollToSignInitial(type = '') {
       if (this.isCreator || (!this.$auth.loggedIn && !this.$store.getters?.getFillAsGuest)) return
+      if((this.isAgreedSign !== 1 && this.isSign)) return
 
         let annotationButton = document.querySelectorAll('.annot-button')
         Array.from(annotationButton).forEach((element, index) => {
           if (element) element.classList.remove('pulse')
-          // if(element.parentElement.children[1]?.tagName == 'SPAN'){
-          // element.parentElement.children[1]?.classList.add('hidden')
-          // index == 0 && element.parentElement.children[1].classList.remove('hidden')
-          // console.log(element.parentElement.children[1])
-          // }
         })
-        console.log(annotationButton.length)
         this.filteredAnnotationButton = Array.from(annotationButton).filter(
           (item, index) => !item.hasAttribute('elemFill')
         )
         // if (this.filteredAnnotationButton.length == 0 && this.isSign && type === "appendsigninitial") {
         //   this.showDoneModal = true;
         // }
-        if (type == 'mounted' && this.filteredAnnotationButton.length > 0) {
-          let signNum = 0,
-            initialNum = 0
-          this.filteredAnnotationButton.map((val, ind) => {
-            let twrap = val.parentElement.parentElement.parentElement
-            if (twrap.id.indexOf('sign') > -1) {
-              signNum++
-            }
-            if (twrap.id.indexOf('initial') > -1) {
-              initialNum++
-            }
-          })
-          this.signNumber = signNum
-          this.InitialNumber = initialNum
-        }
+        // if (type == 'mounted' && this.filteredAnnotationButton.length > 0) {
+        //   let signNum = 0,
+        //     initialNum = 0
+        //   this.filteredAnnotationButton.map((val, ind) => {
+        //     let twrap = val.parentElement.parentElement.parentElement
+        //     if (twrap.id.indexOf('sign') > -1) {
+        //       signNum++
+        //     }
+        //     if (twrap.id.indexOf('initial') > -1) {
+        //       initialNum++
+        //     }
+        //   })
+        //   this.signNumber = signNum
+        //   this.InitialNumber = initialNum
+        // }
         if (this.filteredAnnotationButton.length) {
           if((this.isAgreedSign !== 1 && this.isSign)) return
           this.filteredAnnotationButton[0].classList.add('pulse')
@@ -815,13 +811,13 @@ export default mixins(PdfAuth).extend({
             ) &&
             this.filteredAnnotationButton[0].scrollIntoView({ block: 'center' })
 
-          let toolwrapper =
-            this.filteredAnnotationButton[0].parentElement.parentElement
-              .parentElement
-          this.signAlaram.top = toolwrapper.style.top
-          this.curSignInitialPage = toolwrapper.id
-          type === 'appendsign' && this.signNumber--
-          type === 'appendinitial' && this.InitialNumber--
+          // let toolwrapper =
+          //   this.filteredAnnotationButton[0].parentElement.parentElement
+          //     .parentElement
+          // this.signAlaram.top = toolwrapper.style.top
+          // this.curSignInitialPage = toolwrapper.id
+          // type === 'appendsign' && this.signNumber--
+          // type === 'appendinitial' && this.InitialNumber--
           // this.signAlaram.left = this.filteredAnnotationButton[0].parentElement.parentElement.parentElement.style.left
         }
 
@@ -867,6 +863,13 @@ export default mixins(PdfAuth).extend({
     },
     startGeneratePdf(val) {
       this.generatePDF = val
+    },
+    comfirmedFile(){
+      if(this.isConfirm && !this.$store.getters?.getUserSignature){
+        this.openTypeSignModal = true
+      } else {
+        this.publishFileFunction()
+      }
     },
     publishFileFunction() {
       this.pinchZoomOut()

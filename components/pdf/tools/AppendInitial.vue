@@ -15,7 +15,7 @@
       ref="annotbutton"
       class="annot-button"
       :class="[
-        $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
+        $auth.loggedIn && !initialimgDisplay && !isCreator ? 'puls' : ' ',
         isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
       ]"
       :width="(tool?.pageScaleY || 1) * 18 * responsiveToolDim.width"
@@ -31,7 +31,7 @@
     ref="annotbutton"
     class="annot-button"
     :class="[
-      $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
+      $auth.loggedIn && !initialimgDisplay && !isCreator ? 'puls' : ' ',
       isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
     ]"
     :width="`${43 * responsiveDim.width}px`"
@@ -39,7 +39,7 @@
   
     <img
       v-else-if="theInitial && !isCreator"
-      :width="`${50 * (tool.justMounted ? responsiveToolDim.width: responsiveDim.width)}px`"
+      :width="`${50 * responsiveToolDim.width}px`"
       :src="theInitial"
     />
     <!-- <span v-show="!initialimgDisplay  && !isCreator && !tool.justMounted && (isAgreedSign == 1 && isSign || isComplete)" class="toolTip hidden">Initial</span> -->
@@ -73,7 +73,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
        return this.file.userId == this.$auth?.user?.id  
     },
     theInitial(){
-       return this.$store.getters?.getUserInitial || this.initial || this.$auth?.user?.initialURL
+       return this.$store.getters?.getUserInitial 
     },
     isSign() {
       return String(this.file.fileAction).toLowerCase() === FileAction.SIGNED
@@ -161,7 +161,6 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     setInitialImgDisplay() {
       if(!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest && this.theInitial) return
       this.initialimgDisplay = true
-      this.$BUS.$emit('scrollToSignInitial', 'appendinitial')
       !this.theInitial && this.setInitialSignType('initial')
     },
   },

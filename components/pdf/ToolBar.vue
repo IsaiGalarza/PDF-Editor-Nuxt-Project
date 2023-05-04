@@ -492,7 +492,7 @@ export default {
     signContinue() {
       if (this.signAgreeChecked) {
         this.$store.commit('SET_AGREE_SIGN', 1);
-        this.$emit('check-active-tools')
+        // this.$emit('check-active-tools')
       } else {
         this.showAlert = true;
       }
@@ -630,6 +630,11 @@ export default {
        this.toolsDropdowm = this.toolsDropdowm.filter((item)=> item.type != this.selectedType)
        this.initialIcon = storeInitialIcon
        this.showDropDown = false
+    },
+    signAgreeChecked(){
+       setTimeout(() => {
+        this.$BUS.$emit('scroll-to-tools')
+      }, 100);
     },
     'file.fileAction': function () {
       this.setSelectedType(null)

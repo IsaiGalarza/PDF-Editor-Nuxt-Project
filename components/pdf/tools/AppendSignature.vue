@@ -4,7 +4,7 @@
     v-if="completed"
     :src="completedImgData"
     class="absolute-image"
-    :width="`${50 * responsiveToolDim.width}px`"
+    :width="`${60 * responsiveToolDim.width}px`"
   />
     <img
       v-else-if="!initialimgDisplay && isCreator"
@@ -38,7 +38,7 @@
     <img
       v-else-if="theSignature"
       :src="theSignature"
-      :width="`${50 * responsiveToolDim.width}px`"
+      :width="`${60 * responsiveToolDim.width}px`"
     />
     <!-- <span v-show="!initialimgDisplay && !isCreator && !tool.justMounted && (isAgreedSign == 1 && isSign || isComplete)" class="toolTip hidden">Sign</span> -->
     <!-- <img v-else class="absolute-image" src="../../../assets/img/sign.png" /> -->

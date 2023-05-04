@@ -22,7 +22,7 @@
     />
     <main
       v-if="displayPDF"
-      class="grid grid-rows-[max-content,max-content,1fr] sm:gap-1 max-w-5xl mx-auto sm:px-[2%] sm:pb-[2%]"
+      class="grid grid-rows-[max-content,max-content,1fr] sm:gap-1 max-w-[950px] mx-auto sm:px-[2%] sm:pb-[2%]"
     >
       <pdf-page-action-tray
         :file="file"

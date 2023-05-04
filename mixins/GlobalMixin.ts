@@ -13,7 +13,7 @@ export default {
     },
   },
   watch: {
-    "$store.getters.getToast.active"(val: any){
+    "$store.getters.getToast.active"(val: boolean){
         val && setTimeout(() => {
           //@ts-ignore
           this.toggleToast({

@@ -1,7 +1,7 @@
 <template>
   <div class="mt-[70px] lg:mt-0 px-2">
   
-    <ProfileTopInfo :userInfo="userInfo" @openShare="shareLink" />
+    <ProfileTopInfo :userInfo="userInfo" @openShare="handleCompanyNameShare(userInfo?.companyName,)" />
 
     <div v-if="fileSpinner" class=" relative h-[300px]">
       <!-- START: spinner container -->
@@ -36,7 +36,7 @@
               <nuxt-link :to="`/public-profile/${item.id}`" class="cursor-pointer">{{ (item || {}).name }}</nuxt-link>
             </p>
           </div>
-          <ShareFolder :folder="item" :showShareIcon="false" />
+          <ShareFolder :folder="item" :showShareIcon="false" :isCompanyNameShare="isCompanyShare" />
         </div>
         <!-- End:: Single row -->
       </div>
@@ -245,6 +245,7 @@ export default Vue.extend({
       showPrivateModal: false,
       showShareCompanyName: false,
       showPermissionModal: false,
+      isCompanyShare:false,
       link: "",
       keepCount: 0,
       showGuideModal: false,
@@ -271,13 +272,22 @@ export default Vue.extend({
         document.body.style.overflow = 'auto'
       }
     },
+
+    handleCompanyNameShare(name){
+      this.isCompanyShare = true
+      let val = name.replace(' ', '') 
+      let link = `${window.location.origin}/${val}`
+      this.shareLink(link, name )
+    },
     shareLinkFunc(val, type) {
       this.shareLink(`${window.location.origin}/pdf/${val}`, type)
     },
     shareLink(val, type) {
+      
       this.link = val
       this.type = type
       this.showShareCompanyName = true
+      
     },
     routeToFileManager(val, privacy) {
       if (privacy == FilePrivacy.PRIVATE) this.showPrivateModal = true

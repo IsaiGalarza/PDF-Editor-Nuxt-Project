@@ -13,15 +13,15 @@
         :disabled="!editingDetails" />
     </div>
     <div class="mx-2 w-full">
-      <el-input placeholder="Email address" class="pr-4 mb-4" v-model="formData.name" type="text"
-        :disabled="!editingDetails" />
+      <el-input placeholder="Email address" class="pr-4 mb-4" v-model="formData.email" type="text"
+        :disabled="true" />
     </div>
     <div class="mx-2 w-full">
       <el-input v-model="formData.phone" class="pr-4 mb-4" placeholder="Contact number" :disabled="!editingDetails"
         type="phone" />
     </div>
   </div>
-    </div>
+    </>
     <transition name="fade">
       <div class="flex items-center justify-center mt-2" v-show="editingDetails">
         <button :disabled="!editingDetails || loading"

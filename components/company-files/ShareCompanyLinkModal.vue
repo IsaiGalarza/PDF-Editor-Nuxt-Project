@@ -40,7 +40,7 @@
 
       <button @click="copyToClipboard" class="w-[40%] flex bg-paperdazgray-300/20 items-center py-2 px-2 rounded">
         <link-icon width="20" height="20" color="rgb(96,98,102)" class="cursor-pointer" />
-        <abbr class="pl-2">Copy link</abbr>
+        <abbr class="pl-2">Copy linkk</abbr>
       </button>
 
       <button @click="showQrcode = true" class="w-[40%] flex bg-paperdazgray-300/20 items-center py-2 px-2 rounded">
@@ -104,6 +104,10 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
+    isCompanyNameShare:{
+      type: Boolean,
+      default: false,
+    }
   },
   data() {
     return {
@@ -229,6 +233,7 @@ export default Vue.extend({
     async onSubmit(event) {
       event?.preventDefault()
 
+
       this.loading = true
 
       let requestData = {
@@ -247,6 +252,7 @@ export default Vue.extend({
           this.$emit('updateVisibility', false)
           this.$emit('refresh')
           this.$nuxt.refresh()
+          this.email = ''
 
           // ------ set the input field to empty ----- 
           this.folderTextareaData = '';

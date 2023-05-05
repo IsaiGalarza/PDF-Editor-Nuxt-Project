@@ -276,11 +276,11 @@ export default Vue.extend({
     handleCompanyNameShare(name){
       this.isCompanyShare = true
       let val = name.replace(' ', '') 
-      let link = `${window.location.origin}/${val}`
+      let link = `https://paperlink.app/${val}`
       this.shareLink(link, name )
     },
     shareLinkFunc(val, type) {
-      this.shareLink(`${window.location.origin}/pdf/${val}`, type)
+      this.shareLink(`https://paperlink.app/pdf/${val}`, type)
     },
     shareLink(val, type) {
       

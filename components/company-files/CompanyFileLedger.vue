@@ -174,9 +174,9 @@ git <template>
                     <div class="flex items-center gap-3 max-w-[100px] sm:min-w-[150px] sm:max-w-[400px]">
                       <div class="max-sm:w-24">
                         <p class="max-sm:truncate capitalize text-base font-normal text-left sm:ml-1">
-                          <nuxt-link :to="`/pdf/${file.paperLink}`">
+                          <span class="cursor-pointer" @click="routeToFileManager(`/pdf/${file.paperLink}`)">
                             {{ file.fileName | removeExtension }}
-                          </nuxt-link>
+                          </span>
                         </p>
                       </div>
                     </div>
@@ -565,6 +565,10 @@ export default Vue.extend({
     }
   },
   methods: {
+    routeToFileManager(val){
+        this.$router.push(val)
+        localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: false}))
+    },
     async setAllowCopy(){
        await this.$_server.patch(`/users/${this.$auth?.user?.id}`, {
         allowCopy: this.allowCopy ? 1 : 0
@@ -808,7 +812,7 @@ export default Vue.extend({
   },
   watch: {
     files(){
-       alert('yuisd')
+    
     },
     allowCopy(){
         this.setAllowCopy()

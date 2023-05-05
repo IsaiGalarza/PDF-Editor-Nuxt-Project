@@ -14,14 +14,15 @@ export default {
     elemScale: Number,
     generatePDF: Boolean,
     tool: Object,
+    responsiveToolDim: Object,
   },
   computed: {
     style() {
       return {
         // width: `${(this.scale || 1) * 13}px`,
         // height: `${(this.scale || 1) * 13}px`,
-        width: `${(this.elemScale || 1) * 13}px`,
-        height: `${(this.elemScale || 1) * 13}px`,
+        width: `${(this.elemScale || 1) * 13 * this.responsiveToolDim.width}px`,
+        height: `${(this.elemScale || 1) * 13 * this.responsiveToolDim.height}px`,
         fill: `black`,
       }
     },

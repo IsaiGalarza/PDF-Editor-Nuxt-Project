@@ -7,6 +7,10 @@
       type="text"
       contenteditable="true"
       :style="style"
+      :textImageContent="svgToImageData"
+      :initialFontSize="initialFontSize"
+      :height="initialFontSize * 1.5"
+      :scalefactor="responsiveToolDim.width"
       class="input-annotation whitespace-nowrap"
       placeholder="Type here..."
       ref="text_box"
@@ -31,6 +35,7 @@ export default {
     justMounted: Boolean,
     tool: Object,
     generatePDF: Boolean,
+    responsiveToolDim: Object,
   },
   data: () => ({
     text: null,
@@ -61,7 +66,7 @@ export default {
     async svgToImage() {
       this.svgToImageData = '';
       let dataPAz = ''
-      await htmlToImage.toPng(this.$refs.textbox)
+      await htmlToImage.toPng(this.$refs.text_box)
         .then(function (dataUrl) {
           dataPAz = dataUrl;
         })
@@ -114,8 +119,11 @@ export default {
     }
   },
   computed: {
+    initialFontSize(){
+        return (this.fontSize || 12)*(this.tool?.pageScaleX || 1) 
+    },
     computedFontsize(){
-        return `${(this.fontSize || 12)*(this.tool?.pageScaleX || 1)}px`
+        return `${(this.fontSize || 12)*(this.tool?.pageScaleX || 1) * this.responsiveToolDim.width}px`
     },
     isCreator () {
       return (

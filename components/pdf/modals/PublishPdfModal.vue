@@ -263,8 +263,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   watch: {
     "$store.getters.getUserSignature"(){
       this.showInitialModal = false
-       if(!this.isConfirm) return
-       this.onSubmit()
+      //  if(!this.isConfirm) return
+      //  this.onSubmit()
     },
     visible(val) {
       this.showModal = val
@@ -317,15 +317,15 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         })
     },
     appendConfirmSign() {
-      console.log(
-        'appendConfirmSign',
-        ExtractFormPdf({
-          downloadLink: this.file.downloadLink,
-          file: this.confirmAnnotation,
-          pdfOffset_y: this.pdfOffsetY,
-          pdfOffset_x: this.pdfOffsetX,
-        })
-      )
+      // console.log(
+      //   'appendConfirmSign',
+      //   ExtractFormPdf({
+      //     downloadLink: this.file.downloadLink,
+      //     file: this.confirmAnnotation,
+      //     pdfOffset_y: this.pdfOffsetY,
+      //     pdfOffset_x: this.pdfOffsetX,
+      //   })
+      // )
     },
     confirmAllSignAndInitials() {
       if (this.$auth?.user?.id == this.file?.userId) return true
@@ -388,7 +388,6 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         editedFileLink: this.generatedPdf?.downloadLink,
         fileId: this.file?.id,
       }
-      console.log("email-requset",requestData)
       //   // return
       try {
         this.$_server.post(`/request`, requestData).then(() => {
@@ -400,7 +399,6 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.$store.commit('SET_FILE_SIGNATURE', null)
           this.$store.commit('SET_FILE_INITIAL', null)
           this.$store.commit("UN_SET_AGREE_SIGN")
-          console.log(this.file)
           this.$auth.loggedIn && this.isCreator
             ? this.$nuxt.$router.push('/paperlink-pages')
             : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)

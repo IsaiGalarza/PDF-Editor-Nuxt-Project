@@ -3,7 +3,11 @@
     <!-- <div class="tool-wrapper" :style="wrpStyle" ref="Wrp" :id="getToolWrapperId"> -->
     <div
       class="h-8 border text-black inline-flex items-center gap-1.5 px-1 backdrop-blur-sm bg-white/30 absolute tool-menu"
-      v-show="isActive" ref="toolMenu" v-if="isCreator || $store.getters?.getFillAsGuest" v-hammer:pan="handleDrag">
+      v-show="isActive" ref="toolMenu" 
+      v-if="(tool.user != file.userId) ||
+       (tool.user == file.userId && tool.justMounted) ||
+       (isCreator && tool.user == file.userId && !tool.justMounted)"
+       v-hammer:pan="handleDrag">
       <button class="h-full cursor-move" >
         <Move-icon />
       </button>
@@ -44,12 +48,15 @@
       <div v-else-if="(type == 'appendInitial' && tool.completed && isCreator)" ref="apsign">
         <img :src="tool.completed" style="height:25px" />
       </div>
-      <component v-else :is="`${type}-tool`" :x1="x1" :y1="y1" :x2="x2" :y2="y2" :id="id" :tool="tool"
+      <component v-else :scalefactor="responsiveDim.width" :is="`${type}-tool`" :x1="x1" :y1="y1" :x2="x2" :y2="y2" :id="id" :tool="tool"
        :elemScale="elemScale" :incDecCount="incDecCount" :points="points"
         :isActive="isActive" :fontSize="fontSize" :scale="scale" :file="file" :value="value" :justMounted="justMounted"
         @input="onInp" :generatePDF="generatePDF" :showPublishModal="showPublishModal"
         :selectedToolType="selectedToolType" :mouseUp="mouseUp" :lineStart="lineStart" :toolLength="toolLength"
         :drawingStart="drawingStart" :setInitialSignType="setInitialSignType" @onBlur="onBlur" 
+        :isCreator="isCreator"
+        :responsiveDim="responsiveDim"
+        :responsiveToolDim="responsiveToolDim"
         @addOffset="addOffset"
         />
 
@@ -168,7 +175,8 @@ export default {
     incDecMax: 15,
     incDecMin: 7,
     toolWrapperId: '',
-    pageScale: 1
+    pageScale: 1,
+    firstRender: false
   }),
   head() {
     return {
@@ -234,18 +242,44 @@ export default {
     isActive() {
       return this.id == this.activeToolId
     },
+    FrombusinessPage(){
+            return JSON.parse(localStorage.getItem("from_publicpage"))?.fromBusiness ?? true
+        },
     isCreator() {
-      return (this.$auth?.user?.id == this.tool.user) || ((this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE) && this.$auth?.user?.teamId == this.tool.user)
+      if(this.FrombusinessPage == null) return false
+      if(this.FrombusinessPage){
+        return false
+      } else{
+        return true
+      }
+      // if(!this.$auth?.user?.id) return false
+      // return (
+      //   this.$auth?.user?.id == this.file?.userId ||
+      //   (this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE &&
+      //     this.$auth?.user?.teamId == this.file.userId)
+      // )
     },
     elemScale() {
       return this.incDecCount / 11
+    },
+    responsiveDim(){
+      return {
+        width: (this.$store.getters.getPdfpagesDim.parentWidth/this.tool.parentWidth),
+        height: (this.$store.getters.getPdfpagesDim.parentHeight/this.tool.parentHeight)
+      }
+    },
+    responsiveToolDim(){
+      return {
+        width: (this.$store.getters.getPdfpagesDim.parentWidth/961),
+        height: (this.$store.getters.getPdfpagesDim.parentHeight/1243)
+      }
     },
     wrpStyle() {
       let top = this.top
       let left = this.left
       return {
-        top: `${top}px`,
-        left: `${left}px`,
+        top: `${top * (this.firstRender ? 1 : this.responsiveDim.height)}px`,
+        left: `${left *  (this.firstRender ? 1 : this.responsiveDim.width)}px`,
       }
     },
     TOOL_TYPE() {
@@ -349,7 +383,7 @@ export default {
     //   }
     // },
     onClick() {
-      if (!this.isCreator) return;
+      if (!this.tool.justMounted && !this.isCreator) return;
       this.setActiveToolId(this.id)
       return
       this.$emit('resetJustMounted', this.id)
@@ -402,7 +436,9 @@ export default {
       }
     },
     async handleDrag(event) {
+      this.firstRender = true
       var elem = this.$refs.Wrp
+      if(!this.tool.justMounted) this.$emit('reAdjust', true, this.id)
 
       if (!this.isDragging) {
         this.isDragging = true
@@ -416,6 +452,7 @@ export default {
 
       let posX = event.deltaX/this.pageScale + this.lastPosX
       let posY = event.deltaY/this.pageScale + this.lastPosY
+      
 
       // Set Boundary
       if (posX > 0 && posX + elem.clientWidth < elem.parentElement.clientWidth)
@@ -425,10 +462,15 @@ export default {
 
       if (event.isFinal) {
         this.isDragging = false
+        let dx, dy;
+        if(this.tool.type ==  this.TOOL_TYPE.line || this.tool.type ==  this.TOOL_TYPE.highlight ||  this.tool.type ==  this.TOOL_TYPE.draw ){
+         dx = (this.lastPosX - this.left)
+         dy = (this.lastPosY - this.top)
+        } else {     
+         dx = this.left
+         dy = this.top
+        }
 
-        let dx = (this.lastPosX - this.left)
-        let dy = (this.lastPosY - this.top)
-         console.log(dx, dy, this.tool)
         this.$emit('pos-change', {
           dx,
           dy,
@@ -447,7 +489,7 @@ export default {
 
       let toolMenuHeight = this.$refs.toolMenu.clientHeight +2
       let toolMenuWidth = this.$refs.toolMenu.clientWidth
-      const initFontSize = 12
+      const initFontSize = 11
       const fontSize = this.fontSize || initFontSize
       if (this.top < toolMenuHeight) {
         this.$refs.toolMenu.style.top = 'unset'
@@ -472,6 +514,7 @@ export default {
     },
   },
   mounted: function () {
+    // ..
   }
 }
 </script>

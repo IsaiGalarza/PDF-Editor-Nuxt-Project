@@ -58,6 +58,7 @@ export default {
       //@ts-ignore
       isSignature ? this.$store.commit('SET_FILE_SIGNATURE', image) : this.$store.commit('SET_FILE_INITIAL', image)
   
+      return
       //@ts-ignore
        if(!this.$auth.loggedIn) return
 

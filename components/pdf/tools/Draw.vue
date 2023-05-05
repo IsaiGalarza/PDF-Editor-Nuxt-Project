@@ -14,7 +14,8 @@ export default {
     toolLength: Number,
     drawingStart: Boolean,
     mouseUp: Boolean,
-    generatePDF:Boolean
+    generatePDF:Boolean,
+    responsiveToolDim: Object,
   },
   data() {
     return {
@@ -62,7 +63,7 @@ export default {
         height: `${(this.height+2)*(this.tool?.pageScaleY || 1)}px`,
         'stroke-linecap': 'round',
         'stroke-linejoin': 'round',
-        'stroke-width': '2',
+        'stroke-width': `${2 * this.responsiveToolDim.width}`,
       }
     },
     x1() {

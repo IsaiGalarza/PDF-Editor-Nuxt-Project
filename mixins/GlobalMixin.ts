@@ -12,14 +12,24 @@ export default {
       return server
     },
   },
+  watch: {
+    "$store.getters.getToast.active"(val: boolean){
+        val && setTimeout(() => {
+          //@ts-ignore
+          this.toggleToast({
+            active: false,
+            msg: ``,
+          })
+        }, 5000);
+    }
+  },
   methods: {
     clearBusinessData(){
-      localStorage.setItem("from_businesspage", "false")
+      // localStorage.setItem("from_businesspage", "false")
       //@ts-ignore
-      this.$store.commit("SET_BUSINESS_PAGE", false)
+      // this.$store.commit("SET_BUSINESS_PAGE", false)
     },
     toggleToast(val: any) {
-      console.log(val)
       //@ts-ignore
       this.$store.commit('SET_TOAST', val)
     },

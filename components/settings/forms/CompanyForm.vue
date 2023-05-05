@@ -1,31 +1,72 @@
 <template>
-  <form @submit.prevent="onSubmit" ref="form" class="profile-info-form grid grid-cols-1 gap-5">
-    <message-alert-widget :message="errorMessage" v-show="errorMessage" type="error" class="my-2 w-[100%] ml-[0%]" />
+  <form
+    @submit.prevent="onSubmit"
+    ref="form"
+    class="profile-info-form grid grid-cols-1 gap-5"
+  >
+    <message-alert-widget
+      :message="errorMessage"
+      v-show="errorMessage"
+      type="error"
+      class="my-2 w-[100%] ml-[0%]"
+    />
 
-    <div class=" w-full">
-
-    <div class="mx-2 w-full">
-      <el-input placeholder="business name" class="pr-4 mb-4" v-model="formData.name" type="text"
-        :disabled="!editingDetails" />
-    </div>
-    <div class="mx-2 w-full">
-      <el-input placeholder="Contact name" class="pr-4 mb-4" v-model="formData.firstName" type="text"
-        :disabled="!editingDetails" />
-    </div>
-    <div class="mx-2 w-full">
-      <el-input placeholder="Email address" class="pr-4 mb-4" v-model="formData.name" type="text"
-        :disabled="!editingDetails" />
-    </div>
-    <div class="mx-2 w-full">
-      <el-input v-model="formData.phone" class="pr-4 mb-4" placeholder="Contact number" :disabled="!editingDetails"
-        type="phone" />
-    </div>
-  </div>
+    <div class="w-full">
+      <div class="mx-2 w-full">
+        <p class="mb-1" :class="[editingDetails ? 'text-black' : 'text-gray-300']">
+          Business name
+        </p>
+        <el-input
+          placeholder="business name"
+          class="pr-4 mb-4"
+          v-model="formData.name"
+          type="text"
+          :disabled="!editingDetails"
+        />
+      </div>
+      <div class="mx-2 w-full">
+        <p class="mb-1" :class="[editingDetails ? 'text-black' : 'text-gray-300']">
+          Contact name
+        </p>
+        <el-input
+          placeholder="Contact name"
+          class="pr-4 mb-4"
+          v-model="formData.firstName"
+          type="text"
+          :disabled="!editingDetails"
+        />
+      </div>
+      <div class="mx-2 w-full">
+        <p class="mb-1" :class="[editingDetails ? 'text-black' : 'text-gray-300']">
+          Email address
+        </p>
+        <el-input
+          placeholder="Email address"
+          class="pr-4 mb-4"
+          v-model="formData.email"
+          type="text"
+          :disabled="true"
+        />
+      </div>
+      <div class="mx-2 w-full">
+        <p class="mb-1" :class="[editingDetails ? 'text-black' : 'text-gray-300']">
+          Contact number
+        </p>
+        <el-input
+          v-model="formData.phone"
+          class="pr-4 mb-4"
+          placeholder="Contact number"
+          :disabled="!editingDetails"
+          type="phone"
+        />
+      </div>
     </div>
     <transition name="fade">
       <div class="flex items-center justify-center mt-2" v-show="editingDetails">
-        <button :disabled="!editingDetails || loading"
-          class="shadow h-10 px-5 text-white rounded-md bg-paperdazgreen-300 disabled:opacity-50">
+        <button
+          :disabled="!editingDetails || loading"
+          class="shadow h-10 px-5 text-white rounded-md bg-paperdazgreen-300 disabled:opacity-50"
+        >
           <span class="inline-flex items-center gap-3">
             <span>Update</span>
             <transition name="fade" :duration="100">
@@ -41,43 +82,43 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import mixins from 'vue-typed-mixins'
-import InputField from '~/components/widgets/InputField.vue'
-import AuthUser from '~/models/AuthUser'
-import timezones from '~/assets/json/timezones'
-import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
-import login from '~/mixins/login'
-import { countryCode } from '~/assets/json/countryCode'
-import { countryList } from '~/assets/json/coutry'
-import MessageAlertWidget from '~/components/widgets/MessageAlertWidget.vue'
-import { ErrorHandler } from '~/types/ErrorFunction'
+import Vue from "vue";
+import mixins from "vue-typed-mixins";
+import InputField from "~/components/widgets/InputField.vue";
+import AuthUser from "~/models/AuthUser";
+import timezones from "~/assets/json/timezones";
+import SpinnerDottedIcon from "~/components/svg-icons/SpinnerDottedIcon.vue";
+import login from "~/mixins/login";
+import { countryCode } from "~/assets/json/countryCode";
+import { countryList } from "~/assets/json/coutry";
+import MessageAlertWidget from "~/components/widgets/MessageAlertWidget.vue";
+import { ErrorHandler } from "~/types/ErrorFunction";
 
 export default mixins(login).extend({
-  name: 'CompanyForm',
+  name: "CompanyForm",
   components: { InputField, SpinnerDottedIcon, MessageAlertWidget },
   data() {
     return {
       dropDownContent: [],
       setDropDown: false,
-      country: '',
-      state: '',
-      errorMessage: '',
+      country: "",
+      state: "",
+      errorMessage: "",
       formData: {
-        name: (this.$auth.user.companyName),
-        email: (this.$auth.user.email),
-        state: '',
-        firstName: (this.$auth.user.firstName),
-        country: '',
-        phone: '',
-        timezone: ''
+        name: this.$auth.user.companyName,
+        email: this.$auth.user.email,
+        state: "",
+        firstName: this.$auth.user.firstName,
+        country: "",
+        phone: "",
+        timezone: "",
       },
       countries: [],
       states: [],
       timezones,
       loading: false,
-      errorMessage: '',
-    }
+      errorMessage: "",
+    };
   },
   props: {
     editingDetails: {
@@ -86,66 +127,62 @@ export default mixins(login).extend({
     },
   },
   async fetch() {
-    await this.fetchCountries()
-    await this.fetchStates()
+    await this.fetchCountries();
+    await this.fetchStates();
 
-    this.formData.state = this.$auth.user ? this.$auth.user.state : ''
+    this.formData.state = this.$auth.user ? this.$auth.user.state : "";
   },
-  mounted() {
-  },
+  mounted() {},
   beforeMount() {
     for (const key of Object.keys(this.formData)) {
-      if ((this.$auth?.user)[key]) this.formData[key] = this.$auth.user[key]
+      if ((this.$auth?.user)[key]) this.formData[key] = this.$auth.user[key];
     }
-    ; (this.country = this.$auth.user.country),
-      (this.state = this.$auth.user.state)
+    (this.country = this.$auth.user.country), (this.state = this.$auth.user.state);
   },
   methods: {
     inputPhone(val, title) {
-      let valid = true
-      let format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~a-zA-Z]/
+      let valid = true;
+      let format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~a-zA-Z]/;
       if (format.test(val)) {
-        this.errorMessage = `${title} format not correct`
-        valid = false
+        this.errorMessage = `${title} format not correct`;
+        valid = false;
       }
-      return valid
+      return valid;
     },
     cancleOut(e) {
-      if (e.target.tagname != 'LI') {
-        this.setDropDown = false
+      if (e.target.tagname != "LI") {
+        this.setDropDown = false;
       }
     },
     setCountryInfo(e) {
-      this.country = e.target.textContent.trim().toLowerCase()
-      this.setDropDown = false
+      this.country = e.target.textContent.trim().toLowerCase();
+      this.setDropDown = false;
 
       //set the state AND TIMEZONE
       try {
         let countryData = countryList.filter((item) =>
           item.name.common.toLowerCase().startsWith(this.country)
-        )[0]
-        this.formData.timezone = countryData.timezones[0]
-        this.state = countryData.capital[0]
+        )[0];
+        this.formData.timezone = countryData.timezones[0];
+        this.state = countryData.capital[0];
       } catch (err) {
-        this.state = ''
+        this.state = "";
       }
     },
     displayCountry() {
-      if (this.country.trim() != '') {
-        this.setDropDown = true
+      if (this.country.trim() != "") {
+        this.setDropDown = true;
 
         this.dropDownContent = countryList
           .map((item) => item)
-          .filter((item) =>
-            item.name.common.toLowerCase().startsWith(this.country)
-          )
-          .sort((a, b) => a.name.common.localeCompare(b.name.common))
+          .filter((item) => item.name.common.toLowerCase().startsWith(this.country))
+          .sort((a, b) => a.name.common.localeCompare(b.name.common));
       } else {
-        this.setDropDown = false
+        this.setDropDown = false;
       }
     },
     onSubmit() {
-      event?.preventDefault()
+      event?.preventDefault();
 
       // return
 
@@ -153,45 +190,41 @@ export default mixins(login).extend({
         ...this.formData,
         companyName: this.formData.name,
         country: this.country,
-      }
+      };
 
-      if (this.loading) return
-      let userId = this.$auth.user?.id
-      this.loading = true
-      this.errorMessage = ''
+      if (this.loading) return;
+      let userId = this.$auth.user?.id;
+      this.loading = true;
+      this.errorMessage = "";
 
       try {
-        this.$axios
-        .$patch(`/users/${userId}`, newFormData)
-        .then(async () => {
-          this.filterUsers()
+        this.$axios.$patch(`/users/${userId}`, newFormData).then(async () => {
+          this.filterUsers();
           this.$notify.success({
-            title: 'Data write',
-            message: 'Data updated successfully!',
-          })
+            title: "Data write",
+            message: "Data updated successfully!",
+          });
 
-          this.loading = false
-          await this.$nextTick()
-          this.$emit('stop-editing')
-        })
-      } catch ({response}) {
-        let message = ErrorHandler(response)
-          this.errorMessage = message
+          this.loading = false;
+          await this.$nextTick();
+          this.$emit("stop-editing");
+        });
+      } catch ({ response }) {
+        let message = ErrorHandler(response);
+        this.errorMessage = message;
       }
     },
   },
   watch: {
-    '$auth.user': function () {
+    "$auth.user": function () {
       for (const key of Object.keys(this.formData)) {
-        this.formData[key] = this.$auth.user ? this.$auth.user[key] : ''
+        this.formData[key] = this.$auth.user ? this.$auth.user[key] : "";
       }
-      this.formData.name =
-        this.$auth.user.companyName
+      this.formData.name = this.$auth.user.companyName;
     },
   },
-  mounted: function () {
-  }
-})
+  mounted: function () {},
+});
 </script>
 
 <style lang="postcss" scoped>
@@ -227,7 +260,7 @@ export default mixins(login).extend({
   @apply border-[1px] border-transparent;
 }
 
-.dropdown>div>li {
+.dropdown > div > li {
   list-style-type: none;
   @apply py-2 px-1;
   transition: 0.2s;
@@ -237,13 +270,13 @@ export default mixins(login).extend({
   transition: 0.2s;
 }
 
-.dropdown>div:hover .dd-image {
+.dropdown > div:hover .dd-image {
   width: 20px;
   height: 20px;
   border-radius: 50px;
 }
 
-.dropdown>div>li:hover {
+.dropdown > div > li:hover {
   padding-left: 10px;
 }
 

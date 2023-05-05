@@ -21,7 +21,6 @@
         type="phone" />
     </div>
   </div>
-    </>
     <transition name="fade">
       <div class="flex items-center justify-center mt-2" v-show="editingDetails">
         <button :disabled="!editingDetails || loading"

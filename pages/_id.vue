@@ -57,8 +57,8 @@
               <!-- <th class="w-12 text-center fixed-col left">No</th> -->
               <th class="text-left font-[700] " @click="showPermissionModal = true">File name </th>
 
-              <th class="hidden lg:table-cell">Action</th>
-              <th class="hidden lg:table-cell">Privacy</th>
+              <th class="lg:table-cell">Action</th>
+              <th class="lg:table-cell">Privacy</th>
               <th class=" font-[700]  right">
                 <form v-show="files.length > 10" @submit.prevent
                   class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
@@ -88,12 +88,12 @@
                   </p>
                 </div>
               </td>
-              <td class="hidden lg:table-cell">
+              <td class="lg:table-cell">
                 <p v-show="((item || {}).fileAction) != 'doNotPost'" class="capitalize"> {{ ((item || {}).fileAction ||
                   '') }}</p>
               </td>
               <td>
-                <p  class="capitalize hidden lg:table-cell">
+                <p  class="capitalize lg:table-cell">
                   {{ ((item || {}).filePrivacy || '') }}
                 </p>
               </td>

@@ -540,7 +540,7 @@ export default mixins(PdfAuth).extend({
       return document.querySelectorAll('.pdf-single-page-outer').length
     },
     FrombusinessPage(){
-        return JSON.parse(localStorage.getItem("from_publicpage"))?.fromBusiness ?? true
+        return JSON.parse(localStorage.getItem("from_publicpage") || '{}')?.fromBusiness ?? true
     },
     isCreator() {
       if(this.FrombusinessPage == null) return false
@@ -664,7 +664,7 @@ export default mixins(PdfAuth).extend({
         // this.width =  window.innerWidth;
     },
     setIsFromBusinessPage(){
-      let getBusinesspage = JSON.parse(localStorage.getItem("from_publicpage"))
+      let getBusinesspage = JSON.parse(localStorage.getItem("from_publicpage") || '{}')
       if(getBusinesspage.fromBusiness){
         this.$store.commit("SET_BUSINESS_PAGE", true)
       } else {

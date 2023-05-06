@@ -41,7 +41,7 @@
     </template>
     <!-- Start:: Body -->
     <div v-if="!nonUserRecieveEmail">
-      <div v-if="isConfirm" class="flex justify-center pb-2">
+      <div v-if="!isConfirm" class="flex justify-center pb-2">
         <CheckedFillIcon width="90" />
       </div>
       <!-- <span v-if="!isCreator">Do you want these file to be saved as
@@ -57,12 +57,12 @@
         ></span
       >
       <span
-        v-if="!isCreator && $auth.loggedIn"
+        v-if="!isCreator && $auth.loggedIn && !isConfirm"
         class="w-full text-center block py-0 px-2 pb-8 text-[16px] mb-6"
       >
         If so, we will send a copy to your email.
       </span>
-      <div class="flex justify-around mt-0">
+      <div class="flex justify-around mt-0" v-if="isCreator">
         <button
           class="h-10 text-xs w-[150px] max-w-[50%] rounded-lg shadow border-[#D9251E] mr-1"
           type="button"
@@ -93,7 +93,7 @@
         </button>
       </div>
       <span
-        v-if="!isCreator && $store.getters?.getFillAsGuest && file?.user?.allowCopy"
+        v-if="!isCreator && $store.getters?.getFillAsGuest && file?.user?.allowCopy  && !isConfirm"
         class="w-full text-center block py-0 px-2 pb-8 text-[16px] pt-4"
       >
         <input v-model="nonUserRecieveEmail" type="checkbox" /> Click here if
@@ -102,6 +102,35 @@
     </div>
 
     <div v-else>
+      <p class="w-full text-center">Enter email copy to be sent to.</p>
+      <input
+        v-model="externalGuestEmail"
+        type="text"
+        :disabled="!file?.user?.allowCopy"
+        class="py-2 w-full rounded my-3 border-[1px] border-gray-200 px-2"
+        placeholder="--Enter email--"
+      />
+      <p class="flex justify-center">
+        <button
+          class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400 ml-1"
+          :disabled="isLoading"
+          @click="onSubmit"
+        >
+          <span class="inline-flex gap-1 items-center">
+            Send
+            <spinner-dotted-icon
+              v-show="isLoading"
+              height="20"
+              width="20"
+              class="animate-spin"
+            />
+          </span>
+        </button>
+      </p>
+    </div>
+
+
+    <div  v-if="!isCreator && $store.getters?.getFillAsGuest && file?.user?.allowCopy && isConfirm">
       <p class="w-full text-center">Enter email copy to be sent to.</p>
       <input
         v-model="externalGuestEmail"
@@ -263,8 +292,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   watch: {
     "$store.getters.getUserSignature"(){
       this.showInitialModal = false
-      //  if(!this.isConfirm) return
-      //  this.onSubmit()
+       if(!this.isConfirm) return
+       this.showModal = true
+       this.file?.user?.allowCopy ? null : this.onSubmit()   
     },
     visible(val) {
       this.showModal = val
@@ -399,6 +429,11 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.$store.commit('SET_FILE_SIGNATURE', null)
           this.$store.commit('SET_FILE_INITIAL', null)
           this.$store.commit("UN_SET_AGREE_SIGN")
+          let localRoute = JSON.parse(localStorage.getItem("from_publicpage"))
+            if(localRoute?.prevRoute){
+              this.$nuxt.$router.push(localRoute.prevRoute)
+              return
+            }
           this.$auth.loggedIn && this.isCreator
             ? this.$nuxt.$router.push('/paperlink-pages')
             : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)

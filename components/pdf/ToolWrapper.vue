@@ -243,7 +243,7 @@ export default {
       return this.id == this.activeToolId
     },
     FrombusinessPage(){
-            return JSON.parse(localStorage.getItem("from_publicpage"))?.fromBusiness ?? true
+            return JSON.parse(localStorage.getItem("from_publicpage") || '{}')?.fromBusiness ?? true
         },
     isCreator() {
       if(this.FrombusinessPage == null) return false

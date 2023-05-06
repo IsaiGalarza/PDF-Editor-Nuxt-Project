@@ -68,8 +68,7 @@
       </span>
 
       <span class="hidden md:inline"
-        >{{
-          `${(file.updatedAt || '').substring(0, 10)} - ${(
+        >{{`${(file.updatedAt || '').substring(0, 10)} - ${(
             file.updatedAt || ''
           ).substring(11, 16)}`
         }}
@@ -279,9 +278,16 @@ export default Vue.extend({
     isTeam() {
       return ((this.$auth?.user)?.role == UserTypeEnum.TEAM)
     },
+    FrombusinessPage(){
+            return JSON.parse(localStorage.getItem("from_publicpage") || '{}')?.fromBusiness ?? true
+        },
     isCreator() {
-      if(this.$store.getters.getFrombusinessPage) return false
-      return (this.file.userId == this.$auth?.user?.id) || ((this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE) && this.$auth?.user?.teamId == this.file.userId)
+      if(this.FrombusinessPage == null) return false
+      if(this.FrombusinessPage){
+        return false
+      } else{
+        return true
+      }
     },
     teamAccess() {
       return ((this.$auth?.user?.teamAccess == TeamAccess.COMPANY_FILE) && this.$auth?.user?.teamId == this.file.userId)
@@ -314,6 +320,12 @@ export default Vue.extend({
   methods: {
     cancelPublish() {
       // Toolbar function - cancelConfrim
+      let localRoute = JSON.parse(localStorage.getItem("from_publicpage"))
+      if(localRoute?.prevRoute){
+        this.$nuxt.$router.push(localRoute.prevRoute)
+        localStorage.setItem("from_publicpage", '{}')
+        return
+      }
       if (this.isConfirm) {
         this.$store.commit('SET_PDF_EXIT', true)
         this.$auth.loggedIn && this.isCreator

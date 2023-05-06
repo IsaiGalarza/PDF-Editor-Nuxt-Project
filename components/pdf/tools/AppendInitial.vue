@@ -4,7 +4,7 @@
     v-if="completed"
     class="absolute-image"
     :src="completedImgData"
-    :width="`${60 * (tool.justMounted ? responsiveToolDim.width: responsiveDim.width)}px`"
+    :width="`${55 * (tool.justMounted ? responsiveToolDim.width: responsiveDim.width)}px`"
   />
     <img
       v-if="!initialimgDisplay  && isCreator"
@@ -39,7 +39,8 @@
   
     <img
       v-else-if="theInitial && !isCreator"
-      :width="`${60 * responsiveToolDim.width}px`"
+      :width="`${55 * responsiveToolDim.width}px`"
+      :style="`height: ${27 * responsiveToolDim.height}px; object-fit:contain`"
       :src="theInitial"
     />
     <!-- <span v-show="!initialimgDisplay  && !isCreator && !tool.justMounted && (isAgreedSign == 1 && isSign || isComplete)" class="toolTip hidden">Initial</span> -->

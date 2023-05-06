@@ -37,7 +37,11 @@
                 <!-- <div  class="lg:hidden flex flex-col text-sm leading-[15px] justify-end">
             
           </div> -->
-                <span
+          
+             <span v-if="!FrombusinessPage" class="text-black text-[13px] font-[600] text-nowrap capitalize text-left" >
+                    File Manager
+                </span>
+                <span v-else
                     class="text-black text-[13px] font-[600] text-nowrap capitalize text-left"
                 >
                     {{ businessName }}
@@ -46,7 +50,7 @@
         </div>
 
         <div
-            v-if="!FrombusinessPage"
+            v-if="!FrombusinessPage && $auth.loggedIn"
             class="h-full self-stretch flex items-center"
         >
             <!-- container for user name -->
@@ -273,7 +277,7 @@ export default mixins(GlobalMixin, login).extend({
     },
     computed: {
         FrombusinessPage(){
-            return JSON.parse(localStorage.getItem("from_publicpage"))?.fromBusiness
+            return JSON.parse(localStorage.getItem("from_publicpage") || '{}')?.fromBusiness
         },
         searchResult() {
             if (!this.searchString) return []

@@ -40,29 +40,22 @@
       </h4>
     </template>
     <!-- Start:: Body -->
-    <div v-if="!nonUserRecieveEmail">
-      <div v-if="!isConfirm" class="flex justify-center pb-2">
+    <section  v-if="isCreator">
+      <div class="flex justify-center pb-2">
         <CheckedFillIcon width="90" />
       </div>
       <!-- <span v-if="!isCreator">Do you want these file to be saved as
         {{ `${(file.fileAction + 'ed').replace('ee', 'e')}` }}?</span> -->
       <span
-        v-if="isCreator"
         class="w-full text-center block py-0 px-2 pb-8 mb-6 text-[16px] break-normal"
         >Publish file as
         <span class="capitalize">
           {{
             file.fileAction + ' & ' + file.filePrivacy.replace('p', 'P') + '?'
           }}</span
-        ></span
-      >
-      <span
-        v-if="!isCreator && $auth.loggedIn && !isConfirm"
-        class="w-full text-center block py-0 px-2 pb-8 text-[16px] mb-6"
-      >
-        If so, we will send a copy to your email.
-      </span>
-      <div class="flex justify-around mt-0" v-if="isCreator">
+        ></span>
+ 
+      <div class="flex justify-around mt-0">
         <button
           class="h-10 text-xs w-[150px] max-w-[50%] rounded-lg shadow border-[#D9251E] mr-1"
           type="button"
@@ -92,46 +85,89 @@
           </span>
         </button>
       </div>
+    </section>
+
+
+
+
+  <section v-if="!isCreator && !isConfirm">
+
+    <div v-if="nonUserRecieveEmail">
+      <p class="w-full text-center">Enter email for the copy to be sent to</p>
+      <input
+        v-model="externalGuestEmail"
+        type="text"
+        class="py-2 w-full rounded my-3 border-[1px] border-gray-200 px-2"
+        placeholder="--Enter email--"
+      />
+      <p class="flex justify-center">
+        <button
+          class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400 ml-1"
+          :disabled="isLoading"
+          @click="onSubmit"
+        >
+          <span class="inline-flex gap-1 items-center">
+            Send
+            <spinner-dotted-icon
+              v-show="isLoading"
+              height="20"
+              width="20"
+              class="animate-spin"
+            />
+          </span>
+        </button>
+      </p>
+    </div>
+
+    <div class="flex justify-around mt-0" v-if="!nonUserRecieveEmail">
+      <button
+        class="h-10 text-xs w-[150px] max-w-[50%] rounded-lg shadow border-[#D9251E] mr-1"
+        type="button"
+        :disabled="isLoading"
+        @click="closeModal()"
+        :class="
+          isConfirm
+            ? 'bg-zinc-500 border-[0px] text-white'
+            : 'bg-white border-[1px] text-[#D9251E]'
+        "
+      >
+        {{ isCreator ? 'Cancel' : 'Back' }}
+      </button>
+      <button
+        class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400 ml-1"
+        :disabled="isLoading"
+        @click="onSubmit"
+      >
+        <span class="inline-flex gap-1 items-center">
+          Yes
+          <spinner-dotted-icon
+            v-show="isLoading"
+            height="20"
+            width="20"
+            class="animate-spin"
+          />
+        </span>
+      </button>
+    </div>
+
+    <div v-if="!nonUserRecieveEmail">
       <span
-        v-if="!isCreator && $store.getters?.getFillAsGuest && file?.user?.allowCopy  && !isConfirm"
-        class="w-full text-center block py-0 px-2 pb-8 text-[16px] pt-4"
+        v-if="file?.user?.allowCopy"
+        class="w-full text-center block py-0 px-2 mb-8 text-[16px] pt-4"
       >
         <input v-model="nonUserRecieveEmail" type="checkbox" /> Click here if
         you want a copy
       </span>
     </div>
-
-    <div v-else>
-      <p class="w-full text-center">Enter email copy to be sent to.</p>
-      <input
-        v-model="externalGuestEmail"
-        type="text"
-        :disabled="!file?.user?.allowCopy"
-        class="py-2 w-full rounded my-3 border-[1px] border-gray-200 px-2"
-        placeholder="--Enter email--"
-      />
-      <p class="flex justify-center">
-        <button
-          class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400 ml-1"
-          :disabled="isLoading"
-          @click="onSubmit"
-        >
-          <span class="inline-flex gap-1 items-center">
-            Send
-            <spinner-dotted-icon
-              v-show="isLoading"
-              height="20"
-              width="20"
-              class="animate-spin"
-            />
-          </span>
-        </button>
-      </p>
-    </div>
+  </section>
 
 
-    <div  v-if="!isCreator && $store.getters?.getFillAsGuest && file?.user?.allowCopy && isConfirm">
-      <p class="w-full text-center">Enter email copy to be sent to.</p>
+
+
+  <section v-if="!isCreator && isConfirm">
+
+    <div v-if="file?.user?.allowCopy">
+      <p class="w-full text-center">Enter email for the copy to be sent to</p>
       <input
         v-model="externalGuestEmail"
         type="text"
@@ -156,6 +192,38 @@
         </button>
       </p>
     </div>
+
+    <div class="flex justify-around mt-0" v-if="!file?.user?.allowCopy">
+      <button
+        class="h-10 text-xs w-[150px] max-w-[50%] rounded-lg shadow border-[#D9251E] mr-1"
+        type="button"
+        :disabled="isLoading"
+        @click="closeModal()"
+        :class="
+          isConfirm
+            ? 'bg-zinc-500 border-[0px] text-white'
+            : 'bg-white border-[1px] text-[#D9251E]'
+        "
+      >
+        {{ isCreator ? 'Cancel' : 'Back' }}
+      </button>
+      <button
+        class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400 ml-1"
+        :disabled="isLoading"
+        @click="onSubmit"
+      >
+        <span class="inline-flex gap-1 items-center">
+          Yes
+          <spinner-dotted-icon
+            v-show="isLoading"
+            height="20"
+            width="20"
+            class="animate-spin"
+          />
+        </span>
+      </button>
+    </div>
+  </section>
     <!-- end :: body -->
 
     <draw-or-type-modal
@@ -291,10 +359,11 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   },
   watch: {
     "$store.getters.getUserSignature"(){
-      this.showInitialModal = false
        if(!this.isConfirm) return
-       this.showModal = true
-       this.file?.user?.allowCopy ? null : this.onSubmit()   
+       else {
+        this.showModal = true
+       this.file?.user?.allowCopy ? null : this.onSubmit()
+       }
     },
     visible(val) {
       this.showModal = val
@@ -429,11 +498,6 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.$store.commit('SET_FILE_SIGNATURE', null)
           this.$store.commit('SET_FILE_INITIAL', null)
           this.$store.commit("UN_SET_AGREE_SIGN")
-          let localRoute = JSON.parse(localStorage.getItem("from_publicpage"))
-            if(localRoute?.prevRoute){
-              this.$nuxt.$router.push(localRoute.prevRoute)
-              return
-            }
           this.$auth.loggedIn && this.isCreator
             ? this.$nuxt.$router.push('/paperlink-pages')
             : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
@@ -497,7 +561,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         }
       } else {
         this.sendPdfToEmail('owner')
-        this.sendPdfToEmail('guest')
+        this.file?.user?.allowCopy && this.sendPdfToEmail('guest')
       }
     },
     publishAsCreator() {

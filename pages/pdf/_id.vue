@@ -51,6 +51,7 @@
         @cancel="canceled = true"
         @zoomIn="zoom *= 1.1"
         @zoomOut="zoom /= 1.1"
+        @togglepdfViewScale="togglepdfViewScale"
         @confirmChecked="(value) => (isConfirmChecked = value)"
       />
       <div
@@ -1067,6 +1068,39 @@ export default mixins(PdfAuth).extend({
           this.$refs.pinch.toggleZoom()
       } 
     },
+    togglepdfViewScale(val){
+      let curParentWidth = this.$refs['pdf-single-pages-outer'].getBoundingClientRect().width;
+      let iniParentWidth = this.$store.getters.getPdfpagesDim.parentWidth
+      switch (val) {
+        case 'zoomin':
+         if(curParentWidth == iniParentWidth){
+          this.$refs.pinch.toggleZoom()
+          }
+          break;
+        case 'zoomout':
+         if(curParentWidth > iniParentWidth){
+          this.$refs.pinch.toggleZoom()
+          }
+          break;
+      }
+    },
+    keepFirmToPlaceTools(val){
+      if(val == this.TOOL_TYPE.draw || val == this.TOOL_TYPE.highlight || val == this.TOOL_TYPE.line ){
+      let getAllPdfPages = document.querySelectorAll('.pdf-single-page-outer')
+      Array.from(getAllPdfPages).forEach(element => {
+        element.style.setProperty('touch-action', 'none', 'important');
+        console.log(element.getAttribute('style'))
+      });
+    }
+     else {
+      let getAllPdfPages = document.querySelectorAll('.pdf-single-page-outer')
+      Array.from(getAllPdfPages).forEach(element => {
+        element.style.setProperty('touch-action', 'auto', 'important');
+        console.log(element.getAttribute('style'))
+      });
+     }
+     
+    },
     isScaleDefault(){
       let curParentWidth = this.$refs['pdf-single-pages-outer'].getBoundingClientRect().width;
       let iniParentWidth = this.$store.getters.getPdfpagesDim.parentWidth
@@ -1160,10 +1194,6 @@ export default mixins(PdfAuth).extend({
         this.tools[index].left = dx
         this.tools[index].top = dy
       }
-<<<<<<< HEAD
- 
-=======
->>>>>>> parent of 9b6cb0f (recent update)
     },
     handleIncrease(id) {
       let index = this.tools.findIndex((t) => t.id == id)
@@ -1618,7 +1648,8 @@ export default mixins(PdfAuth).extend({
   },
   watch: {
     selectedToolType(val){
-       this.setToinitialScale()
+      this.setToinitialScale()
+      this.keepFirmToPlaceTools(val)
     },
     isConfirmChecked(val) {
       $('.pdf-editor-view').animate(

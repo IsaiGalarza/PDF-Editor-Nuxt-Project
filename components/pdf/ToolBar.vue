@@ -7,7 +7,7 @@
     </div> -->
     <div class="w-full py-1 pb-2 bg-gray-200 sm:bg-lime-200 flex items-center justify-between" v-if="isConfirm && !isCreator && (!isConfirmChecked || !isScrollBottom)">
       <!-- <span class="float-left pt-2 px-2">Scroll to the bottom of file to confirm that you have read.</span> -->
-      <span class="float-left py-1 px-2">
+      <span class="w-11/12 py-1 px-2">
         <input type="checkbox" class="ml-1" @change="confrimStart" />
         I  agree to confirm that I have read this file by applying my e-signature to this document. 
       </span>
@@ -31,7 +31,7 @@
     <div v-if="(!isLoading && !isCreator && isComplete)"
       class="flex flex-wrap items-center justify-between w-full gap-x-1 gap-y-2 text-[#757575] text-base sm:text-2xl sm:hidden px-2"
       :class="[isConfirm ? 'py-0' : 'py-2']">
-      <button class="rounded h-8 w-8 bg-white">-</button>
+      <button class="rounded h-8 w-8 bg-white" @click="$emit('togglepdfViewScale', 'zoomout')">-</button>
       <div class="flex items-center">
         <button class="rounded-l-lg h-8 w-24 flex items-center justify-between rounded-r-none p-2 px-3 text-sm" :class="showInsertTools ? 'bg-white' : 'bg-neutral-500 text-white'" @click="showInsertTools = false">
           <group-tools />
@@ -42,7 +42,7 @@
           <span>Insert</span>
         </button>
       </div>
-      <button class="rounded h-8 w-8 bg-neutral-500 text-white">+</button>
+      <button class="rounded h-8 w-8 bg-neutral-500 text-white" @click="$emit('togglepdfViewScale', 'zoomin')">+</button>
       <button @click="undoFunction" class="rounded h-8 bg-white text-sm px-2">UNDO</button>
     </div>
     <div v-if="(!isLoading && !isCreator && isComplete)"

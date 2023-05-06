@@ -134,7 +134,7 @@
                     :disabled="!getIsFormValid || isLoading"
                   >
                     <span class="inline-flex items-center gap-3">
-                      <span>Change Password</span>
+                      <span v-show="!isLoading">Change Password</span>
                       <transition name="fade" :duration="100">
                         <span v-show="isLoading" class="animate-spin">
                           <spinner-dotted-icon height="22" width="22" color="white" />
@@ -272,7 +272,7 @@ export default Vue.extend({
         })
 
         .then((response) => {
-          let url = username ? `/login?email=${username}` : "/login";
+          let url = this.username ? `/login?email=${this.username}` : "/login";
           this.$nuxt.$router.push(url);
         })
         .catch(({ response }) => {

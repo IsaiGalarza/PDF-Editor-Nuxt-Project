@@ -1,6 +1,6 @@
 <template>
   <div class="mt-[70px] lg:mt-0 px-2">
-  
+
     <ProfileTopInfo :userInfo="userInfo" @openShare="handleCompanyNameShare(userInfo?.companyName,)" />
 
     <div v-if="fileSpinner" class=" relative h-[300px]">
@@ -49,7 +49,7 @@
 
 
     <!-- Start:: Files -->
-    <div v-if="isFetched" class="bg-white rounded-xl pb-8 px-2" :class="{ 'hidden sm:block': showFolders }">
+    <div v-if="isFetched" class="bg-white min-h-[67vh] rounded-xl pb-8 px-2" :class="{ 'hidden sm:block': showFolders }">
       <div class="rounded-2xl min-w-[300px] overflow-x-auto custom-scrollbar relative">
         <table class="custom-table">
           <thead class="text-[#414142]">
@@ -79,13 +79,28 @@
             <tr v-for="(item, i) in files" :key="i">
               <!-- <td class="w-12 text-center fixed-col left">{{ i + 1 }}</td> -->
               <td class="row">
-                <div class="flex items-center">
-                  <img src="/icon.png" class="mr-2" width="23" height="23" />
-                  <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
-                    <span @click="routeToFileManager(`/pdf/${item.paperLink}`, item.filePrivacy)" class="cursor-pointer">
+                <div class="flex  items-center">
+                  <img src="/icon.png" class="mr-3" width="23" height="23" />
+                  <div class="">
+                    <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
+                    <p @click="routeToFileManager(`/pdf/${item.paperLink}`, item.filePrivacy)" class="cursor-pointer capitalize">
                       {{ ((item || {}).fileName || ' ') | removeExtension }}
-                    </span>
-                  </p>
+                    </p>
+
+
+                    <div class="flex  lg:hidden items-center mt-1 text-[0.65rem] text-[#707070]">
+                      <p v-show="((item || {}).fileAction) != 'doNotPost'" class="capitalize"> {{ ((item || {}).fileAction
+                        ||
+                        '') }}</p>
+
+                       <div class="w-1 h-1 mx-2 rounded-[50%] bg-black"></div>
+
+                      <p class="capitalize  ">
+                        {{ ((item || {}).filePrivacy || '') }}
+                      </p>
+                    </div>
+                    </p>
+                  </div>
                 </div>
               </td>
               <td class="hidden lg:table-cell">
@@ -93,7 +108,7 @@
                   '') }}</p>
               </td>
               <td>
-                <p  class="capitalize hidden lg:table-cell">
+                <p class="capitalize hidden lg:table-cell">
                   {{ ((item || {}).filePrivacy || '') }}
                 </p>
               </td>
@@ -245,7 +260,7 @@ export default Vue.extend({
       showPrivateModal: false,
       showShareCompanyName: false,
       showPermissionModal: false,
-      isCompanyShare:false,
+      isCompanyShare: false,
       link: "",
       keepCount: 0,
       showGuideModal: false,
@@ -273,27 +288,27 @@ export default Vue.extend({
       }
     },
 
-    handleCompanyNameShare(name){
+    handleCompanyNameShare(name) {
       this.isCompanyShare = true
-      let val = name.replace(' ', '') 
+      let val = name.replace(' ', '')
       let link = `https://paperlink.app/${val}`
-      this.shareLink(link, name )
+      this.shareLink(link, name)
     },
     shareLinkFunc(val, type) {
       this.shareLink(`https://paperlink.app/pdf/${val}`, type)
     },
     shareLink(val, type) {
-      
+
       this.link = val
       this.type = type
       this.showShareCompanyName = true
-      
+
     },
     routeToFileManager(val, privacy) {
       if (privacy == FilePrivacy.PRIVATE) this.showPrivateModal = true
       else {
         localStorage.setItem('store_public_profile_path', this.$route.fullPath)
-        localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true}))
+        localStorage.setItem("from_publicpage", JSON.stringify({ fromBusiness: true }))
         this.$nuxt.$router.push(val)
       }
     },
@@ -366,7 +381,7 @@ export default Vue.extend({
   }
 }
 
-#bottom-nav{
+#bottom-nav {
   display: none !important;
 }
 </style>

@@ -52,7 +52,7 @@
                 <div class="border border-paperdazgreen-300 p-0.5"
                   :class="[file.role == userType.PAID ? 'rounded-md w-9 h-9' : 'circle circle-17']">
                   <img :src="
-                    (file.fileOwner || {}).profile_picture ||
+                    (file.fileOwner || {})?.profile_picture ||
                     '/img/placeholder_picture.png'
                   " alt=""
                     :class="[file.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />

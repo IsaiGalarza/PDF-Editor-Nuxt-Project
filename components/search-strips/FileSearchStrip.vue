@@ -8,8 +8,8 @@
     <EyeSlashedIcon width="20px" height="20px" color="rgb(98,164,78)"/></div>
     <img
      @click="$router.push(`/public/profile/${record.userId}`)"
-      v-if="record.user.profile_picture"
-     :src="record.user.profile_picture"
+      v-if="record.user?.profile_picture"
+     :src="record.user?.profile_picture"
       alt=""
       class="h-14 w-14 rounded-lg object-cover cursor-pointer"
     />

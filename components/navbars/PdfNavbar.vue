@@ -332,7 +332,7 @@ export default mixins(GlobalMixin, login).extend({
             return this.$store.getters.profilePhoto
         },
         companyPhoto() {
-            return this.$store.state.file.user.profile_picture
+            return this.$store.state.file.user?.profile_picture
         },
         businessName() {
             return this.$store.state.file.user.company_name || ''

@@ -51,16 +51,16 @@
     <!-- Start:: Files -->
     <div v-if="isFetched" class="bg-white min-h-[67vh] rounded-xl pb-8 px-2" :class="{ 'hidden sm:block': showFolders }">
       <div class="rounded-2xl min-w-[300px] overflow-x-auto custom-scrollbar relative">
-        <table class="custom-table">
+        <table class="custom-table py-2">
           <thead class="text-[#414142]">
-            <tr>
+            <tr >
               <!-- <th class="w-12 text-center fixed-col left">No</th> -->
-              <th class="text-left font-[700] " @click="showPermissionModal = true">File name </th>
+              <th class="text-left font-[700] hidden lg:table-cell " @click="showPermissionModal = true">File name </th>
 
               <th class="hidden lg:table-cell">Action</th>
               <th class="hidden lg:table-cell">Privacy</th>
-              <th class=" font-[700]  right">
-                <form v-show="files.length > 10" @submit.prevent
+              <th v-show="files.length > 10" class=" font-[700]  right">
+                <form  @submit.prevent
                   class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
                   <span v-if="showFile" class="el-dropdown-link max-sm:flex-1 absolute top-[-30px] ">
                     <input type="text" placeholder="Search any file..."

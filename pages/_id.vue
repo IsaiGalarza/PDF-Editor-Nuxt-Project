@@ -139,6 +139,7 @@
   </div>
 </template>
 
+
 <script>
 import Vue from 'vue'
 import PenIcon from '~/components/svg-icons/PenIcon.vue'
@@ -308,8 +309,8 @@ export default Vue.extend({
       if (privacy == FilePrivacy.PRIVATE) this.showPrivateModal = true
       else {
         localStorage.setItem('store_public_profile_path', this.$route.fullPath)
-        localStorage.setItem("from_publicpage", JSON.stringify({ fromBusiness: true }))
-        this.$nuxt.$router.push(val)
+        this.$router.push(val)
+        localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true}))
       }
     },
     // getMainPaidUser(val) {
@@ -384,4 +385,5 @@ export default Vue.extend({
 #bottom-nav {
   display: none !important;
 }
+
 </style>

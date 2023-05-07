@@ -51,6 +51,7 @@
         @cancel="canceled = true"
         @zoomIn="zoom *= 1.1"
         @zoomOut="zoom /= 1.1"
+        @togglepdfViewScale="togglepdfViewScale"
         @confirmChecked="(value) => (isConfirmChecked = value)"
       />
       <div
@@ -139,8 +140,10 @@
                 v-for="tool in fillteredTools(pI + 1)"
                 :toolLength="fillteredTools(pI + 1).length"
                 :key="tool.id"
+                @resetToolProp="resetToolProp"
                 :selectedToolType="selectedToolType"
                 :dragHandler="handlePanning"
+                @reAdjust="reAdjust"
                 :id="tool.id"
                 :tool="tool"
                 :type="tool.type"
@@ -444,7 +447,6 @@ export default mixins(PdfAuth).extend({
   created() {
     this.fetchPdf()
     this.setToolsFromFileAnnotations()
-    console.log("just loaded>>>>>>>>>>>>", this.tools)
     this.$BUS.$on('is-deleted', this.isDeletedFunc)
     this.$BUS.$on('download-pdf', this.downloadPdf)
     this.$BUS.$on('scroll-to-tools',  this.scrollToSignInitial)
@@ -543,7 +545,7 @@ export default mixins(PdfAuth).extend({
         return JSON.parse(localStorage.getItem("from_publicpage") || '{}')?.fromBusiness ?? true
     },
     isCreator() {
-      if(this.FrombusinessPage == null) return false
+       if(this.FrombusinessPage == null) return false
       if(this.FrombusinessPage){
         return false
       } else{
@@ -993,16 +995,17 @@ export default mixins(PdfAuth).extend({
       } catch (err) {}
     },
     setToolsFromFileAnnotations() {
-      this.tools = JSON.parse(this.file.annotaions || `[]`)
+      this.tools = JSON.parse(this.file?.annotaions ?? `[]`)
       this.tools = this.tools.map((_el, index) => {
         if (_el.type === 'appendSignature' || _el.type === 'appendInitial')
           return {
             ..._el,
             id: index + 1,
-            justMounted: false
+            justMounted: false,
+            reAdjust: false
             // completed: await this.toDataURL(_el.completed),
           }
-        else return { ..._el, id: index + 1, justMounted: false }
+        else return { ..._el, id: index + 1, justMounted: false, reAdjust: false }
 
       })
 
@@ -1058,7 +1061,51 @@ export default mixins(PdfAuth).extend({
         .querySelectorAll('.pdf-page')
         [this.currentPage - 1].scrollIntoView(true)
     },
-
+    setToinitialScale(){
+      let curParentWidth = this.$refs['pdf-single-pages-outer'].getBoundingClientRect().width;
+      let iniParentWidth = this.$store.getters.getPdfpagesDim.parentWidth
+      if(curParentWidth !== iniParentWidth){
+          this.$refs.pinch.toggleZoom()
+      } 
+    },
+    togglepdfViewScale(val){
+      let curParentWidth = this.$refs['pdf-single-pages-outer'].getBoundingClientRect().width;
+      let iniParentWidth = this.$store.getters.getPdfpagesDim.parentWidth
+      switch (val) {
+        case 'zoomin':
+         if(curParentWidth == iniParentWidth){
+          this.$refs.pinch.toggleZoom()
+          }
+          break;
+        case 'zoomout':
+         if(curParentWidth > iniParentWidth){
+          this.$refs.pinch.toggleZoom()
+          }
+          break;
+      }
+    },
+    keepFirmToPlaceTools(val){
+      if(val == this.TOOL_TYPE.draw || val == this.TOOL_TYPE.highlight || val == this.TOOL_TYPE.line ){
+      let getAllPdfPages = document.querySelectorAll('.pdf-single-page-outer')
+      Array.from(getAllPdfPages).forEach(element => {
+        element.style.setProperty('touch-action', 'none', 'important');
+        console.log(element.getAttribute('style'))
+      });
+    }
+     else {
+      let getAllPdfPages = document.querySelectorAll('.pdf-single-page-outer')
+      Array.from(getAllPdfPages).forEach(element => {
+        element.style.setProperty('touch-action', 'auto', 'important');
+        console.log(element.getAttribute('style'))
+      });
+     }
+     
+    },
+    isScaleDefault(){
+      let curParentWidth = this.$refs['pdf-single-pages-outer'].getBoundingClientRect().width;
+      let iniParentWidth = this.$store.getters.getPdfpagesDim.parentWidth
+      return (curParentWidth === iniParentWidth)
+    },
     confirmDocument() {
       this.scrollToSignInitial()
 
@@ -1086,6 +1133,15 @@ export default mixins(PdfAuth).extend({
     },
     resetJustMounted(val) {
       this.tools[val - 1].justMounted = false
+    },
+    resetToolProp(val, index) {
+      this.tools[index] = {...this.tools[index], ...val }
+    },
+    reAdjust(val, id){
+      let index = this.tools.findIndex(tl => tl.id == id);
+      this.tools[index].reAdjust = val;
+      this.tools[index].parentWidth = this.$store.getters.getPdfpagesDim.parentWidth;
+      this.tools[index].parentHeight = this.$store.getters.getPdfpagesDim.parentHeight;
     },
     keyupHandler(event) {
       if (event.ctrlKey && eve.nt.shiftKey && event.code === 'KeyZ') {
@@ -1138,7 +1194,6 @@ export default mixins(PdfAuth).extend({
         this.tools[index].left = dx
         this.tools[index].top = dy
       }
- 
     },
     handleIncrease(id) {
       let index = this.tools.findIndex((t) => t.id == id)
@@ -1416,6 +1471,9 @@ export default mixins(PdfAuth).extend({
       }
     },
     placeTool(e, pageNumber, initialPoint) {
+      this.setToinitialScale()
+      if(!this.isScaleDefault()) return
+
       let parent = this.$refs[`pdf-single-page-outer-${pageNumber}`]
       if (Array.isArray(parent)) parent = parent[0]
      
@@ -1431,6 +1489,7 @@ export default mixins(PdfAuth).extend({
       let obj = {
         parentWidth,
         parentHeight,
+        reAdjust: false,
         type: this.TOOL_TYPE[this.selectedToolType],
         top: y - this.TOOL_THRESHOLD[this.selectedToolType].tool.top,
         left: x - this.TOOL_THRESHOLD[this.selectedToolType].tool.left,
@@ -1472,7 +1531,6 @@ export default mixins(PdfAuth).extend({
       }
       this.tools.push(obj)
       this.stack.push(this.toolId)
-      console.log("tools",this.tools)
     },
     async handleScale() {
       await this.$nextTick()
@@ -1585,25 +1643,13 @@ export default mixins(PdfAuth).extend({
       return array
     },
     scalingHandler(e) {
-      console.log(e)
+      // console.log(e)
     },
   },
   watch: {
     selectedToolType(val){
-      if(val){
-      let getAllPdfPages = document.querySelectorAll('.pdf-single-page-outer')
-      Array.from(getAllPdfPages).forEach(element => {
-        element.style.setProperty('touch-action', 'none', 'important');
-        console.log(element.getAttribute('style'))
-      });
-    }
-     else {
-      let getAllPdfPages = document.querySelectorAll('.pdf-single-page-outer')
-      Array.from(getAllPdfPages).forEach(element => {
-        element.style.setProperty('touch-action', 'auto', 'important');
-        console.log(element.getAttribute('style'))
-      });
-     }
+      this.setToinitialScale()
+      this.keepFirmToPlaceTools(val)
     },
     isConfirmChecked(val) {
       $('.pdf-editor-view').animate(

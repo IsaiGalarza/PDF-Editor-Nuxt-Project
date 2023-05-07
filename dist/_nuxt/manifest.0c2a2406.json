@@ -1,6 +1,7 @@
 {
   "name": "Paperdaz",
   "short_name": "Paperdaz",
+  "description": "## Hosted links",
   "icons": [
     {
       "src": "/_nuxt/icons/icon_64x64.d24be0.png",

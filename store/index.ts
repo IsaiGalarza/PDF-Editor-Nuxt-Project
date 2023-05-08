@@ -9,7 +9,7 @@ export const state = () => ({
   base64Signature: null,
   base64Initial: null,
   fillAsGuest: true,
-  toast: { active: false, msg: ""},
+  toast: { active: false, msg: "", msg_mobile: ''},
   pageName: '',
   pdfPageName: {},
   pdfUser: [],

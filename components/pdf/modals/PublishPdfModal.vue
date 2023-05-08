@@ -479,6 +479,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.toggleToast({
             active: true,
             msg: `Thank you for completing a Paperlink!`,
+            msg_mobile: 'Thank You'
           })
           this.$store.commit('SET_FILE_SIGNATURE', null)
           this.$store.commit('SET_FILE_INITIAL', null)

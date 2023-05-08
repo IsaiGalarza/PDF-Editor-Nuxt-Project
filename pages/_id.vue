@@ -55,11 +55,7 @@
           <thead class="text-[#414142]">
             <tr >
               <!-- <th class="w-12 text-center fixed-col left">No</th> -->
-<<<<<<< HEAD
               <th class="text-left font-[700] ">File name </th>
-=======
-              <th class="text-left font-[700] hidden lg:table-cell " @click="showPermissionModal = true">File name </th>
->>>>>>> 592c04a232e964d9a8710aa137f1f06d8c5dc873
 
               <th class="hidden lg:table-cell">Action</th>
               <th class="hidden lg:table-cell">Privacy</th>
@@ -83,18 +79,11 @@
             <tr v-for="(item, i) in files" :key="i">
               <!-- <td class="w-12 text-center fixed-col left">{{ i + 1 }}</td> -->
               <td class="row">
-<<<<<<< HEAD
-                <div class="flex items-center">
-                  <img src="/icon.png" class="mr-2" width="23" height="23" />
-                  <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
-                    <span @click="routeToFileManager(`/pdf/${item.paperLink}`, item.filePrivacy, item.id)" class="cursor-pointer">
-=======
                 <div class="flex  items-center">
                   <img src="/icon.png" class="mr-3" width="23" height="23" />
                   <div class="">
                     <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
                     <p @click="routeToFileManager(`/pdf/${item.paperLink}`, item.filePrivacy)" class="cursor-pointer capitalize">
->>>>>>> 592c04a232e964d9a8710aa137f1f06d8c5dc873
                       {{ ((item || {}).fileName || ' ') | removeExtension }}
                     </p>
 
@@ -269,12 +258,7 @@ export default Vue.extend({
       isFetched: false,
       showPrivateModal: false,
       showShareCompanyName: false,
-<<<<<<< HEAD
       isCompanyShare:false,
-=======
-      showPermissionModal: false,
-      isCompanyShare: false,
->>>>>>> 592c04a232e964d9a8710aa137f1f06d8c5dc873
       link: "",
       keepCount: 0,
       showGuideModal: false,

@@ -152,7 +152,7 @@ export default {
     ],
   ],
   axios: {
-     baseURL: process.env.VUE_APP_BASE_API_URL,
+     baseURL: process.env.API_URI,
     // baseURL: 'http://localhost:4040',
   //  baseURL:'https://cfeb-197-210-76-168.ngrok-free.app/',
   },

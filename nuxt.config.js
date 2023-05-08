@@ -5,7 +5,6 @@ import { MasterKeys } from './config'
 const CONFIG = process.env.NODE_ENV
 
 
-
 export default {
   loadingIndicator: {
     name: 'chasing-dots',

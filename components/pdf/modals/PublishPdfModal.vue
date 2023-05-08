@@ -483,9 +483,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.$store.commit('SET_FILE_SIGNATURE', null)
           this.$store.commit('SET_FILE_INITIAL', null)
           this.$store.commit("UN_SET_AGREE_SIGN")
-          // this.$auth.loggedIn && this.isCreator
-          //   ? this.$nuxt.$router.push('/paperlink-pages')
-          //   : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
+          this.$auth.loggedIn && this.isCreator
+            ? this.$nuxt.$router.push('/paperlink-pages')
+            : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
         })
       } catch (error) {
         this.$notify.error({

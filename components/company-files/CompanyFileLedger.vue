@@ -191,7 +191,8 @@ git <template>
                       file.fileAction === FileAction.CONFIRM ? 'text-purple-400' : ''
                     "
                   >{{ file.fileAction && file.fileAction !== FileAction.SHARED ? file.fileAction : "" }}</div>
-                  <div class="text-sm text-center capitalize inline-block w-2/12">{{ (file || {}).filePrivacy }}</div>
+                  <div class="text-sm text-center capitalize inline-block w-2/12 cursor-pointer" 
+                  @click="file.filePrivacy == 'private'  && $emit('showPermission', true, file.id)">{{ (file || {}).filePrivacy }}</div>
                   <div class="text-center  px-1 inline-block w-2/12 text-xs">
                     {{ formatDateTime(file.updatedAt) }}
                   </div>
@@ -570,7 +571,7 @@ export default Vue.extend({
         localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: false}))
     },
     async setAllowCopy(){
-       await this.$_server.patch(`/users/${this.$auth?.user?.id}`, {
+       await this.$axios.patch(`/users/${this.$auth?.user?.id}`, {
         allowCopy: this.allowCopy ? 1 : 0
        })
     },
@@ -586,7 +587,7 @@ export default Vue.extend({
         order: orders
        }
       this.$forceUpdate()
-      this.$_server.post('/files', payload)
+      this.$axios.post('/files', payload)
     },
     async maxFileUpload() {
       this.$auth.user.subscriptionId && await this.$axios.get(`/subscriptions/${this.$auth.user.subscriptionId}`)

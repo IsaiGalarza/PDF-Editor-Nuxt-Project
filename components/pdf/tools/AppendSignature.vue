@@ -33,7 +33,7 @@
         $auth.loggedIn && !initialimgDisplay && !isCreator ? 'puls' : ' ',
         isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
       ]"
-      :width="`${30 * responsiveDim.width}px`"
+      :width="`${30 * responsiveToolDim.width}px`"
     />
     <img
       v-else-if="theSignature"

@@ -55,7 +55,7 @@
           <thead class="text-[#414142]">
             <tr >
               <!-- <th class="w-12 text-center fixed-col left">No</th> -->
-              <th class="text-left font-[700] hidden lg:table-cell " @click="showPermissionModal = true">File name </th>
+              <th class="text-left font-[700] ">File name </th>
 
               <th class="hidden lg:table-cell">Action</th>
               <th class="hidden lg:table-cell">Privacy</th>
@@ -133,9 +133,8 @@
     </PopUpWrapper>
 
 
-    <PrivateFileModal v-model="showPrivateModal" />
+    <PrivateFileModal v-model="showPrivateModal" :fileId="fileId" :userInfo="userInfo"/>
     <ShareCompanyLinkModal :link="link" :type="type" v-model="showShareCompanyName" />
-    <PermissionToView v-model="showPermissionModal" :isCreator="isAuthor" />
   </div>
 </template>
 
@@ -160,7 +159,6 @@ import ShareFolder from '~/components/search-strips/component/ShareFolder.vue'
 import PrivateFileModal from '~/components/profile/modal/PrivateFileModal.vue'
 import FilePrivacy from '~/models/FilePrivacy'
 import ShareCompanyLinkModal from '~/components/company-files/ShareCompanyLinkModal.vue'
-import PermissionToView from '~/components/profile/modal/PermissionToView.vue'
 import PopUpWrapper from '~/components/dashboard/PopUps/PopUpWrapper.vue'
 import PG_Tutorial_1 from "~/components/profile/modal/PopUps/PG_Tutorial_1.vue"
 import PG_Tutorial_2 from "~/components/profile/modal/PopUps/PG_Tutorial_2.vue"
@@ -190,7 +188,6 @@ export default Vue.extend({
     ShareIconFunc,
     PrivateFileModal,
     ShareCompanyLinkModal,
-    PermissionToView,
     ShareOutlineIcon,
     PopUpWrapper,
     PG_Tutorial_1,
@@ -240,6 +237,7 @@ export default Vue.extend({
       return filename?.replace(/\.[^\/.]+$/, '');
     }
   },
+
   data() {
     return {
       returnedDataPage: 0,
@@ -260,12 +258,12 @@ export default Vue.extend({
       isFetched: false,
       showPrivateModal: false,
       showShareCompanyName: false,
-      showPermissionModal: false,
-      isCompanyShare: false,
+      isCompanyShare:false,
       link: "",
       keepCount: 0,
       showGuideModal: false,
       type: "",
+      permissionDecode: undefined,
       popUps: [
         'PG_Tutorial_1',
         'PG_Tutorial_2',
@@ -275,7 +273,8 @@ export default Vue.extend({
         'PG_Tutorial_6',
         "PG_Tutorial_7",
         'PG_Tutorial_8'
-      ]
+      ],
+      fileId: ''
     }
   },
   methods: {
@@ -305,7 +304,8 @@ export default Vue.extend({
       this.showShareCompanyName = true
 
     },
-    routeToFileManager(val, privacy) {
+    routeToFileManager(val, privacy, id) {
+      this.fileId = id
       if (privacy == FilePrivacy.PRIVATE) this.showPrivateModal = true
       else {
         localStorage.setItem('store_public_profile_path', this.$route.fullPath)

@@ -79,16 +79,6 @@
           <img :src="require('~/assets/icons/info-circle.svg')" />
         </span>
 
-        <button
-          v-if="
-            (isCreator || isSign) &&
-            (userRole != 'free_user' || !isSign || isAgreedSign != -1)
-          "
-          class="bg-red-500 w-5 h-5 rounded-full text-xs text-white ml-3"
-          @click="cancelPublish"
-        >
-          x
-        </button>
       </div>
     </div>
 

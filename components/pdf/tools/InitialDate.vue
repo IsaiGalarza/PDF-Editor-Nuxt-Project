@@ -56,7 +56,7 @@ export default {
     style() {
       return {
         // fontSize: `${this.fontSize || 11}px`,
-        fontSize: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveDim.width}px`,
+        fontSize: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveToolDim.width}px`,
       }
     },
     notBtn() {
@@ -66,8 +66,7 @@ export default {
   },
   mounted() {
    setTimeout(() => {
-    this.$emit('addOffset', !this.isCreator ? 7 : 0)
-    this.$emit('addOffset', !this.isCreator ? 10 : 0)
+    this.$emit('addOffset', !this.isCreator ? (5 * this.responsiveToolDim.height) : 0)
    }, 300);
   },
   watch: {

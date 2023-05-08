@@ -177,7 +177,7 @@ export default Vue.extend({
       if (!this.getIsFormValid) return
 
       this.loading = true
-      await this.$_server
+      await this.$axios
         .patch(`/users/${this.userInfo.data?.user_id}`, this.userPayload)
         .then((res) => {
           this.$router.push(`/${this.userInfo.data?.businessPage}`)

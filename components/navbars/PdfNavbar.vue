@@ -9,11 +9,7 @@
             class="capitalize inline-flex items-center gap-2 lg:gap-3"
             :class="[compact ? 'text-sm sm:text-base' : 'text-base sm:text-xl']"
         >
-            <span
-                class="inline-block lg:hidden mr-1 sm:mr-4 cursor-pointer"
-                @click="$emit('open-sidebar')"
-                ><hamburger-icon
-            /></span>
+           
             <div class="inline-flex items-center gap-1">
                 <!-- <a :href="`/public/profile/${title.route}`"  target="_blanck">{{ title.name || routeName }}</a> -->
                 <span
@@ -100,99 +96,17 @@
                 </span>
 
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item
-                        class="hidden"
-                        command="dashboard"
-                        v-if="!profile"
-                    >
-                        <span class="inline-flex gap-2 items-center">
-                            <!-- <dashboard-icon height="14" width="14" /> -->
-                            Dashboard</span
-                        >
-                    </el-dropdown-item>
-                    <el-dropdown-item
-                        class="hidden"
-                        command="profile"
-                        v-if="!profile"
-                    >
-                        <span class="inline-flex gap-2 items-center">
-                            <user-profile-solid-icon height="14" width="14" />
-                            Profile</span
-                        >
-                    </el-dropdown-item>
-
-                    <!-- START: user accounts -->
-                    <div
-                        v-for="(account, index) in account"
-                        :key="index + 'account'"
-                        class="cursor-pointer"
-                        @click="switchAccount(account.id, account.status)"
-                    >
-                        <div
-                            class="flex items-center justify-start hover:bg-paperdazgray-200/60 relative top-2 p-1 mb-1 w-[160px] border-t-[1px] border-paperdazgray-100"
-                        >
-                            <span>
-                                <img
-                                    :src="
-                                        (account || {}).teampicture ||
-                                        (account || {}).profilePicture ||
-                                        '/img/placeholder_picture.png'
-                                    "
-                                    class="w-8 h-8"
-                                    alt=""
-                                    :class="[
-                                        isAccountPaid(account.role)
-                                            ? 'rounded-full'
-                                            : ' rounded-md',
-                                    ]"
-                                />
-                            </span>
-                            <div
-                                class="w-[calc(100%-1.75rem)] pl-2 leading-[12px] relative flex flex-wrap items-center"
-                            >
-                                <span
-                                    class="text-[12px] truncate font-[500] capitalize inline-block my-0 w-full"
-                                    >{{
-                                        account.teamName ||
-                                        account.companyName ||
-                                        account.firstName ||
-                                        ''
-                                    }}</span
-                                >
-                                <span
-                                    class="text-[9px] truncate font-[500] capitalize inline-block my-0 w-full"
-                                >
-                                    {{ account.status }}
-                                    <i
-                                        class="absolute w-[3px] h-[3px] inline-block rounded-full left-[calc(100%-16px)] -bottom-[2px] p-[3px] border-[2px] border-white"
-                                        :class="[checkStatus(account.status)]"
-                                    ></i>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END: user account -->
-
-                    <el-dropdown-item
-                        class="lg:hidden"
-                        command="settings"
-                        divided
-                        v-if="!profile"
-                    >
-                        <span class="inline-flex gap-2 items-center">
-                            <gear-icon height="14" width="14" />
-                            Settings</span
-                        >
+                    <el-dropdown-item  command="profile" >
+                      <span class="inline-flex gap-2 items-center">
+                        <user-profile-solid-icon height="14" width="14" />
+                        Profile</span>
                     </el-dropdown-item>
                     <el-dropdown-item divided command="logout">
-                        <span
-                            class="text-red-600 inline-flex gap-2 items-center"
-                        >
-                            <sign-out-icon height="14" width="14" />
-                            Logout</span
-                        >
+                      <span class="text-red-600 inline-flex gap-2 items-center">
+                        <sign-out-icon height="14" width="14" />
+                        Logout</span>
                     </el-dropdown-item>
-                </el-dropdown-menu>
+                  </el-dropdown-menu>
                 <!-- END: navbar dropdown -->
             </el-dropdown>
         </div>

@@ -31,108 +31,74 @@
     <div v-if="(!isLoading && !isCreator && isComplete)"
       class="flex flex-wrap items-center justify-between w-full gap-x-1 gap-y-2 text-[#757575] text-base sm:text-2xl sm:hidden px-2"
       :class="[isConfirm ? 'py-0' : 'py-2']">
-      <button class="rounded h-8 w-8 bg-white" @click="$emit('togglepdfViewScale', 'zoomout')">-</button>
+      <button class="rounded h-10 w-8 bg-white" @click="$emit('togglepdfViewScale', 'zoomout')">-</button>
       <div class="flex items-center">
-        <button class="rounded-l-lg h-8 w-24 flex items-center justify-between rounded-r-none p-2 px-3 text-sm" :class="showInsertTools ? 'bg-white' : 'bg-neutral-500 text-white'" @click="showInsertTools = false">
-          <group-tools />
-          <span>Tools</span>
-        </button>
-        <button class="rounded-r-lg h-8 w-24 flex items-center justify-between rounded-l-none p-2 px-3 text-sm" :class="!showInsertTools ? 'bg-white' : 'bg-neutral-500 text-white'" @click="showInsertTools = true">
-          <group-insert />
-          <span>Insert</span>
-        </button>
+        <template >
+          <button class="h-10 w-32 text-sm flex items-center justify-center rounded-l-md" :class="[activeTool == TOOL_TYPE.text ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+          isCreator ? 'opacity-40' : 'opacity-100']" @click="setSelectedType(TOOL_TYPE.text)">
+            <pdf-text-tool-icon/>
+            <abbr class="ml-2">Type</abbr>
+          </button>
+          <div class="h-10 w-28 text-sm relative">
+            <span class="inline-flex w-full h-full rounded-r-md bg-white overflow-hidden">
+              <button class=" h-10 w-12 flex justify-center items-center" :class="[activeTool == initialIcon?.type ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+              isCreator ? 'opacity-40' : '']" @click="setSelectedType(initialIcon?.type)">
+              <component :is="initialIcon?.component"/>
+              </button>
+              <button :class="[ showDropDown ? 'turn-up' : 'turn-down']" @click="showDropDown = !showDropDown" 
+              class="h-10 w-16 bg-white flex justify-center items-center"><img src="../pdf/assets/chevron_down.svg"/></button>
+            </span>
+            <div class="drop-down-action shadow-md" :class="[ showDropDown ? 'h-[120px]' : 'h-[0px]']">
+              <button v-for="tool in toolsDropdowm" :key="tool.type" 
+              class="rounded h-10 w-12 flex justify-center items-center" :class="[activeTool == tool.type ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+              isCreator ? 'opacity-40' : '', tool.color]" @click="setSelectedType(tool.type)">
+                <component :is="tool.component"/>
+              </button>
+            </div>
+        </div>
+        </template>
       </div>
-      <button class="rounded h-8 w-8 bg-neutral-500 text-white" @click="$emit('togglepdfViewScale', 'zoomin')">+</button>
-      <button @click="undoFunction" class="rounded h-8 bg-white text-sm px-2">UNDO</button>
+      <button class="rounded h-10 w-8 bg-neutral-500 text-white" @click="$emit('togglepdfViewScale', 'zoomin')">+</button>
+ 
     </div>
     <div v-if="(!isLoading && !isCreator && isComplete)"
-      class="tools-container-wrapper flex flex-wrap items-center justify-between w-full gap-x-1 gap-y-2 text-[#757575] text-base sm:text-2xl sm:hidden px-2"
+      class="tools-container-wrapper flex flex-wrap items-center justify-around w-full gap-y-2 text-[#757575] text-base sm:text-2xl sm:hidden"
       :class="[isConfirm ? 'py-0' : 'py-2']">
-      <div v-if="showInsertTools" class="overflow-x-auto flex">
+      <div  class="overflow-x-auto flex">
         <!-- <button class="rounded-full h-8 w-20 text-xs" :class="[activeTool == TOOL_TYPE.name ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
         isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.name)">
           <user-profile-solid-icon class="mr-1" /> Name
         </button> -->
-        <button class="rounded-full h-8 w-20 text-xs" :class="[activeTool == TOOL_TYPE.date ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-        isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.date)">
-          <calendar-icon class="mr-1" /> Date
-        </button>
+        <div class="mx-1">
+          <button
+            class="rounded-full h-8 w-20 flex items-center gap-2 py-1 px-4 text-xs"
+            :class="[activeTool == TOOL_TYPE.appendSignature ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+          isCreator ? 'opacity-40' : '']" @click="onSignClick">
+          <img src="./assets/draw_tool.svg" width="18" class="p-[2px]" />
+            Sign
+          </button>
+        </div>
+
         <div class="flex">
-
-          <div class="mx-1">
-            <button
-              class="rounded-full h-8 w-20 flex items-center gap-2 py-1 px-4 text-xs"
-              :class="[activeTool == TOOL_TYPE.appendSignature ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-        isCreator ? 'opacity-40' : '']" @click="onSignClick">
-              Sign
-              <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
-            </button>
-            <div class="absolute w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[55px] cursor-pointer"
-              id="signtraybtn"
-              @click="() => { showSignTray = !showSignTray; showSignTray && (showInitialTray = false); }"></div>
-            <div v-if="(showSignTray)" v-click-outside="handleSignFocusOut"
-              class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-10 mt-1 tray-mode">
-              <img class="absolute-image border py-1 px-6 rounded h-[50px]" :src="signature" />
-              <img src="../../assets/img/pencil.png" class="cursor-pointer w-[12px] h-[12px] ml-1 mt-3"
-                @click="openSignModal" />
-            </div>
-          </div>
-
+          <button class="rounded-full h-8 w-20 text-xs" :class="[activeTool == TOOL_TYPE.date ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+          isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.date)">
+            <calendar-icon class="mr-1" /> Date
+          </button>
           <div class="mx-1">
             <button
               class="rounded-full h-8 w-20 flex items-center gap-2 py-1 px-4 tool-item text-xs"
               :class="[activeTool == TOOL_TYPE.appendInitial ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-        isCreator ? 'opacity-40' : '']"  @click="onInitialsClick">
+            isCreator ? 'opacity-40' : '']"  @click="onInitialsClick">
+            <img src="./assets/initial_tool.svg" width="18" class="p-[2px]" />
               Initial
-              <img src="../../assets/img/initial-icon.png" width="18" class="bg-slate-200 p-[2px]" />
             </button>
-            <div class="absolute w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-red-600 ml-[55px] cursor-pointer"
-              id="initialtraybtn"
-              @click="() => { showInitialTray = !showInitialTray; showInitialTray && (showSignTray = false); }">
-            </div>
-            <div v-if="showInitialTray" v-click-outside="handleInitialFocusOut"
-              class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-10 mt-1 tray-mode">
-              <img class="absolute-image border py-1 px-6 rounded h-[50px]" :src="initial" />
-              <img src="../../assets/img/pencil.png" class="cursor-pointer w-[12px] h-[12px] ml-1 mt-3"
-                @click="openInitialModal" />
-            </div>
           </div>
+          <button @click="undoFunction" class="rounded-[50px] h-8 bg-white text-sm px-2">
+            <img src="../svg-icons/UndoIcon.svg" class="w-[15px] mr-2" />
+            UNDO</button>
         </div>
       </div>
-      <template v-else>
-        <button class="rounded h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.text ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-        isCreator ? 'opacity-40' : 'opacity-100']" @click="setSelectedType(TOOL_TYPE.text)">
-          <pdf-text-tool-icon />
-        </button>
-        <button class="rounded h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.tick ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-        isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.tick)">
-          <pdf-tick-icon />
-        </button>
-        <button class="rounded h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.cross ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-        isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.cross)">
-          <pdf-times-icon />
-        </button>
-        <button class="rounded h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.circle ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-        isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.circle)">
-          <hollow-circle-icon />
-        </button>
-        <button class="rounded h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.dot ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-        isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.dot)">
-          <solid-circle-icon />
-        </button>
-        <button class="rounded h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.line ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-        isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.line)">
-          <pdf-rectangle-tool-icon />
-        </button>
-        <button class="rounded text-[#FFCF27] h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.highlight ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-        isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.highlight)">
-          <pdf-highlight-tool-icon />
-        </button>
-        <button class="rounded h-8 w-8 text-sm" :class="[activeTool == TOOL_TYPE.draw ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
-        isCreator ? 'opacity-40' : '']" @click="setSelectedType(TOOL_TYPE.draw)">
-          <pdf-pen-tool-icon />
-        </button>
-      </template>
+     
     </div>
 
     <div v-if="(!isLoading && !isCreator && isComplete)"
@@ -140,7 +106,7 @@
       :class="[isConfirm ? 'py-0' : 'py-2']">
       <button class="rounded h-10 w-24 text-sm" :class="[activeTool == TOOL_TYPE.text ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
       isCreator ? 'opacity-40' : 'opacity-100']" @click="setSelectedType(TOOL_TYPE.text)">
-        <pdf-text-tool-icon />
+        <pdf-text-tool-icon/>
         <abbr class="ml-2">Type</abbr>
       </button>
       
@@ -152,7 +118,7 @@
             </button>
             <button :class="[ showDropDown ? 'turn-up' : 'turn-down']" @click="showDropDown = !showDropDown" class="h-10 w-10 bg-white"><img src="../pdf/assets/chevron_down.svg"/></button>
           </span>
-          <div class="drop-down-action shadow-md" :class="[ showDropDown ? 'h-[240px]' : 'h-[0px]']">
+          <div class="drop-down-action shadow-md" :class="[ showDropDown ? 'h-[120px]' : 'h-[0px]']">
             <button v-for="tool in toolsDropdowm" :key="tool.type" 
             class="rounded h-10 w-10" :class="[activeTool == tool.type ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
             isCreator ? 'opacity-40' : '', tool.color]" @click="setSelectedType(tool.type)">
@@ -187,17 +153,8 @@
             isCreator ? 'opacity-40' : '']" @click="onSignClick">
             <img src="../svg-icons/PdfSignTool.svg" width="18" />
             Sign
-            <img
-            src="./assets/arrow_down.svg"
-            id="signtraybtn"
-            @click="() => { showSignTray = !showSignTray; showSignTray && (showInitialTray = false); }"/>
           </button>
-          <div v-if="(showSignTray)" v-click-outside="handleSignFocusOut"
-            class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-10 mt-1 tray-mode">
-            <img class="absolute-image border py-1 px-6 rounded h-[50px]" :src="signature" />
-            <img src="../../assets/img/pencil.png" class="cursor-pointer w-[12px] h-[12px] ml-1 mt-3"
-              @click="openSignModal" />
-          </div>
+        
         </div>
 
         <div class="mx-1">
@@ -207,18 +164,8 @@
             isCreator ? 'opacity-40' : '']"  @click="onInitialsClick">
             <img src="../svg-icons/PdfinitialTool.svg" width="18" />
             Initial
-            <img
-            src="./assets/arrow_down.svg"
-            id="initialtraybtn"
-            @click="() => { showInitialTray = !showInitialTray; showInitialTray && (showSignTray = false); }"/>
           </button>
-        
-          <div v-if="showInitialTray" v-click-outside="handleInitialFocusOut"
-            class="absolute border-[2px] rounded-lg border-[#84C870] bg-white py-3 pl-5 pr-2 z-10 flex -ml-10 mt-1 tray-mode">
-            <img class="absolute-image border py-1 px-6 rounded h-[50px]" :src="initial" />
-            <img src="../../assets/img/pencil.png" class="cursor-pointer w-[12px] h-[12px] ml-1 mt-3"
-              @click="openInitialModal" />
-          </div>
+      
         </div>
       </div>
 
@@ -387,21 +334,21 @@ export default {
         component: 'solid-circle-icon',
         color: 'text-black'
       },
-      {
-        type: TOOL_TYPE.line,
-        component: 'pdf-rectangle-tool-icon',
-        color: 'text-black'
-      },
-      {
-        type: TOOL_TYPE.highlight,
-        component: 'pdf-highlight-tool-icon',
-        color: 'text-[#FFCF27]'
-      },
-      {
-        type: TOOL_TYPE.draw,
-        component: 'pdf-pen-tool-icon',
-        color: 'text-black'
-      }
+      // {
+      //   type: TOOL_TYPE.line,
+      //   component: 'pdf-rectangle-tool-icon',
+      //   color: 'text-black'
+      // },
+      // {
+      //   type: TOOL_TYPE.highlight,
+      //   component: 'pdf-highlight-tool-icon',
+      //   color: 'text-[#FFCF27]'
+      // },
+      // {
+      //   type: TOOL_TYPE.draw,
+      //   component: 'pdf-pen-tool-icon',
+      //   color: 'text-black'
+      // }
     ]
   }),
   props: {
@@ -702,10 +649,12 @@ export default {
 }
  .turn-up{
   transition: 0.3s;
-  transform: rotateX(180deg)
+  transform: rotateX(180deg);
+  @apply bg-paperdazgreen-300 text-white
 }
 .turn-down{
   transition: 0.3s;
-  transform: rotateX(0deg)
+  transform: rotateX(0deg);
+  @apply bg-white text-black
 }
 </style>

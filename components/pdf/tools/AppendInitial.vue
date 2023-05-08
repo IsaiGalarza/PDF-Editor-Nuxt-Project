@@ -34,7 +34,7 @@
       $auth.loggedIn && !initialimgDisplay && !isCreator ? 'puls' : ' ',
       isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
     ]"
-    :width="`${43 * responsiveDim.width}px`"
+    :width="`${43 * responsiveToolDim.width}px`"
     />
   
     <img

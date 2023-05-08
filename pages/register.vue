@@ -271,7 +271,7 @@ export default Vue.extend({
     async createUser() {
       this.isLoading = true
       try {
-        await this.$_server
+        await this.$axios
           .post('/users', this.userPayload)
           .then((response) => {
             this.$auth.setUser(response.data)
@@ -290,7 +290,7 @@ export default Vue.extend({
         clonePayload.action = 'testCard'
         delete clonePayload.userId
 
-        await this.$_server.post('/cards', clonePayload).then((res) => {
+        await this.$axios.post('/cards', clonePayload).then((res) => {
           this.createUser()
         })
       } catch ({ response }) {

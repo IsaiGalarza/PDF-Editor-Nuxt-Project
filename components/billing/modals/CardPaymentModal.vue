@@ -35,7 +35,7 @@
         <div class="w-full p-3">
           <form class="">
             <div class="form-group group-label">
-              <label>Total due</label>
+              <label>Total </label>
               <label class="text-xl" for=""
                 >$
                 {{

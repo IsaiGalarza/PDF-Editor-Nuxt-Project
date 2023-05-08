@@ -1,6 +1,6 @@
 <template>
   <div class="mt-[70px] lg:mt-0 px-2">
-  
+
     <ProfileTopInfo :userInfo="userInfo" @openShare="handleCompanyNameShare(userInfo?.companyName,)" />
 
     <div v-if="fileSpinner" class=" relative h-[300px]">
@@ -49,18 +49,22 @@
 
 
     <!-- Start:: Files -->
-    <div v-if="isFetched" class="bg-white rounded-xl pb-8 px-2" :class="{ 'hidden sm:block': showFolders }">
+    <div v-if="isFetched" class="bg-white min-h-[67vh] rounded-xl pb-8 px-2" :class="{ 'hidden sm:block': showFolders }">
       <div class="rounded-2xl min-w-[300px] overflow-x-auto custom-scrollbar relative">
-        <table class="custom-table">
+        <table class="custom-table py-2">
           <thead class="text-[#414142]">
-            <tr>
+            <tr >
               <!-- <th class="w-12 text-center fixed-col left">No</th> -->
+<<<<<<< HEAD
               <th class="text-left font-[700] ">File name </th>
+=======
+              <th class="text-left font-[700] hidden lg:table-cell " @click="showPermissionModal = true">File name </th>
+>>>>>>> 592c04a232e964d9a8710aa137f1f06d8c5dc873
 
-              <th class="lg:table-cell">Action</th>
-              <th class="lg:table-cell">Privacy</th>
-              <th class=" font-[700]  right">
-                <form v-show="files.length > 10" @submit.prevent
+              <th class="hidden lg:table-cell">Action</th>
+              <th class="hidden lg:table-cell">Privacy</th>
+              <th v-show="files.length > 10" class=" font-[700]  right">
+                <form  @submit.prevent
                   class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
                   <span v-if="showFile" class="el-dropdown-link max-sm:flex-1 absolute top-[-30px] ">
                     <input type="text" placeholder="Search any file..."
@@ -79,21 +83,43 @@
             <tr v-for="(item, i) in files" :key="i">
               <!-- <td class="w-12 text-center fixed-col left">{{ i + 1 }}</td> -->
               <td class="row">
+<<<<<<< HEAD
                 <div class="flex items-center">
                   <img src="/icon.png" class="mr-2" width="23" height="23" />
                   <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
                     <span @click="routeToFileManager(`/pdf/${item.paperLink}`, item.filePrivacy, item.id)" class="cursor-pointer">
+=======
+                <div class="flex  items-center">
+                  <img src="/icon.png" class="mr-3" width="23" height="23" />
+                  <div class="">
+                    <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
+                    <p @click="routeToFileManager(`/pdf/${item.paperLink}`, item.filePrivacy)" class="cursor-pointer capitalize">
+>>>>>>> 592c04a232e964d9a8710aa137f1f06d8c5dc873
                       {{ ((item || {}).fileName || ' ') | removeExtension }}
-                    </span>
-                  </p>
+                    </p>
+
+
+                    <div class="flex  lg:hidden items-center mt-1 text-[0.65rem] text-[#707070]">
+                      <p v-show="((item || {}).fileAction) != 'doNotPost'" class="capitalize"> {{ ((item || {}).fileAction
+                        ||
+                        '') }}</p>
+
+                       <div class="w-1 h-1 mx-2 rounded-[50%] bg-black"></div>
+
+                      <p class="capitalize  ">
+                        {{ ((item || {}).filePrivacy || '') }}
+                      </p>
+                    </div>
+                    </p>
+                  </div>
                 </div>
               </td>
-              <td class="lg:table-cell">
+              <td class="hidden lg:table-cell">
                 <p v-show="((item || {}).fileAction) != 'doNotPost'" class="capitalize"> {{ ((item || {}).fileAction ||
                   '') }}</p>
               </td>
               <td>
-                <p  class="capitalize lg:table-cell">
+                <p class="capitalize hidden lg:table-cell">
                   {{ ((item || {}).filePrivacy || '') }}
                 </p>
               </td>
@@ -122,6 +148,7 @@
     <ShareCompanyLinkModal :link="link" :type="type" v-model="showShareCompanyName" />
   </div>
 </template>
+
 
 <script>
 import Vue from 'vue'
@@ -242,7 +269,12 @@ export default Vue.extend({
       isFetched: false,
       showPrivateModal: false,
       showShareCompanyName: false,
+<<<<<<< HEAD
       isCompanyShare:false,
+=======
+      showPermissionModal: false,
+      isCompanyShare: false,
+>>>>>>> 592c04a232e964d9a8710aa137f1f06d8c5dc873
       link: "",
       keepCount: 0,
       showGuideModal: false,
@@ -272,21 +304,21 @@ export default Vue.extend({
       }
     },
 
-    handleCompanyNameShare(name){
+    handleCompanyNameShare(name) {
       this.isCompanyShare = true
-      let val = name.replace(' ', '') 
+      let val = name.replace(' ', '')
       let link = `https://paperlink.app/${val}`
-      this.shareLink(link, name )
+      this.shareLink(link, name)
     },
     shareLinkFunc(val, type) {
       this.shareLink(`https://paperlink.app/pdf/${val}`, type)
     },
     shareLink(val, type) {
-      
+
       this.link = val
       this.type = type
       this.showShareCompanyName = true
-      
+
     },
     routeToFileManager(val, privacy, id) {
       this.fileId = id
@@ -366,7 +398,8 @@ export default Vue.extend({
   }
 }
 
-#bottom-nav{
+#bottom-nav {
   display: none !important;
 }
+
 </style>

@@ -59,7 +59,7 @@
               /> -->
             <letter-avatar
              @click="$router.push(`/public/profile/${item.userId}`)"
-              v-if="!item.user.profile_picture"
+              v-if="!item.user?.profile_picture"
               class="h-16 w-16 rounded-1 object-cover cursor-pointer"
               :username="(item.user || {}).company_name"
             />

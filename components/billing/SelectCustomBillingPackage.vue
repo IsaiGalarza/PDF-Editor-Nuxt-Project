@@ -44,7 +44,6 @@
                             min="1"
                           /> -->
                     <el-input-number
-                      v-model.number="customPackage.paperlink"
                       :step="0"
                       size="small"
                       :min="0"

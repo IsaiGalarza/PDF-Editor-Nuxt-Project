@@ -67,7 +67,7 @@
                 >
                   <img
                     :src="
-                      (file.user || {}).profile_picture ||
+                      (file.user || {})?.profile_picture ||
                       '/img/placeholder_picture.png'
                     "
                     alt=""

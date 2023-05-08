@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-paperdazgreen-300 sm:bg-transparent py-2 flex items-center text-black justify-between ml-[-2%] w-[104%]"
+    class="bg-paperdazgreen-300/70 sm:bg-transparent py-2 flex items-center text-black justify-between ml-[-2%] w-[104%]"
   >
     <div
       class="flex items-center gap-lg-4 flex-1 justify-between px-lg-4 px-3 flex-wrap"

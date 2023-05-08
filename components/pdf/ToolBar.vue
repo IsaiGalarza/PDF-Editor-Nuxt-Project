@@ -31,12 +31,12 @@
     <div v-if="(!isLoading && !isCreator && isComplete)"
       class="flex flex-wrap items-center justify-between w-full gap-x-1 gap-y-2 text-[#757575] text-base sm:text-2xl sm:hidden px-2"
       :class="[isConfirm ? 'py-0' : 'py-2']">
-      <button class="rounded h-10 w-8 bg-white" @click="$emit('togglepdfViewScale', 'zoomout')">-</button>
+      <button class="rounded h-10 w-10 bg-white text-[35px] font-[200]" @click="$emit('togglepdfViewScale', 'zoomout')">-</button>
       <div class="flex items-center">
         <template >
-          <button class="h-10 w-32 text-sm flex items-center justify-center rounded-l-md" :class="[activeTool == TOOL_TYPE.text ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+          <button class="h-10 w-28 text-sm flex items-center justify-center rounded-l-md" :class="[activeTool == TOOL_TYPE.text ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
           isCreator ? 'opacity-40' : 'opacity-100']" @click="setSelectedType(TOOL_TYPE.text)">
-            <pdf-text-tool-icon/>
+            <pdf-text-tool-icon width="20" height="20"/>
             <abbr class="ml-2">Type</abbr>
           </button>
           <div class="h-10 w-28 text-sm relative">
@@ -46,11 +46,11 @@
               <component :is="initialIcon?.component"/>
               </button>
               <button :class="[ showDropDown ? 'turn-up' : 'turn-down']" @click="showDropDown = !showDropDown" 
-              class="h-10 w-16 bg-white flex justify-center items-center"><img src="../pdf/assets/chevron_down.svg"/></button>
+              class="h-10 w-16 bg-white flex justify-center items-center line-side"><img src="../pdf/assets/chevron_down.svg"/></button>
             </span>
             <div class="drop-down-action shadow-md" :class="[ showDropDown ? 'h-[120px]' : 'h-[0px]']">
               <button v-for="tool in toolsDropdowm" :key="tool.type" 
-              class="rounded h-10 w-12 flex justify-center items-center" :class="[activeTool == tool.type ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
+              class="rounded h-10 w-12 flex justify-center items-center relative" :class="[activeTool == tool.type ? 'bg-paperdazgreen-300 text-white' : 'bg-white',
               isCreator ? 'opacity-40' : '', tool.color]" @click="setSelectedType(tool.type)">
                 <component :is="tool.component"/>
               </button>
@@ -58,7 +58,7 @@
         </div>
         </template>
       </div>
-      <button class="rounded h-10 w-8 bg-neutral-500 text-white" @click="$emit('togglepdfViewScale', 'zoomin')">+</button>
+      <button class="rounded h-10 w-10 bg-neutral-700 text-white text-[32px] font-[200]" @click="$emit('togglepdfViewScale', 'zoomin')">+</button>
  
     </div>
     <div v-if="(!isLoading && !isCreator && isComplete)"
@@ -656,5 +656,15 @@ export default {
   transition: 0.3s;
   transform: rotateX(0deg);
   @apply bg-white text-black
+}
+.line-side::before{
+  content: "";
+  display: block;
+  position: absolute;
+  top:10%;
+  left: 0;
+  height: 80%;
+  width: 2px;
+  @apply bg-slate-200;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <svg
-    :height="fontSize * hwRatio"
-    :width="fontSize / hwRatio"
+    :height="height ?? (fontSize * hwRatio)"
+    :width="width ?? (fontSize / hwRatio)"
     viewBox="0 0 39 39"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -20,5 +20,6 @@ import mixins from 'vue-typed-mixins'
 import IconSizeMixin from '~/mixins/IconSizeMixin'
 export default mixins(IconSizeMixin).extend({
   name: 'PdfTextToolIcon',
+  props:['width', 'height']
 })
 </script>

@@ -243,7 +243,7 @@ export default Vue.extend({
         title: this.type.replace(".pdf", ''),
         userId: 0
       };
-      this.$_server.post(`/request`, requestData)
+      this.$axios.post(`/request`, requestData)
         .then((response) => {
           this.$notify.success({
             title: 'Request',

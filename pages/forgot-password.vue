@@ -91,7 +91,7 @@ export default Vue.extend({
       this.isLoading = true
       this.alertMessage.message = ''
 
-      this.$_server
+      this.$axios
         .post(`/users`, this.user)
         .then((response) => {
           this.alertMessage.isSuccess = true

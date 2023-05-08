@@ -34,7 +34,7 @@
     <template #title>
       <h4
         class="text-center font-semibold text-2xl text-gray-800 pb-2"
-        v-if="!isCreator"
+        v-if="!isCreator && !isConfirm"
       >
         All Done?
       </h4>
@@ -195,27 +195,12 @@
 
     <div class="flex justify-around mt-0" v-if="!file?.user?.allowCopy">
       <button
-        class="h-10 text-xs w-[150px] max-w-[50%] rounded-lg shadow border-[#D9251E] mr-1"
-        type="button"
-        :disabled="isLoading"
-        @click="closeModal()"
-        :class="
-          isConfirm
-            ? 'bg-zinc-500 border-[0px] text-white'
-            : 'bg-white border-[1px] text-[#D9251E]'
-        "
-      >
-        {{ isCreator ? 'Cancel' : 'Back' }}
-      </button>
-      <button
         class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400 ml-1"
-        :disabled="isLoading"
-        @click="onSubmit"
+        :disabled="true"
       >
         <span class="inline-flex gap-1 items-center">
-          Yes
+         generating
           <spinner-dotted-icon
-            v-show="isLoading"
             height="20"
             width="20"
             class="animate-spin"
@@ -403,7 +388,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       }
     },
     addToLedger() {
-      this.$_server
+      this.$axios
         .post(`/ledger`, { ...this.ledgerInfo })
         .then(() => {
           this.proceedToSendEmail = true
@@ -436,7 +421,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         )
     },
     async confirmRequest() {
-      await this.$_server.post('/pdf-generator', {
+      await this.$axios.post('/pdf-generator', {
           ...ExtractFormPdf({
             downloadLink: this.file?.downloadLink,
             file: this.confirmAnnotation,
@@ -455,7 +440,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         })
     },
     async otherRequest() {
-      await this.$_server
+      try {
+        await this.$axios
         .post('/pdf-generator', {
           ...ExtractFormPdf({
             downloadLink: this.file?.downloadLink,
@@ -470,14 +456,13 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.addToLedger()
           this.generatedPdf = response.data
         })
-        .catch(() => {
-          this.$notify.error({
+      } catch (error) {
+        this.$notify.error({
             message: 'Error occcured, could not save file',
           })
-        })
-        .finally(() => {
+      } finally {
           this.isLoading = false
-        })
+        }
     },
     sendPdfToEmail(val) {
       let requestData = {
@@ -489,7 +474,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       }
       //   // return
       try {
-        this.$_server.post(`/request`, requestData).then(() => {
+        this.$axios.post(`/request`, requestData).then(() => {
           this.$store.commit('SET_PDF_EXIT', true)
           this.toggleToast({
             active: true,
@@ -498,9 +483,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.$store.commit('SET_FILE_SIGNATURE', null)
           this.$store.commit('SET_FILE_INITIAL', null)
           this.$store.commit("UN_SET_AGREE_SIGN")
-          this.$auth.loggedIn && this.isCreator
-            ? this.$nuxt.$router.push('/paperlink-pages')
-            : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
+          // this.$auth.loggedIn && this.isCreator
+          //   ? this.$nuxt.$router.push('/paperlink-pages')
+          //   : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
         })
       } catch (error) {
         this.$notify.error({

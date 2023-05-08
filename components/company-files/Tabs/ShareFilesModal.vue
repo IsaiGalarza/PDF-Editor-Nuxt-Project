@@ -221,7 +221,7 @@ export default Vue.extend({
               link: this.link
           };
 
-      this.$_server.post(`/request`, requestData)
+      this.$axios.post(`/request`, requestData)
         .then((response) => {
           this.$notify.success({
             title: 'Request',

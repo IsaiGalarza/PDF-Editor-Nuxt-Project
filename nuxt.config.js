@@ -1,5 +1,10 @@
 const webpack = require('webpack')
 import redirectSSL from 'redirect-ssl'
+import { MasterKeys } from './config'
+
+const CONFIG = process.env.NODE_ENV
+
+
 
 export default {
   loadingIndicator: {
@@ -148,7 +153,7 @@ export default {
     ],
   ],
   axios: {
-     baseURL: process.env.NEW_API_URL,
+     baseURL: MasterKeys[CONFIG].apiEndPoint,
     // baseURL: 'http://localhost:4040',
   //  baseURL:'https://cfeb-197-210-76-168.ngrok-free.app/',
   },

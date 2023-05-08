@@ -39,7 +39,7 @@
         class="text-center block font-medium  mx-auto mb-6 whitespace-none"
       >
          <input
-         v-model="folderInputData"
+         v-model="email"
           class="w-full py-2 px-4 border-[1px] border-paperdazgrey-500 rounded-md"
          placeholder="Email"
          />
@@ -48,7 +48,7 @@
       class="text-center block font-medium  mx-auto mb-6 whitespace-none"
     >
        <input
-       v-model="folderInputData"
+       v-model="name"
         class="w-full py-2 px-4 border-[1px] border-paperdazgrey-500 rounded-md"
        placeholder="Name"
        />
@@ -94,6 +94,12 @@
       file: {
          type: Object
       },
+      fileId: {
+        type: String
+      },
+      userInfo: {
+        type: Object
+      },
       visible: {
         type: Boolean,
         default: false,
@@ -104,7 +110,8 @@
         showModal: false,
         errorMessage: '',
         loading: false,
-        folderInputData:'',
+        email:"",
+        name: "",
         folder:{},
       }
     },
@@ -115,22 +122,26 @@
       showModal(val) {
         this.$emit('updateVisibility', val)
       },
-      "file":function(){
-          this.folder = this.file;
-          this.folderInputData = (this.folder || {}).name;
-      }
     },
     mounted() {
       this.showModal = this.visible;
     },
+    computed: {
+        payload(){
+          return {
+              action: "request_permission",
+              fileId: this.fileId,
+              name: this.name,
+              email: this.email
+          }
+       } 
+      },
     methods: {
       closeModal() {
         this.$emit('updateVisibility', false)
       },
       onSubmit() {
         event?.preventDefault()
-  
-       if(this.folderInputData.trim().length < 1) return
   
   
         if (this.loading) return
@@ -141,13 +152,11 @@
   
         // return
         this.$axios
-          .$patch(`/folders/${(this.folder).id}`,
-            {name : this.folderInputData}
-          )
+          .post(`/permissions`, this.payload)
           .then((response) => {
              this.$notify.success({
               title: 'Folder',
-              message: 'Folder name changed successfully',
+              message: 'permission sent successfully',
             })
              this.$emit('updateVisibility', false)
              this.$emit('refresh')
@@ -156,7 +165,7 @@
           .catch((err) => {
             this.$notify.error({
               title: 'Folder',
-              message: 'Unable to change folder name',
+              message: 'Unable to send permission',
             })
           })
             .finally(()=>{

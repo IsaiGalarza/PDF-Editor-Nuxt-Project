@@ -243,7 +243,7 @@ export default {
       return this.id == this.activeToolId
     },
     FrombusinessPage(){
-            return JSON.parse(localStorage.getItem("from_publicpage") || '{}')?.fromBusiness ?? true
+            return JSON.parse(localStorage.getItem("from_publicpage"))?.fromBusiness ?? true
         },
     isCreator() {
       if(this.FrombusinessPage == null) return false
@@ -270,7 +270,7 @@ export default {
     },
     responsiveToolDim(){
       return {
-        width: (this.$store.getters.getPdfpagesDim.parentWidth/961),
+        width: (this.$store.getters.getPdfpagesDim.parentWidth/809),
         height: (this.$store.getters.getPdfpagesDim.parentHeight/1243)
       }
     },

@@ -135,7 +135,7 @@ export default Vue.extend({
         message: 'File uploading ...',
         duration: 1000 * 60,
       })
-      await this.$_server.post('/files', formData)
+      await this.$axios.post('/files', formData)
         .then((response) => {
           this.$store.commit('SET_UPLOAD_STATE', true);
           this.$notify.success({

@@ -10,7 +10,7 @@
         :initialFontSize="initialFontSize"
         ref="name_box"
         placeholder="Type here..."
-        class="text-container"
+        class="text-container whitespace-nowrap flex items-center"
         :class="[
           focus ? 'border-[1px] border-paperdazgreen-200 bg-yellow-300' : 'bg-transparent border-none',
         ]"
@@ -24,7 +24,7 @@
     <img
       v-if="!confirmStar && !isCreator"
       class="annot-button"
-      :width="`${80 * responsiveDim.width}px`"
+      :width="`${80 * responsiveToolDim.width}px`"
       src="../../../assets/img/name_tag.svg"
     />
     <img
@@ -85,7 +85,7 @@ export default {
     style() {
       return {
         // fontSize: `${this.fontSize || 11}px`,
-        fontSize: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveDim.width}px`,
+        fontSize: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveToolDim.width}px`,
       }
     },
     notBtn() {
@@ -126,7 +126,7 @@ export default {
     },
     confirmStarAction() {
       if (!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest || (this.isAgreedSign !== 1 && this.isSign)) return
-      !this.confirmStar &&  !this.isCreator && this.$emit('addOffset', 5)
+      !this.confirmStar &&  !this.isCreator && this.$emit('addOffset', 0)
       !this.isCreator && (this.confirmStar = true)
       this.notClass = ''
     },

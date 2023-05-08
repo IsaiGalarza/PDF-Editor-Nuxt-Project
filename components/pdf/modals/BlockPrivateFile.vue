@@ -4,6 +4,7 @@
         :append-to-body="false"
         style=""
         :show-close="false"
+        :close-on-click-modal="false"
         center
         class="relative text-[#414042]"
     >
@@ -36,15 +37,10 @@
         <!-- Start:: Body -->
 
         <p class="w-[90%] ml-[5%] text-center pb-8 break-normal">
-            These is a private file requires permission to view, Ask for
-            permission to be granted right to view
+            These is a private file requires permission to view, You have not been granted
+            permission to view
         </p>
-        <p
-            class="w-[90%] ml-[5%] text-center pb-8 break-normal font-semibold"
-            v-if="!$auth.loggedIn"
-        >
-            Login or register to ask for permission
-        </p>
+ 
         <div class="flex justify-around">
             <button
                 class="disabled:bg-opacity-50 disabled:cursor-not-allowed h-10 text-xs w-[150px] max-w-[50%] border border-red-600 rounded-lg shadow bg-white"
@@ -53,27 +49,11 @@
                 @click="closeModal()"
             >
                 Cancel</button
-            >-->
-            <button
-                class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400"
-                :disabled="isLoading"
-                @click="onSubmit"
             >
-                <span class="inline-flex gap-1 items-center">
-                    {{
-                        !isLoading
-                            ? 'Ask permission'
-                            : 'checking permission....'
-                    }}
-                    <spinner-dotted-icon
-                        v-show="loading"
-                        height="20"
-                        width="20"
-                        class="animate-spin"
-                    />
-                </span>
+
+            <button class="h-10 bg-paperdazgreen-300 text-white px-3 py-2 rounded">
+               {{ permissionLoading.msg }}
             </button>
-            -->
             <!-- <button
           class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400"
         > 
@@ -84,11 +64,6 @@
           </span>
         </button> -->
 
-            <nuxt-link
-                to="/login"
-                class="h-10 hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150 text-white rounded-lg shadow bg-paperdazgreen-400 px-3 flex items-center justify-center whitespace-nowrap w-[150px] text-xs max-w-[50%]"
-                >Log in</nuxt-link
-            >
         </div>
         <!-- end :: body -->
     </el-dialog>
@@ -113,7 +88,8 @@ export default Vue.extend({
             type: Boolean,
             default: false,
         },
-        file: { type: Object },
+    file: { type: Object },
+    permissionLoading: { type: Object}
     },
 
     data() {

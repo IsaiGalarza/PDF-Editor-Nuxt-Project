@@ -60,20 +60,141 @@
         v-if="pdf"
         ref="scrollingElement"
       >
+     
+    <div v-if="!isMobile" class="pdf-pages-outer relative" ref="PagesOuter" id="PagesOuter">
+      <div
+        class="pdf-single-pages-outer w-full"
+        ref="pdf-single-pages-outer"
+        v-if="pdf"
+      >
+        <div
+          :class="[
+            'pdf-single-page-outer w-full',
+            { 'mt-6': pI > 0 && !downloadingPdf },
+          ]"
+          :ref="`pdf-single-page-outer-${pI + 1}`"
+          v-for="(page, pI) in pdf.numPages"
+          :key="pI"
+          v-hammer:pan="
+            (ev) => handlePanning(ev, undefined, undefined, pI + 1)
+          "
+          @mouseup="onMouseUp"
+          @mousedown="onMouseDown"
+          style="position: relative"
+        >
+          <div
+            v-if="
+              filteredAnnotationButton.length > 0 &&
+              isSign &&
+              curSignInitialPage == 'sign' + (pI + 1) &&
+              isAgreedSign == 1
+            "
+            class="absolute hidden"
+            :style="signAlaram"
+          >
+            <div
+              class="bg-[#77B550] p-1 text-white text-[12px] border-rounded-lg"
+            >
+              {{ 'Sign ' + signNumber }}
+            </div>
+            <div
+              class="w-0 h-0 border-t-[14px] -ml-[1px] border-b-[14px] border-t-transparent border-b-transparent border-l-[14px] border-l-[#77B550]"
+            ></div>
+          </div>
+          <div
+            v-if="
+              filteredAnnotationButton.length > 0 &&
+              isSign &&
+              curSignInitialPage == 'initial' + (pI + 1) &&
+              isAgreedSign == 1
+            "
+            :style="signAlaram"
+            class="absolute flex hidden"
+          >
+            <div
+              class="bg-[#77B550] py-1 text-white text-[12px] border-rounded-lg"
+            >
+              {{ 'Initial ' + InitialNumber }}
+            </div>
+            <div
+              class="w-0 h-0 border-t-[14px] -ml-[1px] border-b-[14px] border-t-transparent border-b-transparent border-l-[14px] border-l-[#77B550]"
+            ></div>
+          </div>
+          <tool-wrapper
+            v-for="tool in fillteredTools(pI + 1)"
+            :toolLength="fillteredTools(pI + 1).length"
+            :key="tool.id"
+            @resetToolProp="resetToolProp"
+            :selectedToolType="selectedToolType"
+            :dragHandler="handlePanning"
+            @reAdjust="reAdjust"
+            :id="tool.id"
+            :tool="tool"
+            :type="tool.type"
+            :x1="tool.x1"
+            :y1="tool.y1"
+            :x2="tool.x2"
+            :y2="tool.y2"
+            :points="tool.points"
+            :deleteTool="deleteTool"
+            :handleIncrease="handleIncrease"
+            :mouseUp="mouseUp"
+            :handleDecrease="handleDecrease"
+            :fontSize="tool.fontSize"
+            :scale="scale"
+            @pos-change="onPosChange"
+            @resetJustMounted="resetJustMounted"
+            :activeToolId="activeToolId"
+            :setActiveToolId="setActiveToolId"
+            :pageNumber="pI + 1"
+            :value="tool.value"
+            :file="file"
+            :justMounted="tool.justMounted"
+            :lineStart="lineStart"
+            :drawingStart="drawingStart"
+            :showPublishModal="showPublishModal"
+            :generatePDF="generatePDF"
+            @toolWrapperBeforeChecked="toolWrapperBeforeChecked"
+            @toolWrapperAfterChecked="toolWrapperAfterChecked"
+            v-model="tool.value"
+            :userId="tool.user"
+            :setInitialSignType="setInitialSignType"
+          />
+          <!-- </div> -->
+          <pdf-page
+            :handlePanning="handlePanning"
+            :onCLickSinglePageOuter="onCLickSinglePageOuter"
+            :file="file"
+            :page-number="pI + 1"
+            :pdf="pdf"
+            :scale="scale"
+            @setPageHeight="setPageHeight"
+            :initialOrigin="setInitialOrigin"
+            @setPageWidth="onloadPdfquery"
+            :confirmDone="confirmDone"
+            :isCreator="isCreator"
+          />
+        </div>
+      </div>
+    </div>
+
+
         <pinch-zoom
+          v-if="isMobile"
           ref="pinch"
           :limitPan="true"
           :limitZoom="1000"
           overflow="scroll"
           :disableZoomControl="'disable'"
           :listeners="'auto'"
-          :wheel="false"
         >
         <!-- <pinch-scroll-zoom
           ref="zoomer"
           :width="$refs.scrollingElement?.offsetWidth -4 || 0"
           :height="$refs.PagesOuter?.offsetHeight || 0"
           :scale="scale"
+          :wheel="false"
+          :minScale="0.5"
           @scaling="scalingHandler"
           style="overflow: hidden;"
         > -->
@@ -257,7 +378,7 @@
       v-model="showPublishModal"
     />
 
-    <BlockPrivateFile :file="file" v-model="showBlockPrivate" />
+    <BlockPrivateFile :file="file" v-model="showBlockPrivate" :permissionLoading="permissionLoading"/>
     <BlockDonotPostFile :file="file" v-model="showBlockDonotPost" />
     <SuccessFileModal :file="file" v-model="showSuccesshModal" />
     <DoneModal :file="file" v-model="showDoneModal" />
@@ -442,7 +563,8 @@ export default mixins(PdfAuth).extend({
     isMobile: false,
     saveUser: {},
     width: 0,
-    is_equal: true
+    is_equal: true,
+    permissionLoading: { type: true, msg: "checking permission..."},
   }),
   created() {
     this.fetchPdf()
@@ -659,6 +781,9 @@ export default mixins(PdfAuth).extend({
     },
   },
   methods: {
+    scalingHandler(e) {
+      console.log(e);
+    },
     pinchZoomOut(){
       // this.$refs.pinch.setScale(1.0)
     },
@@ -874,7 +999,7 @@ export default mixins(PdfAuth).extend({
       }
     },
     publishFileFunction() {
-      this.pinchZoomOut()
+      this.setToinitialScale()
       this.scrollToSignInitial()
       if (this.filteredAnnotationButton.length > 0) {
         this.$notify.error({
@@ -931,9 +1056,27 @@ export default mixins(PdfAuth).extend({
       }
     },
     checkUserPermission() {
+      let permissionQuery = this.$route.query?.permissiontoken
+      if(!permissionQuery) return
+      let decodePermission = jwt.verify(
+      permissionQuery,
+      '+Erqnl5F0JnIsW++d9U0BfwpJ6w='
+    )
       this.$axios
-        .get(`/permissions?fileId=${this.file.id}`)
-        .then((response) => {})
+        .get(`/permissions?id=${decodePermission.data.permissionId}`)
+        .then((response) => { 
+          console.log(response)
+          if(response.data?.data?.isGranted == 1){
+            this.displayPDF = true
+            this.showBlockPrivate = false
+            this.permissionLoading = { type: false, msg: 'permission granted'}
+          } else {
+            this.permissionLoading = { type: true, msg: 'permission denied'}
+          }
+        })
+        .catch(()=>{
+          this.permissionLoading = { type: true, msg: 'Error Occured'}
+        })
     },
     onloadPdfquery(val) {
       // these function contains setting the pdf container to the same width as the pdf
@@ -948,6 +1091,7 @@ export default mixins(PdfAuth).extend({
       let parentWidth = document.querySelector('.pdf-single-page-outer').getBoundingClientRect().width
       let parentHeight = document.querySelector('.pdf-single-page-outer').getBoundingClientRect().height
       this.$store.commit('SET_PDF_DIMENSIONS', {parentWidth, parentHeight})
+      let getAllPdfPages = document.querySelectorAll('.pdf-single-page-outer')
       // this._scrollToConfirm()
 
       let { width, height } = val
@@ -1064,7 +1208,7 @@ export default mixins(PdfAuth).extend({
     setToinitialScale(){
       let curParentWidth = this.$refs['pdf-single-pages-outer'].getBoundingClientRect().width;
       let iniParentWidth = this.$store.getters.getPdfpagesDim.parentWidth
-      if(curParentWidth !== iniParentWidth){
+      if(curParentWidth > iniParentWidth){
           this.$refs.pinch.toggleZoom()
       } 
     },
@@ -1140,8 +1284,8 @@ export default mixins(PdfAuth).extend({
     reAdjust(val, id){
       let index = this.tools.findIndex(tl => tl.id == id);
       this.tools[index].reAdjust = val;
-      this.tools[index].parentWidth = this.$store.getters.getPdfpagesDim.parentWidth;
-      this.tools[index].parentHeight = this.$store.getters.getPdfpagesDim.parentHeight;
+      this.tools[index].parentWidth = this.$refs['pdf-single-pages-outer'].getBoundingClientRect().width;
+      this.tools[index].parentHeight = this.$refs['pdf-single-pages-outer'].getBoundingClientRect().height;
     },
     keyupHandler(event) {
       if (event.ctrlKey && eve.nt.shiftKey && event.code === 'KeyZ') {
@@ -1371,12 +1515,22 @@ export default mixins(PdfAuth).extend({
       this.selectedToolType = type
     },
     pointerPos(event, parent) {
+      let initialtool = null, initialToolId = null
+
       const elParent =
         parent ||
         event.currentTarget.parentElement ||
         this.$refs.scrollingElement
 
       event = event || window.event
+      const parentElement = elParent;
+      const rect = parentElement.getBoundingClientRect();
+      const zoomLevelW =  rect.width/this.$store.getters.getPdfpagesDim.parentWidth; // example zoom level
+      const zoomLevelH =  rect.height/this.$store.getters.getPdfpagesDim.parentHeight; // example zoom level
+      const x = (event.clientX - rect.left) * zoomLevelW;
+      const y = (event.clientY - rect.top) * zoomLevelH;
+       
+      console.log(`Mouse position relative to zoomed parent element: (${x}, ${y}) ${event.offsetY}, ${event.offsetX}`)
 
       // const scrollingElement =
       //   parent ||
@@ -1412,7 +1566,7 @@ export default mixins(PdfAuth).extend({
 
       // return { x, y }
       // return { x: x / this.scale, y: y / this.scale }
-      return { x: event.offsetX, y: event.offsetY }
+      return { x: event.offsetX * zoomLevelW, y: event.offsetY * zoomLevelH}
     },
     previousPointerPos(event, parent) {
       let eventDoc, doc, body
@@ -1471,15 +1625,14 @@ export default mixins(PdfAuth).extend({
       }
     },
     placeTool(e, pageNumber, initialPoint) {
-      this.setToinitialScale()
-      if(!this.isScaleDefault()) return
-
+      // this.setToinitialScale()
+      // if(!this.isScaleDefault()) return
+     
       let parent = this.$refs[`pdf-single-page-outer-${pageNumber}`]
       if (Array.isArray(parent)) parent = parent[0]
      
       let parentWidth = document.querySelector('.pdf-single-page-outer').getBoundingClientRect().width
       let parentHeight = document.querySelector('.pdf-single-page-outer').getBoundingClientRect().height
-
       let { x, y } = !initialPoint
         ? this.pointerPos(e, parent || this.$refs.scrollingElement)
         : // ? this.pointerPos(e, parent || this.$refs['pdf-single-page-outer'])
@@ -1531,6 +1684,7 @@ export default mixins(PdfAuth).extend({
       }
       this.tools.push(obj)
       this.stack.push(this.toolId)
+
     },
     async handleScale() {
       await this.$nextTick()
@@ -1648,8 +1802,8 @@ export default mixins(PdfAuth).extend({
   },
   watch: {
     selectedToolType(val){
-      this.setToinitialScale()
-      this.keepFirmToPlaceTools(val)
+      // this.setToinitialScale()
+      // this.keepFirmToPlaceTools(val)
     },
     isConfirmChecked(val) {
       $('.pdf-editor-view').animate(
@@ -1659,6 +1813,7 @@ export default mixins(PdfAuth).extend({
       this.isConfirm = true
     },
     setContainerPage: function () {
+      console.log(this.setContainerPage)
       // this.$refs.PagesOuter.style.setProperty('width', `${this.setContainerPage + 'px'}`, 'important');
     },
     '$auth.user': function () {

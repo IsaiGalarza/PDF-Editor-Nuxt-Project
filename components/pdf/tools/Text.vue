@@ -11,9 +11,10 @@
       :initialFontSize="initialFontSize"
       :height="initialFontSize * 1.5"
       :scalefactor="responsiveToolDim.width"
-      class="input-annotation whitespace-nowrap"
+      class="input-annotation whitespace-nowrap flex items-center"
       placeholder="Type here..."
       ref="text_box"
+      @keyUp="keyUp"
       @input="changeWidth"
       @keyup="keyUp"
     ></p>
@@ -51,7 +52,8 @@ export default {
   },
   methods: {
     keyUp(e){
-       e.keyCode === 13 && e.preventDefault()
+      var keyCode = event.which || event.keyCode;
+      keyCode === 13 && event.preventDefault();
     },
     changeWidth(){
       this.$refs.text_box.style.width = this.$refs.text_box.scrollWidth + 'px'

@@ -314,6 +314,7 @@ export default Vue.extend({
   },
   methods: {
     routeToFileManager(val){
+      return
       localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true, prevRoute: '/file-ledger'}))
        this.$router.push(`/pdf/${val}`)
     },

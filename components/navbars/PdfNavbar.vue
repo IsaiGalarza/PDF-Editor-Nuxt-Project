@@ -13,7 +13,7 @@
             <div class="inline-flex items-center gap-1">
                 <!-- <a :href="`/public/profile/${title.route}`"  target="_blanck">{{ title.name || routeName }}</a> -->
                 <span
-                    v-if="companyPhoto"
+                    v-if="isCreator"
                     class="border border-paperdazgreen-300 mr-2 p-0.5 w-[40px] h-[40px] rounded-md overflow-hidden relative"
                 >
                     <img
@@ -27,14 +27,16 @@
                     v-else
                     class="text-3xl font-bold w-full h-full text-center text-paperdazgreen-300 rounded-md"
                     style="text-shadow: 1px 2px 3px rgb(200,200,200)"
-                    >{{ (userCompanyName || '').charAt(0).toUpperCase() }}</span
+                    >
+                    <img src="/icon.png" class="mr-3" width="23" height="23" />
+                    </span
                 >
 
                 <!-- <div  class="lg:hidden flex flex-col text-sm leading-[15px] justify-end">
             
           </div> -->
           
-             <span v-if="!FrombusinessPage" class="text-black text-[13px] font-[600] text-nowrap capitalize text-left" >
+             <span v-if="!Creator" class="text-black text-[13px] font-[600] text-nowrap capitalize text-left" >
                     File Manager
                 </span>
                 <span v-else
@@ -141,6 +143,7 @@ import StatusUser from '~/models/StatusUser'
 import LandingPageSearchModal from '../landing/LandingPageSearchModal.vue'
 import SearchShare from '../search-strips/component/SearchShare.vue'
 import LetterAvatar from '../widgets/LetterAvatar.vue'
+
 
 // email-acout emauil,password-referal-code
 export default mixins(GlobalMixin, login).extend({

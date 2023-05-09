@@ -351,10 +351,11 @@ export default mixins(SaveSignatureInitialsMixin).extend({
        }
     },
     visible(val) {
-      this.showModal = val
+      this.showModal = val;
     },
     showModal(val) {
       this.$emit('updateVisibility', val)
+      val && this.isSign &&  !this.file?.user?.allowCopy && this.onSubmit()
     },
     '$auth.user': function () {
       this.convertImageToBase64(this.$auth?.user?.signatureURL)
@@ -468,7 +469,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       let requestData = {
         email: this.externalGuestEmail,
         action: val == 'owner' ? this.file?.fileAction : 'shareFileToGuest',
-        userId: val == 'owner' ? this.$auth?.user?.id : 0,
+        userId: val == 'owner' ? this.file?.userId : 0,
         editedFileLink: this.generatedPdf?.downloadLink,
         fileId: this.file?.id,
       }

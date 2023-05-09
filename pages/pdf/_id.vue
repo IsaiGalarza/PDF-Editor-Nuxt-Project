@@ -612,6 +612,7 @@ export default mixins(PdfAuth).extend({
     this.$store.commit('SET_FILE_INITIAL', null)
     this.$store.commit("SET_AGREE_SIGN", -1)
     window.removeEventListener("resize", this.resizeHandler);
+    localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true}))
   },
   async asyncData({ $axios, params, error, store }) {
     const file = await $axios

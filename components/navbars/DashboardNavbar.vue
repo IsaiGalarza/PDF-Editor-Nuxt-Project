@@ -9,11 +9,6 @@
 
     <div v-if="$auth.loggedIn" class="h-full self-stretch flex items-center">
       <!-- Start:: search -->
-
-      <!-- End:: search -->
-
-   
-
    
 
       <!-- container for user name -->

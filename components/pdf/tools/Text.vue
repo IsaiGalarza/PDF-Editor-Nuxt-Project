@@ -9,7 +9,7 @@
       :style="style"
       :textImageContent="svgToImageData"
       :initialFontSize="initialFontSize"
-      :height="(initialFontSize * 1.5)"
+      :height="(initialFontSize * 1.5) + (3*this.responsiveToolDim.width)"
       :scalefactor="responsiveToolDim.width"
       class="input-annotation whitespace-nowrap flex items-center"
       placeholder="Type here..."

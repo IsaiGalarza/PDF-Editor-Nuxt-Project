@@ -32,8 +32,8 @@ export default {
     }
   },
 
-   // Listen for the beforeinstallprompt event and save the deferredPrompt object
-   created() {
+  // Listen for the beforeinstallprompt event and save the deferredPrompt object
+  created() {
     console.log('%c Created Called ', 'color: #00BCD4; font-weight: bold')
 
     window.addEventListener('beforeinstallprompt', (event) => {
@@ -44,13 +44,19 @@ export default {
 
     if ('beforeinstallprompt' in window) {
       // Browser supports beforeinstallprompt event
-      console.log('%c beforeinstallprompt SUPPORTED', 'color: #CDDC39; font-weight: bold')
+      console.log(
+        '%c beforeinstallprompt CALLED',
+        'color: #CDDC39; font-weight: bold'
+      )
     } else {
       // Browser does not support beforeinstallprompt event
-      console.log('%c beforeinstallprompt NOT SUPPORTED', 'color: #F44336; font-weight: bold')
+      console.log(
+        '%c beforeinstallprompt NOT CALLED',
+        'color: #F44336; font-weight: bold'
+      )
     }
   },
-  
+
   mounted() {
     console.log('%c Mounted Called ', 'color: #009688; font-weight: bold')
 
@@ -64,7 +70,7 @@ export default {
   // In a method triggered by a button click, use the deferredPrompt object to prompt the user to install the PWA
   methods: {
     // Install the PWA
-    async installPWA() {
+    installPWA() {
       if (this.deferredPrompt) {
         // Show the install prompt
         this.deferredPrompt.prompt()

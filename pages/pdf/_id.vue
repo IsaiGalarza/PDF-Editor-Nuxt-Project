@@ -1056,6 +1056,15 @@ export default mixins(PdfAuth).extend({
         )
       }
     },
+    getALlInput(){
+      setTimeout(() => {
+        let inputs = $('.annotationLayer').find(':input')
+        Array.from(inputs).forEach((element, index) => {
+          element.setAttribute("name", this.$store.getters.getPdfAnnotations[index].fieldName)
+          element.setAttribute("id", this.$store.getters.getPdfAnnotations[index].id)
+        });
+      }, 2000);
+    },
     checkUserPermission() {
       let permissionQuery = this.$route.query?.permissiontoken
       if(!permissionQuery) return
@@ -1087,7 +1096,7 @@ export default mixins(PdfAuth).extend({
       const { user } = this.file
       this.$store.commit('SET_PDF_EXIT', false)
       this._setPdfToolBarCompanyName()
-      // this.checkFilePrivacyOnload()
+      this.getALlInput()
             
       let parentWidth = document.querySelector('.pdf-single-page-outer').getBoundingClientRect().width
       let parentHeight = document.querySelector('.pdf-single-page-outer').getBoundingClientRect().height

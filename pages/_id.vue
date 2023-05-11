@@ -154,6 +154,7 @@ import PG_Tutorial_5 from "~/components/profile/modal/PopUps/PG_Tutorial_5.vue"
 import PG_Tutorial_6 from "~/components/profile/modal/PopUps/PG_Tutorial_6.vue"
 import PG_Tutorial_7 from "~/components/profile/modal/PopUps/PG_Tutorial_7.vue"
 import PG_Tutorial_8 from "~/components/profile/modal/PopUps/PG_Tutorial_8.vue"
+import registerServiceWorker from '~/plugins/register-service-worker'
 
 
 export default Vue.extend({
@@ -213,6 +214,9 @@ export default Vue.extend({
     this.getUserFiles(this.returnedDataPage, this.searchFileParam)
     this.generateQR()
     // document.body.style.overflow = 'auto'
+    if (process.client) {
+      registerServiceWorker(this.$route)
+    }
   },
   computed: {
     isAuthor() {

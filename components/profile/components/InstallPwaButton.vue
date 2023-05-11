@@ -32,9 +32,30 @@ export default {
     }
   },
 
-  // Listen for the beforeinstallprompt event and save the deferredPrompt object
-  created() {
+   // Listen for the beforeinstallprompt event and save the deferredPrompt object
+   created() {
+    console.log('%c Created Called ', 'color: #00BCD4; font-weight: bold')
+
     window.addEventListener('beforeinstallprompt', (event) => {
+      console.log('%c event ', 'color: #00BCD4; font-weight: bold', event)
+      event.preventDefault()
+      this.deferredPrompt = event
+    })
+
+    if ('beforeinstallprompt' in window) {
+      // Browser supports beforeinstallprompt event
+      console.log('%c beforeinstallprompt SUPPORTED', 'color: #CDDC39; font-weight: bold')
+    } else {
+      // Browser does not support beforeinstallprompt event
+      console.log('%c beforeinstallprompt NOT SUPPORTED', 'color: #F44336; font-weight: bold')
+    }
+  },
+  
+  mounted() {
+    console.log('%c Mounted Called ', 'color: #009688; font-weight: bold')
+
+    window.addEventListener('beforeinstallprompt', (event) => {
+      console.log('%c event ', 'color: #009688; font-weight: bold', event)
       event.preventDefault()
       this.deferredPrompt = event
     })

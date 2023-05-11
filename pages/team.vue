@@ -82,7 +82,11 @@
           <tr>
             <th class="text-left font-[500] ">Member</th>
             
-            <th class="text-center font-[500]  right">Email</th>
+            <th class=" font-[500] flex justify-end ">
+            <div  class="w-1/2 px-4 ">
+              Email
+            </div>
+          </th>
           </tr>
         </thead>
         <tbody class="text-[#505050]">
@@ -101,8 +105,11 @@
                 <span class="text-sm">{{ `${member.firstName} ${member.lastName}` }}</span>
               </div>
             </td>
-            <td>
+            <td class=" flex justify-end ">
+            <div class="w-1/2 px-4">
               {{ member.email }}
+              </div>
+             
             </td>
            
           </tr>
@@ -249,7 +256,15 @@ export default Vue.extend({
     getTeamMember(val, search) {
       this.$axios.$get(`/users?teamId=${(this.$auth.user).id}&$sort[createdAt]=-1&$skip=${val}&firstName[$like]=${search || ''}%`)
         .then((response) => {
-          this.teamMembers = response.data
+          let teamOwner =  {
+            firstName: this.$auth.user?.firstName, 
+            lastName:`${this.$auth.user?.lastName} (you)`,
+            profilePicture:this.$auth.user?.profilePicture,
+            role:this.$auth.user?.role,
+            email:this.$auth.user?.email,
+          
+          }
+          this.teamMembers = [teamOwner, ...response.data]
           this.totalMembers = response.total
         })
         .catch(() => {

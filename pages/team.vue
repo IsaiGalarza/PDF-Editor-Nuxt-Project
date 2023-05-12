@@ -10,6 +10,9 @@
       <p class=""> {{ teamMembers?.length }}</p>
       </div>
      </div>
+     <social-sharing url="https://example.com" >
+          Share
+          </social-sharing>
       <div class="text-white flex items-center">
         <form action="" class="w-full xs:max-w-[280px] text-xs font-medium flex items-center relative justify-end mr-2"
           @submit.prevent="$event.preventDefault()">
@@ -20,6 +23,8 @@
               class="search-input text-black h-10 pl-4 mr-2 bg-transparent flex-1 border border-paperdazgreen-300 rounded-tl-lg rounded-bl-lg focus:border-paperdazgreen-700 outline-none"
               placeholder="Search Files" v-model="teamSearch" />
           </span>
+
+       
 
           <button @click="show = !show"
             class="   transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
@@ -154,6 +159,8 @@ import UserTypeEnum from '~/models/UserTypeEnum'
 import StatusUser from '~/models/StatusUser'
 import LedgerIcon from '~/components/svg-icons/LedgerIcon.vue'
 import LetterAvatar from '~/components/widgets/LetterAvatar.vue'
+import SocialSharing from 'vue-social-sharing'
+
 
 
 export default Vue.extend({
@@ -169,7 +176,8 @@ export default Vue.extend({
     FilePagination,
     SpinnerDottedIcon,
     LedgerIcon,
-    LetterAvatar
+    LetterAvatar,
+    SocialSharing
   },
   name: 'TeamsPage',
   layout: 'dashboard',

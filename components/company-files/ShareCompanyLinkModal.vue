@@ -40,7 +40,7 @@
 
       <button @click="copyToClipboard" class="w-[40%] flex bg-paperdazgray-300/20 items-center py-2 px-2 rounded">
         <link-icon width="20" height="20" color="rgb(96,98,102)" class="cursor-pointer" />
-        <abbr class="pl-2">Copy linkk</abbr>
+        <abbr class="pl-2">Copy link</abbr>
       </button>
 
       <button @click="showQrcode = true" class="w-[40%] flex bg-paperdazgray-300/20 items-center py-2 px-2 rounded">
@@ -220,8 +220,6 @@ export default Vue.extend({
         title: 'Copy',
         message: 'Copy Successfully',
       })
-
-
     },
     showQrcodeFileFuncEmit() {
       this.$emit('qrLoad');

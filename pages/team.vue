@@ -14,7 +14,8 @@
         <form action="" class="w-full xs:max-w-[280px] text-xs font-medium flex items-center relative justify-end mr-2"
           @submit.prevent="$event.preventDefault()">
 
-          <span class="el-dropdown-link" :class="[show ? 'left-roll' : 'no-roll']">
+          <span class="el-dropdown-link no-roll" >
+          <!-- <span class="el-dropdown-link" :class="[show ? 'left-roll' : 'no-roll']"> -->
             <input type="text"
               class="search-input text-black h-10 pl-4 mr-2 bg-transparent flex-1 border border-paperdazgreen-300 rounded-tl-lg rounded-bl-lg focus:border-paperdazgreen-700 outline-none"
               placeholder="Search Files" v-model="teamSearch" />
@@ -94,13 +95,19 @@
             <!-- <td class="w-12 text-center fixed-col left">{{ i + 1 }}</td> -->
             <td>
               <div class="flex items-center gap-3">
-                <span class="p-0.5 border border-paperdazgreen-400"
-                  :class="[member.role == userType.PAID ? 'rounded-md w-9 h-9' : 'circle circle-17']">
-                  <img :src="
-                    (member || {}).profilePicture ||
-                    '/img/placeholder_picture.png'
+                <span class="">
+                  <img  v-if="(member || {}).profilePicture"  :src="
+                    (member || {}).profilePicture 
                   " alt=""
-                    :class="[member.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
+                   class='w-[45px]  h-[45px] rounded-full' />
+
+                   
+                   <letter-avatar
+                   v-else 
+                    class="border border-paperdazgreen-400 circle circle-17"
+                    :username="member.firstName"
+                  />
+                
                 </span>
                 <span class="text-sm">{{ `${member.firstName} ${member.lastName}` }}</span>
               </div>
@@ -146,6 +153,8 @@ import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
 import UserTypeEnum from '~/models/UserTypeEnum'
 import StatusUser from '~/models/StatusUser'
 import LedgerIcon from '~/components/svg-icons/LedgerIcon.vue'
+import LetterAvatar from '~/components/widgets/LetterAvatar.vue'
+
 
 export default Vue.extend({
   components: {
@@ -159,7 +168,8 @@ export default Vue.extend({
     MaxInviteModal,
     FilePagination,
     SpinnerDottedIcon,
-    LedgerIcon
+    LedgerIcon,
+    LetterAvatar
   },
   name: 'TeamsPage',
   layout: 'dashboard',

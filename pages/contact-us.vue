@@ -45,9 +45,9 @@
             </button>
             <button :class="[isLoading ? 'opacity-60' : 'opacity-100']" :disabled="isLoading"
               class="outline-btn-sm text-white bg-[#77C360]">
-              <span class="mr-2">Send</span>
-              <transition name="fade" :duration="100">
-                <span v-show="isLoading" class="animate-spin">
+              <span v-if="!isLoading" class="mr-2">Send</span>
+              <transition v-else name="fade" :duration="100">
+                <span  class="animate-spin">
                   <SpinnerDottedIcon height="22" width="22" />
                 </span>
               </transition>
@@ -156,7 +156,6 @@ export default mixins(GlobalMixin).extend({
         .then(() => {
           this.toggleToast({ active: true, msg: ` Thank you!  We look forward to partnering  with you. ` })
           this.errorMessage = ''
-
           this.partner.firstName = ''
           this.partner.lastName = ''
           this.partner.email = ''

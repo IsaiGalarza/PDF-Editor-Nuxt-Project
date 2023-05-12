@@ -1110,7 +1110,7 @@ export default mixins(PdfAuth).extend({
       const { user } = this.file
       this.$store.commit('SET_PDF_EXIT', false)
       this._setPdfToolBarCompanyName()
-      this.getALlInput()
+
             
       let parentWidth = document.querySelector('.pdf-single-page-outer').getBoundingClientRect().width
       let parentHeight = document.querySelector('.pdf-single-page-outer').getBoundingClientRect().height
@@ -1132,6 +1132,7 @@ export default mixins(PdfAuth).extend({
         this.scrollToSignInitial('mounted')
       }, 1000)
       this.pdfBoundingRect()
+      this.getALlInput()
     },
     setPageHeight(val) {
       this.pageHeight = val

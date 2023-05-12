@@ -355,7 +355,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     showModal(val) {
       this.$emit('updateVisibility', val)
-      val && this.isSign &&  !this.file?.user?.allowCopy && this.onSubmit()
+      val && this.isSign &&  !this.file?.user?.allowCopy && !this.isCreator && this.onSubmit()
     },
     '$auth.user': function () {
       this.convertImageToBase64(this.$auth?.user?.signatureURL)

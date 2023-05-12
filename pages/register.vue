@@ -189,6 +189,7 @@ export default Vue.extend({
       business_email: '',
       business_number: '',
       errorMessageUser: '',
+      cardId: null,
     }
   },
   computed: {
@@ -273,9 +274,9 @@ export default Vue.extend({
       try {
         await this.$axios
           .post('/users', this.userPayload)
-          .then((response) => {
+          .then(async (response) => {
             this.$auth.setUser(response.data)
-            this.createCard()
+            await this.createCard()
           })
       } catch ({ response }) {
         console.log(response)
@@ -301,8 +302,26 @@ export default Vue.extend({
     async createCard() {
       await this.$axios
         .post('/cards', this.cardPayload)
-        .then(() => this.createSubscription())
-        .catch((err) => (this.errorMessage = err))
+        .then((res) => {
+          this.cardId = res.data.id
+          this.createSubscription()
+        })
+        .catch((err) => console.log(err))
+    },
+    async deleteCard(){
+      await this.$axios.delete(`/cards/${this.cardId}`)
+    },
+    async getUserByEmail(){
+      this.$axios.get(`/users/?email=${this.business_email}`)
+      .then(async (res)=>{
+        if(res.data.data[0].isEmailVerified == 0 ) {
+          await this.deleteCard() 
+          await  this.deleteUser(res.data.data[0].id)
+        }
+      })
+    },
+    async deleteUser(val){
+      await this.$axios.delete(`/users/${val}`)
     },
     async createSubscription() {
       await this.$axios
@@ -315,14 +334,15 @@ export default Vue.extend({
           this.$nuxt.$router.push('/')
         }
         )
-        .catch((err) => {
+        .catch(async (err) => {
           this.isLoading = false
-          this.errorMessage = err
+          this.errorMessage = err;
+          await this.getUserByEmail()
         })
         .finally(() => (this.isLoading = false))
     },
     async submit() {
-      this.testCard()
+      await this.testCard()
     },
     inputCardNumber(val) {
       if (val.length > 19) return

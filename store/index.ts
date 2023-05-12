@@ -43,7 +43,8 @@ export const state = () => ({
   pdfpagesDim: {
     width: 0,
     height: 0
-  }
+  },
+  pdfAnnotations: []
 })
 
 export type RootState = ReturnType<typeof state>
@@ -51,6 +52,9 @@ export type RootState = ReturnType<typeof state>
 export const getters: GetterTree<RootState, RootState> = {
   getSaveUser( state: any){
     return state.saveUser
+  },
+  getPdfAnnotations(state: any){
+    return state.pdfAnnotations
   },
   getPdfZoomScale( state: any){
     return state.pdfZoomScale
@@ -135,6 +139,9 @@ export const mutations: MutationTree<RootState> = {
   // -- Setting the user --
   SET_SAVE_USER(state, payload) {
     state.saveUser = payload
+  },
+  SET_PDF_ANNOTATIONS(state, payload) {
+    state.pdfAnnotations = payload
   },
   SET_PDF_ZOOM_SCALE(state, payload) {
     state.pdfZoomScale = payload

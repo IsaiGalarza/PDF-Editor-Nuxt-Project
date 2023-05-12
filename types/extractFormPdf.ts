@@ -257,9 +257,9 @@ export const ExtractFormPdf = ({
 
                     axisX: [
                       element.getBoundingClientRect().left,
-                      item.getBoundingClientRect().left - pdfOffset_x,
+                      item.getBoundingClientRect().left + pdfOffset_x,
                     ],
-                    left: formatStyle("left",(item as any).getAttribute('style'))- pdfOffset_x,
+                    left: formatStyle("left",(item as any).getAttribute('style'))+ pdfOffset_x,
                     top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                     length: item.getBoundingClientRect().width,
                     svgImagePath: tools.children[0].getAttribute('svgToImage'),
@@ -283,7 +283,7 @@ export const ExtractFormPdf = ({
                     axisX: [
                       element.getBoundingClientRect().left,
                       item.children[0].children[0].children[0].getBoundingClientRect()
-                        .left - pdfOffset_x,
+                        .left + pdfOffset_x,
                     ],
                     axisX2: [
                       item.children[0].children[0].children[0].getBoundingClientRect()
@@ -313,7 +313,7 @@ export const ExtractFormPdf = ({
                     axisX: [
                       element.getBoundingClientRect().left,
                       item.children[0].children[0].children[0].getBoundingClientRect()
-                        .left - pdfOffset_x,
+                        .left + pdfOffset_x,
                     ],
                     attr: (item as any).getAttribute('style'),
                     tools: signLabel,
@@ -340,9 +340,9 @@ export const ExtractFormPdf = ({
   
                           axisX: [
                             element.getBoundingClientRect().left,
-                            item.getBoundingClientRect().left - pdfOffset_x,
+                            item.getBoundingClientRect().left + pdfOffset_x,
                           ],
-                        left: formatStyle("left",(item as any).getAttribute('style'))- pdfOffset_x,
+                        left: formatStyle("left",(item as any).getAttribute('style'))+ pdfOffset_x,
                         top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                         svgHeight: tools.children[0].getBoundingClientRect()
                           .height,
@@ -366,10 +366,10 @@ export const ExtractFormPdf = ({
                         width: tools.children[0].getBoundingClientRect().width,
                         axisX: [
                           element.getBoundingClientRect().left,
-                          item.getBoundingClientRect().left - pdfOffset_x,
+                          item.getBoundingClientRect().left + pdfOffset_x,
                         ],
                         lineHeight: parseInt(getComputedStyle(tools.children[0]).getPropertyValue('line-height').replace('px', '')),
-                        left: formatStyle("left",(item as any).getAttribute('style')) - pdfOffset_x,
+                        left: formatStyle("left",(item as any).getAttribute('style')) + pdfOffset_x,
                         top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                         textImageContent: tools.children[0].getAttribute('textImageContent'),
                         tools: tools.children[0].innerText,
@@ -392,7 +392,7 @@ export const ExtractFormPdf = ({
 
                         axisX: [
                           element.getBoundingClientRect().left,
-                          item.getBoundingClientRect().left - pdfOffset_x,
+                          item.getBoundingClientRect().left + pdfOffset_x,
                         ],
                         height: tools.children[1].getBoundingClientRect().height - 3.5,
                         tools: tools.children[1].textContent || tools.children[0].value,
@@ -421,7 +421,7 @@ export const ExtractFormPdf = ({
 
                         axisX: [
                           element.getBoundingClientRect().left,
-                          item.getBoundingClientRect().left - pdfOffset_x,
+                          item.getBoundingClientRect().left + pdfOffset_x,
                         ],
                         // axisX2: [
                         //   item.children[0].children[0].children[0].getBoundingClientRect()
@@ -446,11 +446,11 @@ export const ExtractFormPdf = ({
                           item.getBoundingClientRect().top - pdfOffset_y,
                         ],
                         lineHeight: 18,
-                        left: formatStyle("left",(item as any).getAttribute('style')) - pdfOffset_x,
+                        left: formatStyle("left",(item as any).getAttribute('style')) + pdfOffset_x,
                         top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                         axisX: [
                           element.getBoundingClientRect().left,
-                          item.getBoundingClientRect().left - pdfOffset_x,
+                          item.getBoundingClientRect().left + pdfOffset_x,
                         ],
                         tools: signLabel,
                         elem: element,
@@ -487,6 +487,7 @@ export const ExtractFormPdf = ({
         // let inputs = document.querySelectorAll(".annotationLayer > input")
         let inputs = $('.annotationLayer').find(':input')
         Array.from(inputs).forEach((elementList: any) => {
+          console.log("input-type", elementList.checked, elementList.type)
           switch (elementList.type) {
             case 'text':
               ; (pdfScrappedData.data as any).push({
@@ -509,6 +510,13 @@ export const ExtractFormPdf = ({
                 value: elementList.value,
               })
               break
+            case 'time':
+                ; (pdfScrappedData.data as any).push({
+                  type: 'PDFTextField',
+                  fieldName: elementList.name,
+                  value: elementList.value,
+                })
+                break
             case 'checkbox':
               ; (pdfScrappedData.data as any).push({
                 type: 'PDFCheckBox',
@@ -535,7 +543,7 @@ export const ExtractFormPdf = ({
                 type: 'PDFRadioGroup',
                 fieldName: elementList.name,
                 value: elementList.checked,
-                checkedIndex: 0,
+                checkedIndex: 1,
               })
               break
 

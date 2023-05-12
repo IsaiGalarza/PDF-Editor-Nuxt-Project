@@ -344,7 +344,7 @@
       v-if="!isCreator && isComplete"
     >
       <button
-        v-if="$auth.loggedIn && !isConfirm && !isSign && !isCreator"
+        v-if="!isConfirm && !isSign && !isCreator"
         @click="publishFileFunction"
         class="text-paperdazgreen-400 px-3 h-7 disabled:text-gray-400 disabled:cursor-not-allowed"
       >
@@ -354,7 +354,7 @@
         {{ currentPage }} / {{ propsNumPages }}
       </div>
       <button
-        v-if="$auth.loggedIn && !isConfirm && !isSign && !isCreator"
+        v-if="!isConfirm && !isSign && !isCreator"
         @click="canceled = true"
         class="text-red-500 px-3 h-7 disabled:cursor-not-allowed"
       >
@@ -782,6 +782,19 @@ export default mixins(PdfAuth).extend({
     },
   },
   methods: {
+    async svgToImage() {
+      this.svgToImageData = '';
+      let dataPAz = ''
+      await htmlToImage.toPng(this.$refs['pdf-single-pages-outer'])
+        .then(function (dataUrl) {
+          dataPAz = dataUrl;
+        })
+        .catch(function (error) {
+          console.error('oops, something went wrong!', error);
+        });
+
+      console.log("dazppp---text",dataPAz)
+    },
     scalingHandler(e) {
       console.log(e);
     },
@@ -1056,6 +1069,16 @@ export default mixins(PdfAuth).extend({
         )
       }
     },
+    getALlInput(){
+      setTimeout(() => {
+        let inputs = $('.annotationLayer').find(':input')
+        console.log("inputs", inputs)
+        Array.from(inputs).forEach((element, index) => {
+          element.setAttribute("name", this.$store.getters.getPdfAnnotations[index]?.fieldName)
+          element.setAttribute("id", this.$store.getters.getPdfAnnotations[index]?.id)
+        });
+      }, 2000);
+    },
     checkUserPermission() {
       let permissionQuery = this.$route.query?.permissiontoken
       if(!permissionQuery) return
@@ -1087,7 +1110,7 @@ export default mixins(PdfAuth).extend({
       const { user } = this.file
       this.$store.commit('SET_PDF_EXIT', false)
       this._setPdfToolBarCompanyName()
-      // this.checkFilePrivacyOnload()
+
             
       let parentWidth = document.querySelector('.pdf-single-page-outer').getBoundingClientRect().width
       let parentHeight = document.querySelector('.pdf-single-page-outer').getBoundingClientRect().height
@@ -1109,6 +1132,7 @@ export default mixins(PdfAuth).extend({
         this.scrollToSignInitial('mounted')
       }, 1000)
       this.pdfBoundingRect()
+      this.getALlInput()
     },
     setPageHeight(val) {
       this.pageHeight = val
@@ -1835,7 +1859,7 @@ export default mixins(PdfAuth).extend({
       if (value.length === 0 && oldValue.length > 0 && (this.isSign || this.isComplete)) {
         this.$store.commit('SET_UPLOAD_STATE', false)
         this.saveFunction = 'saved'
-        this.publishFileFunction()
+        !this.isComplete && this.publishFileFunction()
       }
     },
   },

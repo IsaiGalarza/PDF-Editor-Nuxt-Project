@@ -72,7 +72,7 @@ export default {
       // canvas.style.height = '100%'
       // context.setTransform(ratio, 0, 0, ratio, 0, 0)
 
-      var viewport = page.getViewport(5.0);
+      var viewport = page.getViewport(3.0);
       canvas.height = viewport.height;
       canvas.width = viewport.width;
       canvas.classList.add('page')

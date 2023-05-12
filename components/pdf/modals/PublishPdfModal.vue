@@ -267,10 +267,10 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       return this.$auth.user?.initialURL || initialURL
     },
     pdfOffsetY() {
-      return this.$store.state.pdfOffset_y * this.$store.state.pdfScale
+      return this.$store.state.pdfOffset_y 
     },
     pdfOffsetX() {
-      return this.$store.state.pdfOffset_x * this.$store.state.pdfScale
+      return this.$store.state.pdfOffset_x
     },
     ledgerInfo() {
       return {
@@ -453,8 +453,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           // actionBy: `${this.$auth.user.firstName} ${this.$auth.user.lastName}`.toUpperCase()
         })
         .then((response) => {
-          // this.isLoading = false
-          this.addToLedger()
+          this.isLoading = false
+          // this.addToLedger()
           this.generatedPdf = response.data
         })
       } catch (error) {

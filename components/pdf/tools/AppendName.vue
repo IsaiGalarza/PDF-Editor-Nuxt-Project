@@ -1,10 +1,10 @@
 <template>
   <div class="text-field tool" @click="confirmStarAction" attr="star">
     <p 
-    v-if="confirmStar" :style="style"
+        v-if="confirmStar"
+        :style="style"
         @focus="focus = true"
         @blur="onBlur"
-        :height="initialFontSize * 1.5"
         :textImageContent="svgToImageData"
         contenteditable="true"
         :initialFontSize="initialFontSize"
@@ -63,7 +63,7 @@ export default {
   },
   watch: {
     generatePDF: function () {
-      if (this.generatePDF) this.svgToImage()
+      // if (this.generatePDF) this.svgToImage()
     },
   },
   mounted() {
@@ -85,7 +85,9 @@ export default {
     style() {
       return {
         // fontSize: `${this.fontSize || 11}px`,
-        fontSize: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveToolDim.width}px`,
+        fontWeight: 400,
+        lineHeight: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveToolDim.width * 1.2}px`,
+        fontSize: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveToolDim.width * 1.2}px`,
       }
     },
     notBtn() {

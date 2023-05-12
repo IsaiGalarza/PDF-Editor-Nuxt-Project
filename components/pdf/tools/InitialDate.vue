@@ -6,7 +6,6 @@
   >
     <p ref="datebox"
     :initialFontSize="initialFontSize"
-    :height="(initialFontSize * 1.5)"
     :textImageContent="svgToImageData"
     v-if="!isCreator"
     :style="style">{{ nowDate }}</p>
@@ -56,7 +55,8 @@ export default {
     style() {
       return {
         // fontSize: `${this.fontSize || 11}px`,
-        fontSize: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveToolDim.width}px`,
+        fontSize: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveToolDim.width * 1.2}px`,
+        lineHeight: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveToolDim.width * 1.2}px`,
       }
     },
     notBtn() {
@@ -66,13 +66,13 @@ export default {
   },
   mounted() {
    setTimeout(() => {
-    this.$emit('addOffset', !this.isCreator ? (5 * this.responsiveToolDim.height) : 0)
+    this.$emit('addOffset', !this.isCreator ?  7 : 0)
    }, 300);
   },
   watch: {
     generatePDF: function () {
-      if (this.generatePDF)
-        this.svgToImage()
+      // if (this.generatePDF)
+      //   this.svgToImage()
     },
   },
   methods: {

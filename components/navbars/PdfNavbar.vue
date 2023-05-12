@@ -13,21 +13,25 @@
             <div class="inline-flex items-center gap-1">
                 <!-- <a :href="`/public/profile/${title.route}`"  target="_blanck">{{ title.name || routeName }}</a> -->
                 <span
-                    v-if="companyPhoto"
-                    class="border border-paperdazgreen-300 mr-2 p-0.5 w-[40px] h-[40px] rounded-md overflow-hidden relative"
+                    v-if="FrombusinessPage"
+                    class="border border-paperdazgreen-300 mr-2 p-0.5 w-[40px] h-[40px] rounded-md flex justify-center items-center overflow-hidden relative"
                 >
                     <img
+                        v-if="companyPhoto != null"
                         :src="companyPhoto"
                         class="w-full h-full profilePhoto"
                         alt=""
                         :class="[isPaidUser ? 'rounded-md' : 'rounded-full']"
                     />
+                    <abbr class="font-bold text-2xl text-paperdazgreen-300" v-else>{{(businessName || '').charAt(0)}}</abbr>
                 </span>
                 <span
                     v-else
                     class="text-3xl font-bold w-full h-full text-center text-paperdazgreen-300 rounded-md"
                     style="text-shadow: 1px 2px 3px rgb(200,200,200)"
-                    >{{ (userCompanyName || '').charAt(0).toUpperCase() }}</span
+                    >
+                    <img src="/icon.png" class="mr-3" width="23" height="23" />
+                    </span
                 >
 
                 <!-- <div  class="lg:hidden flex flex-col text-sm leading-[15px] justify-end">
@@ -141,6 +145,7 @@ import StatusUser from '~/models/StatusUser'
 import LandingPageSearchModal from '../landing/LandingPageSearchModal.vue'
 import SearchShare from '../search-strips/component/SearchShare.vue'
 import LetterAvatar from '../widgets/LetterAvatar.vue'
+
 
 // email-acout emauil,password-referal-code
 export default mixins(GlobalMixin, login).extend({

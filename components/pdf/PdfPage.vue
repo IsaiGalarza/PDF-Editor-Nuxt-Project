@@ -72,7 +72,7 @@ export default {
       // canvas.style.height = '100%'
       // context.setTransform(ratio, 0, 0, ratio, 0, 0)
 
-      var viewport = page.getViewport(5.0);
+      var viewport = page.getViewport(3.0);
       canvas.height = viewport.height;
       canvas.width = viewport.width;
       canvas.classList.add('page')
@@ -100,6 +100,8 @@ export default {
       let annotationLayer = this.$refs.annotationLayer
       let annotations = await page.getAnnotations();
 
+      this.$store.commit('SET_PDF_ANNOTATIONS', annotations.filter((item)=> item.fieldName))
+      console.log(annotations.filter((item)=> item.fieldName))
       var unscaledViewport = page.getViewport({ scale: 1 });
 
       let v = page.getViewport({ scale: this.$refs.PdfPage.clientWidth / unscaledViewport.width })

@@ -21,7 +21,7 @@
 
       <div class="flex flex-wrap justify-center items-center">
         <form
-        ref="form"
+          ref="form"
           @submit.prevent="onSubmit"
           class="md:w-5/12 lg:w-4/12 mx-3 sm:w-8/12 px-1 flex justify-center flex-wrap md:order-1 order-2 border-2 border-paperdazgreen-400 rounded-lg"
         >
@@ -75,13 +75,11 @@
               :disabled="isLoading"
               class="w-full rounded-sm py-2 my-3 mb-4 text-white bg-paperdazgreen-500 text-[17px] flex justify-center items-center"
             >
-              <span  v-show="!isLoading" class="mr-2">Send</span>
+              <span v-show="!isLoading" class="mr-2">Send</span>
               <transition name="fade" :duration="100">
                 <span v-show="isLoading" class="animate-spin">
                   <SpinnerDottedIcon height="22" width="22" />
                 </span>
-
-                
               </transition>
             </button>
           </div>
@@ -91,18 +89,16 @@
           class="px-4 md:w-5/12 sm:w-8/12 md:px-[4%] flex flex-wrap justify-center md:order-2 order-1"
         >
           <p class="font-normal text-[1rem] py-4 w-full">
-            Small actions have a way of adding up to something big. When you
-            find a solution to an existing problem that helps reduce your
-            environmental footprint and saves energy and time, we all win
-            without sacrificing anything.
+            Small actions have a way of adding up to something big. When you find a
+            solution to an existing problem that helps reduce your environmental footprint
+            and saves energy and time, we all win without sacrificing anything.
           </p>
           <p class="text-[1.3rem] font-bold py-4 text-center w-10/12">
             Social Influencers, Bloggers, Non profit organizations
           </p>
           <p class="font-normal text-[1rem] py-4 w-full">
-            We welcome all types of partnerships that can help spread our
-            mission to the world. If you believe in our concept, please contact
-            us!
+            We welcome all types of partnerships that can help spread our mission to the
+            world. If you believe in our concept, please contact us!
           </p>
         </div>
       </div>
@@ -112,14 +108,14 @@
 </template>
 
 <script>
-import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
-import MessageAlertWidget from '~/components/widgets/MessageAlertWidget.vue'
-import mixins from 'vue-typed-mixins'
-import GlobalMixin from '~/mixins/GlobalMixin'
+import SpinnerDottedIcon from "~/components/svg-icons/SpinnerDottedIcon.vue";
+import MessageAlertWidget from "~/components/widgets/MessageAlertWidget.vue";
+import mixins from "vue-typed-mixins";
+import GlobalMixin from "~/mixins/GlobalMixin";
 
 export default mixins(GlobalMixin).extend({
-  name: 'partners',
-  layout: 'landing',
+  name: "partners",
+  layout: "landing",
   auth: false,
   components: {
     SpinnerDottedIcon,
@@ -128,58 +124,74 @@ export default mixins(GlobalMixin).extend({
   data() {
     return {
       isLoading: false,
-      errorMessage: '',
+      errorMessage: "",
       partner: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        message: '',
-        type: 'customer',
+        firstName: "",
+        lastName: "",
+        email: "",
+        message: "",
+        type: "customer",
       },
-    }
+    };
   },
   methods: {
     async onSubmit() {
       //  <-- validating user name -->
-      let inValidName = false
-      var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/
+      let inValidName = false;
+      var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
       if (
         format.test(this.partner.firstName.trim()) ||
         format.test(this.partner.lastName.trim())
       ) {
-        this.$refs.form.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"})
-        this.errorMessage = 'Name format not correct'
-        inValidName = true
+        this.$refs.form.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+          inline: "nearest",
+        });
+        this.errorMessage = "Name format not correct";
+        inValidName = true;
       }
 
-      if (inValidName) return
+      if (inValidName) return;
 
-      if (this.isLoading) return
+      if (this.isLoading) return;
 
-      this.isLoading = true
+      this.isLoading = true;
+
+      let data = {
+        action: "contactUs",
+        firstName: this.partner.firstName,
+        lastName: this.partner.lastName,
+        email: this.partner.email,
+        message: this.partner.message,
+        userId: 0,
+      };
 
       await this.$axios
-        .post('/customer-support', {
-          ...this.partner,
+        .post("/request", {
+          data,
         })
         .then(() => {
-          this.toggleToast({ active: true, msg: ` Thank you!  We look forward to partnering  with you. `})
-          this.errorMessage = ''
+          this.toggleToast({
+            active: true,
+            msg: ` Thank you!  We look forward to partnering  with you. `,
+          });
+          this.errorMessage = "";
 
-          this.partner.firstName = ''
-          this.partner.lastName = ''
-          this.partner.email = ''
-          this.partner.message = ''
+          this.partner.firstName = "";
+          this.partner.lastName = "";
+          this.partner.email = "";
+          this.partner.message = "";
         })
         .catch((err) => {
-          this.errorMessage = 'Unable to register, try again later '
+          this.errorMessage = "Unable to register, try again later ";
         })
         .finally(() => {
-          this.isLoading = false
-        })
+          this.isLoading = false;
+        });
     },
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>
@@ -187,8 +199,8 @@ export default mixins(GlobalMixin).extend({
   @apply w-10/12 py-2;
   label {
     @apply block font-semibold text-[1rem] py-2 relative;
-    i{
-      @apply text-red-500 absolute top-3 ml-1
+    i {
+      @apply text-red-500 absolute top-3 ml-1;
     }
   }
   input {
@@ -201,7 +213,7 @@ export default mixins(GlobalMixin).extend({
 .font-family {
   font-family: inherit !important;
 }
-.no-app-font{
+.no-app-font {
   font-family: Arial, Helvetica, sans-serif !important;
 }
 </style>

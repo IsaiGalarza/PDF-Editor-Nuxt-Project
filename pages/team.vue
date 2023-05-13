@@ -10,15 +10,21 @@
       <p class=""> {{ teamMembers?.length }}</p>
       </div>
      </div>
+     <social-sharing url="https://example.com" >
+          Share
+          </social-sharing>
       <div class="text-white flex items-center">
         <form action="" class="w-full xs:max-w-[280px] text-xs font-medium flex items-center relative justify-end mr-2"
           @submit.prevent="$event.preventDefault()">
 
-          <span class="el-dropdown-link" :class="[show ? 'left-roll' : 'no-roll']">
+          <span class="el-dropdown-link no-roll" >
+          <!-- <span class="el-dropdown-link" :class="[show ? 'left-roll' : 'no-roll']"> -->
             <input type="text"
               class="search-input text-black h-10 pl-4 mr-2 bg-transparent flex-1 border border-paperdazgreen-300 rounded-tl-lg rounded-bl-lg focus:border-paperdazgreen-700 outline-none"
               placeholder="Search Files" v-model="teamSearch" />
           </span>
+
+       
 
           <button @click="show = !show"
             class="   transition duration-0 hover:duration-150 transition duration-0 hover:duration-150">
@@ -82,7 +88,11 @@
           <tr>
             <th class="text-left font-[500] ">Member</th>
             
-            <th class="text-center font-[500]  right">Email</th>
+            <th class=" font-[500] flex justify-end ">
+            <div  class="w-1/2 px-4 ">
+              Email
+            </div>
+          </th>
           </tr>
         </thead>
         <tbody class="text-[#505050]">
@@ -90,19 +100,28 @@
             <!-- <td class="w-12 text-center fixed-col left">{{ i + 1 }}</td> -->
             <td>
               <div class="flex items-center gap-3">
-                <span class="p-0.5 border border-paperdazgreen-400"
-                  :class="[member.role == userType.PAID ? 'rounded-md w-9 h-9' : 'circle circle-17']">
-                  <img :src="
-                    (member || {}).profilePicture ||
-                    '/img/placeholder_picture.png'
+                <span class="">
+                  <img  v-if="(member || {}).profilePicture"  :src="
+                    (member || {}).profilePicture 
                   " alt=""
-                    :class="[member.role == userType.PAID ? 'w-full h-full rounded-md' : 'w-full h-full rounded-full']" />
+                   class='w-[45px]  h-[45px] rounded-full' />
+
+                   
+                   <letter-avatar
+                   v-else 
+                    class="border border-paperdazgreen-400 circle circle-17"
+                    :username="member.firstName"
+                  />
+                
                 </span>
                 <span class="text-sm">{{ `${member.firstName} ${member.lastName}` }}</span>
               </div>
             </td>
-            <td>
+            <td class=" flex justify-end ">
+            <div class="w-1/2 px-4">
               {{ member.email }}
+              </div>
+             
             </td>
            
           </tr>
@@ -139,6 +158,10 @@ import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
 import UserTypeEnum from '~/models/UserTypeEnum'
 import StatusUser from '~/models/StatusUser'
 import LedgerIcon from '~/components/svg-icons/LedgerIcon.vue'
+import LetterAvatar from '~/components/widgets/LetterAvatar.vue'
+import SocialSharing from 'vue-social-sharing'
+
+
 
 export default Vue.extend({
   components: {
@@ -152,7 +175,9 @@ export default Vue.extend({
     MaxInviteModal,
     FilePagination,
     SpinnerDottedIcon,
-    LedgerIcon
+    LedgerIcon,
+    LetterAvatar,
+    SocialSharing
   },
   name: 'TeamsPage',
   layout: 'dashboard',
@@ -249,7 +274,15 @@ export default Vue.extend({
     getTeamMember(val, search) {
       this.$axios.$get(`/users?teamId=${(this.$auth.user).id}&$sort[createdAt]=-1&$skip=${val}&firstName[$like]=${search || ''}%`)
         .then((response) => {
-          this.teamMembers = response.data
+          let teamOwner =  {
+            firstName: this.$auth.user?.firstName, 
+            lastName:`${this.$auth.user?.lastName} (you)`,
+            profilePicture:this.$auth.user?.profilePicture,
+            role:this.$auth.user?.role,
+            email:this.$auth.user?.email,
+          
+          }
+          this.teamMembers = [teamOwner, ...response.data]
           this.totalMembers = response.total
         })
         .catch(() => {

@@ -9,7 +9,6 @@
       :style="style"
       :textImageContent="svgToImageData"
       :initialFontSize="initialFontSize"
-      :height="initialFontSize * 1.5"
       :scalefactor="responsiveToolDim.width"
       class="input-annotation whitespace-nowrap flex items-center"
       placeholder="Type here..."
@@ -82,8 +81,8 @@ export default {
   },
   watch: {
     generatePDF: function () {
-      if (this.generatePDF)
-        this.svgToImage()
+      // if (this.generatePDF)
+        // this.svgToImage()
     },
     value (v) {
       if (this.text != v) this.text = v
@@ -125,7 +124,7 @@ export default {
         return (this.fontSize || 12)*(this.tool?.pageScaleX || 1) 
     },
     computedFontsize(){
-        return `${(this.fontSize || 12)*(this.tool?.pageScaleX || 1) * this.responsiveToolDim.width}px`
+        return `${(this.fontSize || 12)*(this.tool?.pageScaleX || 1) * this.responsiveToolDim.width * 1.2}px`
     },
     isCreator () {
       return (
@@ -138,7 +137,9 @@ export default {
       return {
         // fontSize: `${this.fontSize || 11}px`,
         fontSize: this.computedFontsize,
-        background: 'transparent'
+        background: 'transparent',
+        fontWeight: 400,
+        lineHeight: this.computedFontsize
         // width: `${this.inputWidth}px`
       }
     },

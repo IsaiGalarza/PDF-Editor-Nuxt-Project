@@ -267,10 +267,10 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       return this.$auth.user?.initialURL || initialURL
     },
     pdfOffsetY() {
-      return this.$store.state.pdfOffset_y * this.$store.state.pdfScale
+      return this.$store.state.pdfOffset_y 
     },
     pdfOffsetX() {
-      return this.$store.state.pdfOffset_x * this.$store.state.pdfScale
+      return this.$store.state.pdfOffset_x
     },
     ledgerInfo() {
       return {
@@ -351,10 +351,11 @@ export default mixins(SaveSignatureInitialsMixin).extend({
        }
     },
     visible(val) {
-      this.showModal = val
+      this.showModal = val;
     },
     showModal(val) {
       this.$emit('updateVisibility', val)
+      val && this.isSign &&  !this.file?.user?.allowCopy && !this.isCreator && this.onSubmit()
     },
     '$auth.user': function () {
       this.convertImageToBase64(this.$auth?.user?.signatureURL)
@@ -468,7 +469,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       let requestData = {
         email: this.externalGuestEmail,
         action: val == 'owner' ? this.file?.fileAction : 'shareFileToGuest',
-        userId: this.$auth?.user?.id ?? 0,
+        userId: val == 'owner' ? this.file?.userId : 0,
         editedFileLink: this.generatedPdf?.downloadLink,
         fileId: this.file?.id,
       }
@@ -479,13 +480,14 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.toggleToast({
             active: true,
             msg: `Thank you for completing a Paperlink!`,
+            msg_mobile: 'Thank You'
           })
           this.$store.commit('SET_FILE_SIGNATURE', null)
           this.$store.commit('SET_FILE_INITIAL', null)
           this.$store.commit("UN_SET_AGREE_SIGN")
-          // this.$auth.loggedIn && this.isCreator
-          //   ? this.$nuxt.$router.push('/paperlink-pages')
-          //   : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
+          this.$auth.loggedIn && this.isCreator
+            ? this.$nuxt.$router.push('/paperlink-pages')
+            : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
         })
       } catch (error) {
         this.$notify.error({

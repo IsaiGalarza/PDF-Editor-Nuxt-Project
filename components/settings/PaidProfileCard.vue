@@ -124,8 +124,8 @@ export default mixins(login).extend({
       showQrcode: false,
       showShareCompany: false,
       visibleUploadImageDialog: false,
-      dateType: "Date format ",
-      timeType: "Time format",
+      dateType:  "MM/DD/YY",
+      timeType:  this.$store?.getters?.getTimeFormat,
       dateFormat: [
         { name: "MM/DD/YY", value: "mm/dd/yyyy" },
         { name: "DD/MM/YY", value: "dd/mm/yyyy" },
@@ -134,6 +134,13 @@ export default mixins(login).extend({
       ],
       timeFormat: ["h:MM TT", "h:MM:ss TT", "h:MM:ss TT Z", "HH:MM:ss"],
     };
+  },
+
+  mounted(){
+          // dateType: this.$store?.getters?.getDateFormat,
+          let newDate = this.dateFormat.filter((item) => item.value === this.$store?.getters?.getDateFormat )
+          
+          this.dateType = newDate[0].name
   },
   computed: {
     userFullName() {

@@ -392,6 +392,7 @@ export default Vue.extend({
         .then((response) => {
           console.log(response.data)
           this.ledger = response.data.data
+          console.log("pleayer--klose",  response.data.total)
           this.totalFile = response.data.total
         })
         .finally(() => {

@@ -113,7 +113,7 @@ import GlobalMixin from "~/mixins/GlobalMixin";
 export default mixins(GlobalMixin).extend({
   name: "ContactUsPage",
   layout: "dashboard",
-  auth: false,
+  auth: true,
   components: {
     SpinnerDottedIcon,
     MessageAlertWidget,

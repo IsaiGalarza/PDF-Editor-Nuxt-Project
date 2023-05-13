@@ -174,11 +174,11 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   watch: {
     initialimgDisplay(){
       if(this.theInitial) setTimeout(() => {
-        this.$BUS.$emit('scroll-to-tools')
+        !this.isComplete && this.$BUS.$emit('scroll-to-tools')
       }, 100);
     },
     theInitial(){
-        this.$BUS.$emit('scroll-to-tools')
+        !this.isComplete && this.$BUS.$emit('scroll-to-tools')
     },
     '$auth.user.initialURL': async function () {
       this.changeInitialToBase64()

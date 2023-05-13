@@ -355,7 +355,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     },
     showModal(val) {
       this.$emit('updateVisibility', val)
-      val && this.isSign &&  !this.file?.user?.allowCopy && this.onSubmit()
+      val && this.isSign &&  !this.file?.user?.allowCopy && !this.isCreator && this.onSubmit()
     },
     '$auth.user': function () {
       this.convertImageToBase64(this.$auth?.user?.signatureURL)
@@ -453,8 +453,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           // actionBy: `${this.$auth.user.firstName} ${this.$auth.user.lastName}`.toUpperCase()
         })
         .then((response) => {
-          this.isLoading = false
-          // this.addToLedger()
+          // this.isLoading = false
+          this.addToLedger()
           this.generatedPdf = response.data
         })
       } catch (error) {

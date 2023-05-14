@@ -128,7 +128,7 @@ export default {
     },
     confirmStarAction() {
       if (!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest || (this.isAgreedSign !== 1 && this.isSign)) return
-      !this.confirmStar &&  !this.isCreator && this.$emit('addOffset', 7)
+      !this.confirmStar &&  !this.isCreator && this.$emit('addOffset', 8)
       !this.isCreator && (this.confirmStar = true)
       this.notClass = ''
     },

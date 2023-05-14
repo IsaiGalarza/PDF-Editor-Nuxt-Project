@@ -1,7 +1,7 @@
 <template>
   <div class="mt-[70px] lg:mt-0 px-2">
 
-    <ProfileTopInfo :userInfo="userInfo" @openShare="handleCompanyNameShare(userInfo?.companyName,)" />
+    <ProfileTopInfo :userInfo="userInfo" @openShare="handleCompanyNameShare(userInfo?.companyName, userInfo?.businessPage)" />
 
     <div v-if="fileSpinner" class=" relative h-[300px]">
       <!-- START: spinner container -->
@@ -83,7 +83,7 @@
                   <img src="/icon.png" class="mr-3" width="23" height="23" />
                   <div class="">
                     <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
-                    <p @click="routeToFileManager(`/pdf/${item.paperLink}`, item.filePrivacy)" class="cursor-pointer capitalize">
+                    <p @click="routeToFileManager(`/pdf/${item.paperLink}`, item.filePrivacy, item.id)" class="cursor-pointer capitalize">
                       {{ ((item || {}).fileName || ' ') | removeExtension }}
                     </p>
 
@@ -288,14 +288,13 @@ export default Vue.extend({
       }
     },
 
-    handleCompanyNameShare(name) {
+    handleCompanyNameShare(name, link) {
       this.isCompanyShare = true
-      let val = name.replace(' ', '')
-      let link = `https://paperlink.app/${val}`
-      this.shareLink(link, name)
+      let linkRX = `${window.location.origin}/${link}`
+      this.shareLink(linkRX, name)
     },
     shareLinkFunc(val, type) {
-      this.shareLink(`https://paperlink.app/pdf/${val}`, type)
+      this.shareLink(`${window.location.origin}/pdf/${val}`, type)
     },
     shareLink(val, type) {
 

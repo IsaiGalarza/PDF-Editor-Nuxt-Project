@@ -1082,7 +1082,10 @@ export default mixins(PdfAuth).extend({
     },
     checkUserPermission() {
       let permissionQuery = this.$route.query?.permissiontoken
-      if(!permissionQuery) return
+      if(!permissionQuery){
+        this.permissionLoading = { type: true, msg: 'permission denied'}
+        return
+      } 
       let decodePermission = jwt.verify(
       permissionQuery,
       '+Erqnl5F0JnIsW++d9U0BfwpJ6w='
@@ -1091,10 +1094,10 @@ export default mixins(PdfAuth).extend({
         .get(`/permissions?id=${decodePermission.data.permissionId}`)
         .then((response) => { 
           console.log(response)
-          if(response.data?.data?.isGranted == 1){
+          if(response.data[0]?.isGranted == 1){
+            this.permissionLoading = { type: false, msg: 'permission granted'}
             this.displayPDF = true
             this.showBlockPrivate = false
-            this.permissionLoading = { type: false, msg: 'permission granted'}
           } else {
             this.permissionLoading = { type: true, msg: 'permission denied'}
           }

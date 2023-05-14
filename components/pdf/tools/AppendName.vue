@@ -10,7 +10,7 @@
         :initialFontSize="initialFontSize"
         ref="name_box"
         placeholder="Type here..."
-        class="text-container whitespace-nowrap flex items-center"
+        class="annotationText text-container whitespace-nowrap flex items-center"
         :class="[
           focus ? 'border-[1px] border-paperdazgreen-200 bg-yellow-300' : 'bg-transparent border-none',
         ]"
@@ -99,7 +99,7 @@ export default {
 
     removeFocus(){
       this.focus = false
-      setTimeout(() => {
+      !this.isComplete && setTimeout(() => {
         this.$BUS.$emit('scroll-to-tools')
       }, 200)
     },
@@ -128,7 +128,7 @@ export default {
     },
     confirmStarAction() {
       if (!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest || (this.isAgreedSign !== 1 && this.isSign)) return
-      !this.confirmStar &&  !this.isCreator && this.$emit('addOffset', 7)
+      !this.confirmStar &&  !this.isCreator && this.$emit('addOffset', 8)
       !this.isCreator && (this.confirmStar = true)
       this.notClass = ''
     },

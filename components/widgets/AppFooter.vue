@@ -50,7 +50,7 @@
     </div>
     <div class="bg-paperdazgreen-500 py-3">
       <div class="container flex items-center justify-center text-white">
-        <small>iambui LLC, Paperdaz &copy; Copyright 2020, All Rights Reserved </small>
+        <small>iambui LLC, Paperlink &copy; Copyright 2020, All Rights Reserved </small>
       </div>
     </div>
   </footer>

@@ -273,10 +273,12 @@ export default Vue.extend({
         },
     isCreator() {
       if(this.FrombusinessPage == null) return false
-      if(this.FrombusinessPage){
+      else if(this.FrombusinessPage){
         return false
-      } else{
+      } else if(!this.FrombusinessPage && this.file.userId == this.$auth.user?.id){
         return true
+      } else {
+        return false
       }
     },
     teamAccess() {

@@ -12,54 +12,7 @@
       :page-class="'page-item'"
       >
     </paginate>
-      <!-- <button
-        class="pagination-arrow-left"
-        :class="[displayPrevButton == false ? 'text-paperdazgray-300/70' : 'text-black']"
-        @click="prevFilePage"
-        :disabled="!displayPrevButton"
-      >
-        <ArrowDownIcon />
-      </button>
-
-      
-      <button 
-      v-for="index in numberOfPages" 
-       @click="buttonFilePage(--index)"
-       :key="index+'pages'"
-       class="pagination-button"
-       :class="[activeButton == --index ? 'active' : '']"
-       >
-        {{ ++index }}
-      </button>
-
-      <span class="opacity-40" v-if="confirmTotalIsMany">•••</span>
-
-      <button 
-      v-if="confirmTotalIsMany"
-      v-for="index in [availablePages, availablePages + 1]" 
-       @click="buttonFilePage(--index)"
-       :key="index+'pages'"
-       class="pagination-button"
-       :class="[activeButton == --index ? 'active' : '']"
-       >
-        {{ ++index }}
-      </button>
-
-      <!-- <button 
-      :disabled="!displayNextButton"
-      @click="nextFilePage" 
-      class="pagination-button">
-        {{ returnedDataPage / eachPageTotal + 2 }}
-      </button> -->
-<!-- 
-      <button
-        class="pagination-arrow-right"
-        :class="[displayNextButton == false ? 'text-paperdazgray-300/70' : 'text-black']"
-        @click="nextFilePage"
-        :disabled="!displayNextButton"
-      >
-        <ArrowDownIcon />
-      </button> --> 
+    
     </div>
   </div>
   <!-- End:: Pagination -->
@@ -98,11 +51,11 @@ export default {
   },
   computed: {
     availablePages(){
-      return Math.floor(this.totalFile/this.eachPageTotal) > 5 ? Math.floor(this.totalFile/this.eachPageTotal) : Math.floor(this.totalFile/this.eachPageTotal)+2
+      return Math.ceil(this.totalFile/this.eachPageTotal)
     },
     arrayPages(){
       let initialArray = []
-      for(let i = 1; i < this.availablePages; i++){
+      for(let i = 1; i <= this.availablePages; i++){
         initialArray.push(i)
       }
       return initialArray

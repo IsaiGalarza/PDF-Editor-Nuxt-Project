@@ -612,7 +612,6 @@ export default mixins(PdfAuth).extend({
     this.$store.commit('SET_FILE_INITIAL', null)
     this.$store.commit("SET_AGREE_SIGN", -1)
     window.removeEventListener("resize", this.resizeHandler);
-    localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true}))
   },
   async asyncData({ $axios, params, error, store }) {
     const file = await $axios
@@ -668,11 +667,13 @@ export default mixins(PdfAuth).extend({
         return JSON.parse(localStorage.getItem("from_publicpage") || '{}')?.fromBusiness ?? true
     },
     isCreator() {
-       if(this.FrombusinessPage == null) return false
-      if(this.FrombusinessPage){
+      if(this.FrombusinessPage == null) return false
+      else if(this.FrombusinessPage){
         return false
-      } else{
+      } else if(!this.FrombusinessPage && this.file.userId == this.$auth.user?.id){
         return true
+      } else {
+        return false
       }
       // return (
       //   this.file.userId == this.$auth?.user?.id ||
@@ -1081,7 +1082,10 @@ export default mixins(PdfAuth).extend({
     },
     checkUserPermission() {
       let permissionQuery = this.$route.query?.permissiontoken
-      if(!permissionQuery) return
+      if(!permissionQuery){
+        this.permissionLoading = { type: true, msg: 'permission denied'}
+        return
+      } 
       let decodePermission = jwt.verify(
       permissionQuery,
       '+Erqnl5F0JnIsW++d9U0BfwpJ6w='
@@ -1090,10 +1094,10 @@ export default mixins(PdfAuth).extend({
         .get(`/permissions?id=${decodePermission.data.permissionId}`)
         .then((response) => { 
           console.log(response)
-          if(response.data?.data?.isGranted == 1){
+          if(response.data[0]?.isGranted == 1){
+            this.permissionLoading = { type: false, msg: 'permission granted'}
             this.displayPDF = true
             this.showBlockPrivate = false
-            this.permissionLoading = { type: false, msg: 'permission granted'}
           } else {
             this.permissionLoading = { type: true, msg: 'permission denied'}
           }
@@ -1308,9 +1312,10 @@ export default mixins(PdfAuth).extend({
     },
     reAdjust(val, id){
       let index = this.tools.findIndex(tl => tl.id == id);
+      let IND_Page =  document.querySelectorAll('.pdf-page')[this.tools[index].pageNumber - 1].getBoundingClientRect()
       this.tools[index].reAdjust = val;
-      this.tools[index].parentWidth = this.$refs['pdf-single-pages-outer'].getBoundingClientRect().width;
-      this.tools[index].parentHeight = this.$refs['pdf-single-pages-outer'].getBoundingClientRect().height;
+      this.tools[index].parentWidth = IND_Page.width;
+      this.tools[index].parentHeight = IND_Page.height;
     },
     keyupHandler(event) {
       if (event.ctrlKey && eve.nt.shiftKey && event.code === 'KeyZ') {
@@ -1363,6 +1368,7 @@ export default mixins(PdfAuth).extend({
         this.tools[index].left = dx
         this.tools[index].top = dy
       }
+      console.log("drag-tools-update",this.tools[index], dx, dy, this.$refs['pdf-single-pages-outer'].getBoundingClientRect())
     },
     handleIncrease(id) {
       let index = this.tools.findIndex((t) => t.id == id)
@@ -1865,16 +1871,20 @@ export default mixins(PdfAuth).extend({
   },
  beforeRouteLeave(to, from, next) {
     if (this.$store.state.pdfExit == true) {
+      localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true}))
       return next(true)
     }
     if (!this.displayPDF) {
+      localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true}))
       return next(true)
     }
     if (this.isCreator) {
+      this.nextRoute ? localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true})) : null
       this.nextRoute ? next(true) : next(false)
       this.exitFileManager(to.fullPath)
       this.nextRoute = to.fullPath
     } else {
+      this.nextRoute ? localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true})) : null
       this.nextRoute ? next(true) : next(false)
       this.exitFileManager(to.fullPath)
       this.nextRoute = to.fullPath

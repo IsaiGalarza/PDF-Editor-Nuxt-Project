@@ -132,11 +132,28 @@ export default Vue.extend({
     },
     methods: {
         copyTeamLink() {
-            navigator.clipboard.writeText(this.teamInviteLink);
-            this.$notify.info({
-                message: "Copied"
-            });
+         
+
+      const textToCopy =this.teamInviteLink
+      const input = document.createElement('input');
+      input.style.position = 'fixed';
+      input.style.opacity = 0;
+      input.value = textToCopy;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+
+      this.$notify.success({
+        title: 'Copy',
+        message: 'Copy Successfully',
+      })
         },
+
+
+        
+
+        
         async sendInviteLink() {
                 
             if (this.reachLimit) {
@@ -162,7 +179,8 @@ export default Vue.extend({
                 });
                 this.closeModal();
                 })
-                .catch(() => {
+                .catch((error) => {
+                  console.log(error.response, 'email request')
                 this.$notify.error({
                     message: "Invite sent failed"
                 });

@@ -14,7 +14,7 @@ import jwt, { decode, JsonWebTokenError } from 'jsonwebtoken'
     async created() {
         const { permission } = this.$route.query;
         // return
-        let permissionOpt = jwt.verify(permission,"+Erqnl5F0JnIsW++d9U0BfwpJ6w=");
+        let permissionOpt = jwt.verify(permission, process.env.NUXT_ENV_BACKEND_JWT_TOKEN);
         // return
         this.$axios.post(`/permissions`, {
             fileId: permissionOpt.data.fileId,

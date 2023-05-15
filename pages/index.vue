@@ -71,7 +71,7 @@ export default class LandingPage extends Vue {
     this.$route.query?.verificationToken && (this.showConfirmPassword = true)
     let encodedUser = jwt.verify(
       this.$route.query?.verificationToken,
-      '+Erqnl5F0JnIsW++d9U0BfwpJ6w='
+      process.env.NUXT_ENV_BACKEND_JWT_TOKEN
     )
     this.userDecodedInfo = encodedUser
   }

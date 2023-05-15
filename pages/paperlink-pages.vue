@@ -68,7 +68,7 @@ export default mixins(login).extend({
   created() {
     let permissionToken = this.$route.query.permissiontoken
     if(!permissionToken) return
-    this.permissionDecode = jwt.verify(permissionToken, '+Erqnl5F0JnIsW++d9U0BfwpJ6w=')?.data
+    this.permissionDecode = jwt.verify(permissionToken, process.env.NUXT_ENV_BACKEND_JWT_TOKEN)?.data
     if(this.permissionDecode.fileId){
       this.fileId = this.permissionDecode.fileId
        this.showPermissionModal = true

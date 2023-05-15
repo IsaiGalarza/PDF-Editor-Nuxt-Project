@@ -35,22 +35,27 @@
       </template>
       <!-- Start:: Body -->
       <p class="py-3 text-center text-paperdazgreen-300">Private Access</p>
-      <p
+      <form
+      @submit.prevent="sendInvite"
         class="border-[1px] border-paperdazgreen-300 rounded-md flex items-center p-[2px]"
       >
          <input
          v-model="invite_email"
           class="w-full py-2 px-4 rounded-md bg-transparent outline-none border-none"
           placeholder="Email"
+          type="email"
+          required
          />
-         <button @click="sendInvite" class="px-3 py-2 bg-paperdazgreen-300 text-white rounded-md w-[150px]">Invite</button>
-      </p>
+         <button class="px-3 py-2 bg-paperdazgreen-300 text-white rounded-md w-[150px]">Invite</button>
+    </form>
 
          <div class="mt-10">
             <div class="flex items-center mb-4" v-for="invite in permissions" :key="index">
                 <div class="w-5/12">{{ invite.email ?? ''}}</div>
                 <div class="w-3/12">{{ invite.name ?? ''}}</div>
-                <div class="w-2/12">{{ invite.isGranted == 0 ? 'Pending' : 'Approved'}}</div>
+                <div class="w-2/12"
+                :class="[ invite.isGranted == 0 ? 'text-red-500' : 'text-paperdazgreen-300']"
+                >{{ invite.isGranted == 0 ? 'Pending' : 'Approved'}}</div>
                 <div class="w-1/12 flex justify-end">
                     <button  @click="approveInvite(invite.id)" v-if="invite.isGranted == 0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="14" viewBox="0 0 18 14" fill="none">
@@ -59,7 +64,9 @@
                     </button>
                 </div>
                 <div class="w-1/12 flex justify-end">
-                    <button>
+                    <button
+                    @click="disApproveInvite(invite.id)"
+                    >
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
                             <path d="M13 1L1 13M1 1L13 13" stroke="#FF7373" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
@@ -126,11 +133,16 @@
               isGranted: 1
           }
         },
+      DAP_payload(){
+        return {
+              isGranted: 0
+          }
+        },
       sendInvitepayload(){
         return {
             action: "invite_n_grant_permission",
             fileId: this.fileId,
-            name: "test user",
+            name: "",
             email: this.invite_email
         }
       }
@@ -150,6 +162,14 @@
       async approveInvite(id){
           try {
             await this.$axios.patch(`/permissions/${id}`, this.payload)
+            this.getPermissions()
+          } catch (error) {
+            //..
+          }
+      },
+      async disApproveInvite(id){
+          try {
+            await this.$axios.patch(`/permissions/${id}`, this.DAP_payload)
             this.getPermissions()
           } catch (error) {
             //..

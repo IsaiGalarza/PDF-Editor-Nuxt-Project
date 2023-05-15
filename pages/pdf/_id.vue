@@ -1088,7 +1088,7 @@ export default mixins(PdfAuth).extend({
       } 
       let decodePermission = jwt.verify(
       permissionQuery,
-      '+Erqnl5F0JnIsW++d9U0BfwpJ6w='
+      process.env.NUXT_ENV_BACKEND_JWT_TOKEN
     )
       this.$axios
         .get(`/permissions?id=${decodePermission.data.permissionId}`)

@@ -44,6 +44,7 @@
                             min="1"
                           /> -->
                     <el-input-number
+                    v-model.number="customPackage.paperlink"
                       :step="0"
                       size="small"
                       :min="0"
@@ -179,7 +180,7 @@
         customPackage: {
           name: 'Custom',
           description: 'Custom package',
-          paperlink: 0,
+          paperlink: 1,
           teamMembers: 0,
           cc: 1,
           publicProfile: true,
@@ -227,6 +228,9 @@
       },
     },
     methods: {
+      setname(){
+        //... code goes here
+      },
       formatPrice(amount) {
         return StringUtils.formatPrice(Number(amount))
       },

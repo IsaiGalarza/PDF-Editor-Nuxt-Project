@@ -194,12 +194,12 @@ export default Vue.extend({
   mounted() {
     let encodedUser = jwt.verify(
       this.userParams,
-      '+Erqnl5F0JnIsW++d9U0BfwpJ6w='
+      process.env.NUXT_ENV_BACKEND_JWT_TOKEN
     )
     this.decodedUserInfo = { ...encodedUser.data }
     this.user.token = jwt.sign(
       { data: this.decodedUserInfo.user_id },
-      '+Erqnl5F0JnIsW++d9U0BfwpJ6w=')
+      process.env.NUXT_ENV_BACKEND_JWT_TOKEN)
   },
   methods: {
     checkPasswordStrength() {

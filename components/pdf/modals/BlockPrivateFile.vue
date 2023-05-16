@@ -43,17 +43,10 @@
  
         <div class="flex justify-around">
             <button
-                class="disabled:bg-opacity-50 disabled:cursor-not-allowed h-10 text-xs w-[150px] max-w-[50%] border border-red-600 rounded-lg shadow bg-white"
-                type="button"
-                :disabled="loading"
-                @click="closeModal()"
-            >
-                Cancel</button
-            >
-
-            <button class="h-10 bg-paperdazgreen-300 text-white px-3 py-2 rounded">
+            :class="[ permissionLoading.msg == 'permission denied' ? 'bg-red-500' : 'bg-paperdazgreen-300']"
+            class="h-10  text-white px-3 py-2 rounded">
                {{ permissionLoading.msg }}
-            </button>
+            </button> 
             <!-- <button
           class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400"
         > 

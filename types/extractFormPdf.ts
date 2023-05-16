@@ -268,59 +268,6 @@ export const ExtractFormPdf = ({
                   })
                   break
 
-                case 'BUTTON':
-                  appendUserActionElement({
-                    parent: pdfScrappedData,
-                    subParent: totalArray,
-                    uploaded: tools.getAttribute('uploaded'),
-                    elem: element,
-                    tool: tools,
-                    axisY: [
-                      element.getBoundingClientRect().top,
-                      item.children[0].children[0].children[0].getBoundingClientRect()
-                        .top - pdfOffset_y,
-                    ],
-                    axisX: [
-                      element.getBoundingClientRect().left,
-                      item.children[0].children[0].children[0].getBoundingClientRect()
-                        .left + pdfOffset_x,
-                    ],
-                    axisX2: [
-                      item.children[0].children[0].children[0].getBoundingClientRect()
-                        .left,
-                      item.children[0].children[0].children[0].getBoundingClientRect()
-                        .right,
-                    ],
-                    axisY2: [
-                      item.children[0].children[0].children[0].getBoundingClientRect()
-                        .top,
-                      item.children[0].children[0].children[0].getBoundingClientRect()
-                        .bottom,
-                    ],
-                    type: tools.children[0].getAttribute('type'),
-                  })
-                  appendEditText({
-                    // these action is only appended when the file action is SIGN
-                    parent: pdfScrappedData,
-                    subParent: totalArray,
-                    axisY: [
-                      element.getBoundingClientRect().top -
-                      tools.children[0].getBoundingClientRect().height,
-                      item.children[0].children[0].children[0].getBoundingClientRect()
-                        .top - pdfOffset_y,
-                    ],
-
-                    axisX: [
-                      element.getBoundingClientRect().left,
-                      item.children[0].children[0].children[0].getBoundingClientRect()
-                        .left + pdfOffset_x,
-                    ],
-                    attr: (item as any).getAttribute('style'),
-                    tools: signLabel,
-                    elem: element,
-                    fontsize: '8',
-                  })
-                  break
 
                 case 'DIV':
                   switch (tools.children[0]?.tagName) {
@@ -372,33 +319,11 @@ export const ExtractFormPdf = ({
                         left: formatStyle("left",(item as any).getAttribute('style')) + pdfOffset_x,
                         top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                         textImageContent: tools.children[0].getAttribute('textImageContent'),
-                        tools: tools.children[0].innerText,
+                        tools: tools.children[0].innerText?.replace(/\n/g, ""),
                         elem: element,
                         scaleFactor: tools.getAttribute('scalefactor'),
                         fontsize: tools.children[0].getAttribute(
                           'initialFontSize'
-                        ),
-                      })
-                      break
-                    case 'INPUT':
-                      console.log("tools-input", tools)
-                      appendEditText({
-                        parent: pdfScrappedData,
-                        subParent: totalArray,
-                        axisY: [
-                          element.getBoundingClientRect().top,
-                          item.getBoundingClientRect().top - pdfOffset_y,
-                        ],
-
-                        axisX: [
-                          element.getBoundingClientRect().left,
-                          item.getBoundingClientRect().left + pdfOffset_x,
-                        ],
-                        height: tools.children[1].getBoundingClientRect().height - 3.5,
-                        tools: tools.children[1].textContent || tools.children[0].value,
-                        elem: element,
-                        fontsize: (tools.children[1] as any).getAttribute(
-                          'style'
                         ),
                       })
                       break

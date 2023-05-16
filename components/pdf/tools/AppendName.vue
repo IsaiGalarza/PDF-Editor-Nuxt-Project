@@ -10,7 +10,7 @@
         :initialFontSize="initialFontSize"
         ref="name_box"
         placeholder="Type here..."
-        class="text-container whitespace-nowrap flex items-center"
+        class="annotationText text-container whitespace-nowrap flex items-center"
         :class="[
           focus ? 'border-[1px] border-paperdazgreen-200 bg-yellow-300' : 'bg-transparent border-none',
         ]"
@@ -99,7 +99,7 @@ export default {
 
     removeFocus(){
       this.focus = false
-      setTimeout(() => {
+      !this.isComplete && setTimeout(() => {
         this.$BUS.$emit('scroll-to-tools')
       }, 200)
     },

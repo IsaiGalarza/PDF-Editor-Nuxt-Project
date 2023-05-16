@@ -133,7 +133,7 @@
       <p class="c2"><span class="c3 c1">DISCLAIMERS</span></p>
       <p class="c2">
         <span class="c3 c0"
-          >The service is provided by Paperdaz on &ldquo;as is&rdquo; and &ldquo;as
+          >The service is provided by Paperlink on &ldquo;as is&rdquo; and &ldquo;as
           available&rdquo; basis without any warranty whatsoever. Without limiting the
           preceding, we explicitly disclaim all warranties, whether implied or express or
           statutory, regarding the Service including without limitation to any warranty of

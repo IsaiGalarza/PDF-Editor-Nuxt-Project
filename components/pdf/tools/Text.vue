@@ -10,7 +10,7 @@
       :textImageContent="svgToImageData"
       :initialFontSize="initialFontSize"
       :scalefactor="responsiveToolDim.width"
-      class="input-annotation whitespace-nowrap flex items-center"
+      class="annotationText input-annotation whitespace-nowrap flex items-center"
       placeholder="Type here..."
       ref="text_box"
       @keyUp="keyUp"
@@ -172,6 +172,6 @@ export default {
 .input-annotation[placeholder]:empty:before {
   content: 'Type here...';
   opacity: 0.5;
-  color: #555; 
+  color: #555;
 }
 </style>

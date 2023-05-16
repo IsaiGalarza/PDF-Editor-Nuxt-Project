@@ -181,6 +181,7 @@ export default Vue.extend({
   },
   name: 'TeamsPage',
   layout: 'dashboard',
+  auth: true,
   data() {
     return {
       activeTab: 'ledger',

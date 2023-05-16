@@ -1,6 +1,6 @@
 <template>
   <section class="bg-paperdazgreen-300 reg-container pt-10">
-    <div class="flex flex-wrap p-3 justify-around items-center">
+    <div class="flex flex-wrap p-3 justify-around items-center container">
       <div class="w-full sm:w-6/12 md:w-5/12">
         <message-alert-widget
           :message="errorMessageUser"
@@ -190,6 +190,11 @@ export default Vue.extend({
       business_number: '',
       errorMessageUser: '',
       cardId: null,
+    }
+  },
+  created() {
+    if(!this.$store.getters.getPackageInfo?.paperlink){
+      this.$router.push('/package?tablevel=1')
     }
   },
   computed: {
@@ -418,7 +423,7 @@ export default Vue.extend({
 .reg-container {
   margin-right: auto;
   margin-left: auto;
-  @apply px-[3%] md:px-[7%];
+  @apply px-[3%] md:px-[7%] xl:px-[10%];
  
   // max-width: unset;
   // max-width: 1200px;

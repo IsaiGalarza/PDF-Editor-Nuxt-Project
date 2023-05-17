@@ -8,7 +8,7 @@
        (tool.user == file.userId && tool.justMounted) ||
        (isCreator && tool.user == file.userId && !tool.justMounted)"
        v-hammer:pan="handleDrag">
-      <button class="h-full cursor-move" >
+      <button class="h-full cursor-move">
         <Move-icon />
       </button>
 

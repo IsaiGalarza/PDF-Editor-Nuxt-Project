@@ -1072,11 +1072,12 @@ export default mixins(PdfAuth).extend({
     },
     getALlInput(){
       setTimeout(() => {
-        let inputs = $('.annotationLayer').find(':input')
-        console.log("inputs", inputs)
-        Array.from(inputs).forEach((element, index) => {
-          element.setAttribute("name", this.$store.getters.getPdfAnnotations[index]?.fieldName)
-          element.setAttribute("id", this.$store.getters.getPdfAnnotations[index]?.id)
+        let inputs = $('.pdf-editor-view').find(':input')
+        let filterInputs = this.$store.getters.getPdfAnnotations
+        Array.from(inputs).forEach( async (element, index) => {
+          const elemID = element.parentElement.getAttribute('data-annotation-id')
+          await element.setAttribute("name", filterInputs.find(element => element.id == elemID)?.fieldName)
+          // element.setAttribute("id", element.parentElement.id)
         });
       }, 2000);
     },
@@ -1088,7 +1089,7 @@ export default mixins(PdfAuth).extend({
       } 
       let decodePermission = jwt.verify(
       permissionQuery,
-      '+Erqnl5F0JnIsW++d9U0BfwpJ6w='
+      process.env.NUXT_ENV_BACKEND_JWT_TOKEN
     )
       this.$axios
         .get(`/permissions?id=${decodePermission.data.permissionId}`)
@@ -1872,19 +1873,23 @@ export default mixins(PdfAuth).extend({
  beforeRouteLeave(to, from, next) {
     if (this.$store.state.pdfExit == true) {
       localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true}))
+      this.$store.commit('RESET_PDF_ANNOTATIONS')
       return next(true)
     }
     if (!this.displayPDF) {
       localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true}))
+      this.$store.commit('RESET_PDF_ANNOTATIONS')
       return next(true)
     }
     if (this.isCreator) {
       this.nextRoute ? localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true})) : null
+      this.$store.commit('RESET_PDF_ANNOTATIONS')
       this.nextRoute ? next(true) : next(false)
       this.exitFileManager(to.fullPath)
       this.nextRoute = to.fullPath
     } else {
       this.nextRoute ? localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true})) : null
+      this.$store.commit('RESET_PDF_ANNOTATIONS')
       this.nextRoute ? next(true) : next(false)
       this.exitFileManager(to.fullPath)
       this.nextRoute = to.fullPath

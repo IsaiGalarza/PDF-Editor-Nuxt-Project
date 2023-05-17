@@ -8,6 +8,7 @@
     :initialFontSize="initialFontSize"
     :textImageContent="svgToImageData"
     v-if="!isCreator"
+    class="flex whitespace-nowrap"
     :style="style">{{ nowDate }}</p>
     <!-- <svg v-if="!confirmStar" :style="style" viewBox="0 0 37 36" fill="black" xmlns="http://www.w3.org/2000/svg" @mouseover="overHandler" @mouseleave="leaveHandler">
         <path options="fill"

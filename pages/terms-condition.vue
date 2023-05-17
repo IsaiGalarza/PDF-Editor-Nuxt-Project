@@ -7,8 +7,8 @@
       <p class="c2" id="h.gjdgxs">
         <span class="c0">Welcome to </span
         ><span class="c4 c0"
-          ><a class="c17" href="https://www.paperdaz.com"
-            >www.paperdaz.com</a
+          ><a class="c17" href="https://www.paperlink.com"
+            >www.paperlink.com</a
           ></span
         ><span class="c3 c0"
           >. This &ldquo;Agreement&rdquo; jointly refers to all the terms,
@@ -113,7 +113,7 @@
       <p class="c2">
         <span class="c0"
           >All intellectual property rights (including the various rights
-          conferred on www.paperdaz.com by statute, common law and equity in and
+          conferred on www.paperlink.com by statute, common law and equity in and
           in relation to copyright, trademarks, patents, trade names, service
           marks and designs- referring to the &ldquo;look and feel&rdquo; and
           other visual or non-literal contents) whether registered or otherwise
@@ -141,7 +141,7 @@
       <p class="c2"><span class="c3 c1">DISCLAIMERS</span></p>
       <p class="c2">
         <span class="c3 c0"
-          >The service is provided by Paperdaz on &ldquo;as is&rdquo; and
+          >The service is provided by Paperlink on &ldquo;as is&rdquo; and
           &ldquo;as available&rdquo; basis without any warranty whatsoever.
           Without limiting the preceding, we explicitly disclaim all warranties,
           whether implied or express or statutory, regarding the Service
@@ -237,8 +237,8 @@
           email</span
         ><span class="c0 c4">&nbsp;</span
         ><span class="c4 c0"
-          ><a class="c17" href="mailto:mai@paperdaz.com"
-            >mai@paperdaz.com</a
+          ><a class="c17" href="mailto:hello@paperlink.app "
+            >hello@paperlink.app</a
           ></span
         ><span class="c3 c0">.</span>
       </p>

@@ -379,7 +379,7 @@ export const ExtractFormPdf = ({
                         ],
                         tools: signLabel,
                         elem: element,
-                        fontsize: '8',
+                        fontsize: '6',
                       })
                       break
                   }

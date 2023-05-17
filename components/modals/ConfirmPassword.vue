@@ -110,7 +110,7 @@ export default Vue.extend({
       return {
         token: jwt.sign(
           { data: this.userInfo.data?.user_id },
-          '+Erqnl5F0JnIsW++d9U0BfwpJ6w='
+          process.env.NUXT_ENV_BACKEND_JWT_TOKEN
         ),
         action: 'reset_password',
         isEmailVerified: true,

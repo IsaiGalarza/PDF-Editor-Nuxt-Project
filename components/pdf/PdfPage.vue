@@ -99,9 +99,8 @@ export default {
     async renderAnnotation(page) {
       let annotationLayer = this.$refs.annotationLayer
       let annotations = await page.getAnnotations();
-
-      this.$store.commit('SET_PDF_ANNOTATIONS', annotations.filter((item)=> item.fieldName))
-      console.log("Annotations", annotations.filter((item)=> item.fieldName))
+      this.$store.commit('SET_PDF_ANNOTATIONS', annotations)
+      console.log("Annotations", this.$store.getters.getPdfAnnotations, annotations)
       var unscaledViewport = page.getViewport({ scale: 1 });
 
       let v = page.getViewport({ scale: this.$refs.PdfPage.clientWidth / unscaledViewport.width })

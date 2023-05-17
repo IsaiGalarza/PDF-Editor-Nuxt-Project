@@ -364,10 +364,11 @@ export default Vue.extend({
           // }
 
           setTimeout(() => {
-            let fromFileManger = JSON.parse(localStorage.getItem('isGuest') as string)
-            console.log(fromFileManger)
-            if (fromFileManger?.isGuest) {
-              this.$nuxt.$router.push(fromFileManger.path)
+            let redirectUrl = sessionStorage.getItem("redirectUrl")  as string
+              
+            if (redirectUrl) {
+              this.$nuxt.$router.push(redirectUrl)
+              sessionStorage.setItem("redirectUrl", "")
             } else {
               this.$nuxt.$router.push('/paperlink-pages')
             }

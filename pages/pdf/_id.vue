@@ -1077,7 +1077,6 @@ export default mixins(PdfAuth).extend({
         Array.from(inputs).forEach( async (element, index) => {
           const elemID = element.parentElement.getAttribute('data-annotation-id')
           await element.setAttribute("name", filterInputs.find(element => element.id == elemID)?.fieldName)
-          // element.setAttribute("id", element.parentElement.id)
         });
       }, 2000);
     },

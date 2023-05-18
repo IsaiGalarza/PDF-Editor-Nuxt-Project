@@ -28,7 +28,9 @@
     </div>
 
     <div class="mt-4">
-      <component :is="currentTab"></component>
+      <keep-alive>
+        <component :is="currentTab"></component>
+      </keep-alive>
     </div>
   </div>
 </template>

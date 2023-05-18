@@ -977,12 +977,7 @@ export default mixins(PdfAuth).extend({
       }
     },
     showDonotPostFunc() {
-      if (!this.isCreator) {
-        this.displayPDF = false
-        this.showBlockDonotPost = true
-      } else {
         this.displayPDF = true
-      }
     },
     confirmDone() {
       this.showDoneModal = true

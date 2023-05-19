@@ -134,6 +134,8 @@ export const appendEditImage = ({
   height,
   axisX2,
   axisY2,
+  left,
+  top
 }: any) => {
   (parent.data as any).push({
     page_number: subParent.indexOf(elem),
@@ -144,7 +146,9 @@ export const appendEditImage = ({
     axisY2: axisY2[1] - axisY2[0],
     axisY: axisY[1] > axisY[0] ? axisY[1] - axisY[0] : axisY[0] - axisY[1],
     // height: parseFloat(height) * 0.73,
-    uploaded: 'true'
+    uploaded: 'true',
+    left,
+    top
   })
 }
 
@@ -348,6 +352,8 @@ export const ExtractFormPdf = ({
                           element.getBoundingClientRect().left,
                           item.getBoundingClientRect().left + pdfOffset_x,
                         ],
+                        left: formatStyle("left",(item as any).getAttribute('style')) + pdfOffset_x,
+                        top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                         // axisX2: [
                         //   item.children[0].children[0].children[0].getBoundingClientRect()
                         //     .left,
@@ -464,11 +470,15 @@ export const ExtractFormPdf = ({
               })
               break
             case 'radio':
+              let radioButtonGroup = document.getElementsByName(elementList.name);
+              let index = Array.from(radioButtonGroup).findIndex(function(element: any): Boolean {
+                return element.checked === true;
+              })
               ; (pdfScrappedData.data as any).push({
                 type: 'PDFRadioGroup',
                 fieldName: elementList.name,
                 value: elementList.checked,
-                checkedIndex: 1,
+                checkedIndex: index,
               })
               break
 

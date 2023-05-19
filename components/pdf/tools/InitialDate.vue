@@ -33,7 +33,8 @@ export default {
     return {
       isModalActive: false,
       confirmStar: true,
-      svgToImageData: ''
+      svgToImageData: '',
+      hasAddedOffset: false
     }
   },
   props: {
@@ -68,7 +69,8 @@ export default {
   },
   mounted() {
    setTimeout(() => {
-    this.$emit('addOffset', !this.isCreator ?  12 : 0)
+    !this.hasAddedOffset ? this.$emit('addOffset', !this.isCreator ?  12 : 0) : null
+    this.hasAddedOffset = true
    }, 300);
   },
   watch: {

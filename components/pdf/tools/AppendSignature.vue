@@ -39,7 +39,7 @@
       v-else-if="theSignature"
       :src="theSignature"
       :width="`${55 * responsiveToolDim.width}px`"
-      :style="`height: ${27 * responsiveToolDim.height}px; object-fit:contain`"
+      :style="`height: ${27 * responsiveToolDim.height}px; object-fit:fill`"
     />
     <!-- <span v-show="!initialimgDisplay && !isCreator && !tool.justMounted && (isAgreedSign == 1 && isSign || isComplete)" class="toolTip hidden">Sign</span> -->
     <!-- <img v-else class="absolute-image" src="../../../assets/img/sign.png" /> -->

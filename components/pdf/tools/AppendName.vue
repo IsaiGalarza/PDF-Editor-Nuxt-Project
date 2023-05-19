@@ -86,8 +86,9 @@ export default {
       return {
         // fontSize: `${this.fontSize || 11}px`,
         fontWeight: 400,
-        lineHeight: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveToolDim.width * 1.2}px`,
-        fontSize: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveToolDim.width * 1.2}px`,
+        fontFamily: "helvetica !important",
+        lineHeight: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveToolDim.width}px`,
+        fontSize: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveToolDim.width}px`,
       }
     },
     notBtn() {
@@ -128,7 +129,7 @@ export default {
     },
     confirmStarAction() {
       if (!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest || (this.isAgreedSign !== 1 && this.isSign)) return
-      !this.confirmStar &&  !this.isCreator && this.$emit('addOffset', 8)
+      !this.confirmStar &&  !this.isCreator && this.$emit('addOffset', 10)
       !this.isCreator && (this.confirmStar = true)
       this.notClass = ''
     },

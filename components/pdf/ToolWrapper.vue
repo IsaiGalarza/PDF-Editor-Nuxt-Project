@@ -272,7 +272,7 @@ export default {
     },
     responsiveToolDim(){
       return {
-        width: (this.$store.getters.getPdfpagesDim.parentWidth/809),
+        width: (this.$store.getters.getPdfpagesDim.parentWidth/805),
         height: (this.$store.getters.getPdfpagesDim.parentHeight/1243)
       }
     },

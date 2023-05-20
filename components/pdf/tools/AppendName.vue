@@ -1,20 +1,15 @@
 <template>
-  <div class="text-field tool" @click="confirmStarAction" attr="star">
+  <div class="text-field tool"  attr="star">
     <p 
         v-if="confirmStar"
         :style="style"
-        @focus="focus = true"
-        @blur="onBlur"
         :textImageContent="svgToImageData"
-        contenteditable="true"
         :initialFontSize="initialFontSize"
         ref="name_box"
         placeholder="Type here..."
         class="annotationText text-container whitespace-nowrap flex items-center"
-        :class="[
-          focus ? 'border-[1px] border-paperdazgreen-200 bg-yellow-300' : 'bg-transparent border-none',
-        ]"
       >
+      {{ importedValue }}
     </p>
     <!-- <svg v-if="!confirmStar" :style="style" viewBox="0 0 37 36" fill="black" xmlns="http://www.w3.org/2000/svg" @mouseover="overHandler" @mouseleave="leaveHandler">
           <path options="fill"
@@ -24,6 +19,7 @@
     <img
       v-if="!confirmStar && !isCreator"
       class="annot-button"
+      @click="confirmStarAction"
       :width="`${80 * responsiveToolDim.width}px`"
       src="../../../assets/img/name_tag.svg"
     />
@@ -36,12 +32,16 @@
     <!-- <div v-if="!isCreator && isModalActive && !confirmStar"
           class="w-[240px] h-[26px] z-10 bg-white rounded-[12px] text-[12px] absolute border-[2px] border-[#84C870] px-2 ml-[-16px] mt-[-50px]">
           Click on star when this line is completed.</div> -->
+  
+          <AddToPageText v-model="showAddPageText" @exportText="importText"/>
   </div>
 </template>
 
 <script>
 import moment from 'moment'
 import FileAction from '~/models/FileAction'
+import AddToPageText from '~/components/modals/AddToPageText.vue'
+
 export default {
   data() {
     return {
@@ -50,6 +50,8 @@ export default {
       inputText: '',
       focus: true,
       svgToImageData: '',
+      showAddPageText: false,
+      importedValue: ""
     }
   },
   props: {
@@ -60,6 +62,9 @@ export default {
     isCreator: Boolean,
     responsiveDim: Object,
     responsiveToolDim: Object
+  },
+  components: {
+    AddToPageText
   },
   watch: {
     generatePDF: function () {
@@ -97,15 +102,11 @@ export default {
   
   },
   methods: {
-
-    removeFocus(){
-      this.focus = false
-      !this.isComplete && setTimeout(() => {
+    importText(val){
+     this.importedValue = val
+     !this.isComplete && setTimeout(() => {
         this.$BUS.$emit('scroll-to-tools')
       }, 200)
-    },
-    onBlur() {
-      this.removeFocus()
     },
     async svgToImage() {
       this.svgToImageData = ''
@@ -129,6 +130,7 @@ export default {
     },
     confirmStarAction() {
       if (!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest || (this.isAgreedSign !== 1 && this.isSign)) return
+      this.showAddPageText = true
       !this.confirmStar &&  !this.isCreator && this.$emit('addOffset', 10)
       !this.isCreator && (this.confirmStar = true)
       this.notClass = ''

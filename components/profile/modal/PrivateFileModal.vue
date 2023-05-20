@@ -55,7 +55,6 @@
         class="w-full py-2 px-4 border-[1px] border-paperdazgrey-500 rounded-md"
        placeholder="Name"
        required
-       type="email"
        />
     </p>
       <div class="flex justify-around">

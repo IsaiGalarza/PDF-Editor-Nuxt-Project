@@ -1086,7 +1086,7 @@ export default mixins(PdfAuth).extend({
       process.env.NUXT_ENV_BACKEND_JWT_TOKEN
     )
       this.$axios
-        .get(`/permissions?id=${decodePermission.data.permissionId}`)
+        .get(`/permissions?id=${decodePermission.permissionId}`)
         .then((response) => { 
           console.log(response)
           if(response.data[0]?.isGranted == 1){

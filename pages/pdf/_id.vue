@@ -383,6 +383,7 @@
     <SuccessFileModal :file="file" v-model="showSuccesshModal" />
     <DoneModal :file="file" v-model="showDoneModal" />
     <GuestModal v-model="showGuestModal" />
+    <AddToPageText v-model="showAddPageText"/>
   </div>
 </template>
 
@@ -443,6 +444,7 @@ import BlockDonotPostFile from '~/components/pdf/modals/BlockDonotPostFile.vue'
 import { mapState } from 'vuex'
 import AddToPageDrawOrType from '~/components/modals/AddToPageDrawOrType.vue'
 import GlobalMixin from '~/mixins/GlobalMixin'
+import AddToPageText from '~/components/modals/AddToPageText.vue';
 
 
 export default mixins(PdfAuth).extend({
@@ -479,7 +481,8 @@ export default mixins(PdfAuth).extend({
     DoneModal,
     PinchScrollZoom,
     PinchZoom,
-    GuestModal
+    GuestModal,
+    AddToPageText
   },
   data: () => ({
     showGuestModal: false,
@@ -565,6 +568,7 @@ export default mixins(PdfAuth).extend({
     width: 0,
     is_equal: true,
     permissionLoading: { type: true, msg: "checking permission..."},
+    showAddPageText: false
   }),
   created() {
     this.fetchPdf()
@@ -576,6 +580,7 @@ export default mixins(PdfAuth).extend({
     this.$BUS.$on('scrollToSignInitial', this.deactivateSignInitial)
     this.$BUS.$on('signature-update', (v) => (this.signature = v))
     this.$BUS.$on('initials-update', (v) => (this.initial = v))
+    this.$BUS.$on('addTextToPage', this.addTopagetextFunc)
     window.addEventListener("resize", this.resizeHandler);
   },
   mounted() {
@@ -611,6 +616,7 @@ export default mixins(PdfAuth).extend({
     this.$store.commit('SET_FILE_SIGNATURE', null)
     this.$store.commit('SET_FILE_INITIAL', null)
     this.$store.commit("SET_AGREE_SIGN", -1)
+    this.$BUS.$off('addTextToPage')
     window.removeEventListener("resize", this.resizeHandler);
   },
   async asyncData({ $axios, params, error, store }) {
@@ -783,18 +789,8 @@ export default mixins(PdfAuth).extend({
     },
   },
   methods: {
-    async svgToImage() {
-      this.svgToImageData = '';
-      let dataPAz = ''
-      await htmlToImage.toPng(this.$refs['pdf-single-pages-outer'])
-        .then(function (dataUrl) {
-          dataPAz = dataUrl;
-        })
-        .catch(function (error) {
-          console.error('oops, something went wrong!', error);
-        });
-
-      console.log("dazppp---text",dataPAz)
+    addTopagetextFunc(){
+      this.showAddPageText = true
     },
     scalingHandler(e) {
       console.log(e);
@@ -1086,7 +1082,7 @@ export default mixins(PdfAuth).extend({
       process.env.NUXT_ENV_BACKEND_JWT_TOKEN
     )
       this.$axios
-        .get(`/permissions?id=${decodePermission.data.permissionId}`)
+        .get(`/permissions?id=${decodePermission.permissionId}`)
         .then((response) => { 
           console.log(response)
           if(response.data[0]?.isGranted == 1){

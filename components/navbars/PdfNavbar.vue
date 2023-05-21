@@ -13,7 +13,7 @@
             <div class="inline-flex items-center gap-1">
                 <!-- <a :href="`/public/profile/${title.route}`"  target="_blanck">{{ title.name || routeName }}</a> -->
                 <span
-                    v-if="FrombusinessPage"
+                    v-if="!isCreator"
                     class="border border-paperdazgreen-300 mr-2 p-0.5 w-[40px] h-[40px] rounded-md flex justify-center items-center overflow-hidden relative"
                 >
                     <img
@@ -38,7 +38,7 @@
             
           </div> -->
           
-             <span v-if="!FrombusinessPage" class="text-black text-[13px] font-[600] text-nowrap capitalize text-left" >
+             <span v-if="isCreator" class="text-black text-[13px] font-[600] text-nowrap capitalize text-left" >
                     File Manager
                 </span>
                 <span v-else
@@ -195,9 +195,23 @@ export default mixins(GlobalMixin, login).extend({
         }
     },
     computed: {
-        FrombusinessPage(){
-            return JSON.parse(localStorage.getItem("from_publicpage") || '{}')?.fromBusiness
-        },
+
+    FrombusinessPage(){
+    return JSON.parse(localStorage.getItem("from_publicpage") || '{}')?.fromBusiness ?? true
+    },
+    file(){
+      return this.$store.state?.file
+    },
+    isCreator() {
+      if(this.FrombusinessPage == null) return false
+      else if(this.FrombusinessPage){
+        return false
+      } else if(!this.FrombusinessPage && this.file.userId == this.$auth.user?.id){
+        return true
+      } else {
+        return false
+      }
+    },
         searchResult() {
             if (!this.searchString) return []
             return [

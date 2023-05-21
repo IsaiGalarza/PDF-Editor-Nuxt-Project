@@ -121,7 +121,7 @@
         this.$refs.inputElement.focus()
       },
       exportText(){
-         this.$emit("exportText",  this.textValue )
+        this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", this.textValue)
          this.closeModal()
       }
     },

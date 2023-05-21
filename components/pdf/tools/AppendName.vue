@@ -1,15 +1,15 @@
 <template>
-  <div class="text-field tool"  attr="star">
-    <p 
-        v-if="confirmStar"
-        :style="style"
-        :textImageContent="svgToImageData"
-        :initialFontSize="initialFontSize"
-        ref="name_box"
-        placeholder="Type here..."
-        class="annotationText text-container whitespace-nowrap flex items-center"
-      >
-      {{ importedValue }}
+  <div class="text-field tool" attr="star">
+    <p
+      v-if="confirmStar && hasClicked && hasTextvalue"
+      :style="style"
+      :textImageContent="svgToImageData"
+      :initialFontSize="initialFontSize"
+      ref="name_box"
+      placeholder="Type here..."
+      class="annotationText text-container whitespace-nowrap flex items-center"
+    >
+      {{ this.$store.getters.getAddToPageTextvalue }}
     </p>
     <!-- <svg v-if="!confirmStar" :style="style" viewBox="0 0 37 36" fill="black" xmlns="http://www.w3.org/2000/svg" @mouseover="overHandler" @mouseleave="leaveHandler">
           <path options="fill"
@@ -24,16 +24,14 @@
       src="../../../assets/img/name_tag.svg"
     />
     <img
-    v-if="!confirmStar && isCreator"
-    :width="`${18 * responsiveToolDim.width}px`"
-    src="../../../assets/img/name_icon.svg"
-  />
+      v-if="!confirmStar && isCreator"
+      :width="`${18 * responsiveToolDim.width}px`"
+      src="../../../assets/img/name_icon.svg"
+    />
     <!-- <span v-show="!confirmStar" class="toolTip hidden">Name</span> -->
     <!-- <div v-if="!isCreator && isModalActive && !confirmStar"
           class="w-[240px] h-[26px] z-10 bg-white rounded-[12px] text-[12px] absolute border-[2px] border-[#84C870] px-2 ml-[-16px] mt-[-50px]">
           Click on star when this line is completed.</div> -->
-  
-          <AddToPageText v-model="showAddPageText" @exportText="importText"/>
   </div>
 </template>
 
@@ -51,7 +49,8 @@ export default {
       focus: true,
       svgToImageData: '',
       showAddPageText: false,
-      importedValue: ""
+      importedValue: '',
+      hasClicked: false,
     }
   },
   props: {
@@ -61,12 +60,24 @@ export default {
     tool: Object,
     isCreator: Boolean,
     responsiveDim: Object,
-    responsiveToolDim: Object
+    responsiveToolDim: Object,
   },
   components: {
-    AddToPageText
+    AddToPageText,
   },
   watch: {
+    hasClicked(val) {
+      if (val && this.hasTextvalue) {
+        setTimeout(() => {
+          !this.isComplete && this.$BUS.$emit('scroll-to-tools')
+        }, 100)
+      }
+    },
+    hasTextvalue(){
+      setTimeout(() => {
+          !this.isComplete && this.$BUS.$emit('scroll-to-tools')
+        }, 100)
+    },
     generatePDF: function () {
       // if (this.generatePDF) this.svgToImage()
     },
@@ -75,6 +86,9 @@ export default {
     this.confirmStar && this.$refs.name_box.focus()
   },
   computed: {
+    hasTextvalue() {
+      return this.$store.getters.getAddToPageTextvalue != undefined
+    },
     isSign() {
       return String(this.file?.fileAction).toLowerCase() === FileAction.SIGNED
     },
@@ -84,30 +98,31 @@ export default {
     nowDate() {
       return moment().format('YYYY-MM-DD')
     },
-    initialFontSize(){
+    initialFontSize() {
       return (this.fontSize || 11) * (this.tool?.pageScaleX || 1)
     },
     style() {
       return {
         // fontSize: `${this.fontSize || 11}px`,
         fontWeight: 400,
-        fontFamily: "helvetica !important",
-        lineHeight: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveToolDim.width}px`,
-        fontSize: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveToolDim.width}px`,
+        fontFamily: 'helvetica !important',
+        lineHeight: `${
+          (this.fontSize || 11) *
+          (this.tool?.pageScaleX || 1) *
+          this.responsiveToolDim.width
+        }px`,
+        fontSize: `${
+          (this.fontSize || 11) *
+          (this.tool?.pageScaleX || 1) *
+          this.responsiveToolDim.width
+        }px`,
       }
     },
     notBtn() {
       return this.notClass
     },
-  
   },
   methods: {
-    importText(val){
-     this.importedValue = val
-     !this.isComplete && setTimeout(() => {
-        this.$BUS.$emit('scroll-to-tools')
-      }, 200)
-    },
     async svgToImage() {
       this.svgToImageData = ''
       let dataPAz = ''
@@ -129,9 +144,14 @@ export default {
       this.isModalActive = false
     },
     confirmStarAction() {
-      if (!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest || (this.isAgreedSign !== 1 && this.isSign)) return
-      this.showAddPageText = true
-      !this.confirmStar &&  !this.isCreator && this.$emit('addOffset', 10)
+      if (
+        (!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest) ||
+        (this.isAgreedSign !== 1 && this.isSign)
+      )
+        return
+      !this.hasTextvalue && this.$BUS.$emit('addTextToPage')
+      this.hasClicked = true
+      !this.confirmStar && !this.isCreator && this.$emit('addOffset', 10)
       !this.isCreator && (this.confirmStar = true)
       this.notClass = ''
     },
@@ -145,12 +165,12 @@ input {
   background-color: transparent;
   border-radius: 4px;
 }
-.text-container{
-  @apply outline-none border-none border-l-[1px] border-paperdazgreen-300/50 whitespace-nowrap
+.text-container {
+  @apply outline-none border-none border-l-[1px] border-paperdazgreen-300/50 whitespace-nowrap;
 }
 .text-container[placeholder]:empty:before {
   content: 'Type here...';
   opacity: 0.5;
-  color: #555; 
+  color: #555;
 }
 </style>

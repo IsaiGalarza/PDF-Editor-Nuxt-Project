@@ -34,7 +34,7 @@
     <template #title>
       <h4
         class="text-center font-semibold text-2xl text-gray-800 pb-2"
-        v-if="!isCreator && !isConfirm"
+        v-if="!isCreator && !isConfirm && !isSign"
       >
         All Done?
       </h4>
@@ -90,7 +90,7 @@
 
 
 
-  <section v-if="!isCreator && !isConfirm">
+  <section v-if="!isCreator && !isConfirm && !isSign">
 
     <div v-if="nonUserRecieveEmail">
       <p class="w-full text-center">Enter email for the copy to be sent to</p>
@@ -164,21 +164,22 @@
 
 
 
-  <section v-if="!isCreator && isConfirm">
+  <section v-if="!isCreator && (isConfirm || isSign)">
 
-    <div v-if="file?.user?.allowCopy">
+    <form @submit.prevent="onSubmit" v-if="file?.user?.allowCopy">
       <p class="w-full text-center">Enter email for the copy to be sent to</p>
       <input
         v-model="externalGuestEmail"
-        type="text"
+        type="email"
+        required
         class="py-2 w-full rounded my-3 border-[1px] border-gray-200 px-2"
         placeholder="--Enter email--"
+
       />
       <p class="flex justify-center">
         <button
           class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400 ml-1"
           :disabled="isLoading"
-          @click="onSubmit"
         >
           <span class="inline-flex gap-1 items-center">
             Send
@@ -191,7 +192,7 @@
           </span>
         </button>
       </p>
-    </div>
+    </form>
 
     <div class="flex justify-around mt-0" v-if="!file?.user?.allowCopy">
       <button

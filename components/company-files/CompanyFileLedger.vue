@@ -398,7 +398,7 @@ git
               </div>
             </section>
 
-            <!-- <FilePagination :totalFile="totalFile" @setPage="setPage" /> -->
+            <FilePagination :totalFile="totalFile" @setPage="setPage" />
           </div>
         </div>
         <!-- End:: Files -->
@@ -841,7 +841,7 @@ export default Vue.extend({
     handleIntersection(entries) {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          this.loadMoreItems();
+          // this.loadMoreItems();
         }
       });
     },
@@ -1025,11 +1025,11 @@ export default Vue.extend({
           `/files/?userId=${paramsId}&fileName[$like]=${search}%&$skip=${page}&$sort[position]=1`
         )
         .then((response) => {
-          console.log(response.data, "user data");
+          // console.log(response.data, "user data");
 
-          let newList = [...response.data, ...this.files];
+          // let newList = [...response.data, ...this.files];
 
-          this.files = newList;
+          this.files = response.data;
 
           // if (this.files.length === 0) {
           //   this.files = response.data;

@@ -8,7 +8,7 @@
        (tool.user == file.userId && tool.justMounted) ||
        (isCreator && tool.user == file.userId && !tool.justMounted)"
        v-hammer:pan="handleDrag">
-      <button class="h-full cursor-move" >
+      <button class="h-full cursor-move">
         <Move-icon />
       </button>
 
@@ -272,7 +272,7 @@ export default {
     },
     responsiveToolDim(){
       return {
-        width: (this.$store.getters.getPdfpagesDim.parentWidth/809),
+        width: (this.$store.getters.getPdfpagesDim.parentWidth/805),
         height: (this.$store.getters.getPdfpagesDim.parentHeight/1243)
       }
     },

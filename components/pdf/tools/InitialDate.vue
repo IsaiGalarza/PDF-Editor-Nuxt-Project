@@ -56,8 +56,9 @@ export default {
     style() {
       return {
         // fontSize: `${this.fontSize || 11}px`,
-        fontSize: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveToolDim.width * 1.2}px`,
-        lineHeight: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveToolDim.width * 1.2}px`,
+        fontFamily: "helvetica !important",
+        fontSize: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveToolDim.width}px`,
+        lineHeight: `${(this.fontSize || 11) * (this.tool?.pageScaleX || 1) * this.responsiveToolDim.width}px`,
       }
     },
     notBtn() {
@@ -67,7 +68,7 @@ export default {
   },
   mounted() {
    setTimeout(() => {
-    this.$emit('addOffset', !this.isCreator ?  9 : 0)
+    this.$emit('addOffset', !this.isCreator ?  12 : 0)
    }, 300);
   },
   watch: {

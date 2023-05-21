@@ -124,7 +124,7 @@ export default {
         return (this.fontSize || 12)*(this.tool?.pageScaleX || 1) 
     },
     computedFontsize(){
-        return `${(this.fontSize || 12)*(this.tool?.pageScaleX || 1) * this.responsiveToolDim.width * 1.2}px`
+        return `${(this.fontSize || 12)*(this.tool?.pageScaleX || 1) * this.responsiveToolDim.width}px`
     },
     isCreator () {
       return (
@@ -139,6 +139,7 @@ export default {
         fontSize: this.computedFontsize,
         background: 'transparent',
         fontWeight: 400,
+        fontFamily: "helvetica !important",
         lineHeight: this.computedFontsize
         // width: `${this.inputWidth}px`
       }

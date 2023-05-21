@@ -1,6 +1,6 @@
 <template>
   <div 
-  class="text-sm cursor-pointer w-full p-2" ref="sideCanvasContainer"
+  class="text-sm cursor-pointer w-full p-2 h-auto" ref="sideCanvasContainer"
   :class="[activePage ? 'box-shadow' : '']"
   >
     <canvas ref="sideCanvas"></canvas>
@@ -36,10 +36,9 @@ export default {
         let viewport = page.getViewport({ scale: 0.30 })
 
        // --setting the canvas width and height--
-        canvas.width = 180
-        canvas.height = 300
-        canvas.style.width = '100%'
-        canvas.style.height = '100%'
+        canvas.width = viewport.width
+        canvas.height = viewport.height
+        canvas.classList.add('page')
 
       // --Rendering the pdf to the canvas
         page.render({
@@ -64,5 +63,10 @@ export default {
   .box-shadow{
     @apply border-[5px] border-paperdazgreen-400;
     transition: 0.2s;
+  }
+  .page{
+    width: 100%;
+    animation: pageIn 1s ease;
+    transition: all 1s ease, width 0.2s ease;
   }
 </style>

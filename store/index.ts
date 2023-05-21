@@ -44,7 +44,7 @@ export const state = () => ({
     width: 0,
     height: 0
   },
-  pdfAnnotations: []
+  pdfAnnotations: [] as any
 })
 
 export type RootState = ReturnType<typeof state>
@@ -141,7 +141,10 @@ export const mutations: MutationTree<RootState> = {
     state.saveUser = payload
   },
   SET_PDF_ANNOTATIONS(state, payload) {
-    state.pdfAnnotations = payload
+    state.pdfAnnotations =  [...state.pdfAnnotations,  ...payload]
+  },
+  RESET_PDF_ANNOTATIONS(state) {
+    state.pdfAnnotations =  []
   },
   SET_PDF_ZOOM_SCALE(state, payload) {
     state.pdfZoomScale = payload

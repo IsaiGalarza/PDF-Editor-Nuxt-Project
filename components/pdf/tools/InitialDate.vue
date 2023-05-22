@@ -70,7 +70,7 @@ export default {
   },
   mounted() {
    setTimeout(() => {
-    !this.hasAddedOffset ? this.$emit('addOffset', !this.isCreator ?  12 : 0) : null
+    !this.hasAddedOffset ? this.$emit('addOffset', !this.isCreator ?  13 : 0) : null
     this.hasAddedOffset = true
    }, 300);
   },
@@ -84,20 +84,20 @@ export default {
     formatDate(val){
       return dateFormat(val,  this.$store?.getters?.getDateFormat )
     },
-    async svgToImage() {
-      this.svgToImageData = '';
-      let dataPAz = ''
-      await htmlToImage.toPng(this.$refs.datebox)
-        .then(function (dataUrl) {
-          dataPAz = dataUrl;
-        })
-        .catch(function (error) {
-          console.error('oops, something went wrong!', error);
-        });
+    // async svgToImage() {
+    //   this.svgToImageData = '';
+    //   let dataPAz = ''
+    //   await htmlToImage.toPng(this.$refs.datebox)
+    //     .then(function (dataUrl) {
+    //       dataPAz = dataUrl;
+    //     })
+    //     .catch(function (error) {
+    //       console.error('oops, something went wrong!', error);
+    //     });
 
-      this.svgToImageData = dataPAz
-      console.log("dazppp",dataPAz)
-    },
+    //   this.svgToImageData = dataPAz
+    //   console.log("dazppp",dataPAz)
+    // },
     overHandler: function () {
       this.isModalActive = true
     },

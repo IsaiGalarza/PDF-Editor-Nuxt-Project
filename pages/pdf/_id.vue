@@ -445,6 +445,7 @@ import { mapState } from 'vuex'
 import AddToPageDrawOrType from '~/components/modals/AddToPageDrawOrType.vue'
 import GlobalMixin from '~/mixins/GlobalMixin'
 import AddToPageText from '~/components/modals/AddToPageText.vue';
+import { AppendKeypressActionOnInput } from '~/types/AppendKeyPressAction';
 
 
 export default mixins(PdfAuth).extend({
@@ -1097,7 +1098,7 @@ export default mixins(PdfAuth).extend({
           this.permissionLoading = { type: true, msg: 'Error Occured'}
         })
     },
-    onloadPdfquery(val) {
+    async onloadPdfquery(val) {
       // these function contains setting the pdf container to the same width as the pdf
       // these function also checks the pdf query for query and destructure
       // after destructure get the object and append the corresponding object to the pdf as annotations
@@ -1126,8 +1127,9 @@ export default mixins(PdfAuth).extend({
       setTimeout(() => {
         this.scrollToSignInitial('mounted')
       }, 1000)
-      this.pdfBoundingRect()
-      this.getALlInput()
+      await this.pdfBoundingRect()
+      await this.getALlInput()
+      await AppendKeypressActionOnInput()
     },
     setPageHeight(val) {
       this.pageHeight = val

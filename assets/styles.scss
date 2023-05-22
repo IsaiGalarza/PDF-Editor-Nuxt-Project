@@ -934,3 +934,9 @@ $screens: 'xxs', 'xs', 'sm', 'md', 'lg', 'xl';
 .annotationText br{
     display: none !important;
  }
+ .appendInput:focus {
+  border: 2px solid yellow !important;
+  border-top: 1px solid yellow !important;
+  border-bottom: 1px solid yellow !important;
+  /* Add any other styles you want to apply when the input field is in focus */
+}

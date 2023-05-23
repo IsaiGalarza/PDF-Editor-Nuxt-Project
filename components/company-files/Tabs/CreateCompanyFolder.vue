@@ -40,7 +40,6 @@
     >
        <input
        v-model="folderName"
-       required
        class="w-full py-2 px-4 border-[1px] border-paperdazgrey-200 rounded-md"
        placeholder="Enter Folder Name"
        />
@@ -63,7 +62,7 @@
         </span>
       </button>
     </div>
-  </form>
+    </form>
     <!-- end :: body -->
   </el-dialog>
 </template>

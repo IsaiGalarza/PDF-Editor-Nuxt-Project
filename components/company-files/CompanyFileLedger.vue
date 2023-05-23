@@ -398,7 +398,7 @@ git
               </div>
             </section>
 
-            <FilePagination :totalFile="totalFile" @setPage="setPage" />
+            <!-- <FilePagination :totalFile="totalFile" @setPage="setPage" /> -->
           </div>
         </div>
         <!-- End:: Files -->
@@ -1022,7 +1022,7 @@ export default Vue.extend({
       //<------------------- START: fetching of folder ------------>>
       await this.$axios
         .$get(
-          `/files/?userId=${paramsId}&fileName[$like]=${search}%&$skip=${page}&$sort[position]=1`
+          `/files/?userId=${paramsId}&fileName[$like]=${search}%&$limit=1000000000&$sort[position]=1`
         )
         .then((response) => {
           // console.log(response.data, "user data");

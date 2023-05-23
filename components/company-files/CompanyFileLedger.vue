@@ -744,7 +744,7 @@ export default Vue.extend({
       console.log(this.$auth.user)
       let paramsId = (this.$auth.user.role == UserTypeEnum.TEAM ? this.$auth.user.teamId : this.$auth.user.id)
       //<------------------- START: fetching of folder ------------>>
-      await this.$axios.$get(`/files/?userId=${paramsId}&fileName[$like]=${search}%&$skip=${page}&$sort[position]=1&fileAction[$ne]=null`)
+      await this.$axios.$get(`/files/?userId=${paramsId}&fileName[$like]=${search}%&$skip=${page}&$sort[position]=1`)
         .then((response) => {
           const filesData = response.data.map((el) => {
             return el

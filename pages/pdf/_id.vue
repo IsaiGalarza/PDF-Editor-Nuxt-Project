@@ -1866,22 +1866,26 @@ export default mixins(PdfAuth).extend({
     if (this.$store.state.pdfExit == true) {
       localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true}))
       this.$store.commit('RESET_PDF_ANNOTATIONS')
+      this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", undefined)
       return next(true)
     }
     if (!this.displayPDF) {
       localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true}))
       this.$store.commit('RESET_PDF_ANNOTATIONS')
+      this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", undefined)
       return next(true)
     }
     if (this.isCreator) {
       this.nextRoute ? localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true})) : null
       this.$store.commit('RESET_PDF_ANNOTATIONS')
+      this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", undefined)
       this.nextRoute ? next(true) : next(false)
       this.exitFileManager(to.fullPath)
       this.nextRoute = to.fullPath
     } else {
       this.nextRoute ? localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true})) : null
       this.$store.commit('RESET_PDF_ANNOTATIONS')
+      this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", undefined)
       this.nextRoute ? next(true) : next(false)
       this.exitFileManager(to.fullPath)
       this.nextRoute = to.fullPath

@@ -35,7 +35,7 @@
         <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin my-2" />
       </div>
       <!-- END: spinner container -->
-      <ul class="mb-3 max-h-[330px] h-auto overflow-scroll sm:px-2" v-if="files.length > 0">
+      <ul class="mb-3 max-h-[330px] h-auto overflow-auto sm:px-2" ref="scrollContainer" @scroll="checkScrollBottom" v-if="files.length > 0">
         <li v-for="(file, i) in files" :key="i + 'folder'" class="w-full flex items-center py-3">
           <img width="24" height="24" src="~/assets/img/PAPERDAZ1 2.png" />
           <p class="text-[15px] font-semibold flex items-center text-grey w-[90%] pr-3 truncate">
@@ -45,12 +45,9 @@
             </span>
           </p>
           <button class="w-[10%] text-right checkbox-container">
-            <input :id="file.id" class="checkbox" type="checkbox" />
+            <input @input="appendFile($event, file.id)" class="checkbox" type="checkbox" />
           </button>
         </li>
-        <div v-if="checkIfFilesAreMany" class="flex justify-center my-3">
-          <button @click="fetchMoreFiles" class="w-full  rounded-lg text-center py-2">Get more files</button>
-        </div>
       </ul>
       <span class="text-center w-full text-paperdazgreen-400" v-else>No files</span>
     </div>
@@ -110,6 +107,7 @@ export default Vue.extend({
       folder: {},
       files: [],
       initialFile: [],
+      getAllInput: [],
       returnFilePage: 0,
       searchValue: '',
       fileSpinner: true,
@@ -117,15 +115,16 @@ export default Vue.extend({
       filesPerPage: 10,
     }
   },
-  computed: {
-    checkIfFilesAreMany() {
-      return ((this.returnFilePage + this.filesPerPage) <= this.totalFile)
-    }
-  },
   watch: {
     visible(val) {
       this.showModal = val
+      val ? this.files = [] : null
       this.fetchFiles(this.returnFilePage, this.searchValue)
+      if(!val){
+        this.files = []
+        this.returnFilePage = 0
+        this.searchValue = ''
+      }
     },
     showModal(val) {
       this.$emit('updateVisibility', val)
@@ -145,6 +144,19 @@ export default Vue.extend({
     this.showModal = this.visible
   },
   methods: {
+    checkScrollBottom(){
+      if (this.$refs.scrollContainer.scrollTop + this.$refs.scrollContainer.clientHeight === this.$refs.scrollContainer.scrollHeight) {
+        this.returnFilePage =  this.returnFilePage + 10
+        console.log('Scrolled to the bottom!');
+      }
+    },
+    appendFile(e, id){
+      if (e.target.checked) {
+        this.getAllInput.push(id);
+      } else {
+        this.getAllInput = this.getAllInput.filter(v => v != id);
+      }
+    },
     async fetchMoreFiles() {
       if (this.returnFilePage >= this.totalFile) return
       this.returnFilePage = this.returnFilePage + 10
@@ -169,13 +181,13 @@ export default Vue.extend({
           : this.$auth.user.id
 
       this.$axios
-        .$get(`/files?userId=${paramsId}&fileName[$like]=${search || ''}%&$sort[updatedAt]=-1&isEditing=0`)
+        .$get(`/files?userId=${paramsId}&fileName[$like]=${search || ''}%&$sort[updatedAt]=-1&isEditing=0&$skip=${page}`)
         .then((response) => {
           const filesData = response.data.map((el) => {
             return el
           })
           this.totalFile = response.total;
-          this.files = filesData
+          this.files = Array.from(new Set([...filesData, ...this.files])).filter((item, index)=> item.folderId !== this.folder.id)
           this.fileSpinner = false
         })
         .catch((err) => { })
@@ -184,33 +196,28 @@ export default Vue.extend({
     async onSubmit() {
       event?.preventDefault()
 
-      let getAllInput = document.querySelectorAll('.checkbox')
-      let initialArray = Array.from(getAllInput).filter((item) => {
-        if (item.checked) return item
-      })
-
-      if (this.loading || initialArray.length < 1) return
+      if (this.loading || this.getAllInput.length < 1) return
 
       this.loading = true
 
       // loop through all files and insert to Folder
       let storeArray = []
-      for (const element of initialArray) {
-        await this.$axios
-          .$patch(`/files/${element.id}`, {
+      for (const element of this.getAllInput) {
+        try {
+          await this.$axios
+          .$patch(`/files/${element}`, {
             folderId: this.folder.id,
           })
           .then(() => {
             //  pushing a hard-coded value to array
             storeArray.push('in')
           })
+        } catch (error) {
+          //
+        }
       }
       this.loading = false
 
-      // loop through to cancle checked box
-      Array.from(getAllInput).map((item) => {
-        item.checked = false
-      })
 
       // code to check if file moved into the <Array>
       if (storeArray.length > 0) {

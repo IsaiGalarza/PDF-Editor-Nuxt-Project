@@ -341,6 +341,7 @@ export default Vue.extend({
       }
       this.$store.commit('SET_FILE_SIGNATURE', null);
       this.$store.commit('SET_FILE_INITIAL', null)
+      this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", undefined)
     },
     showQrcodeFileFunc() {
       this.showQrcodeFiles = true

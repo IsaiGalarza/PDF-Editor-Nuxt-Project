@@ -159,6 +159,7 @@
             v-model="tool.value"
             :userId="tool.user"
             :setInitialSignType="setInitialSignType"
+            @parentOffset="parentOffset"
           />
           <!-- </div> -->
           <pdf-page
@@ -198,7 +199,7 @@
           @scaling="scalingHandler"
           style="overflow: hidden;"
         > -->
-        <div v-if="!isMobile" class="pdf-pages-outer relative" ref="PagesOuter" id="PagesOuter">
+        <div class="pdf-pages-outer relative" ref="PagesOuter" id="PagesOuter">
           <div
             class="pdf-single-pages-outer w-full"
             ref="pdf-single-pages-outer"
@@ -296,6 +297,7 @@
                 v-model="tool.value"
                 :userId="tool.user"
                 :setInitialSignType="setInitialSignType"
+                @parentOffset="parentOffset"
               />
               <!-- </div> -->
               <pdf-page
@@ -790,6 +792,12 @@ export default mixins(PdfAuth).extend({
     },
   },
   methods: {
+    parentOffset(val, id){  
+       let ind = this.tools.findIndex((item)=> item.id == id)
+       let newTop = this.tools[ind].top + val
+       this.tools[ind] = {...this.tools[ind], top: newTop } 
+       this.$forceUpdate()
+    },
     addTopagetextFunc(){
       this.showAddPageText = true
     },
@@ -1866,26 +1874,22 @@ export default mixins(PdfAuth).extend({
     if (this.$store.state.pdfExit == true) {
       localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true}))
       this.$store.commit('RESET_PDF_ANNOTATIONS')
-      this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", undefined)
       return next(true)
     }
     if (!this.displayPDF) {
       localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true}))
       this.$store.commit('RESET_PDF_ANNOTATIONS')
-      this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", undefined)
       return next(true)
     }
     if (this.isCreator) {
       this.nextRoute ? localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true})) : null
       this.$store.commit('RESET_PDF_ANNOTATIONS')
-      this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", undefined)
       this.nextRoute ? next(true) : next(false)
       this.exitFileManager(to.fullPath)
       this.nextRoute = to.fullPath
     } else {
       this.nextRoute ? localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true})) : null
       this.$store.commit('RESET_PDF_ANNOTATIONS')
-      this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", undefined)
       this.nextRoute ? next(true) : next(false)
       this.exitFileManager(to.fullPath)
       this.nextRoute = to.fullPath

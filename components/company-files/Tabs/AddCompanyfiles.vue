@@ -95,7 +95,7 @@ export default Vue.extend({
   },
   filters: {
     removeExtension(filename) {
-      return filename?.replace(/\.[^\/.]+$/, '');
+      return (filename || '')?.replace(/\.[^\/.]+$/, '');
     }
   },
   data() {

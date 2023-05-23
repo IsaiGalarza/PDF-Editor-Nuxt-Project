@@ -198,7 +198,7 @@
           @scaling="scalingHandler"
           style="overflow: hidden;"
         > -->
-        <div v-if="!isMobile" class="pdf-pages-outer relative" ref="PagesOuter" id="PagesOuter">
+        <div class="pdf-pages-outer relative" ref="PagesOuter" id="PagesOuter">
           <div
             class="pdf-single-pages-outer w-full"
             ref="pdf-single-pages-outer"

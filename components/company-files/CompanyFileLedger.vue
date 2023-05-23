@@ -11,22 +11,10 @@ git <template>
         </span>
       </h5>
       <div class="w-2/12 text-white flex items-center justify-end my-2 pl-2">
-        <el-dropdown trigger="click">
-          <button 
-          class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
+        <button @click="showUploadModalFunction"
+          class="hidden sm:circle sm:circle-18 p-2 ml-2 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
           <plus-icon />
         </button>
-          <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu">
-            <ul class="min-w-[150px]">
-              <li class="dropdown-item" @click="showUploadModalFunction">
-                <span>Upload File</span>
-              </li>
-              <li class="dropdown-item" @click="showCreateCompanyFolderFunc">
-                <span>Create Folder</span>
-              </li>
-            </ul>
-          </el-dropdown-menu>
-        </el-dropdown>
       </div>
     </header>
     <!-- End:: header -->
@@ -42,13 +30,13 @@ git <template>
             </div>
             <h2 class="font-bold pl-4">{{ FilesInFolerContent.name }}</h2>
           </div>
-          <!-- <button @click="showFolders && !folderSelected ? showCreateCompanyFolderFunc() : showUploadModalFunction()"
+          <button @click="showFolders && !folderSelected ? showCreateCompanyFolderFunc() : showUploadModalFunction()"
             class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-xl text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
             <plus-icon />
-          </button> -->
+          </button>
         </div>
         <!-- Start:: Folders -->
-        <div v-if="(folders.length > 0 && !folderSelected)" class="">
+        <div v-if="(folders.length > 0 && !folderSelected)" class="hidden sm:block">
           <h4 class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 hidden sm:flex items-center">
             Folders
           </h4>
@@ -59,8 +47,8 @@ git <template>
               <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
             </div>
             <div
-              class="my-12 flex items-center flex-wrap px-[1.5rem]">
-              <div class="items-center mb-3 border-2 py-[15px] pl-[15px] rounded-[16px] mr-[15px] border-[#909090] w-[calc(100%-15px)] sm:w-[calc(33.333333%-20px)] md:w-[calc(25%-15px)] min-w-[250px]"
+              class="my-12 flex items-center flex-wrap px-[3rem]">
+              <div class="items-center mb-3 border-2 py-[15px] pl-[15px] rounded-[16px] mr-[15px] border-[#909090] w-[calc(50%-15px)] sm:w-[calc(33.333333%-15px)] md:w-[calc(25%-15px)] min-w-[250px]"
                 v-for="(content, i) in folders" :key="i">
                 <div class="overflow-hidden px-[10px] flex justify-between">
                   <div class="float-left flex">
@@ -179,7 +167,7 @@ git <template>
                   <p class="text-center inline-block w-2/12">Date &amp; Time</p>
                   <p class="text-center inline-block w-1/12"></p>
                </div>
-               <draggable v-if="!folderSelected" v-model="files" group="paperlink" @change="onChange" class="px-0">
+               <draggable v-model="files" group="paperlink" @change="onChange" class="px-0">
                 <div v-for="(file, i) in files" :key="file.id" class="py-2 border-b-[1px] border-gray-200 list-none px-0 flex items-center  min-w-[700px] w-full">
                   <div class="w-1/12 inline-flex justify-center"><button><DragIcon/></button></div>
                   <div class="text-left inline-block w-3/12 truncate">
@@ -236,14 +224,6 @@ git <template>
                                 <span>Share</span>
                               </div>
                             </li>
-
-
-                            <li class="dropdown-item" @click="showMoveCompanyFileFunc(file)" divided>
-                              <div class="flex justify-between w-full">
-                                <MoveIcon width="16" height="16" class="inline-block float-left" />
-                                <span>Move</span>
-                              </div>
-                            </li>
                            
                             <li class="dropdown-item" @click="showRemoveCompanyFileFunc(file)">
                               <div class="flex justify-between w-full border-t border-gray-200">
@@ -258,12 +238,10 @@ git <template>
                   </div>
                 </div>
                </draggable>
-
-             <FileInFolder v-else :FilesInFolerContent="FilesInFolerContent"/>
             </section>
            
           </div>
-          <FilePagination v-if="!folderSelected" :totalFile="totalFile" @setPage="setPage" />
+          <FilePagination :totalFile="totalFile" @setPage="setPage" />
         </div>
         <!-- End:: Files -->
       </div>
@@ -314,11 +292,12 @@ git <template>
             {{ actionFile.fileName | removeExtension }}
           </p>
           <p class="font-bold mb-0">
+          {{ this.date }}
             {{ formatDateTime(actionFile.updatedAt) }}
           </p>
           <p class="font-bold mt-2">
             <nuxt-link :to="`/pdf/${actionFile.paperLink}`">
-              <span class="flex items-center gap-2">Sign</span>
+              <span class="flex items-center gap-2">Sign <EyeIcon /></span>
             </nuxt-link>
           </p>
         </div>
@@ -335,7 +314,7 @@ git <template>
               <arrow-down-icon class="h-2 w-3 -rotate-90" />
             </div>
           </li>
-          <!-- <li @click="showRequestModalFunc(actionFile)" class="dropdown-item">
+          <li @click="showRequestModalFunc(actionFile)" class="dropdown-item">
             <div class="flex justify-between items-center w-full border-t border-gray-200 py-2">
               <div class="flex items-center">
                 <div class="w-6 flex items-center justify-start">
@@ -345,8 +324,8 @@ git <template>
               </div>
               <arrow-down-icon class="h-2 w-3 -rotate-90" />
             </div>
-          </li> -->
-          <!-- <li class="dropdown-item" @click="showPapertagsModalFunc(actionFile)">
+          </li>
+          <li class="dropdown-item" @click="showPapertagsModalFunc(actionFile)">
             <div class="flex justify-between items-center w-full border-t border-gray-200 py-2" >
               <div class="flex items-center">
                 <div width="20" height="20" class="float-left w-6 flex items-center justify-start">#</div>
@@ -354,8 +333,8 @@ git <template>
               </div>
               <arrow-down-icon class="h-2 w-3 -rotate-90" />
             </div>
-          </li> -->
-          <!-- <li class="dropdown-item" @click="showCCFlowModalFunc(actionFile)">
+          </li>
+          <li class="dropdown-item" @click="showCCFlowModalFunc(actionFile)">
             <div class="flex justify-between items-center w-full border-t border-gray-200 py-2">
               <div class="flex items-center">
                 <div class="w-6 flex items-center justify-start">
@@ -365,7 +344,7 @@ git <template>
               </div>
               <arrow-down-icon class="h-2 w-3 -rotate-90" />
             </div>
-          </li> -->
+          </li>
           <li class="dropdown-item" @click="showEditCompanyFileFunc(actionFile)">
             <div class="flex justify-between items-center w-full border-t border-gray-200 py-2">
               <div class="flex items-center">
@@ -388,7 +367,7 @@ git <template>
               <arrow-down-icon class="h-2 w-3 -rotate-90" />
             </div>
           </li>
-          <!-- <li class="dropdown-item" @click="showQrCodeFunc(actionFile)">
+          <li class="dropdown-item" @click="showQrCodeFunc(actionFile)">
             <div class="flex justify-between items-center w-full border-t border-gray-200 py-2">
               <div class="flex items-center">
                 <div class="w-6 flex items-center justify-start">
@@ -398,7 +377,7 @@ git <template>
               </div>
               <arrow-down-icon class="h-2 w-3 -rotate-90" />
             </div>
-          </li> -->
+          </li>
           <li class="dropdown-item" @click="showRemoveCompanyFileFunc(actionFile)">
             <div class="flex justify-between items-center w-full border-t border-gray-200 py-2">
               <div class="flex items-center">
@@ -442,7 +421,6 @@ git <template>
 <script>
 import Vue from 'vue'
 import draggable from 'vuedraggable'
-import FileInFolder from "./FilesInFolder.vue"
 import UploadDocumentModal from '../dashboard/UploadDocumentModal.vue'
 import CompanyIcon from '../svg-icons/CompanyIcon.vue'
 import EllipsisIconVerticalIcon from '../svg-icons/EllipsisIconVerticalIcon.vue'
@@ -534,8 +512,7 @@ export default Vue.extend({
     EyeIcon,
     MaxInviteModal,
     draggable,
-    DragIcon,
-    FileInFolder
+    DragIcon
   },
   name: 'CompanyFileLedger',
   data() {

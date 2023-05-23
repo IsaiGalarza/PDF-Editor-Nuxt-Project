@@ -68,7 +68,7 @@ export default {
     },
 
   },
-  created() {
+  mounted() {
    setTimeout(() => {
     !this.hasAddedOffset ? this.$emit('addOffset', !this.isCreator ?  13 : 0) : null
     this.hasAddedOffset = true

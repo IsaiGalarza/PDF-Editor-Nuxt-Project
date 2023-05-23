@@ -8,7 +8,7 @@
     class="relative text-[#414042]"
   >
     <!--Start:: Close Button -->
-    <div class="absolute -top-3 -right-3" style="padding: inherit">
+    <div class="absolute -top-3 -right-3" style="padding: inherit;">
       <span
         class="circle circle-12 bg-white cursor-pointer text-red-600"
         @click="closeModal()"
@@ -30,8 +30,11 @@
       </span>
     </div>
 
-    <div class="absolute top-3 left-3" v-if="loading">
-      <spinner-dotted-icon
+
+    <div  class="absolute top-3 left-3"
+    v-if="loading"
+    >
+    <spinner-dotted-icon
         ref="spinnerIcon"
         height="30"
         width="30"
@@ -46,14 +49,18 @@
     <!-- Start:: Body -->
 
     <p
+    v-if="files.length"
       class="text-centerfont-medium flex justify-center items-center w-[] mx-auto mb-6 whitespace-none"
     >
       <input
-        class="w-[280px] w-min-[150px] py-2 px-4 border-[1px] border-paperdazgrey-200 rounded-md disabled:cursor-not-allowed"
+        class="w-[280px] w-min-[150px] py-2 px-4 border-[1px] border-paperdazgrey-200 rounded-md"
         placeholder="Enter Folder Name"
-        v-model="searchValue"
+        @input="searchFolders"
       />
-      <!-- <button
+      <button class="circle circle-18 bg-paperdazgreen-400 text-white ml-2">
+        <SearchIcon width="16" height="16" currentcolor="white" />
+      </button>
+        <!-- <button
            @click="popUpFolderCreate"
           class="ml-2 circle circle-18 bg-paperdazgreen-400 text-xl text-white"
         >
@@ -62,43 +69,41 @@
     </p>
 
     <div class="w-[100%] md:w-[90%] md:ml-[5%] relative">
-      <ul
-        class="mb-3 max-h-[330px] h-auto overflow-auto sm:px-2"
-        ref="scrollContainer"
-        @scroll="checkScrollBottom"
-      >
+     <!-- START: spinner container -->
+          <div
+            v-if="folderSpinner"
+            class="absolute z-10 w-full h-full h-min-[3000px] bg-white top-0 left-0 rounded-lg flex justify-center items-center"
+          >
+            <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
+          </div>
+          <!-- END: spinner container -->
+      <ul class="mb-3 max-h-[330px] h-auto overflow-scroll sm:px-2">
         <li
-          v-for="(file, i) in folders"
+          v-for="(file, i) in files"
           :key="'file' + i"
-          class="w-full flex items-center py-2 folder_list transition duration-100 rounded"
+          class="w-full flex items-center py-2"
         >
-          <span class="mx-2">
-            {{ file.files.length }}
-          </span>
-          <img class="w-[28px] mr-2" src="~/assets/img/Vector.png" />
+          <img width="24" height="24" src="~/assets/img/PAPERDAZ1 2.png" />
           <p
             class="text-[15px] font-semibold flex items-center text-grey w-[85%] pr-3 truncate"
           >
             <button class="mr-1"></button>
-            <span :title="file.name" class="truncate inline-block pr-2 py-2">{{
+            <span :title="file.name" class="truncate inline-block pr-2">{{
               file.name
             }}</span>
           </p>
-          <button
-            @click="transferFileFunction(file)"
-            class="w-auto whitespace-nowrap rounded px-3 text-paperdazgreen py-1 items-center folder_button hidden"
-          >
-            <!-- <img
+          <button class="w-[60px] ml-2 flex items-center">
+            <img
               @click="transferFileFunction(file)"
               class="w-[33px]"
               src="~/assets/icons/file-move-icon.svg"
-            /> -->
-            move
+            />
           </button>
         </li>
       </ul>
+      
     </div>
-    <!-- <FilePagination :totalFile="totalFile" @setPage="setPage"/> -->
+      <FilePagination :totalFile="totalFile" @setPage="setPage"/>
     <!-- end :: body -->
   </el-dialog>
 </template>
@@ -122,8 +127,8 @@ export default Vue.extend({
     FileIcon,
     FolderPlusIcon,
     FilePagination,
-    FolderPlusIcon,
-  },
+    FolderPlusIcon
+},
   model: {
     prop: 'visible',
     event: 'updateVisibility',
@@ -146,22 +151,17 @@ export default Vue.extend({
       fileInfo: {},
       files: [],
       getFolderId: undefined,
-      totalFile: null,
+      totalFile:null,
       searchValue: '',
-      returnedFolderPage: 0,
+      returnedFolderPage:0,
       folderSpinner: true,
-      debounceTimeout: null,
+      debounceTimeout: null
     }
   },
   watch: {
     visible(val) {
       this.showModal = val
       val ? this.fetchFiles() : null
-      if (!val) {
-        this.returnedFolderPage = 0
-        this.files = []
-        this.totalFile = null
-      }
     },
     showModal(val) {
       this.$emit('updateVisibility', val)
@@ -169,49 +169,27 @@ export default Vue.extend({
     userFile() {
       this.fileInfo = this.userFile
     },
-    payloadCheck() {
-      if (this.debounceTimeout) clearTimeout(this.debounceTimeout)
-      this.debounceTimeout = setTimeout(() => {
-        this.folderSpinner = true
-        this.fetchFiles(this.returnedFolderPage, this.searchValue)
-      }, 500)
-    },
     searchValue() {
-      this.returnedFolderPage = 0
-      this.files = []
-      this.totalFile = null
+      if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
+      this.debounceTimeout = setTimeout(() => {
+      this.folderSpinner = true
+      this.fetchFiles(this.returnedFolderPage, this.searchValue)
+      }, 500);
     },
-  },
-  computed: {
-    folders() {
-      return Array.from(new Set(this.files.map(JSON.stringify)))
-        .map(JSON.parse)
-        .filter((item, index) => item.id !== this.userFile?.folderId)
-        .sort((a, b) => a.updatedAt - b.updatedAt)
-    },
-    payloadCheck() {
-      return {
-        search: this.searchValue,
-        page: this.returnedFolderPage,
-      }
-    },
+    returnedFolderPage(){
+      this.folderSpinner = true
+      this.fetchFiles(this.returnedFolderPage, this.searchValue)
+    }
   },
   mounted() {
     this.showModal = this.visible
+    this.fetchFiles(this.returnedFolderPage, this.searchValue)
   },
   methods: {
-    checkScrollBottom() {
-      if (
-        this.$refs.scrollContainer.scrollTop +
-          this.$refs.scrollContainer.clientHeight >=
-        (this.$refs.scrollContainer.scrollHeight - 10)
-      ) {
-        if (this.returnedFolderPage > this.totalFile) return
-        this.returnedFolderPage = this.returnedFolderPage + 10
-        console.log('Scrolled to the bottom!')
-      }
+    searchFolders(event){
+       this.searchValue = event.target.value
     },
-    setPage(val) {
+    setPage(val){
       this.returnedFolderPage = val
     },
     popUpFolderCreate() {
@@ -222,26 +200,17 @@ export default Vue.extend({
       this.onSubmit(file.id)
     },
     async fetchFiles(page, search) {
-      let paramsId =
-        this.$auth.user.role == UserTypeEnum.TEAM
-          ? this.$auth.user.teamId
-          : this.$auth.user.id
+       let paramsId = this.$auth.user.role == UserTypeEnum.TEAM ? this.$auth.user.teamId : this.$auth.user.id
 
       await this.$axios
-        .$get(
-          `/folders/?userId=${paramsId}&name[$like]=${
-            search || ''
-          }%&$sort[updatedAt]=-1&$skip=${page || 0}`
-        )
+        .$get(`/folders/?userId=${paramsId}&name[$like]=${(search || '')}%&$sort[updatedAt]=-1&$skip=${(page || 0)}`)
         .then((response) => {
           const filesData = response.data.map((el) => {
-            return el
+          return el
           })
           this.totalFile = response.total
-          page == 0 && (this.files = [])
           // set the data.file
-          this.files = [...this.files, ...filesData]
-          console.log('from-modal-folder', this.files)
+          this.files = filesData.filter((item, index)=> item.id !== this.userFile?.folderId)
         })
         .finally(() => {
           this.folderSpinner = false
@@ -254,7 +223,7 @@ export default Vue.extend({
     onSubmit(index, event) {
       event?.preventDefault()
 
-      if (this.loading) return
+      if(this.loading) return
 
       this.loading = true
 
@@ -265,17 +234,17 @@ export default Vue.extend({
         })
         .then(() => {
           this.$notify.success({
-            title: 'File',
-            message: 'Moved successfully',
+          title: 'File',
+          message: 'Moved successfully',
           })
           this.$emit('updateVisibility', false)
           this.$emit('refresh')
-          this.$emit('resetUserFile')
-        })
+          this.$emit("resetUserFile")
+          })
         .catch((err) => {
           this.$notify.error({
-            title: 'Package',
-            message: 'Unable to move file',
+          title: 'Package',
+          message: 'Unable to move file',
           })
         })
         .finally(() => {
@@ -330,11 +299,5 @@ export default Vue.extend({
 ::-webkit-scrollbar-track {
   cursor: pointer;
   @apply border-[1px] border-paperdazgreen-400;
-}
-.folder_list:hover .folder_button {
-  display: inline-block;
-}
-.folder_list:hover {
-  @apply bg-paperdazgreen-300/30;
 }
 </style>

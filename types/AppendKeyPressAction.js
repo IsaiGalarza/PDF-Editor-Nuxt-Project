@@ -3,31 +3,29 @@ import $ from 'jquery'
 export let allInputs = []
 export let initialInputIndex = null
 
-export function moveToNextInput(ind) {
-    //reset previous input to default
-//   allInputs[ind].parentElement.classList.remove("bg-force")
 
-  if (ind + 1 >= allInputs.length) ind = 0
-  const inputField = allInputs[ind + 1]
-  inputField.scrollIntoView({ behavior: 'smooth', block: 'center' })
-  inputField.type != 'radio' && inputField.parentElement.classList.add("bg-force")
-  inputField.focus()
+export function moveToNextInput(ind) {
+    if((ind + 1) >= allInputs.length) ind = 0 
+    const inputField =  allInputs[ind + 1]
+    inputField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    inputField.type != 'radio' &&  inputField.classList.add('appendInput')
+    inputField.focus()
 }
+
 
 export function keyupfFunc(event) {
   initialInputIndex = allInputs.findIndex((v) => v == event.target)
-  event.key === 'Enter' &&
-    !event.shiftKey &&
-    (event.target.type == 'text' || event.target.type == 'textarea') &&
-    moveToNextInput(initialInputIndex)
+  event.key === 'Enter' && !event.shiftKey && moveToNextInput(initialInputIndex)
 }
+
 
 export function changeFunc(event) {
-  if (event.target.type == 'text' || event.target.type == 'textarea') return
+    if(event.target.type == 'text' || event.target.type == 'textarea') return
+     
+    initialInputIndex = allInputs.findIndex((v) => v == event.target)
+    moveToNextInput(initialInputIndex)
+  }
 
-  initialInputIndex = allInputs.findIndex((v) => v == event.target)
-  moveToNextInput(initialInputIndex)
-}
 
 export function AppendKeypressActionOnInput() {
   setTimeout(() => {

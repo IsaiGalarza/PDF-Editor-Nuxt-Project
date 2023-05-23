@@ -39,7 +39,7 @@
     >
        <input
        v-model="folderInputData"
-        class="w-full py-3 px-4 border-[1px] border-paperdazgrey-500 rounded-md"
+        class="w-full py-4 px-4 border-[1px] border-paperdazgrey-500 rounded-md"
        placeholder="Enter Folder Name"
        />
     </p>

@@ -17,7 +17,7 @@
     </template>
     <!-- Start:: Body -->
     <p class="text-center block font-medium  mx-auto mb-6 whitespace-none">
-      <input ref="editField" v-model="fileInputData" class="w-full py-3 px-4 border-[1px] border-paperdazgrey-500 rounded-md"
+      <input ref="editField" v-model="fileInputData" class="w-full py-4 px-4 border-[1px] border-paperdazgrey-500 rounded-md"
         />
     </p>
     <div class="flex justify-around">
@@ -76,7 +76,7 @@ export default Vue.extend({
     },
     "file": function () {
       this.fileData = this.file;
-      this.fileInputData = (this.file?.fileName || "").replace('.pdf', '');
+      this.fileInputData = this.file?.fileName.replace('.pdf', '');
     }
   },
   mounted() {

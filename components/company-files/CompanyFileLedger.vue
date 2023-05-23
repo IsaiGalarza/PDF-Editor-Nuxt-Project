@@ -11,10 +11,22 @@ git <template>
         </span>
       </h5>
       <div class="w-2/12 text-white flex items-center justify-end my-2 pl-2">
-        <button @click="showUploadModalFunction"
-          class="hidden sm:circle sm:circle-18 p-2 ml-2 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
+        <el-dropdown trigger="click">
+          <button 
+          class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
           <plus-icon />
         </button>
+          <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu">
+            <ul class="min-w-[150px]">
+              <li class="dropdown-item" @click="showUploadModalFunction">
+                <span>Upload File</span>
+              </li>
+              <li class="dropdown-item" @click="showCreateCompanyFolderFunc">
+                <span>Create Folder</span>
+              </li>
+            </ul>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
     </header>
     <!-- End:: header -->

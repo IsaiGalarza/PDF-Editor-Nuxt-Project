@@ -99,6 +99,7 @@ export default Vue.extend({
   watch: {
     visible(val) {
       this.showModal = val
+      console.log("back-street-folder", this.folder)
     },
     showModal(val) {
       this.$emit('updateVisibility', val)
@@ -142,6 +143,7 @@ export default Vue.extend({
             title: 'File Upload',
             message: 'File uploaded successfully',
           })
+          this.moveToFolder(response.data?.id)
           this.$nuxt.$router.push(`/pdf/${response.data?.paperLink}`)
           localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: false}))
         })

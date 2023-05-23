@@ -159,6 +159,7 @@
             v-model="tool.value"
             :userId="tool.user"
             :setInitialSignType="setInitialSignType"
+            @parentOffset="parentOffset"
           />
           <!-- </div> -->
           <pdf-page
@@ -296,6 +297,7 @@
                 v-model="tool.value"
                 :userId="tool.user"
                 :setInitialSignType="setInitialSignType"
+                @parentOffset="parentOffset"
               />
               <!-- </div> -->
               <pdf-page
@@ -790,6 +792,12 @@ export default mixins(PdfAuth).extend({
     },
   },
   methods: {
+    parentOffset(val, id){  
+       let ind = this.tools.findIndex((item)=> item.id == id)
+       let newTop = this.tools[ind].top + val
+       this.tools[ind] = {...this.tools[ind], top: newTop } 
+       this.$forceUpdate()
+    },
     addTopagetextFunc(){
       this.showAddPageText = true
     },

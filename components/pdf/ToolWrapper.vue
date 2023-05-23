@@ -426,9 +426,9 @@ export default {
       if (this.tool.top) this.top = this.tool.top
       if (this.tool.left) this.left = this.tool.left
     },
-    addOffset(val) {
+    addOffset(val){
       if(this.tool.type == this.TOOL_TYPE.appendDate || this.tool.type == this.TOOL_TYPE.appendName)
-       val ? this.top = this.top + val : null
+      this.$emit("parentOffset",  val, this.id)
     },
     draggingMouseover(event) {
       if (this.isDragging) {

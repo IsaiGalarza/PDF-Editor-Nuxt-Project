@@ -934,3 +934,19 @@ $screens: 'xxs', 'xs', 'sm', 'md', 'lg', 'xl';
 .annotationText br{
     display: none !important;
  }
+
+.bg-force:focus-within{
+  border: 2px solid yellow !important;
+  border-top: 1px solid yellow !important;
+  border-bottom: 1px solid yellow !important;
+  // animation: shadow-pulse 1s infinite;
+}
+@keyframes shadow-pulse
+{
+  0% {
+    box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 0 35px rgba(0, 0, 0, 0);
+  }
+}

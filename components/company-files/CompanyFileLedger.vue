@@ -198,7 +198,7 @@ git
         </div>
         <!-- End:: Folders -->
         <!-- Start:: Files -->
-        <div class="mb-4" :class="{ 'hidden sm:block': showFolders && !folderSelected }">
+        <div :class="{ 'hidden sm:block': showFolders && !folderSelected }">
           <h4
             class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 hidden sm:flex items-center"
             v-if="folders.length > 0 && !folderSelected"
@@ -234,7 +234,7 @@ git
               <div class="border-b-[1px] border-gray-200 flex items-center py-3">
                 <p class="w-1/12 inline-block text-center">Order</p>
                 <p class="text-left inline-block w-3/12">File name</p>
-                <p class="text-center inline-block w-1/12">Pages</p>
+                <p class="text-left inline-block w-1/12">Pages</p>
                 <p class="text-center inline-block w-2/12">Action required</p>
                 <p class="text-center inline-block w-2/12">Privacy</p>
                 <p class="text-center inline-block w-2/12">Date &amp; Time</p>
@@ -389,21 +389,12 @@ git
                   </div>
                 </div>
               </draggable>
-
-              <div
-                v-if="isRefetching"
-                class="w-full mt-4 bg-white rounded-lg flex justify-center items-center"
-              >
-                <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
-              </div>
             </section>
 
             <!-- <FilePagination :totalFile="totalFile" @setPage="setPage" /> -->
           </div>
         </div>
         <!-- End:: Files -->
-
-        <div class="h-[200px] w-full" v-show="this.files.length > 0" id="myContent"></div>
       </div>
     </transition>
     <upload-document-modal
@@ -832,25 +823,13 @@ export default Vue.extend({
       allowCopy: true,
       link: "",
       type: "",
-      pageNum: 1,
-      files: [],
-      isRefetching: false,
     };
   },
   methods: {
-    handleIntersection(entries) {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          // this.loadMoreItems();
-        }
-      });
-    },
-
     routeToFileManager(val) {
       this.$router.push(val);
       localStorage.setItem("from_publicpage", JSON.stringify({ fromBusiness: false }));
     },
-
     async setAllowCopy() {
       await this.$axios.patch(`/users/${this.$auth?.user?.id}`, {
         allowCopy: this.allowCopy ? 1 : 0,
@@ -1002,19 +981,8 @@ export default Vue.extend({
       //   dateVal
       // )}  ${DateFormatter.getFormattedTime(dateVal)}`
     },
-    loadMoreItems() {
-      if (this.files.length > 0 && this.files.length !== this.totalFile) {
-        let num = `${this.files.length}`;
-        const pageNumber = Number(num.slice(0, 1)) * 10;
-
-        this.isRefetching = true;
-
-        this.setPage(pageNumber);
-      }
-      // Your logic here
-    },
     async fetchFiles(page, search) {
-      console.log(page, "page number");
+      console.log(this.$auth.user);
       let paramsId =
         this.$auth.user.role == UserTypeEnum.TEAM
           ? this.$auth.user.teamId
@@ -1025,19 +993,11 @@ export default Vue.extend({
           `/files/?userId=${paramsId}&fileName[$like]=${search}%&$limit=1000000000&$sort[position]=1`
         )
         .then((response) => {
-          // console.log(response.data, "user data");
+          const filesData = response.data.map((el) => {
+            return el;
+          });
 
-          // let newList = [...response.data, ...this.files];
-
-          this.files = response.data;
-
-          // if (this.files.length === 0) {
-          //   this.files = response.data;
-          // } else {
-
-          // }
-
-          // console.log("New list", [...filesData, ...this.files]);
+          this.files = filesData;
           // push files to store
           this.$store.commit("ADD_USER", this.files);
           // to stop spinner
@@ -1045,7 +1005,6 @@ export default Vue.extend({
           this.totalFile = response.total;
         })
         .finally(() => {
-          this.isRefetching = false;
           this.fileSpinner = false;
         });
       //<------------------- START: fetching of folder ------------>>
@@ -1077,18 +1036,7 @@ export default Vue.extend({
       //<------------------- START: fetching of folder ------------>>
     },
   },
-
   mounted() {
-    const content = document.getElementById("myContent");
-    const options = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.1, // Adjust threshold as needed
-    };
-
-    const observer = new IntersectionObserver(this.handleIntersection, options);
-    observer?.observe(content);
-
     (this.date = this.$store.getters.getDateFormat),
       (this.time = this.$store.getters.getTimeFormat),
       this.fetchFiles(this.returnedDataPage, this.folderSearch);
@@ -1139,6 +1087,7 @@ export default Vue.extend({
     },
   },
   watch: {
+    files() {},
     allowCopy() {
       this.setAllowCopy();
     },

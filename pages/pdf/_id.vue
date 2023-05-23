@@ -198,7 +198,7 @@
           @scaling="scalingHandler"
           style="overflow: hidden;"
         > -->
-        <div class="pdf-pages-outer relative" ref="PagesOuter" id="PagesOuter">
+        <div v-if="!isMobile" class="pdf-pages-outer relative" ref="PagesOuter" id="PagesOuter">
           <div
             class="pdf-single-pages-outer w-full"
             ref="pdf-single-pages-outer"
@@ -445,6 +445,7 @@ import { mapState } from 'vuex'
 import AddToPageDrawOrType from '~/components/modals/AddToPageDrawOrType.vue'
 import GlobalMixin from '~/mixins/GlobalMixin'
 import AddToPageText from '~/components/modals/AddToPageText.vue';
+import { AppendKeypressActionOnInput } from '~/types/AppendKeyPressAction';
 
 
 export default mixins(PdfAuth).extend({
@@ -1097,7 +1098,7 @@ export default mixins(PdfAuth).extend({
           this.permissionLoading = { type: true, msg: 'Error Occured'}
         })
     },
-    onloadPdfquery(val) {
+    async onloadPdfquery(val) {
       // these function contains setting the pdf container to the same width as the pdf
       // these function also checks the pdf query for query and destructure
       // after destructure get the object and append the corresponding object to the pdf as annotations
@@ -1126,8 +1127,9 @@ export default mixins(PdfAuth).extend({
       setTimeout(() => {
         this.scrollToSignInitial('mounted')
       }, 1000)
-      this.pdfBoundingRect()
-      this.getALlInput()
+      await this.pdfBoundingRect()
+      await this.getALlInput()
+      await AppendKeypressActionOnInput()
     },
     setPageHeight(val) {
       this.pageHeight = val
@@ -1864,22 +1866,26 @@ export default mixins(PdfAuth).extend({
     if (this.$store.state.pdfExit == true) {
       localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true}))
       this.$store.commit('RESET_PDF_ANNOTATIONS')
+      this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", undefined)
       return next(true)
     }
     if (!this.displayPDF) {
       localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true}))
       this.$store.commit('RESET_PDF_ANNOTATIONS')
+      this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", undefined)
       return next(true)
     }
     if (this.isCreator) {
       this.nextRoute ? localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true})) : null
       this.$store.commit('RESET_PDF_ANNOTATIONS')
+      this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", undefined)
       this.nextRoute ? next(true) : next(false)
       this.exitFileManager(to.fullPath)
       this.nextRoute = to.fullPath
     } else {
       this.nextRoute ? localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true})) : null
       this.$store.commit('RESET_PDF_ANNOTATIONS')
+      this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", undefined)
       this.nextRoute ? next(true) : next(false)
       this.exitFileManager(to.fullPath)
       this.nextRoute = to.fullPath

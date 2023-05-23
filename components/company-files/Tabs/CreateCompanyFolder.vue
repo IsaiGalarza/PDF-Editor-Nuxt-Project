@@ -34,11 +34,13 @@
       <h4 class="text-center font-semibold text-xl">Create Folder</h4>
     </template>
     <!-- Start:: Body -->
+    <form @submit.prevent="onSubmit">
     <p
       class="text-center block font-medium  mx-auto mb-6 whitespace-none"
     >
        <input
        v-model="folderName"
+       required
        class="w-full py-2 px-4 border-[1px] border-paperdazgrey-200 rounded-md"
        placeholder="Enter Folder Name"
        />
@@ -49,7 +51,6 @@
         shadow-md
          text-white rounded-[1rem] shadow bg-paperdazgreen-300"
         :disabled="loading"
-        @click="onSubmit"
       >
         <span class="inline-flex gap-1 items-center text-[16px]">
          Create
@@ -62,6 +63,7 @@
         </span>
       </button>
     </div>
+  </form>
     <!-- end :: body -->
   </el-dialog>
 </template>

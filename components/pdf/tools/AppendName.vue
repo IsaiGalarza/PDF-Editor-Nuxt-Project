@@ -51,6 +51,7 @@ export default {
       showAddPageText: false,
       importedValue: '',
       hasClicked: false,
+      hasAddedOffset: false,
     }
   },
   props: {
@@ -123,20 +124,20 @@ export default {
     },
   },
   methods: {
-    async svgToImage() {
-      this.svgToImageData = ''
-      let dataPAz = ''
-      await htmlToImage
-        .toPng(this.$refs.namebox)
-        .then(function (dataUrl) {
-          dataPAz = dataUrl
-        })
-        .catch(function (error) {
-          console.error('oops, something went wrong!', error)
-        })
+    // async svgToImage() {
+    //   this.svgToImageData = ''
+    //   let dataPAz = ''
+    //   await htmlToImage
+    //     .toPng(this.$refs.namebox)
+    //     .then(function (dataUrl) {
+    //       dataPAz = dataUrl
+    //     })
+    //     .catch(function (error) {
+    //       console.error('oops, something went wrong!', error)
+    //     })
 
-      this.svgToImageData = dataPAz
-    },
+    //   this.svgToImageData = dataPAz
+    // },
     overHandler: function () {
       this.isModalActive = true
     },
@@ -151,7 +152,7 @@ export default {
         return
       !this.hasTextvalue && this.$BUS.$emit('addTextToPage')
       this.hasClicked = true
-      !this.confirmStar && !this.isCreator && this.$emit('addOffset', 10)
+      !this.confirmStar && this.hasClicked && !this.isCreator && this.$emit('addOffset', 11)
       !this.isCreator && (this.confirmStar = true)
       this.notClass = ''
     },

@@ -992,6 +992,7 @@ export default Vue.extend({
         .$get(
           `/files/?userId=${paramsId}&fileName[$like]=${search}%&$limit=1000000000&$sort[position]=1`
         )
+
         .then((response) => {
           const filesData = response.data.map((el) => {
             return el;

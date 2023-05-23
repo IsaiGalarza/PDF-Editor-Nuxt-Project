@@ -10,6 +10,7 @@ export function moveToNextInput(ind) {
     inputField.scrollIntoView({ behavior: 'smooth', block: 'center' });
     inputField.type != 'radio' &&  inputField.classList.add('appendInput')
     inputField.focus()
+    inputField.type != 'radio' && (inputField.checked = true)
 }
 
 

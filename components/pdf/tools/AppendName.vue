@@ -152,7 +152,7 @@ export default {
         return
       !this.hasTextvalue && this.$BUS.$emit('addTextToPage')
       this.hasClicked = true
-      !this.confirmStar && this.hasClicked && !this.isCreator && this.$emit('addOffset', 11)
+      !this.confirmStar && this.hasClicked && !this.isCreator && this.$emit('addOffset', 13)
       !this.isCreator && (this.confirmStar = true)
       this.notClass = ''
     },

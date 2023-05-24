@@ -124,7 +124,7 @@
           <p>No Item Found</p>
         </div>
       </div>
-      <FilePagination :totalFile="totalFile" @setPage="setFilePage" />
+      <!-- <FilePagination :totalFile="totalFile" @setPage="setFilePage" /> -->
     </div>
 
 
@@ -328,7 +328,7 @@ export default Vue.extend({
     },
     async getUserFiles(page, search) {
       await this.$axios
-        .$get(`/files/?userId=${this.userInfo?.id}&fileName[$like]=${search}%&$skip=${page}&$sort[position]=1&filePrivacy[$ne]=doNotPost&fileAction[$ne]=null`, {
+        .$get(`/files/?userId=${this.userInfo?.id}&fileName[$like]=${search}%&$limit=1000000000&$skip=${page}&$sort[position]=1&filePrivacy[$ne]=doNotPost&fileAction[$ne]=null`, {
           params: {
             isEditing: 0
           }

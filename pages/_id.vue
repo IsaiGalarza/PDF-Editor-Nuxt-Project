@@ -40,7 +40,7 @@
         </div>
         <!-- End:: Single row -->
       </div>
-      <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
+      <!-- <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" /> -->
     </div>
     <!-- End:: Folders -->
 

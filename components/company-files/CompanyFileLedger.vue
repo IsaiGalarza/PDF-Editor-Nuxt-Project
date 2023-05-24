@@ -84,14 +84,28 @@
                           <div class="no-access" v-if="!createdByTeamMember(content.createdBy)">no access right</div>
                           <ul v-else class="min-w-[150px]">
                             <li class="dropdown-item" @click="showEditCompanyFolderFunc(content)">
+                              <div class="flex justify-between w-full border-t border-gray-200">
+                                <PenIcon width="16" height="16" class="inline-block float-left" />
+                                <span class="ml-1">Edit</span>
+                              </div>
+                            </li>
+                            <li class="dropdown-item" @click="showDeleteCompanyFolderFunc(content)">
+                              <div class="flex justify-between w-full border-t border-gray-200">
+                                <trash-can-icon width="16" height="16" class="inline-block float-left" />
+                                <span>Remove</span>
+                              </div>
+                            </li>
+                            <!-- <li class="dropdown-item " @click="showEditCompanyFolderFunc(content)">
+                              <PenIcon width="16" height="16" class="inline-block float-left" />
                               <span>Edit</span>
                             </li>
                             <li class="dropdown-item" @click="showDeleteCompanyFolderFunc(content)">
+                              <trash-can-icon width="16" height="16" class="inline-block float-left" />
                               <span>Remove</span>
-                            </li>
-                            <li class="dropdown-item" @click="showAddCompanyFolderFunc(content)">
+                            </li> -->
+                            <!-- <li class="dropdown-item" @click="showAddCompanyFolderFunc(content)">
                               <span>Add Files</span>
-                            </li>
+                            </li> -->
                           </ul>
                         </el-dropdown-menu>
                       </el-dropdown>
@@ -157,7 +171,7 @@
           </h4>
           <div v-if="folderSelected"
             class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 hidden sm:flex items-center">
-            <button class="bg-paperdazgreen-400 p-2 text-white text-lg rounded-lg" @click="backFolder">Back</button>
+            <button class="bg-paperdazgreen-400 p-2 py-1 text-white text-lg rounded-lg" @click="backFolder">Back</button>
             <h2 class="text-paperdazgreen-400 font-bold w-5/6 text-center">{{ FilesInFolerContent.name }}</h2>
           </div>
           <div class="overflow-x-auto custom-scrollbar relative">
@@ -259,7 +273,12 @@
                 </div>
                </draggable>
 
-             <FileInFolder v-else :FilesInFolerContent="FilesInFolerContent"/>
+             <FileInFolder v-else 
+             @showMoveCompanyFileFunc="showMoveCompanyFileFunc"
+             @showShareCompanyFileFunc="showShareCompanyFileFunc"
+             @showEditCompanyFileFunc="showEditCompanyFileFunc"
+             @showRemoveCompanyFileFunc="showRemoveCompanyFileFunc"
+             :FilesInFolerContent="FilesInFolerContent"/>
             </section>
            
           </div>
@@ -586,6 +605,7 @@ export default Vue.extend({
       allowCopy: true,
       link: "",
       type: "",
+      selectedFolderIndex: null
     }
   },
   methods: {
@@ -777,6 +797,9 @@ export default Vue.extend({
           this.folders = filesData
           // to stop spinner
           this.folderSpinner = false
+          let index = this.folders.findIndex((item)=> item.id == this.FilesInFolerContent.id)
+          index != -1 && (this.FilesInFolerContent = this.folders[index])
+          console.log("from-folder-structure", this.folders[index], index)
         })
         .finally(() => {
           this.folderSpinner = false

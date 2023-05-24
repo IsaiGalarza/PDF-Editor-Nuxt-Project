@@ -116,20 +116,35 @@
                               class="dropdown-item"
                               @click="showEditCompanyFolderFunc(content)"
                             >
-                              <span>Edit</span>
+                              <div
+                                class="flex justify-between w-full border-t border-gray-200"
+                              >
+                                <PenIcon
+                                  width="16"
+                                  height="16"
+                                  class="inline-block float-left"
+                                />
+                                <span class="ml-1">Edit</span>
+                              </div>
                             </li>
                             <li
                               class="dropdown-item"
                               @click="showDeleteCompanyFolderFunc(content)"
                             >
-                              <span>Remove</span>
+                              <div
+                                class="flex justify-between w-full border-t border-gray-200"
+                              >
+                                <trash-can-icon
+                                  width="16"
+                                  height="16"
+                                  class="inline-block float-left"
+                                />
+                                <span>Remove</span>
+                              </div>
                             </li>
-                            <li
-                              class="dropdown-item"
-                              @click="showAddCompanyFolderFunc(content)"
-                            >
+                            <!-- <li class="dropdown-item" @click="showAddCompanyFolderFunc(content)">
                               <span>Add Files</span>
-                            </li>
+                            </li> -->
                           </ul>
                         </el-dropdown-menu>
                       </el-dropdown>
@@ -139,7 +154,7 @@
               </div>
             </div>
           </div>
-          <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
+          <!-- <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" /> -->
         </div>
         <!-- Mobile Folder -->
         <div v-if="showFolders" class="sm:hidden">
@@ -214,7 +229,7 @@
             class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 hidden sm:flex items-center"
           >
             <button
-              class="bg-paperdazgreen-400 p-2 text-white text-lg rounded-lg"
+              class="bg-paperdazgreen-400 p-2 py-1 text-white text-lg rounded-lg"
               @click="backFolder"
             >
               Back
@@ -237,8 +252,8 @@
             <section class="px-0 min-w-[700px] w-full">
               <div class="border-b-[1px] border-gray-200 flex items-center py-3">
                 <p class="w-1/12 inline-block text-center">Order</p>
-                <p class="text-left inline-block w-3/12">File name</p>
-                <p class="text-left inline-block w-1/12">Pages</p>
+                <p class="text-center inline-block w-3/12">File name</p>
+                <p class="text-center inline-block w-1/12">Pages</p>
                 <p class="text-center inline-block w-2/12">Action required</p>
                 <p class="text-center inline-block w-2/12">Privacy</p>
                 <p class="text-center inline-block w-2/12">Date &amp; Time</p>
@@ -410,16 +425,23 @@
                 </div>
               </draggable>
 
-              <FileInFolder v-else :FilesInFolerContent="FilesInFolerContent" />
+              <FileInFolder
+                v-else
+                @showMoveCompanyFileFunc="showMoveCompanyFileFunc"
+                @showShareCompanyFileFunc="showShareCompanyFileFunc"
+                @showEditCompanyFileFunc="showEditCompanyFileFunc"
+                @showRemoveCompanyFileFunc="showRemoveCompanyFileFunc"
+                :FilesInFolerContent="FilesInFolerContent"
+              />
             </section>
 
             <!-- <FilePagination :totalFile="totalFile" @setPage="setPage" /> -->
           </div>
-          <FilePagination
+          <!-- <FilePagination
             v-if="!folderSelected"
             :totalFile="totalFile"
             @setPage="setPage"
-          />
+          /> -->
         </div>
         <!-- End:: Files -->
       </div>
@@ -843,6 +865,7 @@ export default Vue.extend({
       allowCopy: true,
       link: "",
       type: "",
+      selectedFolderIndex: null,
     };
   },
   methods: {
@@ -1050,6 +1073,11 @@ export default Vue.extend({
           this.folders = filesData;
           // to stop spinner
           this.folderSpinner = false;
+          let index = this.folders.findIndex(
+            (item) => item.id == this.FilesInFolerContent.id
+          );
+          index != -1 && (this.FilesInFolerContent = this.folders[index]);
+          console.log("from-folder-structure", this.folders[index], index);
         })
         .finally(() => {
           this.folderSpinner = false;

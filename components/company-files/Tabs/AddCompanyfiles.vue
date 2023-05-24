@@ -29,12 +29,7 @@
     </p>
 
     <div class="w-[100%] md:w-[90%] md:ml-[5%] relative">
-      <!-- START: spinner container -->
-      <div v-if="fileSpinner"
-        class="absolute z-10 w-full h-full h-min-[300px] bg-white top-0 left-0 rounded-lg flex justify-center items-center">
-        <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin my-2" />
-      </div>
-      <!-- END: spinner container -->
+
       <ul class="mb-3 max-h-[330px] h-auto overflow-auto sm:px-2" ref="scrollContainer" @scroll="checkScrollBottom" v-if="files.length > 0">
         <li v-for="(file, i) in files" :key="i + 'folder'" class="w-full flex items-center py-3">
           <img width="24" height="24" src="~/assets/img/PAPERDAZ1 2.png" />
@@ -49,7 +44,7 @@
           </button>
         </li>
       </ul>
-      <span class="text-center w-full text-paperdazgreen-400" v-else>No files</span>
+      <div class="w-full flex justify-center py-2" v-if="fileSpinner"><SquareLoader/></div>
     </div>
 
 
@@ -75,10 +70,11 @@ import SearchIcon from '~/components/svg-icons/SearchIcon.vue'
 import PaperdazIcon from '../../svg-icons/PaperdazIcon.vue'
 import FileIcon from '~/components/svg-icons/FileIcon.vue'
 import UserTypeEnum from '~/models/UserTypeEnum'
+import SquareLoader from '~/components/loader/SquareLoader.vue'
 
 export default Vue.extend({
   name: 'add-company-folder',
-  components: { SpinnerDottedIcon, SearchIcon, PaperdazIcon, FileIcon },
+  components: { SpinnerDottedIcon, SearchIcon, PaperdazIcon, FileIcon, SquareLoader },
   model: {
     prop: 'visible',
     event: 'updateVisibility',
@@ -146,6 +142,7 @@ export default Vue.extend({
   methods: {
     checkScrollBottom(){
       if (this.$refs.scrollContainer.scrollTop + this.$refs.scrollContainer.clientHeight === this.$refs.scrollContainer.scrollHeight) {
+        this.fileSpinner = true
         this.returnFilePage =  this.returnFilePage + 10
         console.log('Scrolled to the bottom!');
       }
@@ -174,7 +171,6 @@ export default Vue.extend({
       this.$emit('updateVisibility', false)
     },
     fetchFiles(page, search, initial) {
-
       let paramsId =
         this.$auth.user.role == UserTypeEnum.TEAM
           ? this.$auth.user.teamId

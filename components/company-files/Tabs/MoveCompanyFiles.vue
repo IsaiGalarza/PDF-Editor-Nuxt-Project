@@ -97,6 +97,7 @@
           </button>
         </li>
       </ul>
+     <div class="w-full flex justify-center" v-if="folderSpinner"><SquareLoader/></div>
     </div>
     <!-- <FilePagination :totalFile="totalFile" @setPage="setPage"/> -->
     <!-- end :: body -->
@@ -112,6 +113,7 @@ import FileIcon from '~/components/svg-icons/FileIcon.vue'
 import UserTypeEnum from '~/models/UserTypeEnum'
 import FilePagination from '~/components/pagination/FilePagination.vue'
 import FolderPlusIcon from '../../svg-icons/FolderPlusIcon.vue'
+import SquareLoader from '~/components/loader/SquareLoader.vue'
 
 export default Vue.extend({
   name: 'move-company-file',
@@ -123,6 +125,7 @@ export default Vue.extend({
     FolderPlusIcon,
     FilePagination,
     FolderPlusIcon,
+    SquareLoader
   },
   model: {
     prop: 'visible',

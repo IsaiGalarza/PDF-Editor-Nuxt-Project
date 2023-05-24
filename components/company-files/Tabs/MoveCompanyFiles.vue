@@ -96,7 +96,7 @@
           :key="'file' + i"
           class="w-full flex items-center py-2 folder_list transition duration-100 rounded"
         >
-          <span class="mx-2">
+          <span class="mx-2 whitespace-nowrap w-8">
             {{ file.files.length }}
           </span>
           <img class="w-[28px] mr-2" src="~/assets/img/Vector.png" />

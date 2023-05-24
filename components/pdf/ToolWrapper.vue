@@ -279,6 +279,7 @@ export default {
     wrpStyle() {
       let top = this.top
       let left = this.left
+      console.log("wrpStyle---------",`${top * (this.firstRender ? 1 : this.responsiveDim.height)}px`, this.responsiveDim.height)
       return {
         top: `${top * (this.firstRender ? 1 : this.responsiveDim.height)}px`,
         left: `${left *  (this.firstRender ? 1 : this.responsiveDim.width)}px`,

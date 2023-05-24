@@ -1,5 +1,5 @@
 <template>
-  <div class="pdf-page" ref="PdfPage">
+  <div class="pdf-page single_pdf_page" ref="PdfPage">
     <div class="annotationLayer" ref="annotationLayer"></div>
     <canvas  @click="e => onCLickSinglePageOuter(e, pageNumber)" ref="canvas" class="pdf-canvas"></canvas>
   </div>

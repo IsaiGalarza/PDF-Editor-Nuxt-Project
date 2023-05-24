@@ -602,6 +602,7 @@ export default mixins(PdfAuth).extend({
     this.checkFilePrivacyOnload()
     this.$store.commit('SET_GUEST_MODAL_FUNCTION', this.showGuestModalFunc)
     if(JSON.parse(localStorage.getItem('isGuest'))?.isGuest) localStorage.removeItem('isGuest')
+    console.log("anotations---toolsssssssssssss", this.tools)
   },
   destroyed() {
     document.removeEventListener('keyup', this.keyupHandler)
@@ -1313,10 +1314,11 @@ export default mixins(PdfAuth).extend({
     },
     reAdjust(val, id){
       let index = this.tools.findIndex(tl => tl.id == id);
-      let IND_Page =  document.querySelectorAll('.pdf-page')[this.tools[index].pageNumber - 1].getBoundingClientRect()
+      let IND_Page =  document.querySelectorAll('.single_pdf_page')[this.tools[index].pageNumber - 1].getBoundingClientRect()
       this.tools[index].reAdjust = val;
       this.tools[index].parentWidth = IND_Page.width;
       this.tools[index].parentHeight = IND_Page.height;
+      console.log("readjust maent",this.tools[index], IND_Page)
     },
     keyupHandler(event) {
       if (event.ctrlKey && eve.nt.shiftKey && event.code === 'KeyZ') {
@@ -1325,13 +1327,16 @@ export default mixins(PdfAuth).extend({
         this.undo()
       }
     },
-    undo() {
+   async  undo() {
       let lastId = this.stack.pop()
+      console.log(lastId)
       if (lastId) {
         let index = this.tools.findIndex((t) => t.id == lastId)
         if (index >= 0) {
           this.undoStack.push(lastId)
           this.tools[index].isDeleted = !this.tools[index].isDeleted
+          await this.$nextTick()
+          this.$forceUpdate()
         }
       }
     },

@@ -154,7 +154,7 @@
               </div>
             </div>
           </div>
-          <!-- <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" /> -->
+          <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
         </div>
         <!-- Mobile Folder -->
         <div v-if="showFolders" class="sm:hidden">
@@ -213,7 +213,7 @@
           >
             No Folders
           </div>
-          <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
+          <!-- <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" /> -->
         </div>
         <!-- End:: Folders -->
         <!-- Start:: Files -->

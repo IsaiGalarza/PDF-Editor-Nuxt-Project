@@ -142,6 +142,7 @@ export default Vue.extend({
             title: 'File Upload',
             message: 'File uploaded successfully',
           })
+          this.moveToFolder(response.data?.id)
           this.$nuxt.$router.push(`/pdf/${response.data?.paperLink}`)
           localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: false}))
         })

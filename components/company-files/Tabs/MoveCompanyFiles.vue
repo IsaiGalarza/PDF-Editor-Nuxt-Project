@@ -45,7 +45,7 @@
     </template>
     <!-- Start:: Body -->
 
-    <p
+    <!-- <p
       class="text-centerfont-medium flex justify-center items-center w-[] mx-auto mb-6 whitespace-none"
     >
       <input
@@ -53,13 +53,13 @@
         placeholder="Enter Folder Name"
         v-model="searchValue"
       />
-      <!-- <button
+     <button
            @click="popUpFolderCreate"
           class="ml-2 circle circle-18 bg-paperdazgreen-400 text-xl text-white"
         >
           <folder-plus-icon />
-        </button> -->
-    </p>
+        </button> 
+    </p> -->
 
     <div class="w-[100%] md:w-[90%] md:ml-[5%] relative">
       <ul
@@ -67,6 +67,30 @@
         ref="scrollContainer"
         @scroll="checkScrollBottom"
       >
+      <li
+      class="w-full flex items-center py-2 folder_list transition duration-100 rounded"
+    >
+      <span class="mx-2">
+      </span>
+      <img class="w-[28px] mr-2" src="~/assets/img/Vector.png" />
+      <p
+        class="text-[15px] font-semibold flex items-center text-grey w-[85%] pr-3 truncate"
+      >
+        <button class="mr-1"></button>
+        <span  class="truncate inline-block pr-2 py-2">main folder</span>
+      </p>
+      <button
+        @click="onSubmit(null)"
+        class="w-auto whitespace-nowrap rounded px-3 text-paperdazgreen py-1 items-center folder_button hidden"
+      >
+        <!-- <img
+          @click="transferFileFunction(file)"
+          class="w-[33px]"
+          src="~/assets/icons/file-move-icon.svg"
+        /> -->
+        move
+      </button>
+    </li>
         <li
           v-for="(file, i) in folders"
           :key="'file' + i"

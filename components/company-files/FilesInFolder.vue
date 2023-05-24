@@ -57,7 +57,7 @@
           class="text-sm text-center capitalize inline-block w-2/12 cursor-pointer"
           @click="
             file.filePrivacy == 'private' &&
-              $emit('showPermission', true, file.id)
+              $emit('emitPrivateModal', file.id)
           "
         >
           {{ (file || {}).filePrivacy }}

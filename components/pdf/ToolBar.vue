@@ -475,6 +475,7 @@ export default {
     },
     undoFunction() {
       this.$emit('undo')
+      this.$forceUpdate()
     },
     imageExportedLocal(image, isSignature) {
       this.$BUS.$emit(

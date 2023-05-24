@@ -95,14 +95,6 @@
                                 <span>Remove</span>
                               </div>
                             </li>
-                            <!-- <li class="dropdown-item " @click="showEditCompanyFolderFunc(content)">
-                              <PenIcon width="16" height="16" class="inline-block float-left" />
-                              <span>Edit</span>
-                            </li>
-                            <li class="dropdown-item" @click="showDeleteCompanyFolderFunc(content)">
-                              <trash-can-icon width="16" height="16" class="inline-block float-left" />
-                              <span>Remove</span>
-                            </li> -->
                             <!-- <li class="dropdown-item" @click="showAddCompanyFolderFunc(content)">
                               <span>Add Files</span>
                             </li> -->

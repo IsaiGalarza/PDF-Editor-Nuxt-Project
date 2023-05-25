@@ -441,7 +441,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.isLoading = false
         })
     },
-    async otherRequest() {
+    async otherRequest() {  
       try {
         await this.$axios
         .post('/pdf-generator', {

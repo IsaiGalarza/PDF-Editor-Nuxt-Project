@@ -70,7 +70,7 @@ export default {
   },
   mounted() {
    setTimeout(() => {
-    !this.hasAddedOffset ? this.$emit('addOffset', !this.isCreator ?  13 : 0) : null
+    !this.hasAddedOffset ? !this.isCreator && this.$emit('addOffset', 13 ) : null
     this.hasAddedOffset = true
    }, 300);
   },

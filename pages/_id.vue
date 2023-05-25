@@ -373,7 +373,8 @@ export default Vue.extend({
       await this.$axios
         .$post(`/files`, {
           action:"filesWithoutFolder",
-          userId: this.userInfo?.id
+          userId: this.userInfo?.id,
+          skip: this.returnedDataPage
         })
         .then((response) => {
           const filesData = response.data.map((el) => {

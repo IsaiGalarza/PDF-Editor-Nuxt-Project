@@ -483,10 +483,6 @@ export default mixins(SaveSignatureInitialsMixin).extend({
             msg: `Thank you for completing a Paperlink!`,
             msg_mobile: 'Thank You'
           })
-          this.$store.commit('SET_FILE_SIGNATURE', null)
-          this.$store.commit('SET_FILE_INITIAL', null)
-          this.$store.commit("UN_SET_AGREE_SIGN")
-          this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", undefined)
           this.$auth.loggedIn && this.isCreator
             ? this.$nuxt.$router.push('/paperlink-pages')
             : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)

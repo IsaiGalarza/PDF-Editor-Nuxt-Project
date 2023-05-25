@@ -141,6 +141,16 @@ export const getters: GetterTree<RootState, RootState> = {
 
 export const mutations: MutationTree<RootState> = {
   // -- Setting the user --
+  RESET_PDF_STATE(state){
+    state.base64Signature = null
+    state.base64Initial = null
+    state.pdfAnnotations = []
+    state.addToPagetextvalue = undefined
+    state.agreeSign = -1
+    state.file = {}
+    state.pdfPageName = {}
+    state.pdfUser = []
+  },
   SET_SAVE_PAGE_TEXT_VALUE(state, payload) {
     state.addToPagetextvalue = payload
   },

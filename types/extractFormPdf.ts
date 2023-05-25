@@ -47,7 +47,9 @@ export const appendEditText = ({
   fontsize,
   scaleFactor,
   lineHeight,
-  isLabel
+  isLabel,
+  pageHeight,
+  pageWidth,
 }: any) => {
   ; (parent.data as any).push({
     page_number: subParent.indexOf(elem),
@@ -64,7 +66,9 @@ export const appendEditText = ({
     top,
     lineHeight,
     mainHeight,
-    scaleFactor: scaleFactor ? scaleFactor : 1
+    scaleFactor: scaleFactor ? scaleFactor : 1,
+    pageHeight,
+    pageWidth,
   })
 }
 
@@ -83,6 +87,8 @@ export const appendEditElement = ({
   svgImagePath,
   svgWidth,
   svgHeight,
+  pageHeight,
+  pageWidth,
 }: any) => {
   ; (parent.data as any).push({
     page_number: subParent.indexOf(elem),
@@ -97,6 +103,8 @@ export const appendEditElement = ({
     svgHeight,
     left,
     top,
+    pageHeight,
+    pageWidth,
   })
 }
 
@@ -135,7 +143,9 @@ export const appendEditImage = ({
   axisX2,
   axisY2,
   left,
-  top
+  top,
+  pageHeight,
+  pageWidth,
 }: any) => {
   (parent.data as any).push({
     page_number: subParent.indexOf(elem),
@@ -148,7 +158,9 @@ export const appendEditImage = ({
     // height: parseFloat(height) * 0.73,
     uploaded: 'true',
     left,
-    top
+    top,
+    pageHeight,
+    pageWidth,
   })
 }
 
@@ -269,6 +281,8 @@ export const ExtractFormPdf = ({
                     svgImagePath: tools.children[0].getAttribute('svgToImage'),
                     svgWidth: tools.getBoundingClientRect()?.width,
                     svgHeight: tools.getBoundingClientRect()?.height,
+                    pageHeight:  element.getBoundingClientRect().height,
+                    pageWidth:  element.getBoundingClientRect().width
                   })
                   break
 
@@ -301,6 +315,8 @@ export const ExtractFormPdf = ({
                           'svgToImage'
                         ),
                         type: 'DrawLine',
+                        pageHeight:  element.getBoundingClientRect().height,
+                        pageWidth:  element.getBoundingClientRect().width
                       })
                       break
                     case 'P':
@@ -329,6 +345,8 @@ export const ExtractFormPdf = ({
                         fontsize: tools.children[0].getAttribute(
                           'initialFontSize'
                         ),
+                        pageHeight:  element.getBoundingClientRect().height,
+                        pageWidth:  element.getBoundingClientRect().width
                       })
                       break
                     case 'IMG':
@@ -364,8 +382,9 @@ export const ExtractFormPdf = ({
                           tools.children[0].getBoundingClientRect().left,
                           tools.children[0].getBoundingClientRect().right,
                         ],
-                        height: tools.children[0].getBoundingClientRect()
-                          .height,
+                        height: tools.children[0].getBoundingClientRect().height,
+                        pageHeight:  element.getBoundingClientRect().height,
+                        pageWidth:  element.getBoundingClientRect().width
                       })
                       appendEditText({
                         isLabel: true,
@@ -386,6 +405,8 @@ export const ExtractFormPdf = ({
                         tools: signLabel,
                         elem: element,
                         fontsize: '6',
+                        pageHeight:  element.getBoundingClientRect().height,
+                        pageWidth:  element.getBoundingClientRect().width
                       })
                       break
                   }

@@ -571,7 +571,9 @@ export default mixins(PdfAuth).extend({
     width: 0,
     is_equal: true,
     permissionLoading: { type: true, msg: "checking permission..."},
-    showAddPageText: false
+    showAddPageText: false,
+    AllPdfParentPage: [],
+    AllPdfParentPageDim: []
   }),
   created() {
     this.fetchPdf()
@@ -1119,6 +1121,13 @@ export default mixins(PdfAuth).extend({
             
       let parentWidth = document.querySelector('.pdf-single-page-outer').getBoundingClientRect().width
       let parentHeight = document.querySelector('.pdf-single-page-outer').getBoundingClientRect().height
+      this.AllPdfParentPage = Array.from(document.querySelectorAll('.pdf-single-page-outer'))
+      this.AllPdfParentPageDim = this.AllPdfParentPage.map((v)=> {
+        return {
+          width: v.getBoundingClientRect().width,
+          height: v.getBoundingClientRect().height
+        }
+      })
       this.$store.commit('SET_PDF_DIMENSIONS', {parentWidth, parentHeight})
       let getAllPdfPages = document.querySelectorAll('.pdf-single-page-outer')
       // this._scrollToConfirm()
@@ -1559,11 +1568,14 @@ export default mixins(PdfAuth).extend({
         event.currentTarget.parentElement ||
         this.$refs.scrollingElement
 
+        let index = this.AllPdfParentPage.findIndex((item) => item == parent)
+        console.log("set-width-text", this.AllPdfParentPageDim)
+
       event = event || window.event
       const parentElement = elParent;
       const rect = parentElement.getBoundingClientRect();
-      const zoomLevelW =  rect.width/this.$store.getters.getPdfpagesDim.parentWidth; // example zoom level
-      const zoomLevelH =  rect.height/this.$store.getters.getPdfpagesDim.parentHeight; // example zoom level
+      const zoomLevelW =  rect.width/this.AllPdfParentPageDim[index].width; // example zoom level
+      const zoomLevelH =  rect.height/this.AllPdfParentPageDim[index].height; // example zoom level
       const x = (event.clientX - rect.left) * zoomLevelW;
       const y = (event.clientY - rect.top) * zoomLevelH;
        
@@ -1664,7 +1676,7 @@ export default mixins(PdfAuth).extend({
     placeTool(e, pageNumber, initialPoint) {
       // this.setToinitialScale()
       // if(!this.isScaleDefault()) return
-     
+       
       let parent = this.$refs[`pdf-single-page-outer-${pageNumber}`]
       if (Array.isArray(parent)) parent = parent[0]
      

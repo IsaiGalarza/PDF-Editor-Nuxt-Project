@@ -1680,8 +1680,10 @@ export default mixins(PdfAuth).extend({
       let parent = this.$refs[`pdf-single-page-outer-${pageNumber}`]
       if (Array.isArray(parent)) parent = parent[0]
      
-      let parentWidth = document.querySelector('.pdf-single-page-outer').getBoundingClientRect().width
-      let parentHeight = document.querySelector('.pdf-single-page-outer').getBoundingClientRect().height
+      let parentWidth =  this.AllPdfParentPageDim[pageNumber - 1].width
+      let parentHeight = this.AllPdfParentPageDim[pageNumber - 1].height
+
+      console.log(parentWidth, parentHeight,  pageNumber)
       let { x, y } = !initialPoint
         ? this.pointerPos(e, parent || this.$refs.scrollingElement)
         : // ? this.pointerPos(e, parent || this.$refs['pdf-single-page-outer'])
@@ -1890,23 +1892,23 @@ export default mixins(PdfAuth).extend({
  beforeRouteLeave(to, from, next) {
     if (this.$store.state.pdfExit == true) {
       localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true}))
-      this.$store.commit('RESET_PDF_ANNOTATIONS')
+      this.$store.commit('RESET_PDF_STATE')
       return next(true)
     }
     if (!this.displayPDF) {
       localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true}))
-      this.$store.commit('RESET_PDF_ANNOTATIONS')
+      this.$store.commit('RESET_PDF_STATE')
       return next(true)
     }
     if (this.isCreator) {
       this.nextRoute ? localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true})) : null
-      this.$store.commit('RESET_PDF_ANNOTATIONS')
+      this.$store.commit('RESET_PDF_STATE')
       this.nextRoute ? next(true) : next(false)
       this.exitFileManager(to.fullPath)
       this.nextRoute = to.fullPath
     } else {
       this.nextRoute ? localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true})) : null
-      this.$store.commit('RESET_PDF_ANNOTATIONS')
+      this.$store.commit('RESET_PDF_STATE')
       this.nextRoute ? next(true) : next(false)
       this.exitFileManager(to.fullPath)
       this.nextRoute = to.fullPath

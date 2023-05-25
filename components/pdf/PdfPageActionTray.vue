@@ -339,8 +339,6 @@ export default Vue.extend({
             : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
         localStorage.removeItem('store_public_profile_path')
       }
-      this.$store.commit('SET_FILE_SIGNATURE', null);
-      this.$store.commit('SET_FILE_INITIAL', null)
     },
     showQrcodeFileFunc() {
       this.showQrcodeFiles = true

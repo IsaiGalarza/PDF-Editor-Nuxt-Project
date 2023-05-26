@@ -286,6 +286,7 @@ export default {
       }
     },
     wrpStyle() {
+      console.log(this.tool)
       let top = this.top
       let left = this.left
       return {

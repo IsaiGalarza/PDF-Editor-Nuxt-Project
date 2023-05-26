@@ -8,9 +8,8 @@ export function moveToNextInput(ind) {
     if((ind + 1) >= allInputs.length) ind = 0 
     const inputField =  allInputs[ind + 1]
     inputField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    inputField.type != 'radio' &&  inputField.classList.add('appendInput')
+    // inputField.type != 'radio' &&  inputField.classList.add('appendInput')
     inputField.focus()
-    inputField.type != 'radio' && (inputField.checked = true)
 }
 
 

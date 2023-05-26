@@ -1323,7 +1323,7 @@ export default mixins(PdfAuth).extend({
     },
     reAdjust(val, id){
       let index = this.tools.findIndex(tl => tl.id == id);
-      let IND_Page =  document.querySelectorAll('.single_pdf_page')[this.tools[index].pageNumber - 1].getBoundingClientRect()
+      let IND_Page =  this.AllPdfParentPageDim[this.tools[index].pageNumber - 1]
       this.tools[index].reAdjust = val;
       this.tools[index].parentWidth = IND_Page.width;
       this.tools[index].parentHeight = IND_Page.height;
@@ -1579,7 +1579,7 @@ export default mixins(PdfAuth).extend({
       const x = (event.clientX - rect.left) * zoomLevelW;
       const y = (event.clientY - rect.top) * zoomLevelH;
        
-      console.log(`Mouse position relative to zoomed parent element: (${x}, ${y}) ${event.offsetY}, ${event.offsetX}`)
+      console.log(`Mouse position relative to zoomed parent element: (${zoomLevelW}, ${zoomLevelH}), indx${index} ofx:${event.offsetX}, ofy:${event.offsetY}, clx:${event.clientX}, cly:${event.clientY}`, parentElement, event.target)
 
       // const scrollingElement =
       //   parent ||
@@ -1615,7 +1615,7 @@ export default mixins(PdfAuth).extend({
 
       // return { x, y }
       // return { x: x / this.scale, y: y / this.scale }
-      return { x: event.offsetX * zoomLevelW, y: event.offsetY * zoomLevelH}
+      return { x: event.offsetX, y: event.offsetY}
     },
     previousPointerPos(event, parent) {
       let eventDoc, doc, body
@@ -1683,7 +1683,7 @@ export default mixins(PdfAuth).extend({
       let parentWidth =  this.AllPdfParentPageDim[pageNumber - 1].width
       let parentHeight = this.AllPdfParentPageDim[pageNumber - 1].height
 
-      console.log(parentWidth, parentHeight,  pageNumber)
+      console.log(parentWidth, pageNumber)
       let { x, y } = !initialPoint
         ? this.pointerPos(e, parent || this.$refs.scrollingElement)
         : // ? this.pointerPos(e, parent || this.$refs['pdf-single-page-outer'])

@@ -128,6 +128,7 @@
             :selectedToolType="selectedToolType"
             :dragHandler="handlePanning"
             @reAdjust="reAdjust"
+            :userTime="userTime"
             :id="tool.id"
             :tool="tool"
             :type="tool.type"
@@ -266,6 +267,7 @@
                 :selectedToolType="selectedToolType"
                 :dragHandler="handlePanning"
                 @reAdjust="reAdjust"
+                :userTime="userTime"
                 :id="tool.id"
                 :tool="tool"
                 :type="tool.type"
@@ -573,7 +575,9 @@ export default mixins(PdfAuth).extend({
     permissionLoading: { type: true, msg: "checking permission..."},
     showAddPageText: false,
     AllPdfParentPage: [],
-    AllPdfParentPageDim: []
+    AllPdfParentPageDim: [],
+
+    userTime: ""
   }),
   created() {
     this.fetchPdf()
@@ -587,6 +591,7 @@ export default mixins(PdfAuth).extend({
     this.$BUS.$on('initials-update', (v) => (this.initial = v))
     this.$BUS.$on('addTextToPage', this.addTopagetextFunc)
     window.addEventListener("resize", this.resizeHandler);
+    this.getUserTime()
   },
   mounted() {
     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
@@ -795,6 +800,11 @@ export default mixins(PdfAuth).extend({
     },
   },
   methods: {
+    getUserTime(){
+      fetch('https://worldtimeapi.org/api/ip')
+      .then((res)=> res.json())
+      .then((response)=> this.userTime =  response?.datetime)
+    },
     parentOffset(val, id){  
        let ind = this.tools.findIndex((item)=> item.id == id)
        let newTop = this.tools[ind].top + val

@@ -44,6 +44,7 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
+      { name: 'theme-color', content: '#77c360' },
     ],
     link: [
       { rel: 'manifest', type: 'application/json', href: '/manifest.json' },
@@ -120,6 +121,7 @@ export default {
     '@nuxtjs/auth-next',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    // '@nuxtjs/workbox',
     // '@nuxtjs/firebase',
     '@nuxtjs/toast',
     [
@@ -189,7 +191,7 @@ export default {
   // Set server to localhost so that service worker can be installed
   //TODO: Remove server setting when building the application for production!!! <<<<<<==================
   server: {
-    port: 4001, // default: 3000
+    port: 4010, // default: 3000
     host: 'localhost', // default value is an IP Address of localhost which does not allow service worker file to run, mention 'localhost' explicitly
   },
 
@@ -202,6 +204,9 @@ export default {
     manifest: {
       path: '/manifest.json',
     },
+    // workbox: {
+    //   enabled: true,
+    // },
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

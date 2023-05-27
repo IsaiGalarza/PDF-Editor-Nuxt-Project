@@ -106,6 +106,8 @@ import SquareButton from './cropper/SquareButton'
 import ShareOutlineIcon from '~/components/svg-icons/ShareOutlineIcon.vue'
 import UploadFileIcon from '~/components/svg-icons/UploadFileIcon.vue'
 import InstallPwaButton from './components/InstallPwaButton.vue'
+import registerServiceWorker from '~/plugins/register-service-worker'
+
 //import 'vue-advanced-cropper/dist/style.css';
 
 export default mixins(login).extend({
@@ -208,6 +210,18 @@ export default mixins(login).extend({
     // ;(this.$refs.qrcancas as HTMLElement).removeAttribute('height')
     // ;(this.$refs.qrcancas as HTMLElement).removeAttribute('width')
     //     },
+    if (process.client) {
+      registerServiceWorker(this.$route)
+    }
+    window.addEventListener('beforeinstallprompt', (event) => {
+      event.preventDefault()
+      this.deferredPrompt = event
+      console.log(
+        '%c deferredPrompt ',
+        'color: #FF9800; font-weight: bold',
+        this.deferredPrompt
+      )
+    })
   },
   computed: {
     isCreator() {

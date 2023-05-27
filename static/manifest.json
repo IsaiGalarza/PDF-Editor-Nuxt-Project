@@ -5,7 +5,7 @@
   "description": "PaperLink Application",
   "id": "/:id",
   "start_url": "/:id",
-  "scope": "/:id",
+  "scope": "/",
   "background_color": "#ffffff",
   "theme_color": "#77c360",
   "display": "standalone",

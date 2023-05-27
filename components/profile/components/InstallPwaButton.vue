@@ -33,35 +33,8 @@ export default {
   },
 
   // Listen for the beforeinstallprompt event and save the deferredPrompt object
-  created() {
-    console.log('%c Created Called ', 'color: #00BCD4; font-weight: bold')
-
-    window.addEventListener('beforeinstallprompt', (event) => {
-      console.log('%c event ', 'color: #00BCD4; font-weight: bold', event)
-      event.preventDefault()
-      this.deferredPrompt = event
-    })
-
-    if ('beforeinstallprompt' in window) {
-      // Browser supports beforeinstallprompt event
-      console.log(
-        '%c beforeinstallprompt CALLED',
-        'color: #CDDC39; font-weight: bold'
-      )
-    } else {
-      // Browser does not support beforeinstallprompt event
-      console.log(
-        '%c beforeinstallprompt NOT CALLED',
-        'color: #F44336; font-weight: bold'
-      )
-    }
-  },
-
   mounted() {
-    console.log('%c Mounted Called ', 'color: #009688; font-weight: bold')
-
     window.addEventListener('beforeinstallprompt', (event) => {
-      console.log('%c event ', 'color: #009688; font-weight: bold', event)
       event.preventDefault()
       this.deferredPrompt = event
     })
@@ -69,21 +42,15 @@ export default {
 
   // In a method triggered by a button click, use the deferredPrompt object to prompt the user to install the PWA
   methods: {
-    // Install the PWA
     installPWA() {
       if (this.deferredPrompt) {
-        // Show the install prompt
         this.deferredPrompt.prompt()
-
-        // Wait for the user to respond to the prompt
         this.deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
-            console.log('User accepted the install prompt')
+            console.log('User installed the PWA')
           } else {
-            console.log('User dismissed the install prompt')
+            console.log('User dismissed the PWA install prompt')
           }
-
-          // Clear the deferredPrompt so it can't be used again
           this.deferredPrompt = null
         })
       }

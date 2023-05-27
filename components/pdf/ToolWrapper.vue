@@ -56,8 +56,9 @@
         :generatePDF="generatePDF" :showPublishModal="showPublishModal" :selectedToolType="selectedToolType"
         :mouseUp="mouseUp" :lineStart="lineStart" :toolLength="toolLength" :drawingStart="drawingStart"
         :setInitialSignType="setInitialSignType" @onBlur="onBlur" :isCreator="isCreator" :responsiveDim="responsiveDim"
-        :responsiveToolDim="responsiveToolDim" @addOffset="addOffset" />
-
+        :responsiveToolDim="responsiveToolDim" @addOffset="addOffset"
+        :userTime="userTime"
+        />
       <!-- <div :class="[
           'dr__right',
           { line: type == TOOL_TYPE.line },
@@ -104,6 +105,7 @@ import AppendNameTool from './tools/AppendName.vue'
 
 export default {
   props: {
+    userTime: String,
     tool: Object,
     x1: Number,
     y1: Number,

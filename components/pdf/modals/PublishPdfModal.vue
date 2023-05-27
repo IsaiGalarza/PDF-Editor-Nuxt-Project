@@ -454,8 +454,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           // actionBy: `${this.$auth.user.firstName} ${this.$auth.user.lastName}`.toUpperCase()
         })
         .then((response) => {
-          // this.isLoading = false
-          this.addToLedger()
+          this.isLoading = false
+          // this.addToLedger()
           this.generatedPdf = response.data
         })
       } catch (error) {
@@ -606,9 +606,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       if (!this.isCreator && !this.proceedToSendEmail) {
         this.$notify.info({
           message: 'Pdf generating.....',
-          duration: 1000 * 7,
+          duration: 1000 * 2,
         })
-        this.allowLoadingAllAnnotations(6000).then(() => {
+        this.allowLoadingAllAnnotations(1000).then(() => {
           this.publishAsGuest()
           this.$emit('startGeneratePdf', false)
         })

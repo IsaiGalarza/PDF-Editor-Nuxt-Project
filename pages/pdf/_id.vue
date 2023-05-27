@@ -128,6 +128,7 @@
             :selectedToolType="selectedToolType"
             :dragHandler="handlePanning"
             @reAdjust="reAdjust"
+            :userTime="userTime"
             :id="tool.id"
             :tool="tool"
             :type="tool.type"
@@ -266,6 +267,7 @@
                 :selectedToolType="selectedToolType"
                 :dragHandler="handlePanning"
                 @reAdjust="reAdjust"
+                :userTime="userTime"
                 :id="tool.id"
                 :tool="tool"
                 :type="tool.type"
@@ -333,7 +335,7 @@
 
       <button
         class="w-full bg-paperdazgreen-400 py-2 text-white overflow-hidden duration-300 sm:hidden"
-        v-if="$auth.loggedIn && isCreator"
+        v-if="$auth.loggedIn && isCreator && !pdfLoading"
         @click="showPublishModal = true"
       >
         Publish
@@ -346,7 +348,7 @@
       v-if="!isCreator && isComplete"
     >
       <button
-        v-if="!isConfirm && !isSign && !isCreator"
+        v-if="!isConfirm && !isSign && !isCreator && !pdfLoading"
         @click="publishFileFunction"
         class="text-paperdazgreen-400 px-3 h-7 disabled:text-gray-400 disabled:cursor-not-allowed"
       >
@@ -356,7 +358,7 @@
         {{ currentPage }} / {{ propsNumPages }}
       </div>
       <button
-        v-if="!isConfirm && !isSign && !isCreator"
+        v-if="!isConfirm && !isSign && !isCreator && !pdfLoading"
         @click="canceled = true"
         class="text-red-500 px-3 h-7 disabled:cursor-not-allowed"
       >
@@ -573,7 +575,9 @@ export default mixins(PdfAuth).extend({
     permissionLoading: { type: true, msg: "checking permission..."},
     showAddPageText: false,
     AllPdfParentPage: [],
-    AllPdfParentPageDim: []
+    AllPdfParentPageDim: [],
+
+    userTime: ""
   }),
   created() {
     this.fetchPdf()
@@ -587,6 +591,7 @@ export default mixins(PdfAuth).extend({
     this.$BUS.$on('initials-update', (v) => (this.initial = v))
     this.$BUS.$on('addTextToPage', this.addTopagetextFunc)
     window.addEventListener("resize", this.resizeHandler);
+    this.getUserTime()
   },
   mounted() {
     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
@@ -795,6 +800,11 @@ export default mixins(PdfAuth).extend({
     },
   },
   methods: {
+    getUserTime(){
+      fetch('https://worldtimeapi.org/api/ip')
+      .then((res)=> res.json())
+      .then((response)=> this.userTime =  response?.datetime)
+    },
     parentOffset(val, id){  
        let ind = this.tools.findIndex((item)=> item.id == id)
        let newTop = this.tools[ind].top + val
@@ -1655,6 +1665,9 @@ export default mixins(PdfAuth).extend({
       return { x, y }
     },
     onCLickSinglePageOuter(event, pageNumber) {
+      if(!this.selectedToolId){
+        this.activeToolId = null
+      }
       if (
         !this.selectedToolType ||
         this.selectedToolType == this.TOOL_TYPE.line ||
@@ -1670,7 +1683,6 @@ export default mixins(PdfAuth).extend({
           this.selectedToolType == this.TOOL_TYPE.draw
         )
       ) {
-        // this.onToolChange(null)
       }
     },
     placeTool(e, pageNumber, initialPoint) {

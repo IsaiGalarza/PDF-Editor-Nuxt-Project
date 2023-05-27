@@ -436,7 +436,7 @@
 
             <!-- <FilePagination :totalFile="totalFile" @setPage="setPage" /> -->
           </div>
-          <FilePagination v-if="!folderSelected" :totalFile="totalFile" @setPage="setPage" />
+          <!-- <FilePagination v-if="!folderSelected" :totalFile="totalFile" @setPage="setPage" /> -->
         </div>
         <!-- End:: Files -->
       </div>
@@ -1032,7 +1032,8 @@ export default Vue.extend({
       await this.$axios.$post(`/files`, {
           action:"filesWithoutFolder",
           userId: this.$auth.user?.id,
-          skip: this.returnedDataPage
+          skip: this.returnedDataPage,
+          limit: 1000000
         })
         .then((response) => {
           const filesData = response.data.map((el) => {

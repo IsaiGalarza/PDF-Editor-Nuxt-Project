@@ -154,7 +154,7 @@
               </div>
             </div>
           </div>
-          <!-- <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" /> -->
+          <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
         </div>
         <!-- Mobile Folder -->
         <div v-if="showFolders" class="sm:hidden">
@@ -213,7 +213,7 @@
           >
             No Folders
           </div>
-          <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
+          <!-- <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" /> -->
         </div>
         <!-- End:: Folders -->
         <!-- Start:: Files -->
@@ -425,23 +425,18 @@
                 </div>
               </draggable>
 
-              <FileInFolder
-                v-else
-                @showMoveCompanyFileFunc="showMoveCompanyFileFunc"
-                @showShareCompanyFileFunc="showShareCompanyFileFunc"
-                @showEditCompanyFileFunc="showEditCompanyFileFunc"
-                @showRemoveCompanyFileFunc="showRemoveCompanyFileFunc"
-                :FilesInFolerContent="FilesInFolerContent"
-              />
+             <FileInFolder v-else 
+             @showMoveCompanyFileFunc="showMoveCompanyFileFunc"
+             @showShareCompanyFileFunc="showShareCompanyFileFunc"
+             @showEditCompanyFileFunc="showEditCompanyFileFunc"
+             @showRemoveCompanyFileFunc="showRemoveCompanyFileFunc"
+             @emitPrivateModal="emitPrivateModal"
+             :FilesInFolerContent="FilesInFolerContent"/>
             </section>
 
             <!-- <FilePagination :totalFile="totalFile" @setPage="setPage" /> -->
           </div>
-          <!-- <FilePagination
-            v-if="!folderSelected"
-            :totalFile="totalFile"
-            @setPage="setPage"
-          /> -->
+          <FilePagination v-if="!folderSelected" :totalFile="totalFile" @setPage="setPage" />
         </div>
         <!-- End:: Files -->
       </div>
@@ -869,6 +864,9 @@ export default Vue.extend({
     };
   },
   methods: {
+    emitPrivateModal(id){
+      this.$emit('showPermission', true, id)
+    },
     routeToFileManager(val) {
       this.$router.push(val);
       localStorage.setItem("from_publicpage", JSON.stringify({ fromBusiness: false }));
@@ -1031,11 +1029,11 @@ export default Vue.extend({
           ? this.$auth.user.teamId
           : this.$auth.user.id;
       //<------------------- START: fetching of folder ------------>>
-      await this.$axios
-        .$get(
-          `/files/?userId=${paramsId}&fileName[$like]=${search}%&$limit=1000000000&$sort[position]=1`
-        )
-
+      await this.$axios.$post(`/files`, {
+          action:"filesWithoutFolder",
+          userId: this.$auth.user?.id,
+          skip: this.returnedDataPage
+        })
         .then((response) => {
           const filesData = response.data.map((el) => {
             return el;
@@ -1044,6 +1042,7 @@ export default Vue.extend({
           this.files = filesData;
           // push files to store
           this.$store.commit("ADD_USER", this.files);
+          console.log(this.files)
           // to stop spinner
           this.fileSpinner = false;
           this.totalFile = response.total;

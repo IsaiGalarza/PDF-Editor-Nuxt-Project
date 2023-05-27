@@ -571,7 +571,9 @@ export default mixins(PdfAuth).extend({
     width: 0,
     is_equal: true,
     permissionLoading: { type: true, msg: "checking permission..."},
-    showAddPageText: false
+    showAddPageText: false,
+    AllPdfParentPage: [],
+    AllPdfParentPageDim: []
   }),
   created() {
     this.fetchPdf()
@@ -602,6 +604,7 @@ export default mixins(PdfAuth).extend({
     this.checkFilePrivacyOnload()
     this.$store.commit('SET_GUEST_MODAL_FUNCTION', this.showGuestModalFunc)
     if(JSON.parse(localStorage.getItem('isGuest'))?.isGuest) localStorage.removeItem('isGuest')
+    console.log("anotations---toolsssssssssssss", this.tools)
   },
   destroyed() {
     document.removeEventListener('keyup', this.keyupHandler)
@@ -1118,6 +1121,13 @@ export default mixins(PdfAuth).extend({
             
       let parentWidth = document.querySelector('.pdf-single-page-outer').getBoundingClientRect().width
       let parentHeight = document.querySelector('.pdf-single-page-outer').getBoundingClientRect().height
+      this.AllPdfParentPage = Array.from(document.querySelectorAll('.pdf-single-page-outer'))
+      this.AllPdfParentPageDim = this.AllPdfParentPage.map((v)=> {
+        return {
+          width: v.getBoundingClientRect().width,
+          height: v.getBoundingClientRect().height
+        }
+      })
       this.$store.commit('SET_PDF_DIMENSIONS', {parentWidth, parentHeight})
       let getAllPdfPages = document.querySelectorAll('.pdf-single-page-outer')
       // this._scrollToConfirm()
@@ -1313,10 +1323,11 @@ export default mixins(PdfAuth).extend({
     },
     reAdjust(val, id){
       let index = this.tools.findIndex(tl => tl.id == id);
-      let IND_Page =  document.querySelectorAll('.pdf-page')[this.tools[index].pageNumber - 1].getBoundingClientRect()
+      let IND_Page =  this.AllPdfParentPageDim[this.tools[index].pageNumber - 1]
       this.tools[index].reAdjust = val;
       this.tools[index].parentWidth = IND_Page.width;
       this.tools[index].parentHeight = IND_Page.height;
+      console.log("readjust maent",this.tools[index], IND_Page)
     },
     keyupHandler(event) {
       if (event.ctrlKey && eve.nt.shiftKey && event.code === 'KeyZ') {
@@ -1325,13 +1336,16 @@ export default mixins(PdfAuth).extend({
         this.undo()
       }
     },
-    undo() {
+   async  undo() {
       let lastId = this.stack.pop()
+      console.log(lastId)
       if (lastId) {
         let index = this.tools.findIndex((t) => t.id == lastId)
         if (index >= 0) {
           this.undoStack.push(lastId)
           this.tools[index].isDeleted = !this.tools[index].isDeleted
+          await this.$nextTick()
+          this.$forceUpdate()
         }
       }
     },
@@ -1554,15 +1568,18 @@ export default mixins(PdfAuth).extend({
         event.currentTarget.parentElement ||
         this.$refs.scrollingElement
 
+        let index = this.AllPdfParentPage.findIndex((item) => item == parent)
+        console.log("set-width-text", this.AllPdfParentPageDim)
+
       event = event || window.event
       const parentElement = elParent;
       const rect = parentElement.getBoundingClientRect();
-      const zoomLevelW =  rect.width/this.$store.getters.getPdfpagesDim.parentWidth; // example zoom level
-      const zoomLevelH =  rect.height/this.$store.getters.getPdfpagesDim.parentHeight; // example zoom level
+      const zoomLevelW =  rect.width/this.AllPdfParentPageDim[index].width; // example zoom level
+      const zoomLevelH =  rect.height/this.AllPdfParentPageDim[index].height; // example zoom level
       const x = (event.clientX - rect.left) * zoomLevelW;
       const y = (event.clientY - rect.top) * zoomLevelH;
        
-      console.log(`Mouse position relative to zoomed parent element: (${x}, ${y}) ${event.offsetY}, ${event.offsetX}`)
+      console.log(`Mouse position relative to zoomed parent element: (${zoomLevelW}, ${zoomLevelH}), indx${index} ofx:${event.offsetX}, ofy:${event.offsetY}, clx:${event.clientX}, cly:${event.clientY}`, parentElement, event.target)
 
       // const scrollingElement =
       //   parent ||
@@ -1598,7 +1615,7 @@ export default mixins(PdfAuth).extend({
 
       // return { x, y }
       // return { x: x / this.scale, y: y / this.scale }
-      return { x: event.offsetX * zoomLevelW, y: event.offsetY * zoomLevelH}
+      return { x: event.offsetX, y: event.offsetY}
     },
     previousPointerPos(event, parent) {
       let eventDoc, doc, body
@@ -1659,12 +1676,14 @@ export default mixins(PdfAuth).extend({
     placeTool(e, pageNumber, initialPoint) {
       // this.setToinitialScale()
       // if(!this.isScaleDefault()) return
-     
+       
       let parent = this.$refs[`pdf-single-page-outer-${pageNumber}`]
       if (Array.isArray(parent)) parent = parent[0]
      
-      let parentWidth = document.querySelector('.pdf-single-page-outer').getBoundingClientRect().width
-      let parentHeight = document.querySelector('.pdf-single-page-outer').getBoundingClientRect().height
+      let parentWidth =  this.AllPdfParentPageDim[pageNumber - 1].width
+      let parentHeight = this.AllPdfParentPageDim[pageNumber - 1].height
+
+      console.log(parentWidth, pageNumber)
       let { x, y } = !initialPoint
         ? this.pointerPos(e, parent || this.$refs.scrollingElement)
         : // ? this.pointerPos(e, parent || this.$refs['pdf-single-page-outer'])
@@ -1873,23 +1892,23 @@ export default mixins(PdfAuth).extend({
  beforeRouteLeave(to, from, next) {
     if (this.$store.state.pdfExit == true) {
       localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true}))
-      this.$store.commit('RESET_PDF_ANNOTATIONS')
+      this.$store.commit('RESET_PDF_STATE')
       return next(true)
     }
     if (!this.displayPDF) {
       localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true}))
-      this.$store.commit('RESET_PDF_ANNOTATIONS')
+      this.$store.commit('RESET_PDF_STATE')
       return next(true)
     }
     if (this.isCreator) {
       this.nextRoute ? localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true})) : null
-      this.$store.commit('RESET_PDF_ANNOTATIONS')
+      this.$store.commit('RESET_PDF_STATE')
       this.nextRoute ? next(true) : next(false)
       this.exitFileManager(to.fullPath)
       this.nextRoute = to.fullPath
     } else {
       this.nextRoute ? localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true})) : null
-      this.$store.commit('RESET_PDF_ANNOTATIONS')
+      this.$store.commit('RESET_PDF_STATE')
       this.nextRoute ? next(true) : next(false)
       this.exitFileManager(to.fullPath)
       this.nextRoute = to.fullPath

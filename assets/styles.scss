@@ -985,3 +985,10 @@ $screens: 'xxs', 'xs', 'sm', 'md', 'lg', 'xl';
     transform: translateX(-466%) rotate(45deg) scale(0);
   }
 }
+.pdf_annot_input{
+  background-color: rgb(229, 234, 255) !important;
+  color: black !important
+}
+.pdf_annot_input:focus{
+  background-color: white !important;
+}

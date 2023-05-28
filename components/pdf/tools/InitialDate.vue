@@ -38,6 +38,7 @@ export default {
     }
   },
   props: {
+    userTime: String,
     scale: Number,
     file: { type: Object, required: true },
     generatePDF: Boolean,
@@ -48,7 +49,7 @@ export default {
   },
   computed: {
     nowDate() {
-      return moment().format('YYYY-MM-DD')
+      return this.userTime ?? moment().format('YYYY-MM-DD')
     },
 
     initialFontSize(){

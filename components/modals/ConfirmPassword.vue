@@ -1,78 +1,105 @@
 <template>
-  <el-dialog :close-on-click-modal="false" :visible.sync="showModal" style="" :show-close="false" center
-    class="relative text-[#414042]">
+  <el-dialog
+    :close-on-click-modal="false"
+    :visible.sync="showModal"
+    style=""
+    :show-close="false"
+    center
+    class="relative text-[#414042]"
+  >
     <template #title>
-
       <div class="flex justify-end">
         <button @click="closeModal()" class="">
-          <img src="../../assets/icons/x.svg" alt="">
+          <img src="../../assets/icons/x.svg" alt="" />
         </button>
       </div>
-      <span class="text-center  text-xl block w-full">Create Password</span>
+      <span class="text-center text-xl block w-full">Create Password</span>
     </template>
     <!-- Start:: Body -->
     <div class="justify-center input-fill pb-2">
-      <el-input placeholder="user email" disabled class="w-full  " v-model="email" />
+      <el-input placeholder="user email" disabled class="w-full" v-model="email" />
       <!-- <el-input placeholder="Create password" type="password" class="w-full rounded-[100px] mt-3" v-model="password" />
       <el-input placeholder="Retype password" class="w-full mt-3 mb-3" type="password" v-model="confirm_pasword" /> -->
-      <password-field  
-      v-model="password"  placeholder="Create password" />
-      <password-field  
-      v-model="confirm_pasword"  placeholder="Retype password" />
-      
+      <password-field v-model="password" placeholder="Create password" />
+      <password-field v-model="confirm_pasword" placeholder="Retype password" />
 
       <div class="">
         <div class="error-wrapper">
-          <div :class="[
-              alphabet.test(this.password) ? 'bg-[green]' : 'bg-[#808080b8]',
-            ]" class="error-indicator"></div>
-          <span class="text-[11px]" :class="[
-              alphabet.test(this.password)
-                ? 'text-[green]'
-                : 'text-[#808080b8]',
-            ]">
-            Password must contain upper</span>
+          <div
+            :class="[alphabet.test(this.password) ? 'bg-[green]' : 'bg-[#808080b8]']"
+            class="error-indicator"
+          ></div>
+          <span
+            class="text-[11px]"
+            :class="[alphabet.test(this.password) ? 'text-[green]' : 'text-[#808080b8]']"
+          >
+            Password must contain upper</span
+          >
         </div>
         <div class="error-wrapper">
-          <div :class="[
-              number.test(this.password) ? 'bg-[green]' : 'bg-[#808080b8]',
-            ]" class="error-indicator"></div>
-          <span class="text-[11px]" :class="[
-              number.test(this.password) ? 'text-[green]' : 'text-[#808080b8]',
-            ]">
-            Password must contain number</span>
+          <div
+            :class="[number.test(this.password) ? 'bg-[green]' : 'bg-[#808080b8]']"
+            class="error-indicator"
+          ></div>
+          <span
+            class="text-[11px]"
+            :class="[number.test(this.password) ? 'text-[green]' : 'text-[#808080b8]']"
+          >
+            Password must contain number</span
+          >
         </div>
         <div class="error-wrapper">
-          <div :class="[
-              charac.test(this.password) ? 'bg-[green]' : 'bg-[#808080b8]',
-            ]" class="error-indicator"></div>
-          <span class="text-[11px]" :class="[
-              charac.test(this.password) ? 'text-[green]' : 'text-[#808080b8]',
-            ]">
-            Password must contain symbol</span>
+          <div
+            :class="[charac.test(this.password) ? 'bg-[green]' : 'bg-[#808080b8]']"
+            class="error-indicator"
+          ></div>
+          <span
+            class="text-[11px]"
+            :class="[charac.test(this.password) ? 'text-[green]' : 'text-[#808080b8]']"
+          >
+            Password must contain symbol</span
+          >
         </div>
         <div class="error-wrapper">
-          <div :class="[
-              this.password?.length > 8 ? 'bg-[green]' : 'bg-[#808080b8]',
-            ]" class="error-indicator"></div>
-          <span class="text-[11px]" :class="[
-              this.password?.length > 8 ? 'text-[green]' : 'text-[#808080b8]',
-            ]">
-            Password must be morethan 8 characters</span>
+          <div
+            :class="[this.password?.length > 8 ? 'bg-[green]' : 'bg-[#808080b8]']"
+            class="error-indicator"
+          ></div>
+          <span
+            class="text-[11px]"
+            :class="[this.password?.length > 8 ? 'text-[green]' : 'text-[#808080b8]']"
+          >
+            Password must be morethan 8 characters</span
+          >
         </div>
         <div class="error-wrapper">
-          <div :class="[isPasswordEqual ? 'bg-[green]' : 'bg-[#808080b8]']" class="error-indicator"></div>
-          <span class="text-[11px]" :class="[isPasswordEqual ? 'text-[green]' : 'text-[#808080b8]']">
-            Password match</span>
+          <div
+            :class="[isPasswordEqual ? 'bg-[green]' : 'bg-[#808080b8]']"
+            class="error-indicator"
+          ></div>
+          <span
+            class="text-[11px]"
+            :class="[isPasswordEqual ? 'text-[green]' : 'text-[#808080b8]']"
+          >
+            Password match</span
+          >
         </div>
       </div>
 
       <div class="w-full flex justify-center mt-5">
-        <button :disabled="!getIsFormValid || loading"
-          :class="[getIsFormValid || !loading ? 'opacity-100' : 'opacity-40']" @click="submit"
-          class="w-[80%] bg-paperdazgreen-300 text-white py-2 rounded flex items-center justify-center cursor-pointer">
+        <button
+          :disabled="!getIsFormValid || loading"
+          :class="[getIsFormValid || !loading ? 'opacity-100' : 'opacity-40']"
+          @click="submit"
+          class="w-[80%] bg-paperdazgreen-300 text-white py-2 rounded flex items-center justify-center cursor-pointer"
+        >
           Continue
-          <SpinnerDottedIcon v-show="loading" class="animate-spin ml-1" width="20" height="20" />
+          <SpinnerDottedIcon
+            v-show="loading"
+            class="animate-spin ml-1"
+            width="20"
+            height="20"
+          />
         </button>
       </div>
     </div>
@@ -81,22 +108,20 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
-import CheckedFillIcon from '../svg-icons/CheckedFillIcon.vue'
-import jwt, { decode, JsonWebTokenError } from 'jsonwebtoken'
-import login from '~/mixins/login'
-import PasswordField from '~/components/widgets/PasswordField.vue'
-
-
+import Vue from "vue";
+import SpinnerDottedIcon from "~/components/svg-icons/SpinnerDottedIcon.vue";
+import CheckedFillIcon from "../svg-icons/CheckedFillIcon.vue";
+import jwt, { decode, JsonWebTokenError } from "jsonwebtoken";
+import login from "~/mixins/login";
+import PasswordField from "~/components/widgets/PasswordField.vue";
 
 export default Vue.extend({
-  name: 'ResetPasswordModal',
+  name: "ResetPasswordModal",
   mixins: [login],
   components: { SpinnerDottedIcon, CheckedFillIcon, PasswordField },
   model: {
-    prop: 'visible',
-    event: 'updateVisibility',
+    prop: "visible",
+    event: "updateVisibility",
   },
   props: {
     visible: {
@@ -110,19 +135,19 @@ export default Vue.extend({
       return {
         token: jwt.sign(
           { data: this.userInfo.data?.user_id },
-          '+Erqnl5F0JnIsW++d9U0BfwpJ6w='
+          process.env.NUXT_ENV_BACKEND_JWT_TOKEN
         ),
-        action: 'reset_password',
+        action: "reset_password",
         isEmailVerified: true,
         newPassword: this.password,
-      }
+      };
     },
     isPasswordEqual() {
-      if (this.password?.trim()?.length === 0) return false
-      return this.password == this.confirm_pasword
+      if (this.password?.trim()?.length === 0) return false;
+      return this.password == this.confirm_pasword;
     },
     getIsFormValid() {
-      let isFormValid
+      let isFormValid;
       if (
         this.charac.test(this.password) &&
         this.number.test(this.password) &&
@@ -130,72 +155,73 @@ export default Vue.extend({
         this.password?.length > 8 &&
         this.password === this.confirm_pasword
       ) {
-        isFormValid = true
+        isFormValid = true;
       } else {
-        isFormValid = false
+        isFormValid = false;
       }
-      return isFormValid
+      return isFormValid;
     },
   },
   data() {
     return {
-      password: '',
+      password: "",
       email: "",
-      confirm_pasword: '',
+      confirm_pasword: "",
       showModal: false,
-      errorMessage: '',
+      errorMessage: "",
       loading: false,
       newSaveData: {},
       charac: /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/,
       number: /[0-9]/,
       alphabet: /[A-Za-z]/,
       sendAction: null,
-    }
+    };
   },
   watch: {
     visible(val) {
-      this.showModal = val
+      this.showModal = val;
     },
     showModal(val) {
-      this.$emit('updateVisibility', val)
+      this.$emit("updateVisibility", val);
     },
     userInfo(val) {
-      this.email = this.userInfo.data?.email
+      this.email = this.userInfo.data?.email;
     },
   },
   mounted() {
-    this.showModal = this.visible
+    this.showModal = this.visible;
   },
   methods: {
-    closeModal(){
-      this.showModal = false
+    closeModal() {
+      this.showModal = false;
     },
     closeModal() {
-      this.$emit('updateVisibility', false)
+      this.$emit("updateVisibility", false);
     },
     async submit() {
-      if (!this.getIsFormValid) return
+      if (!this.getIsFormValid) return;
 
-      this.loading = true
-      await this.$_server
+      this.loading = true;
+      await this.$axios
         .patch(`/users/${this.userInfo.data?.user_id}`, this.userPayload)
         .then((res) => {
-          this.$router.push(`/${this.userInfo.data?.businessPage}`)
+          this.$router.push(`/${this.userInfo.data?.businessPage}`);
         })
         .catch((err) => {
-          this.loading = false
-          // console.log(err)
-        })
-
+          this.$notify.error({
+            title: "Error",
+            message: "Something went wrong",
+          });
+          this.loading = false;
+          console.log(err, "error messages");
+        });
     },
   },
-})
+});
 </script>
 
 <style ang="scss" scoped>
-
-
-*>>>.el-dialog {
+* >>> .el-dialog {
   width: 416px !important;
   max-width: 95% !important;
   border-radius: 20px !important;
@@ -204,22 +230,22 @@ export default Vue.extend({
   overflow: hidden;
 }
 
-*>>>.el-dialog__header {
+* >>> .el-dialog__header {
   padding-bottom: 20px;
 }
 
-*>>>.el-dialog__header,
-*>>>.el-dialog__footer {
+* >>> .el-dialog__header,
+* >>> .el-dialog__footer {
   text-align: left !important;
 }
 
-*>>>.el-dialog__body {
+* >>> .el-dialog__body {
   /* padding-top: 0 !important;
       padding-bottom: 0 !important; */
   background: #fcfcfd;
 }
 
-*>>>.el-select .el-input__inner {
+* >>> .el-select .el-input__inner {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }
@@ -232,7 +258,7 @@ export default Vue.extend({
   @apply mr-2 w-[10px] overflow-hidden h-[10px] rounded-[100%] p-[2px];
 }
 
-.input-field{
+.input-field {
   @apply mt-4;
   border-radius: 4px !important;
 }

@@ -47,7 +47,9 @@ export const appendEditText = ({
   fontsize,
   scaleFactor,
   lineHeight,
-  isLabel
+  isLabel,
+  pageHeight,
+  pageWidth,
 }: any) => {
   ; (parent.data as any).push({
     page_number: subParent.indexOf(elem),
@@ -64,7 +66,9 @@ export const appendEditText = ({
     top,
     lineHeight,
     mainHeight,
-    scaleFactor: scaleFactor ? scaleFactor : 1
+    scaleFactor: scaleFactor ? scaleFactor : 1,
+    pageHeight,
+    pageWidth,
   })
 }
 
@@ -83,6 +87,8 @@ export const appendEditElement = ({
   svgImagePath,
   svgWidth,
   svgHeight,
+  pageHeight,
+  pageWidth,
 }: any) => {
   ; (parent.data as any).push({
     page_number: subParent.indexOf(elem),
@@ -97,6 +103,8 @@ export const appendEditElement = ({
     svgHeight,
     left,
     top,
+    pageHeight,
+    pageWidth,
   })
 }
 
@@ -134,6 +142,10 @@ export const appendEditImage = ({
   height,
   axisX2,
   axisY2,
+  left,
+  top,
+  pageHeight,
+  pageWidth,
 }: any) => {
   (parent.data as any).push({
     page_number: subParent.indexOf(elem),
@@ -144,7 +156,11 @@ export const appendEditImage = ({
     axisY2: axisY2[1] - axisY2[0],
     axisY: axisY[1] > axisY[0] ? axisY[1] - axisY[0] : axisY[0] - axisY[1],
     // height: parseFloat(height) * 0.73,
-    uploaded: 'true'
+    uploaded: 'true',
+    left,
+    top,
+    pageHeight,
+    pageWidth,
   })
 }
 
@@ -257,70 +273,19 @@ export const ExtractFormPdf = ({
 
                     axisX: [
                       element.getBoundingClientRect().left,
-                      item.getBoundingClientRect().left - pdfOffset_x,
+                      item.getBoundingClientRect().left + pdfOffset_x,
                     ],
-                    left: formatStyle("left",(item as any).getAttribute('style'))- pdfOffset_x,
+                    left: formatStyle("left",(item as any).getAttribute('style'))+ pdfOffset_x,
                     top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                     length: item.getBoundingClientRect().width,
                     svgImagePath: tools.children[0].getAttribute('svgToImage'),
                     svgWidth: tools.getBoundingClientRect()?.width,
                     svgHeight: tools.getBoundingClientRect()?.height,
+                    pageHeight:  element.getBoundingClientRect().height,
+                    pageWidth:  element.getBoundingClientRect().width
                   })
                   break
 
-                case 'BUTTON':
-                  appendUserActionElement({
-                    parent: pdfScrappedData,
-                    subParent: totalArray,
-                    uploaded: tools.getAttribute('uploaded'),
-                    elem: element,
-                    tool: tools,
-                    axisY: [
-                      element.getBoundingClientRect().top,
-                      item.children[0].children[0].children[0].getBoundingClientRect()
-                        .top - pdfOffset_y,
-                    ],
-                    axisX: [
-                      element.getBoundingClientRect().left,
-                      item.children[0].children[0].children[0].getBoundingClientRect()
-                        .left - pdfOffset_x,
-                    ],
-                    axisX2: [
-                      item.children[0].children[0].children[0].getBoundingClientRect()
-                        .left,
-                      item.children[0].children[0].children[0].getBoundingClientRect()
-                        .right,
-                    ],
-                    axisY2: [
-                      item.children[0].children[0].children[0].getBoundingClientRect()
-                        .top,
-                      item.children[0].children[0].children[0].getBoundingClientRect()
-                        .bottom,
-                    ],
-                    type: tools.children[0].getAttribute('type'),
-                  })
-                  appendEditText({
-                    // these action is only appended when the file action is SIGN
-                    parent: pdfScrappedData,
-                    subParent: totalArray,
-                    axisY: [
-                      element.getBoundingClientRect().top -
-                      tools.children[0].getBoundingClientRect().height,
-                      item.children[0].children[0].children[0].getBoundingClientRect()
-                        .top - pdfOffset_y,
-                    ],
-
-                    axisX: [
-                      element.getBoundingClientRect().left,
-                      item.children[0].children[0].children[0].getBoundingClientRect()
-                        .left - pdfOffset_x,
-                    ],
-                    attr: (item as any).getAttribute('style'),
-                    tools: signLabel,
-                    elem: element,
-                    fontsize: '8',
-                  })
-                  break
 
                 case 'DIV':
                   switch (tools.children[0]?.tagName) {
@@ -340,9 +305,9 @@ export const ExtractFormPdf = ({
   
                           axisX: [
                             element.getBoundingClientRect().left,
-                            item.getBoundingClientRect().left - pdfOffset_x,
+                            item.getBoundingClientRect().left + pdfOffset_x,
                           ],
-                        left: formatStyle("left",(item as any).getAttribute('style'))- pdfOffset_x,
+                        left: formatStyle("left",(item as any).getAttribute('style'))+ pdfOffset_x,
                         top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                         svgHeight: tools.children[0].getBoundingClientRect()
                           .height,
@@ -350,6 +315,8 @@ export const ExtractFormPdf = ({
                           'svgToImage'
                         ),
                         type: 'DrawLine',
+                        pageHeight:  element.getBoundingClientRect().height,
+                        pageWidth:  element.getBoundingClientRect().width
                       })
                       break
                     case 'P':
@@ -366,40 +333,20 @@ export const ExtractFormPdf = ({
                         width: tools.children[0].getBoundingClientRect().width,
                         axisX: [
                           element.getBoundingClientRect().left,
-                          item.getBoundingClientRect().left - pdfOffset_x,
+                          item.getBoundingClientRect().left + pdfOffset_x,
                         ],
                         lineHeight: parseInt(getComputedStyle(tools.children[0]).getPropertyValue('line-height').replace('px', '')),
-                        left: formatStyle("left",(item as any).getAttribute('style')) - pdfOffset_x,
+                        left: formatStyle("left",(item as any).getAttribute('style')) + pdfOffset_x,
                         top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                         textImageContent: tools.children[0].getAttribute('textImageContent'),
-                        tools: tools.children[0].innerText,
+                        tools: tools.children[0].innerText?.replace(/\n/g, ""),
                         elem: element,
                         scaleFactor: tools.getAttribute('scalefactor'),
                         fontsize: tools.children[0].getAttribute(
                           'initialFontSize'
                         ),
-                      })
-                      break
-                    case 'INPUT':
-                      console.log("tools-input", tools)
-                      appendEditText({
-                        parent: pdfScrappedData,
-                        subParent: totalArray,
-                        axisY: [
-                          element.getBoundingClientRect().top,
-                          item.getBoundingClientRect().top - pdfOffset_y,
-                        ],
-
-                        axisX: [
-                          element.getBoundingClientRect().left,
-                          item.getBoundingClientRect().left - pdfOffset_x,
-                        ],
-                        height: tools.children[1].getBoundingClientRect().height - 3.5,
-                        tools: tools.children[1].textContent || tools.children[0].value,
-                        elem: element,
-                        fontsize: (tools.children[1] as any).getAttribute(
-                          'style'
-                        ),
+                        pageHeight:  element.getBoundingClientRect().height,
+                        pageWidth:  element.getBoundingClientRect().width
                       })
                       break
                     case 'IMG':
@@ -421,8 +368,10 @@ export const ExtractFormPdf = ({
 
                         axisX: [
                           element.getBoundingClientRect().left,
-                          item.getBoundingClientRect().left - pdfOffset_x,
+                          item.getBoundingClientRect().left + pdfOffset_x,
                         ],
+                        left: formatStyle("left",(item as any).getAttribute('style')) + pdfOffset_x,
+                        top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                         // axisX2: [
                         //   item.children[0].children[0].children[0].getBoundingClientRect()
                         //     .left,
@@ -433,8 +382,9 @@ export const ExtractFormPdf = ({
                           tools.children[0].getBoundingClientRect().left,
                           tools.children[0].getBoundingClientRect().right,
                         ],
-                        height: tools.children[0].getBoundingClientRect()
-                          .height,
+                        height: tools.children[0].getBoundingClientRect().height,
+                        pageHeight:  element.getBoundingClientRect().height,
+                        pageWidth:  element.getBoundingClientRect().width
                       })
                       appendEditText({
                         isLabel: true,
@@ -446,15 +396,17 @@ export const ExtractFormPdf = ({
                           item.getBoundingClientRect().top - pdfOffset_y,
                         ],
                         lineHeight: 18,
-                        left: formatStyle("left",(item as any).getAttribute('style')) - pdfOffset_x,
+                        left: formatStyle("left",(item as any).getAttribute('style')) + pdfOffset_x,
                         top: formatStyle("top",(item as any).getAttribute('style')) - pdfOffset_y,
                         axisX: [
                           element.getBoundingClientRect().left,
-                          item.getBoundingClientRect().left - pdfOffset_x,
+                          item.getBoundingClientRect().left + pdfOffset_x,
                         ],
                         tools: signLabel,
                         elem: element,
-                        fontsize: '8',
+                        fontsize: '6',
+                        pageHeight:  element.getBoundingClientRect().height,
+                        pageWidth:  element.getBoundingClientRect().width
                       })
                       break
                   }
@@ -487,6 +439,7 @@ export const ExtractFormPdf = ({
         // let inputs = document.querySelectorAll(".annotationLayer > input")
         let inputs = $('.annotationLayer').find(':input')
         Array.from(inputs).forEach((elementList: any) => {
+          console.log("input-type\n", elementList.value, elementList.type)
           switch (elementList.type) {
             case 'text':
               ; (pdfScrappedData.data as any).push({
@@ -509,6 +462,13 @@ export const ExtractFormPdf = ({
                 value: elementList.value,
               })
               break
+            case 'time':
+                ; (pdfScrappedData.data as any).push({
+                  type: 'PDFTextField',
+                  fieldName: elementList.name,
+                  value: elementList.value,
+                })
+                break
             case 'checkbox':
               ; (pdfScrappedData.data as any).push({
                 type: 'PDFCheckBox',
@@ -531,11 +491,15 @@ export const ExtractFormPdf = ({
               })
               break
             case 'radio':
+              let radioButtonGroup = document.getElementsByName(elementList.name);
+              let index = Array.from(radioButtonGroup).findIndex(function(element: any): Boolean {
+                return element.checked === true;
+              })
               ; (pdfScrappedData.data as any).push({
                 type: 'PDFRadioGroup',
                 fieldName: elementList.name,
                 value: elementList.checked,
-                checkedIndex: 0,
+                checkedIndex: index,
               })
               break
 

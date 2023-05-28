@@ -34,6 +34,7 @@
       <h4 class="text-center font-semibold text-xl">Create Folder</h4>
     </template>
     <!-- Start:: Body -->
+    <form @submit.prevent="onSubmit">
     <p
       class="text-center block font-medium  mx-auto mb-6 whitespace-none"
     >
@@ -49,7 +50,6 @@
         shadow-md
          text-white rounded-[1rem] shadow bg-paperdazgreen-300"
         :disabled="loading"
-        @click="onSubmit"
       >
         <span class="inline-flex gap-1 items-center text-[16px]">
          Create
@@ -62,6 +62,7 @@
         </span>
       </button>
     </div>
+    </form>
     <!-- end :: body -->
   </el-dialog>
 </template>

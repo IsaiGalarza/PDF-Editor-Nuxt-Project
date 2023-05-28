@@ -2,10 +2,11 @@
   <main class="">
     <top-details-card-container v-model="activeTab"  />
     <!-- <leaves-details-container class="mb-9" /> -->
-    <company-file-ledger />
+    <company-file-ledger @showPermission="showPermission"/>
     <PopUpWrapper @count="increaseCount" :showModal="showGuideModal">
       <component :is="popUps[keepCount]" />
     </PopUpWrapper>
+    <PermissionToView v-model="showPermissionModal" :fileId="fileId" />
   </main>
 </template>
 
@@ -29,6 +30,9 @@ import ShareFilePopUp from '~/components/dashboard/PopUps/ShareFilePopUp.vue'
 import EditFilePopUp from '~/components/dashboard/PopUps/EditFilePopUp.vue'
 import MoveFilePopUp from '~/components/dashboard/PopUps/MoveFilePopUp.vue'
 import FileManagerPopUp from '~/components/dashboard/PopUps/FilemanagerPopUp.vue'
+import PermissionToView from '~/components/profile/modal/PermissionToView.vue'
+import jwt, { decode, JsonWebTokenError } from 'jsonwebtoken'
+
 
 export default mixins(login).extend({
   components: {
@@ -44,6 +48,7 @@ export default mixins(login).extend({
     EditFilePopUp,
     MoveFilePopUp,
     FileManagerPopUp,
+    PermissionToView
   },
   name: 'CompanyFilesPage',
   layout: 'dashboard',
@@ -60,7 +65,20 @@ export default mixins(login).extend({
   beforeDestroy() {
     localStorage.setItem('newUser', "true")
   },
+  created() {
+    let permissionToken = this.$route.query.permissiontoken
+    if(!permissionToken) return
+    this.permissionDecode = jwt.verify(permissionToken, process.env.NUXT_ENV_BACKEND_JWT_TOKEN)?.data
+    if(this.permissionDecode.fileId){
+      this.fileId = this.permissionDecode.fileId
+       this.showPermissionModal = true
+    }
+  },
   methods: {
+    showPermission(val, id){
+      this.showPermissionModal = true;
+      this.fileId = id
+    },
     async updateTutorialStatus(){
        await this.$axios.patch(`/users/${this.$auth.user.id}`, {
         isTutorialPassed : 1
@@ -86,6 +104,9 @@ export default mixins(login).extend({
       activeTab: 'ledger',
       showGuideModal: false,
       keepCount: 0,
+      showPermissionModal: false,
+      permissions: [],
+      fileId: null,
       popUps: [
         'WelcomePopUp',
         'DummyFilesPopUp',

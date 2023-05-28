@@ -2,7 +2,7 @@
   <aside class="pdf-page-aside">
     <div class="overflow-y-auto custom-scrollbar px-5 side-scroll-container">
       <div
-        class="bg-white h-56 mb-5 sideScroll overflow-hidden flex justify-center"
+        class="bg-white mb-3 sideScroll overflow-hidden flex justify-center"
         ref="sidescroll"
         v-for="i in numPages"
         :key="i"

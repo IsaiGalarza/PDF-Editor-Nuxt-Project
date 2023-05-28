@@ -56,6 +56,13 @@ export default class LandingPage extends Vue {
       userDecodedInfo: {},
     }
   }
+  beforeRouteEnter (to, from, next, $route) {
+    if(from.query.permissiontoken){
+      sessionStorage.setItem("redirectUrl", from.fullPath)  
+    } 
+    next()
+  }
+  
   mounted() {
     if (sessionStorage.getItem('requestSentFlag') == 'true') {
       this.$notify({
@@ -65,12 +72,12 @@ export default class LandingPage extends Vue {
     setTimeout(function () {
       sessionStorage.setItem('requestSentFlag', false)
     }, 300)
-
+    this
     if (!this.$route.query?.verificationToken) return
     this.$route.query?.verificationToken && (this.showConfirmPassword = true)
     let encodedUser = jwt.verify(
       this.$route.query?.verificationToken,
-      '+Erqnl5F0JnIsW++d9U0BfwpJ6w='
+      process.env.NUXT_ENV_BACKEND_JWT_TOKEN
     )
     this.userDecodedInfo = encodedUser
   }

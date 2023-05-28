@@ -882,11 +882,13 @@ $screens: 'xxs', 'xs', 'sm', 'md', 'lg', 'xl';
 }
 
 .paginate li:nth-of-type(1) {
-  @apply text-[50px] relative -top-[10px] w-10 h-10 inline-flex justify-center items-center
+  @apply text-[50px] relative -top-[2.5px] w-10 h-10 inline-flex justify-center items-center;
+  font-weight: 200;
 }
 
 .paginate li:nth-last-child(1) {
-  @apply text-[50px] relative -top-[10px] w-10 h-10 inline-flex justify-center items-center
+  @apply text-[50px] relative -top-[2.5px] w-10 h-10 inline-flex justify-center items-center;
+  font-weight: 200;
 }
 
 .paginate .disabled {
@@ -928,4 +930,58 @@ $screens: 'xxs', 'xs', 'sm', 'md', 'lg', 'xl';
   padding: 3px 6px;
   padding-bottom: 8px;
   clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 75% 75%, 19% 75%, 0 99%, 0% 75%);
+}
+.annotationText br{
+    display: none !important;
+ }
+ .appendInput:focus {
+  border: 2px solid yellow !important;
+  border-top: 1px solid yellow !important;
+  border-bottom: 1px solid yellow !important;
+  /* Add any other styles you want to apply when the input field is in focus */
+}
+.looping-rhombuses-spinner, .looping-rhombuses-spinner * {
+  box-sizing: border-box;
+}
+
+.looping-rhombuses-spinner {
+  width: calc(15px * 4);
+  height: 15px;
+  position: relative;
+}
+
+.looping-rhombuses-spinner .rhombus {
+  @apply bg-paperdazgreen-300;
+  height: 15px;
+  width: 15px;
+  left: calc(15px * 4);
+  position: absolute;
+  margin: 0 auto;
+  border-radius: 2px;
+  transform: translateY(0) rotate(45deg) scale(0);
+  animation: looping-rhombuses-spinner-animation 2500ms linear infinite;
+}
+
+.looping-rhombuses-spinner .rhombus:nth-child(1) {
+  animation-delay: calc(2500ms * 1 / -1.5);
+}
+
+.looping-rhombuses-spinner .rhombus:nth-child(2) {
+  animation-delay: calc(2500ms * 2 / -1.5);
+}
+
+.looping-rhombuses-spinner .rhombus:nth-child(3) {
+  animation-delay: calc(2500ms * 3 / -1.5);
+}
+
+@keyframes looping-rhombuses-spinner-animation {
+  0% {
+    transform: translateX(0) rotate(45deg) scale(0);
+  }
+  50% {
+    transform: translateX(-233%) rotate(45deg) scale(1);
+  }
+  100% {
+    transform: translateX(-466%) rotate(45deg) scale(0);
+  }
 }

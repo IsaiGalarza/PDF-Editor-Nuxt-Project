@@ -104,6 +104,10 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
+    isCompanyNameShare:{
+      type: Boolean,
+      default: false,
+    }
   },
   data() {
     return {
@@ -216,8 +220,6 @@ export default Vue.extend({
         title: 'Copy',
         message: 'Copy Successfully',
       })
-
-
     },
     showQrcodeFileFuncEmit() {
       this.$emit('qrLoad');
@@ -229,6 +231,7 @@ export default Vue.extend({
     async onSubmit(event) {
       event?.preventDefault()
 
+
       this.loading = true
 
       let requestData = {
@@ -238,7 +241,7 @@ export default Vue.extend({
         title: this.type.replace(".pdf", ''),
         userId: 0
       };
-      this.$_server.post(`/request`, requestData)
+      this.$axios.post(`/request`, requestData)
         .then((response) => {
           this.$notify.success({
             title: 'Request',
@@ -247,6 +250,7 @@ export default Vue.extend({
           this.$emit('updateVisibility', false)
           this.$emit('refresh')
           this.$nuxt.refresh()
+          this.email = ''
 
           // ------ set the input field to empty ----- 
           this.folderTextareaData = '';

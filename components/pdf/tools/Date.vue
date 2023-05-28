@@ -2,13 +2,14 @@
   <div class="tool">
     <p ref="datebox"
     :initialFontSize="initialFontSize"
-    :height="initialFontSize * 1.5"
     :scalefactor="responsiveToolDim.width"
-    class="whitespace-nowrap" :textImageContent="svgToImageData" :style="style">{{ value }}</p>
+    class="whitespace-nowrap" :textImageContent="svgToImageData" :style="style">{{ formatDate(value) }}</p>
   </div>
 </template>
 
 <script>
+import dateFormat from "dateformat";
+
 export default {
   props: {
     isActive: Boolean,
@@ -34,10 +35,16 @@ export default {
       return {
         // fontSize: `${this.fontSize || 11}px`,
         fontSize: this.computedFontSize,
+        lineHeight: this.computedFontSize,
+        fontWeight: 400,
+        fontFamily: "helvetica !important",
       }
     },
   },
   methods: {
+    formatDate(val){
+      return dateFormat(val,  this.$store?.getters?.getDateFormat )
+    },
     async svgToImage() {
       this.svgToImageData = '';
       let dataPAz = ''
@@ -54,8 +61,8 @@ export default {
   },
   watch: {
     generatePDF: function () {
-      if (this.generatePDF)
-        this.svgToImage()
+      // if (this.generatePDF)
+        // this.svgToImage()
     },
   },
 }

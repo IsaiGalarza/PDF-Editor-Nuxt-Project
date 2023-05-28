@@ -9,11 +9,11 @@
       :style="style"
       :textImageContent="svgToImageData"
       :initialFontSize="initialFontSize"
-      :height="initialFontSize * 1.5"
       :scalefactor="responsiveToolDim.width"
-      class="input-annotation whitespace-nowrap"
+      class="annotationText input-annotation whitespace-nowrap flex items-center"
       placeholder="Type here..."
       ref="text_box"
+      @keyUp="keyUp"
       @input="changeWidth"
       @keyup="keyUp"
     ></p>
@@ -51,7 +51,8 @@ export default {
   },
   methods: {
     keyUp(e){
-       e.keyCode === 13 && e.preventDefault()
+      var keyCode = event.which || event.keyCode;
+      keyCode === 13 && event.preventDefault();
     },
     changeWidth(){
       this.$refs.text_box.style.width = this.$refs.text_box.scrollWidth + 'px'
@@ -80,8 +81,8 @@ export default {
   },
   watch: {
     generatePDF: function () {
-      if (this.generatePDF)
-        this.svgToImage()
+      // if (this.generatePDF)
+        // this.svgToImage()
     },
     value (v) {
       if (this.text != v) this.text = v
@@ -136,7 +137,10 @@ export default {
       return {
         // fontSize: `${this.fontSize || 11}px`,
         fontSize: this.computedFontsize,
-        background: 'transparent'
+        background: 'transparent',
+        fontWeight: 400,
+        fontFamily: "helvetica !important",
+        lineHeight: this.computedFontsize
         // width: `${this.inputWidth}px`
       }
     },
@@ -169,6 +173,6 @@ export default {
 .input-annotation[placeholder]:empty:before {
   content: 'Type here...';
   opacity: 0.5;
-  color: #555; 
+  color: #555;
 }
 </style>

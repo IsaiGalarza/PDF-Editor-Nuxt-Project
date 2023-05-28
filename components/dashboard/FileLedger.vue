@@ -110,13 +110,13 @@
                     <p
                       class="max-sm:truncate max-sm:text-xs sm:text-base font-medium text-left sm:ml-1"
                     >
-                      <nuxt-link
-                        :to="`/pdf/${file?.file?.paperLink}`"
-                        class="w-full block"
+                      <span
+                       @click="routeToFileManager(file?.file?.paperLink)"
+                        class="w-full block cursor-pointer"
                       >
                         <!-- {{ file.fileName.length > 32 ? `${file.fileName.substr(0, 28)} ... .pdf` : file.fileName  }} -->
                         {{ file.fileName | removeExtension }}
-                      </nuxt-link>
+                  </span>
                     </p>
                   </div>
                 </div>
@@ -313,6 +313,11 @@ export default Vue.extend({
     this.fetchFiles(this.returnedDataPage, this.searchValue)
   },
   methods: {
+    routeToFileManager(val){
+      return
+      localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: true, prevRoute: '/file-ledger'}))
+       this.$router.push(`/pdf/${val}`)
+    },
     formatFileAction(fileAction, action) {
       let isEd = false
       switch ((fileAction || '').toLowerCase()) {
@@ -387,6 +392,7 @@ export default Vue.extend({
         .then((response) => {
           console.log(response.data)
           this.ledger = response.data.data
+          console.log("pleayer--klose",  response.data.total)
           this.totalFile = response.data.total
         })
         .finally(() => {

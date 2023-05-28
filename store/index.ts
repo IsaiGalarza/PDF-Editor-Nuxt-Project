@@ -9,7 +9,7 @@ export const state = () => ({
   base64Signature: null,
   base64Initial: null,
   fillAsGuest: true,
-  toast: { active: false, msg: ""},
+  toast: { active: false, msg: "", msg_mobile: ''},
   pageName: '',
   pdfPageName: {},
   pdfUser: [],
@@ -39,17 +39,29 @@ export const state = () => ({
   dateFormat: "dd/mm/yyyy",
   timeFormat: "h:MM TT",
   isFromBusinessPage: true,
+  pdfZoomScale: 1,
   pdfpagesDim: {
     width: 0,
     height: 0
-  }
+  },
+  pdfAnnotations: [] as any,
+  addToPagetextvalue: undefined
 })
 
 export type RootState = ReturnType<typeof state>
 
 export const getters: GetterTree<RootState, RootState> = {
+  getAddToPageTextvalue( state: any){
+    return state.addToPagetextvalue
+  },
   getSaveUser( state: any){
     return state.saveUser
+  },
+  getPdfAnnotations(state: any){
+    return state.pdfAnnotations
+  },
+  getPdfZoomScale( state: any){
+    return state.pdfZoomScale
   },
   getPdfpagesDim( state: any){
     return state.pdfpagesDim
@@ -129,8 +141,30 @@ export const getters: GetterTree<RootState, RootState> = {
 
 export const mutations: MutationTree<RootState> = {
   // -- Setting the user --
+  RESET_PDF_STATE(state){
+    state.base64Signature = null
+    state.base64Initial = null
+    state.pdfAnnotations = []
+    state.addToPagetextvalue = undefined
+    state.agreeSign = -1
+    state.file = {}
+    state.pdfPageName = {}
+    state.pdfUser = []
+  },
+  SET_SAVE_PAGE_TEXT_VALUE(state, payload) {
+    state.addToPagetextvalue = payload
+  },
   SET_SAVE_USER(state, payload) {
     state.saveUser = payload
+  },
+  SET_PDF_ANNOTATIONS(state, payload) {
+    state.pdfAnnotations =  [...state.pdfAnnotations,  ...payload]
+  },
+  RESET_PDF_ANNOTATIONS(state) {
+    state.pdfAnnotations =  []
+  },
+  SET_PDF_ZOOM_SCALE(state, payload) {
+    state.pdfZoomScale = payload
   },
   SET_PDF_DIMENSIONS(state, payload) {
     state.pdfpagesDim = payload

@@ -1,5 +1,9 @@
 const webpack = require('webpack')
 import redirectSSL from 'redirect-ssl'
+import { MasterKeys } from './config'
+
+const CONFIG = process.env.NODE_ENV
+
 
 export default {
   loadingIndicator: {
@@ -152,9 +156,9 @@ export default {
     ],
   ],
   axios: {
-    baseURL: process.env.NEW_API_URL,
-    // baseURL: 'http://localhost:4040',
-    //  baseURL:'https://cfeb-197-210-76-168.ngrok-free.app/',
+     baseURL: process.env.API_URI,
+    // baseURL: 'http://localhost:3030',
+  //  baseURL:'https://cfeb-197-210-76-168.ngrok-free.app/',
   },
   auth: {
     watchLoggedIn: false,
@@ -191,7 +195,7 @@ export default {
   // Set server to localhost so that service worker can be installed
   //TODO: Remove server setting when building the application for production!!! <<<<<<==================
   server: {
-    port: 4010, // default: 3000
+    port: 3000, // default: 3000
     host: 'localhost', // default value is an IP Address of localhost which does not allow service worker file to run, mention 'localhost' explicitly
   },
 

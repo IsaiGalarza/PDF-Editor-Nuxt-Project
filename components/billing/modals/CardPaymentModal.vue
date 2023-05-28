@@ -35,7 +35,7 @@
         <div class="w-full p-3">
           <form class="">
             <div class="form-group group-label">
-              <label>Total due</label>
+              <label>Total </label>
               <label class="text-xl" for=""
                 >$
                 {{
@@ -209,7 +209,7 @@ export default Vue.extend({
     },
     getCard(){
        try {
-        this.$_server(`cards/?userId=${this.$auth.user.id}`)
+        this.$axios.get(`cards/?userId=${this.$auth.user.id}`)
         .then((response)=>{
           this.card = response.data.data[0];
           console.log(this.card)
@@ -225,7 +225,7 @@ export default Vue.extend({
     patchCard(){
       this.loading = true
        try {
-        this.$_server.patch(`/cards/${this.card.id}`, this.cardPayload)
+        this.$axios.patch(`/cards/${this.card.id}`, this.cardPayload)
         .then(()=> this.patchSubscription())
        } catch (response) {
         this.errorMessage = this.$_ErrorHandler(response)
@@ -233,7 +233,7 @@ export default Vue.extend({
     },
     patchSubscription(){
         try {
-          this.$_server.patch(`/subscriptions/${this.$auth.user.subscriptionId}`, this.subscriptionPayload)
+          this.$axios.patch(`/subscriptions/${this.$auth.user.subscriptionId}`, this.subscriptionPayload)
         } catch ({response}) {
           this.errorMessage = this.$_ErrorHandler(response)
         } finally {

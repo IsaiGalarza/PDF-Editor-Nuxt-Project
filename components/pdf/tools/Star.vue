@@ -98,7 +98,6 @@ export default {
       if(!this.$auth.loggedIn && !this.$store.getters.getFillAsGuest) return ;
       this.$store.commit('CLICK_TOOL_ACTION', this.isActionIndex)
       !this.isCreator && (this.confirmStar = true)
-      this.$BUS.$emit('scrollToSignInitial')
       this.notClass = ''
       setTimeout(() => {
         this.$BUS.$emit('scroll-to-tools')

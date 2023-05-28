@@ -30,7 +30,7 @@
               <td class="w-[10%]">
                 <span
                 @click="openReciept(billing.reciept)"
-                class="inline-flex justify-end w-full">
+                class="inline-flex justify-end w-full cursor-pointer">
                   <img src="~/assets/icons/pdf-icon.svg" />
                 </span>
               </td>
@@ -64,7 +64,7 @@ export default {
     },
     async getBilling() {
       try {
-        await this.$_server(`/billings/?userId=${this.$auth.user.id}`).then(
+        await this.$axios.get(`/billings/?userId=${this.$auth.user.id}`).then(
           (response) => {
             console.log(response.data.data)
             this.billings = response.data.data

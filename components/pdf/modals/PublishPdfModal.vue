@@ -34,34 +34,27 @@
     <template #title>
       <h4
         class="text-center font-semibold text-2xl text-gray-800 pb-2"
-        v-if="!isCreator"
+        v-if="!isCreator && !isConfirm && !isSign"
       >
         All Done?
       </h4>
     </template>
     <!-- Start:: Body -->
-    <div v-if="!nonUserRecieveEmail">
-      <div v-if="isConfirm" class="flex justify-center pb-2">
+    <section  v-if="isCreator">
+      <div class="flex justify-center pb-2">
         <CheckedFillIcon width="90" />
       </div>
       <!-- <span v-if="!isCreator">Do you want these file to be saved as
         {{ `${(file.fileAction + 'ed').replace('ee', 'e')}` }}?</span> -->
       <span
-        v-if="isCreator"
         class="w-full text-center block py-0 px-2 pb-8 mb-6 text-[16px] break-normal"
         >Publish file as
         <span class="capitalize">
           {{
             file.fileAction + ' & ' + file.filePrivacy.replace('p', 'P') + '?'
           }}</span
-        ></span
-      >
-      <span
-        v-if="!isCreator && $auth.loggedIn"
-        class="w-full text-center block py-0 px-2 pb-8 text-[16px] mb-6"
-      >
-        If so, we will send a copy to your email.
-      </span>
+        ></span>
+ 
       <div class="flex justify-around mt-0">
         <button
           class="h-10 text-xs w-[150px] max-w-[50%] rounded-lg shadow border-[#D9251E] mr-1"
@@ -92,17 +85,15 @@
           </span>
         </button>
       </div>
-      <span
-        v-if="!isCreator && $store.getters?.getFillAsGuest && file?.user?.allowCopy"
-        class="w-full text-center block py-0 px-2 pb-8 text-[16px] pt-4"
-      >
-        <input v-model="nonUserRecieveEmail" type="checkbox" /> Click here if
-        you want a copy
-      </span>
-    </div>
+    </section>
 
-    <div v-else>
-      <p class="w-full text-center">Enter email copy to be sent to.</p>
+
+
+
+  <section v-if="!isCreator && !isConfirm && !isSign">
+
+    <div v-if="nonUserRecieveEmail">
+      <p class="w-full text-center">Enter email for the copy to be sent to</p>
       <input
         v-model="externalGuestEmail"
         type="text"
@@ -127,6 +118,98 @@
         </button>
       </p>
     </div>
+
+    <div class="flex justify-around mt-0" v-if="!nonUserRecieveEmail">
+      <button
+        class="h-10 text-xs w-[150px] max-w-[50%] rounded-lg shadow border-[#D9251E] mr-1"
+        type="button"
+        :disabled="isLoading"
+        @click="closeModal()"
+        :class="
+          isConfirm
+            ? 'bg-zinc-500 border-[0px] text-white'
+            : 'bg-white border-[1px] text-[#D9251E]'
+        "
+      >
+        {{ isCreator ? 'Cancel' : 'Back' }}
+      </button>
+      <button
+        class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400 ml-1"
+        :disabled="isLoading"
+        @click="onSubmit"
+      >
+        <span class="inline-flex gap-1 items-center">
+          Yes
+          <spinner-dotted-icon
+            v-show="isLoading"
+            height="20"
+            width="20"
+            class="animate-spin"
+          />
+        </span>
+      </button>
+    </div>
+
+    <div v-if="!nonUserRecieveEmail">
+      <span
+        v-if="file?.user?.allowCopy"
+        class="w-full text-center block py-0 px-2 mb-8 text-[16px] pt-4"
+      >
+        <input v-model="nonUserRecieveEmail" type="checkbox" /> Click here if
+        you want a copy
+      </span>
+    </div>
+  </section>
+
+
+
+
+  <section v-if="!isCreator && (isConfirm || isSign)">
+
+    <form @submit.prevent="onSubmit" v-if="file?.user?.allowCopy">
+      <p class="w-full text-center">Enter email for the copy to be sent to</p>
+      <input
+        v-model="externalGuestEmail"
+        type="email"
+        required
+        class="py-2 w-full rounded my-3 border-[1px] border-gray-200 px-2"
+        placeholder="--Enter email--"
+
+      />
+      <p class="flex justify-center">
+        <button
+          class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400 ml-1"
+          :disabled="isLoading"
+        >
+          <span class="inline-flex gap-1 items-center">
+            Send
+            <spinner-dotted-icon
+              v-show="isLoading"
+              height="20"
+              width="20"
+              class="animate-spin"
+            />
+          </span>
+        </button>
+      </p>
+    </form>
+
+    <div class="flex justify-around mt-0" v-if="!file?.user?.allowCopy">
+      <button
+        class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400 ml-1"
+        :disabled="true"
+      >
+        <span class="inline-flex gap-1 items-center">
+         generating
+          <spinner-dotted-icon
+            height="20"
+            width="20"
+            class="animate-spin"
+          />
+        </span>
+      </button>
+    </div>
+  </section>
     <!-- end :: body -->
 
     <draw-or-type-modal
@@ -185,10 +268,10 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       return this.$auth.user?.initialURL || initialURL
     },
     pdfOffsetY() {
-      return this.$store.state.pdfOffset_y * this.$store.state.pdfScale
+      return this.$store.state.pdfOffset_y 
     },
     pdfOffsetX() {
-      return this.$store.state.pdfOffset_x * this.$store.state.pdfScale
+      return this.$store.state.pdfOffset_x
     },
     ledgerInfo() {
       return {
@@ -262,15 +345,18 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   },
   watch: {
     "$store.getters.getUserSignature"(){
-      this.showInitialModal = false
        if(!this.isConfirm) return
-       this.onSubmit()
+       else {
+        this.showModal = true
+       this.file?.user?.allowCopy ? null : this.onSubmit()
+       }
     },
     visible(val) {
-      this.showModal = val
+      this.showModal = val;
     },
     showModal(val) {
       this.$emit('updateVisibility', val)
+      val && this.isSign &&  !this.file?.user?.allowCopy && !this.isCreator && this.onSubmit()
     },
     '$auth.user': function () {
       this.convertImageToBase64(this.$auth?.user?.signatureURL)
@@ -304,7 +390,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       }
     },
     addToLedger() {
-      this.$_server
+      this.$axios
         .post(`/ledger`, { ...this.ledgerInfo })
         .then(() => {
           this.proceedToSendEmail = true
@@ -337,7 +423,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         )
     },
     async confirmRequest() {
-      await this.$_server.post('/pdf-generator', {
+      await this.$axios.post('/pdf-generator', {
           ...ExtractFormPdf({
             downloadLink: this.file?.downloadLink,
             file: this.confirmAnnotation,
@@ -355,8 +441,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.isLoading = false
         })
     },
-    async otherRequest() {
-      await this.$_server
+    async otherRequest() {  
+      try {
+        await this.$axios
         .post('/pdf-generator', {
           ...ExtractFormPdf({
             downloadLink: this.file?.downloadLink,
@@ -371,34 +458,31 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.addToLedger()
           this.generatedPdf = response.data
         })
-        .catch(() => {
-          this.$notify.error({
+      } catch (error) {
+        this.$notify.error({
             message: 'Error occcured, could not save file',
           })
-        })
-        .finally(() => {
+      } finally {
           this.isLoading = false
-        })
+        }
     },
     sendPdfToEmail(val) {
       let requestData = {
         email: this.externalGuestEmail,
         action: val == 'owner' ? this.file?.fileAction : 'shareFileToGuest',
-        userId: this.$auth?.user?.id ?? 0,
+        userId: val == 'owner' ? this.file?.userId : 0,
         editedFileLink: this.generatedPdf?.downloadLink,
         fileId: this.file?.id,
       }
       //   // return
       try {
-        this.$_server.post(`/request`, requestData).then(() => {
+        this.$axios.post(`/request`, requestData).then(() => {
           this.$store.commit('SET_PDF_EXIT', true)
           this.toggleToast({
             active: true,
             msg: `Thank you for completing a Paperlink!`,
+            msg_mobile: 'Thank You'
           })
-          this.$store.commit('SET_FILE_SIGNATURE', null)
-          this.$store.commit('SET_FILE_INITIAL', null)
-          this.$store.commit("UN_SET_AGREE_SIGN")
           this.$auth.loggedIn && this.isCreator
             ? this.$nuxt.$router.push('/paperlink-pages')
             : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
@@ -462,7 +546,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         }
       } else {
         this.sendPdfToEmail('owner')
-        this.sendPdfToEmail('guest')
+        this.file?.user?.allowCopy && this.sendPdfToEmail('guest')
       }
     },
     publishAsCreator() {

@@ -2,9 +2,9 @@
   <div>
     <img
     v-if="completed"
-    class="absolute-image"
     :src="completedImgData"
-    :style="style"
+    class="absolute-image"
+    :width="`${55 * responsiveToolDim.width}px`"
   />
     <img
       v-else-if="!initialimgDisplay && isCreator"
@@ -15,7 +15,7 @@
       class="annot-button"
       ref="annotbutton"
       :class="[
-        $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
+        $auth.loggedIn && !initialimgDisplay && !isCreator ? 'puls' : ' ',
         isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
       ]"
       :width="`${(tool?.pageScaleY || 1) * 18 * responsiveToolDim.width}px`"
@@ -30,15 +30,16 @@
       class="annot-button"
       ref="annotbutton"
       :class="[
-        $auth.loggedIn && !initialimgDisplay && !isCreator ? 'pulse' : ' ',
+        $auth.loggedIn && !initialimgDisplay && !isCreator ? 'puls' : ' ',
         isAgreedSign !== 1 && isSign ? 'pointer-events-none' : '',
       ]"
-      :width="`${30 * responsiveDim.width}px`"
+      :width="`${30 * responsiveToolDim.width}px`"
     />
     <img
       v-else-if="theSignature"
       :src="theSignature"
-      :width="`${70 * (tool.justMounted ? responsiveToolDim.width: responsiveDim.width)}px`"
+      :width="`${55 * responsiveToolDim.width}px`"
+      :style="`height: ${27 * responsiveToolDim.height}px; object-fit:fill`"
     />
     <!-- <span v-show="!initialimgDisplay && !isCreator && !tool.justMounted && (isAgreedSign == 1 && isSign || isComplete)" class="toolTip hidden">Sign</span> -->
     <!-- <img v-else class="absolute-image" src="../../../assets/img/sign.png" /> -->
@@ -94,7 +95,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
        return this.file.userId == this.$auth?.user?.id  
     },
     theSignature(){
-       return this.$store.getters?.getUserSignature || this.signature || this.$auth?.user?.signatureURL
+       return this.$store.getters?.getUserSignature 
     },
     isSign() {
       return String(this.file.fileAction).toLowerCase() === FileAction.SIGNED
@@ -172,7 +173,6 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     setInitialImgDisplay() {
       // if(!this.$auth.loggedIn && !this.$store.getters?.getFillAsGuest) return
       this.initialimgDisplay = true
-      this.$BUS.$emit('scrollToSignInitial', 'appendsign')
       !this.theSignature && this.setInitialSignType('sign')
     },
   },
@@ -180,11 +180,11 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   watch: {
     initialimgDisplay(){
       if(this.theSignature) setTimeout(() => {
-        this.$BUS.$emit('scroll-to-tools')
+        !this.isComplete && this.$BUS.$emit('scroll-to-tools')
       }, 100);
     },
     theSignature(){
-      this.$BUS.$emit('scroll-to-tools')
+      !this.isComplete && this.$BUS.$emit('scroll-to-tools')
     },
     '$auth.user.signatureURL': async function () {
       this.changeSignToBase64()

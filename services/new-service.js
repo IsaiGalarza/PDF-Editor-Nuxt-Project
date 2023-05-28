@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-export const BASE_URL = "https://backend-l5e82.ondigitalocean.app/" || process.env.NEW_API_URL
-// export const BASE_URL = "http://localhost:3030"
+export const BASE_URL = process.env.VUE_APP_NEW_API_URL
+// export const BASE_URL = "http://52c6-102-91-4-196.ngrok-free.app"
 // export const BASE_URL = process.env.REACT_APP_TEST_BASE_API_URL
 
 export const server = axios.create({

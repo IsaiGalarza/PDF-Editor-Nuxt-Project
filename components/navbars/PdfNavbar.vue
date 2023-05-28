@@ -9,35 +9,39 @@
             class="capitalize inline-flex items-center gap-2 lg:gap-3"
             :class="[compact ? 'text-sm sm:text-base' : 'text-base sm:text-xl']"
         >
-            <span
-                class="inline-block lg:hidden mr-1 sm:mr-4 cursor-pointer"
-                @click="$emit('open-sidebar')"
-                ><hamburger-icon
-            /></span>
+           
             <div class="inline-flex items-center gap-1">
                 <!-- <a :href="`/public/profile/${title.route}`"  target="_blanck">{{ title.name || routeName }}</a> -->
                 <span
-                    v-if="companyPhoto"
-                    class="border border-paperdazgreen-300 mr-2 p-0.5 w-[40px] h-[40px] rounded-md overflow-hidden relative"
+                    v-if="!isCreator"
+                    class="border border-paperdazgreen-300 mr-2 p-0.5 w-[40px] h-[40px] rounded-md flex justify-center items-center overflow-hidden relative"
                 >
                     <img
+                        v-if="companyPhoto != null"
                         :src="companyPhoto"
                         class="w-full h-full profilePhoto"
                         alt=""
                         :class="[isPaidUser ? 'rounded-md' : 'rounded-full']"
                     />
+                    <abbr class="font-bold text-2xl text-paperdazgreen-300" v-else>{{(businessName || '').charAt(0)}}</abbr>
                 </span>
                 <span
                     v-else
                     class="text-3xl font-bold w-full h-full text-center text-paperdazgreen-300 rounded-md"
                     style="text-shadow: 1px 2px 3px rgb(200,200,200)"
-                    >{{ (userCompanyName || '').charAt(0).toUpperCase() }}</span
+                    >
+                    <img src="/icon.png" class="mr-3" width="23" height="23" />
+                    </span
                 >
 
                 <!-- <div  class="lg:hidden flex flex-col text-sm leading-[15px] justify-end">
             
           </div> -->
-                <span
+          
+             <span v-if="isCreator" class="text-black text-[13px] font-[600] text-nowrap capitalize text-left" >
+                    File Manager
+                </span>
+                <span v-else
                     class="text-black text-[13px] font-[600] text-nowrap capitalize text-left"
                 >
                     {{ businessName }}
@@ -46,7 +50,7 @@
         </div>
 
         <div
-            v-if="!FrombusinessPage"
+            v-if="!FrombusinessPage && $auth.loggedIn"
             class="h-full self-stretch flex items-center"
         >
             <!-- container for user name -->
@@ -96,99 +100,17 @@
                 </span>
 
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item
-                        class="hidden"
-                        command="dashboard"
-                        v-if="!profile"
-                    >
-                        <span class="inline-flex gap-2 items-center">
-                            <!-- <dashboard-icon height="14" width="14" /> -->
-                            Dashboard</span
-                        >
-                    </el-dropdown-item>
-                    <el-dropdown-item
-                        class="hidden"
-                        command="profile"
-                        v-if="!profile"
-                    >
-                        <span class="inline-flex gap-2 items-center">
-                            <user-profile-solid-icon height="14" width="14" />
-                            Profile</span
-                        >
-                    </el-dropdown-item>
-
-                    <!-- START: user accounts -->
-                    <div
-                        v-for="(account, index) in account"
-                        :key="index + 'account'"
-                        class="cursor-pointer"
-                        @click="switchAccount(account.id, account.status)"
-                    >
-                        <div
-                            class="flex items-center justify-start hover:bg-paperdazgray-200/60 relative top-2 p-1 mb-1 w-[160px] border-t-[1px] border-paperdazgray-100"
-                        >
-                            <span>
-                                <img
-                                    :src="
-                                        (account || {}).teampicture ||
-                                        (account || {}).profilePicture ||
-                                        '/img/placeholder_picture.png'
-                                    "
-                                    class="w-8 h-8"
-                                    alt=""
-                                    :class="[
-                                        isAccountPaid(account.role)
-                                            ? 'rounded-full'
-                                            : ' rounded-md',
-                                    ]"
-                                />
-                            </span>
-                            <div
-                                class="w-[calc(100%-1.75rem)] pl-2 leading-[12px] relative flex flex-wrap items-center"
-                            >
-                                <span
-                                    class="text-[12px] truncate font-[500] capitalize inline-block my-0 w-full"
-                                    >{{
-                                        account.teamName ||
-                                        account.companyName ||
-                                        account.firstName ||
-                                        ''
-                                    }}</span
-                                >
-                                <span
-                                    class="text-[9px] truncate font-[500] capitalize inline-block my-0 w-full"
-                                >
-                                    {{ account.status }}
-                                    <i
-                                        class="absolute w-[3px] h-[3px] inline-block rounded-full left-[calc(100%-16px)] -bottom-[2px] p-[3px] border-[2px] border-white"
-                                        :class="[checkStatus(account.status)]"
-                                    ></i>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END: user account -->
-
-                    <el-dropdown-item
-                        class="lg:hidden"
-                        command="settings"
-                        divided
-                        v-if="!profile"
-                    >
-                        <span class="inline-flex gap-2 items-center">
-                            <gear-icon height="14" width="14" />
-                            Settings</span
-                        >
+                    <el-dropdown-item  command="profile" >
+                      <span class="inline-flex gap-2 items-center">
+                        <user-profile-solid-icon height="14" width="14" />
+                        Profile</span>
                     </el-dropdown-item>
                     <el-dropdown-item divided command="logout">
-                        <span
-                            class="text-red-600 inline-flex gap-2 items-center"
-                        >
-                            <sign-out-icon height="14" width="14" />
-                            Logout</span
-                        >
+                      <span class="text-red-600 inline-flex gap-2 items-center">
+                        <sign-out-icon height="14" width="14" />
+                        Logout</span>
                     </el-dropdown-item>
-                </el-dropdown-menu>
+                  </el-dropdown-menu>
                 <!-- END: navbar dropdown -->
             </el-dropdown>
         </div>
@@ -223,6 +145,7 @@ import StatusUser from '~/models/StatusUser'
 import LandingPageSearchModal from '../landing/LandingPageSearchModal.vue'
 import SearchShare from '../search-strips/component/SearchShare.vue'
 import LetterAvatar from '../widgets/LetterAvatar.vue'
+
 
 // email-acout emauil,password-referal-code
 export default mixins(GlobalMixin, login).extend({
@@ -272,9 +195,23 @@ export default mixins(GlobalMixin, login).extend({
         }
     },
     computed: {
-        FrombusinessPage(){
-            return JSON.parse(localStorage.getItem("from_publicpage"))?.fromBusiness
-        },
+
+    FrombusinessPage(){
+    return JSON.parse(localStorage.getItem("from_publicpage") || '{}')?.fromBusiness ?? true
+    },
+    file(){
+      return this.$store.state?.file
+    },
+    isCreator() {
+      if(this.FrombusinessPage == null) return false
+      else if(this.FrombusinessPage){
+        return false
+      } else if(!this.FrombusinessPage && this.file.userId == this.$auth.user?.id){
+        return true
+      } else {
+        return false
+      }
+    },
         searchResult() {
             if (!this.searchString) return []
             return [
@@ -328,10 +265,10 @@ export default mixins(GlobalMixin, login).extend({
             return this.$store.getters.profilePhoto
         },
         companyPhoto() {
-            return this.$store.state.file.user.profile_picture
+            return this.$store.state?.file?.user?.profile_picture ?? ""
         },
         businessName() {
-            return this.$store.state.file.user.company_name || ''
+            return this.$store.state.file.user ? this.$store.state?.file?.user?.company_name : ''
         },
     },
     methods: {

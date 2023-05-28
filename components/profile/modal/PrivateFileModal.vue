@@ -34,23 +34,27 @@
         <h4 class="text-center font-semibold text-xl">Private File</h4>
       </template>
       <!-- Start:: Body -->
+     <form @submit.prevent="onSubmit">
       <p class="py-3 text-center">Enter name and email to request access.</p>
       <p
         class="text-center block font-medium  mx-auto mb-6 whitespace-none"
       >
          <input
-         v-model="folderInputData"
+         v-model="email"
           class="w-full py-2 px-4 border-[1px] border-paperdazgrey-500 rounded-md"
          placeholder="Email"
+         required
+         type="email"
          />
       </p>
       <p
       class="text-center block font-medium  mx-auto mb-6 whitespace-none"
     >
        <input
-       v-model="folderInputData"
+       v-model="name"
         class="w-full py-2 px-4 border-[1px] border-paperdazgrey-500 rounded-md"
        placeholder="Name"
+       required
        />
     </p>
       <div class="flex justify-around">
@@ -59,7 +63,6 @@
           shadow-md
            text-white rounded-lg bg-paperdazgreen-400"
           :disabled="loading"
-          @click="onSubmit"
         >
           <span class="inline-flex gap-1 items-center text-[16px]">
             Send request
@@ -72,6 +75,7 @@
           </span>
         </button>
       </div>
+     </form>
       <!-- end :: body -->
     </el-dialog>
   </template>
@@ -94,6 +98,12 @@
       file: {
          type: Object
       },
+      fileId: {
+        type: String
+      },
+      userInfo: {
+        type: Object
+      },
       visible: {
         type: Boolean,
         default: false,
@@ -104,7 +114,8 @@
         showModal: false,
         errorMessage: '',
         loading: false,
-        folderInputData:'',
+        email:"",
+        name: "",
         folder:{},
       }
     },
@@ -115,22 +126,26 @@
       showModal(val) {
         this.$emit('updateVisibility', val)
       },
-      "file":function(){
-          this.folder = this.file;
-          this.folderInputData = (this.folder || {}).name;
-      }
     },
     mounted() {
       this.showModal = this.visible;
     },
+    computed: {
+        payload(){
+          return {
+              action: "request_permission",
+              fileId: this.fileId,
+              name: this.name,
+              email: this.email
+          }
+       } 
+      },
     methods: {
       closeModal() {
         this.$emit('updateVisibility', false)
       },
       onSubmit() {
         event?.preventDefault()
-  
-       if(this.folderInputData.trim().length < 1) return
   
   
         if (this.loading) return
@@ -141,13 +156,11 @@
   
         // return
         this.$axios
-          .$patch(`/folders/${(this.folder).id}`,
-            {name : this.folderInputData}
-          )
+          .post(`/permissions`, this.payload)
           .then((response) => {
              this.$notify.success({
               title: 'Folder',
-              message: 'Folder name changed successfully',
+              message: 'permission sent successfully',
             })
              this.$emit('updateVisibility', false)
              this.$emit('refresh')
@@ -156,7 +169,7 @@
           .catch((err) => {
             this.$notify.error({
               title: 'Folder',
-              message: 'Unable to change folder name',
+              message: 'Unable to send permission',
             })
           })
             .finally(()=>{

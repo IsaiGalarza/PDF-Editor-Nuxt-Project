@@ -198,11 +198,26 @@ export default Vue.extend({
       this.$emit('refresh')
     },
     setLinkCopy() {
-      navigator.clipboard.writeText(this.link);
+      const textToCopy = this.link;
+      const input = document.createElement('input');
+      input.style.position = 'fixed';
+      input.style.opacity = 0;
+      input.value = textToCopy;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+
       this.$notify.success({
-        message: 'copied successfully'
+        title: 'Copy',
+        message: 'Copy Successfully',
       })
+      
+      
     },
+
+
+  
     showQrcodeFileFuncEmit() {
       this.$emit('qrLoad');
       this.$emit('updateVisibility', false)
@@ -221,7 +236,7 @@ export default Vue.extend({
               link: this.link
           };
 
-      this.$_server.post(`/request`, requestData)
+      this.$axios.post(`/request`, requestData)
         .then((response) => {
           this.$notify.success({
             title: 'Request',

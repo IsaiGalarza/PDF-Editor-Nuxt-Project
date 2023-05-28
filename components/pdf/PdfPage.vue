@@ -50,8 +50,10 @@ export default {
     async getPage() {
       let page = await this.pdf.getPage(this.pageNumber)
       console.log("pdf-details", page)
-      this.$store.commit('SET_PDF_OFFSET_X', page.view[1])
-      this.$store.commit('SET_PDF_OFFSET_Y', page.view[0])
+      // this.$store.commit('SET_PDF_OFFSET_X', page.view[1])
+      this.$store.commit('SET_PDF_OFFSET_X', 0)
+      this.$store.commit('SET_PDF_OFFSET_Y', 0)
+      // this.$store.commit('SET_PDF_OFFSET_Y', page.view[0])
       this.$store.commit('SET_PDF_OFFSET_W', page.view[2])
       this.$store.commit('SET_PDF_OFFSET_H', page.view[3])
 
@@ -150,5 +152,6 @@ export default {
 .annotationLayer{
   width: 100%;
   height: 100%;
+  color: rgb(187, 198, 239)
 }
 </style>

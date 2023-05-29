@@ -7,13 +7,14 @@
       <h5
         class="text-lg font-semibold text-[#272727] hidden sm:inline-flex w-10/12 gap-2 my-2 flex-wrap items-center"
       >
-        <abbr class="w-full md:w-3/12">Paperlink Pages</abbr>
+        <!-- <abbr class="w-full md:w-3/12">Paperlink Pages</abbr> -->
 
         <span class="mr-5 font-normal text-sm flex items-center w-full md:w-7/12">
           <input type="checkbox" v-model="allowCopy" class="mr-3 transform scale-125" />
           Click here to allow guest to request copy
         </span>
       </h5>
+
       <div class="w-2/12 text-white flex items-center justify-end my-2 pl-2">
         <el-dropdown trigger="click">
           <button
@@ -252,7 +253,7 @@
             <section class="px-0 min-w-[700px] w-full">
               <div class="border-b-[1px] border-gray-200 flex items-center py-3">
                 <p class="w-1/12 inline-block text-center">Order</p>
-                <p class="text-center inline-block w-3/12">File name</p>
+                <p class="text-left ml-2 inline-block w-3/12">File name</p>
                 <p class="text-center inline-block w-1/12">Pages</p>
                 <p class="text-center inline-block w-2/12">Action required</p>
                 <p class="text-center inline-block w-2/12">Privacy</p>
@@ -425,13 +426,15 @@
                 </div>
               </draggable>
 
-             <FileInFolder v-else 
-             @showMoveCompanyFileFunc="showMoveCompanyFileFunc"
-             @showShareCompanyFileFunc="showShareCompanyFileFunc"
-             @showEditCompanyFileFunc="showEditCompanyFileFunc"
-             @showRemoveCompanyFileFunc="showRemoveCompanyFileFunc"
-             @emitPrivateModal="emitPrivateModal"
-             :FilesInFolerContent="FilesInFolerContent"/>
+              <FileInFolder
+                v-else
+                @showMoveCompanyFileFunc="showMoveCompanyFileFunc"
+                @showShareCompanyFileFunc="showShareCompanyFileFunc"
+                @showEditCompanyFileFunc="showEditCompanyFileFunc"
+                @showRemoveCompanyFileFunc="showRemoveCompanyFileFunc"
+                @emitPrivateModal="emitPrivateModal"
+                :FilesInFolerContent="FilesInFolerContent"
+              />
             </section>
 
             <!-- <FilePagination :totalFile="totalFile" @setPage="setPage" /> -->
@@ -864,8 +867,8 @@ export default Vue.extend({
     };
   },
   methods: {
-    emitPrivateModal(id){
-      this.$emit('showPermission', true, id)
+    emitPrivateModal(id) {
+      this.$emit("showPermission", true, id);
     },
     routeToFileManager(val) {
       this.$router.push(val);
@@ -1029,11 +1032,12 @@ export default Vue.extend({
           ? this.$auth.user.teamId
           : this.$auth.user.id;
       //<------------------- START: fetching of folder ------------>>
-      await this.$axios.$post(`/files`, {
-          action:"filesWithoutFolder",
+      await this.$axios
+        .$post(`/files`, {
+          action: "filesWithoutFolder",
           userId: this.$auth.user?.id,
           skip: this.returnedDataPage,
-          limit: 1000000
+          limit: 1000000,
         })
         .then((response) => {
           const filesData = response.data.map((el) => {
@@ -1043,7 +1047,7 @@ export default Vue.extend({
           this.files = filesData;
           // push files to store
           this.$store.commit("ADD_USER", this.files);
-          console.log(this.files)
+          console.log(this.files);
           // to stop spinner
           this.fileSpinner = false;
           this.totalFile = response.total;

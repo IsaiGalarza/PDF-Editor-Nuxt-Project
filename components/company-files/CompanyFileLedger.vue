@@ -252,7 +252,7 @@
             <section class="px-0 min-w-[700px] w-full">
               <div class="border-b-[1px] border-gray-200 flex items-center py-3">
                 <p class="w-1/12 inline-block text-center">Order</p>
-                <p class="text-center inline-block w-3/12">File name</p>
+                <p class="text-left ml-2 inline-block w-3/12">File name</p>
                 <p class="text-center inline-block w-1/12">Pages</p>
                 <p class="text-center inline-block w-2/12">Action required</p>
                 <p class="text-center inline-block w-2/12">Privacy</p>
@@ -425,13 +425,15 @@
                 </div>
               </draggable>
 
-             <FileInFolder v-else 
-             @showMoveCompanyFileFunc="showMoveCompanyFileFunc"
-             @showShareCompanyFileFunc="showShareCompanyFileFunc"
-             @showEditCompanyFileFunc="showEditCompanyFileFunc"
-             @showRemoveCompanyFileFunc="showRemoveCompanyFileFunc"
-             @emitPrivateModal="emitPrivateModal"
-             :FilesInFolerContent="FilesInFolerContent"/>
+              <FileInFolder
+                v-else
+                @showMoveCompanyFileFunc="showMoveCompanyFileFunc"
+                @showShareCompanyFileFunc="showShareCompanyFileFunc"
+                @showEditCompanyFileFunc="showEditCompanyFileFunc"
+                @showRemoveCompanyFileFunc="showRemoveCompanyFileFunc"
+                @emitPrivateModal="emitPrivateModal"
+                :FilesInFolerContent="FilesInFolerContent"
+              />
             </section>
 
             <!-- <FilePagination :totalFile="totalFile" @setPage="setPage" /> -->
@@ -864,8 +866,8 @@ export default Vue.extend({
     };
   },
   methods: {
-    emitPrivateModal(id){
-      this.$emit('showPermission', true, id)
+    emitPrivateModal(id) {
+      this.$emit("showPermission", true, id);
     },
     routeToFileManager(val) {
       this.$router.push(val);
@@ -1029,11 +1031,12 @@ export default Vue.extend({
           ? this.$auth.user.teamId
           : this.$auth.user.id;
       //<------------------- START: fetching of folder ------------>>
-      await this.$axios.$post(`/files`, {
-          action:"filesWithoutFolder",
+      await this.$axios
+        .$post(`/files`, {
+          action: "filesWithoutFolder",
           userId: this.$auth.user?.id,
           skip: this.returnedDataPage,
-          limit: 1000000
+          limit: 1000000,
         })
         .then((response) => {
           const filesData = response.data.map((el) => {
@@ -1043,7 +1046,7 @@ export default Vue.extend({
           this.files = filesData;
           // push files to store
           this.$store.commit("ADD_USER", this.files);
-          console.log(this.files)
+          console.log(this.files);
           // to stop spinner
           this.fileSpinner = false;
           this.totalFile = response.total;

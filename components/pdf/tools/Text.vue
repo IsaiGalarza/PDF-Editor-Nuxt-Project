@@ -13,9 +13,6 @@
       class="annotationText input-annotation whitespace-nowrap flex items-center"
       placeholder="Type here..."
       ref="text_box"
-      @keyUp="keyUp"
-      @input="changeWidth"
-      @keyup="keyUp"
     ></p>
 
     <!-- <p v-else ref="textbox" @click="isBlur = !isBlur" :style="style" class="whitespace-nowrap">{{ text || 'Type here...' }}</p> -->
@@ -47,7 +44,7 @@ export default {
     this.text = this.value;
   },
   mounted(){
-    // this.$refs.text_box && this.$refs.text_box.focus()
+    this.$refs.text_box && this.$refs.text_box.focus()
   },
   methods: {
     keyUp(e){

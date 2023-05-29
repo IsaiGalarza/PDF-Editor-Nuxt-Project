@@ -190,6 +190,11 @@
         <img src="../../assets/img/date_icon.svg" width="18" class="bg-slate-200 p-[2px]" />
         Date
       </button>
+      <button class="rounded-md h-8 sm:h-10 flex items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm"
+      :class="[activeTool == TOOL_TYPE.appendName ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onNameClick">
+        <img src="../../assets/img/name_icon.svg" width="18" class="bg-slate-200 p-[2px]" />
+        Name
+      </button>
       <button class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm"
       :class="[activeTool == TOOL_TYPE.star ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onImageClick">  
         <img src="../../assets/img/require-icon.png" width="18" class="bg-slate-200 p-[2px]" />      

@@ -8,9 +8,8 @@ export function moveToNextInput(ind) {
     if((ind + 1) >= allInputs.length) ind = 0 
     const inputField =  allInputs[ind + 1]
     inputField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    inputField.type != 'radio' &&  inputField.classList.add('appendInput')
+    // inputField.type != 'radio' &&  inputField.classList.add('appendInput')
     inputField.focus()
-    inputField.type != 'radio' && (inputField.checked = true)
 }
 
 
@@ -36,6 +35,8 @@ export function AppendKeypressActionOnInput() {
     if (inputs.length < 1) return
 
     Array.from(inputs).forEach((element) => {
+      console.log( element.type)
+      element.type == 'text' || element.type == 'textarea' || element.type.includes('select') ? element.classList.add("pdf_annot_input") : null
       element.addEventListener('keyup', keyupfFunc)
       element.addEventListener('input', changeFunc)
     })

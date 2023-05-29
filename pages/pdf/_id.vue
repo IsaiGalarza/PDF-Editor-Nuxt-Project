@@ -1393,7 +1393,7 @@ export default mixins(PdfAuth).extend({
         this.tools[index].left = dx
         this.tools[index].top = dy
       }
-      console.log("drag-tools-update",this.tools[index], dx, dy, this.$refs['pdf-single-pages-outer'].getBoundingClientRect())
+      console.log("drag-tools-update",this.tools[index], dx, dy, )
     },
     handleIncrease(id) {
       let index = this.tools.findIndex((t) => t.id == id)
@@ -1746,6 +1746,7 @@ export default mixins(PdfAuth).extend({
         obj.y1 = obj.top
       }
       this.tools.push(obj)
+      console.log(">>>>>???>>>>>>>>>>>>>>> place-tool", obj)
       this.stack.push(this.toolId)
 
     },

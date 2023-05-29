@@ -427,8 +427,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           ...ExtractFormPdf({
             downloadLink: this.file?.downloadLink,
             file: this.confirmAnnotation,
-            pdfOffset_y: this.pdfOffsetY,
-            pdfOffset_x: this.pdfOffsetX,
+            pdfOffset_y: 0,
+            pdfOffset_x: 0,
             signLabel: this.signLabel,
           })[0],
         })
@@ -454,8 +454,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           // actionBy: `${this.$auth.user.firstName} ${this.$auth.user.lastName}`.toUpperCase()
         })
         .then((response) => {
-          this.isLoading = false
-          // this.addToLedger()
+          // this.isLoading = false
+          this.addToLedger()
           this.generatedPdf = response.data
         })
       } catch (error) {

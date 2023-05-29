@@ -35,6 +35,8 @@ export function AppendKeypressActionOnInput() {
     if (inputs.length < 1) return
 
     Array.from(inputs).forEach((element) => {
+      console.log( element.type)
+      element.type == 'text' || element.type == 'textarea' || element.type.includes('select') ? element.classList.add("pdf_annot_input") : null
       element.addEventListener('keyup', keyupfFunc)
       element.addEventListener('input', changeFunc)
     })

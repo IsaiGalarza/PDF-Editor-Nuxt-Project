@@ -276,11 +276,11 @@
                   </div>
                   <div class="text-left inline-block w-3/12 truncate">
                     <div
-                      class="flex items-center gap-3 max-w-[100px] sm:min-w-[150px] sm:max-w-[400px]"
+                      class="flex items-center gap-3  sm:min-w-[150px] truncate"
                     >
-                      <div class="max-sm:w-24">
+                      <div class="truncate">
                         <p
-                          class="max-sm:truncate capitalize text-base font-normal text-left sm:ml-1"
+                          class="truncate capitalize text-base font-normal text-left sm:ml-1"
                         >
                           <span
                             class="cursor-pointer"

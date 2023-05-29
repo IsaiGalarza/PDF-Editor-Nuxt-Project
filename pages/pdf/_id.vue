@@ -1099,12 +1099,8 @@ export default mixins(PdfAuth).extend({
         this.permissionLoading = { type: true, msg: 'permission denied'}
         return
       } 
-      let decodePermission = jwt.verify(
-      permissionQuery,
-      process.env.NUXT_ENV_BACKEND_JWT_TOKEN
-    )
       this.$axios
-        .get(`/permissions?id=${decodePermission.permissionId}`)
+        .get(`/permissions?permissionUniqueId=${permissionQuery}`)
         .then((response) => { 
           console.log(response)
           if(response.data[0]?.isGranted == 1){

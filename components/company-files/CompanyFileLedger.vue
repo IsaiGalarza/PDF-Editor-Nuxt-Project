@@ -1,45 +1,66 @@
 <template>
   <div>
     <!-- Start:: header -->
-    <header
-      class="flex flex-col xs:flex-row xs:items-center justify-between whitespace-nowrap px-2 mt-3 mb-2"
-    >
-      <h5
-        class="text-lg font-semibold text-[#272727] hidden sm:inline-flex w-10/12 gap-2 my-2 flex-wrap items-center"
+    <header class="flex items-end mt-4">
+      <!-- tab -->
+      <div class="h-full ml-2 flex">
+        <div
+          @click="changeTab(1)"
+          :class="[tabNumber === 1 ? 'active-tab' : 'tab']"
+          class="mr-4"
+        >
+          <p>Files</p>
+        </div>
+        <div
+          :class="[tabNumber === 2 ? 'active-tab' : 'tab']"
+          @click="changeTab(2)"
+          class="tab"
+        >
+          <p>Folders</p>
+        </div>
+      </div>
+
+      <div
+        class="flex h-[40px] w-full flex-col xs:flex-row xs:items-center justify-between whitespace-nowrap px-2"
       >
-        <!-- <abbr class="w-full md:w-3/12">Paperlink Pages</abbr> -->
+        <h5
+          class="text-lg font-semibold text-[#272727] hidden sm:inline-flex w-10/12 ml-[100px] gap-2 my-2 flex-wrap items-center"
+        >
+          <!-- <abbr class="w-full md:w-3/12">Paperlink Pages</abbr> -->
 
-        <span class="mr-5 font-normal text-sm flex items-center w-full md:w-7/12">
-          <input type="checkbox" v-model="allowCopy" class="mr-3 transform scale-125" />
-          Click here to allow guest to request copy
-        </span>
-      </h5>
+          <span class="mr-5 font-normal text-[0.8rem] flex items-center w-full md:w-7/12">
+            <input type="checkbox" v-model="allowCopy" class="mr-3 transform scale-125" />
+            Click here to allow guest to request copy
+          </span>
+        </h5>
 
-      <div class="w-2/12 text-white flex items-center justify-end my-2 pl-2">
-        <el-dropdown trigger="click">
-          <button
-            class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150"
-          >
-            <plus-icon />
-          </button>
-          <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu">
-            <ul class="min-w-[150px]">
-              <li class="dropdown-item" @click="showUploadModalFunction">
-                <span>Upload File</span>
-              </li>
-              <li class="dropdown-item" @click="showCreateCompanyFolderFunc">
-                <span>Create Folder</span>
-              </li>
-            </ul>
-          </el-dropdown-menu>
-        </el-dropdown>
+        <div class="w-2/12 text-white flex items-center justify-end my-2 pl-2">
+          <el-dropdown trigger="click">
+            <button
+              class="circle circle-18 p-1 text-[2rem] ml-2 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150"
+            >
+              <!-- <plus-icon /> -->
+              +
+            </button>
+            <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu">
+              <ul class="min-w-[150px]">
+                <li class="dropdown-item" @click="showUploadModalFunction">
+                  <span>Upload File</span>
+                </li>
+                <li class="dropdown-item" @click="showCreateCompanyFolderFunc">
+                  <span>Create Folder</span>
+                </li>
+              </ul>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
       </div>
     </header>
     <!-- End:: header -->
     <transition name="fade" mode="out-in" :duration="100">
       <!-- <empty-file-ledger class="min-h-[55vh]" v-if="pdfUser < 1" :isPaidUser= "isPaidUser"/> -->
       <div
-        class="bg-white rounded h-full sm:rounded-3xl pb-4 text-[#272727] overflow-hidden"
+        class="bg-white border-t-[5px] border-t-[#77C360] rounded h-full sm:rounded-3xl pb-4 text-[#272727] overflow-hidden"
       >
         <div
           class="flex sm:hidden items-center justify-between px-4 py-3 border-b border-gray-100"
@@ -50,18 +71,24 @@
             </div>
             <h2 class="font-bold pl-4">{{ FilesInFolerContent.name }}</h2>
           </div>
-          <!-- <button @click="showFolders && !folderSelected ? showCreateCompanyFolderFunc() : showUploadModalFunction()"
-            class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-xl text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
+          <!-- <button
+            @click="
+              showFolders && !folderSelected
+                ? showCreateCompanyFolderFunc()
+                : showUploadModalFunction()
+            "
+            class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-xl text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150"
+          >
             <plus-icon />
           </button> -->
         </div>
         <!-- Start:: Folders -->
-        <div v-if="folders.length > 0 && !folderSelected" class="">
-          <h4
+        <div v-if="folders.length > 0 && !folderSelected && tabNumber === 2" class="">
+          <!-- <h4
             class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 hidden sm:flex items-center"
           >
             Folders
-          </h4>
+          </h4> -->
           <div class="custom-scrollbar relative">
             <!-- START: spinner container -->
             <div
@@ -219,12 +246,12 @@
         <!-- End:: Folders -->
         <!-- Start:: Files -->
         <div :class="{ 'hidden sm:block': showFolders && !folderSelected }">
-          <h4
+          <!-- <h4
             class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 hidden sm:flex items-center"
             v-if="folders.length > 0 && !folderSelected"
           >
             Files
-          </h4>
+          </h4> -->
           <div
             v-if="folderSelected"
             class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 hidden sm:flex items-center"
@@ -250,7 +277,7 @@
             <!-- END: spinner container -->
             <!-- <empty-file-ledger class="min-h-[55vh]" v-if="(pdfUser.length < 1) && !fileSpinner" :isPaidUser="isPaidUser" /> -->
             <!--START: No files container-->
-            <section class="px-0 min-w-[700px] w-full">
+            <section v-if="tabNumber === 1" class="px-0 min-w-[700px] w-full">
               <div class="border-b-[1px] border-gray-200 flex items-center py-3">
                 <p class="w-1/12 inline-block text-center">Order</p>
                 <p class="text-left ml-2 inline-block w-3/12">File name</p>
@@ -864,9 +891,15 @@ export default Vue.extend({
       link: "",
       type: "",
       selectedFolderIndex: null,
+      tabNumber: 1,
     };
   },
   methods: {
+    changeTab(num) {
+      this.tabNumber = num;
+      this.folderSelected = false;
+      this.setRefresh();
+    },
     emitPrivateModal(id) {
       this.$emit("showPermission", true, id);
     },
@@ -1045,8 +1078,10 @@ export default Vue.extend({
           });
 
           this.files = filesData;
-          // push files to store
-          this.$store.commit("ADD_USER", this.files);
+
+          let totalPage =
+            // push files to storeGoing Paperless save
+            this.$store.commit("ADD_USER", this.files);
           console.log(this.files);
           // to stop spinner
           this.fileSpinner = false;
@@ -1226,6 +1261,14 @@ export default Vue.extend({
       }
     }
   }
+}
+
+.tab {
+  @apply w-[130px] text-[1rem] cursor-pointer flex font-[500] items-center pl-[8px] text-[#000] border-[#77B550] rounded-t-[10px] shadow-lg border-[2px] h-[30px] bg-[#fff];
+}
+
+.active-tab {
+  @apply tab !bg-[#77B550]  !text-white;
 }
 input[type="checkbox"] {
   filter: hue-rotate(250deg);

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Start:: header -->
-    <header class="flex items-end mt-4">
+    <header class="flex justify-between items-end mt-4">
       <!-- tab -->
       <div class="h-full ml-2 flex">
         <div
@@ -21,10 +21,10 @@
       </div>
 
       <div
-        class="flex h-[40px] w-full flex-col xs:flex-row xs:items-center justify-between whitespace-nowrap px-2"
+        class="flex h-[40px] w-full flex-col xs:flex-row xs:items-center justify-end whitespace-nowrap px-2"
       >
         <h5
-          class="text-lg font-semibold text-[#272727] hidden sm:inline-flex w-10/12 ml-[100px] gap-2 my-2 flex-wrap items-center"
+          class="text-lg font-semibold text-[#272727] hidden md:inline-flex w-10/12 ml-[20px] lg:ml-[80px] gap-2 my-2 flex-wrap items-center"
         >
           <!-- <abbr class="w-full md:w-3/12">Paperlink Pages</abbr> -->
 
@@ -34,12 +34,11 @@
           </span>
         </h5>
 
-        <div class="w-2/12 text-white flex items-center justify-end my-2 pl-2">
+        <div class="w-full justify-end text-white flex items-center my-2">
           <el-dropdown trigger="click">
             <button
-              class="circle circle-18 p-1 text-[2rem] ml-2 bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150"
+              class="circle circle-18 p-1 text-[2rem] bg-paperdazgreen-400 text-xl hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150"
             >
-              <!-- <plus-icon /> -->
               +
             </button>
             <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu">
@@ -1482,7 +1481,7 @@ input[type="checkbox"] {
 }
 
 .tab {
-  @apply w-[130px] text-[1rem] cursor-pointer flex font-[500] items-center pl-[8px] text-[#000] border-[#77B550] rounded-t-[10px] shadow-lg border-[2px] h-[30px] bg-[#fff];
+  @apply w-[90px] md:w-[120px] text-[0.9rem] cursor-pointer flex font-[500] items-center pl-[8px] text-[#000] border-[#77B550] rounded-t-[10px] shadow-lg border-[2px] h-[30px] bg-[#fff];
 }
 
 .active-tab {

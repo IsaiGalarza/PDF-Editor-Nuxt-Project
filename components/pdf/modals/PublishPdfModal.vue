@@ -427,8 +427,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           ...ExtractFormPdf({
             downloadLink: this.file?.downloadLink,
             file: this.confirmAnnotation,
-            pdfOffset_y: this.pdfOffsetY,
-            pdfOffset_x: this.pdfOffsetX,
+            pdfOffset_y: 0,
+            pdfOffset_x: 0,
             signLabel: this.signLabel,
           })[0],
         })

@@ -13,9 +13,6 @@
       class="annotationText input-annotation whitespace-nowrap flex items-center"
       placeholder="Type here..."
       ref="text_box"
-      @keyUp="keyUp"
-      @input="changeWidth"
-      @keyup="keyUp"
     ></p>
 
     <!-- <p v-else ref="textbox" @click="isBlur = !isBlur" :style="style" class="whitespace-nowrap">{{ text || 'Type here...' }}</p> -->
@@ -80,35 +77,15 @@ export default {
     },
   },
   watch: {
-    generatePDF: function () {
-      // if (this.generatePDF)
-        // this.svgToImage()
-    },
+    // generatePDF: function () {
+    //   // if (this.generatePDF)
+    //     // this.svgToImage()
+    // },
     value (v) {
       if (this.text != v) this.text = v
     },
     text (v) {
       if (this.value != v) this.$emit('input', v)
-      if (this.$refs.text_box && this.$refs.text_hidden) {
-        if (!v || v.length === 1) {
-          setTimeout(() => {
-            const inputWidth = this.$refs.text_hidden.clientWidth
-            this.$refs.text_box.style.width = `${inputWidth}px`
-            this.inputWidth = inputWidth
-          }, 200)
-        } else {
-          const extra = this.fontSize || 11
-          if (v.length < this.value.length) {
-            const inputWidth = this.$refs.text_hidden.clientWidth
-            this.$refs.text_box.style.width = `${inputWidth}px`
-            this.inputWidth = inputWidth
-          } else {
-            const inputWidth = this.$refs.text_hidden.clientWidth + extra
-            this.$refs.text_box.style.width = `${inputWidth}px`
-            this.inputWidth = inputWidth
-          }
-        }
-      }
     },
     fontSize() {
       if (this.$refs.text_box && this.$refs.text_hidden) {

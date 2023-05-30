@@ -1,13 +1,13 @@
 <template>
-  <div class="rounded-2xl min-w-[300px] overflow-x-auto custom-scrollbar relative mt-4 bg-white">
+  <div class="rounded-2xl w-full md:min-w-[300px] overflow-x-auto custom-scrollbar relative mt-4 bg-white">
     <table class="custom-table py-2">
       <thead class="text-[#414142]">
         <tr>
           <!-- <th class="w-12 text-center fixed-col left">No</th> -->
           <th class="text-left font-[700] ">File name </th>
 
-          <th class="hidden lg:table-cell">Action</th>
-          <th class="hidden lg:table-cell">Privacy</th>
+          <th class="hidden md:table-cell">Action</th>
+          <th class="hidden md:table-cell">Privacy</th>
           <th class=" font-[700]  right">
 
           </th>
@@ -27,7 +27,7 @@
                 </p>
 
 
-                <div class="flex  lg:hidden items-center mt-1 text-[0.65rem] text-[#707070]">
+                <div class="flex  md:hidden items-center mt-1 text-[0.65rem] text-[#707070]">
                   <p v-show="((item || {}).fileAction) != 'doNotPost'" class="capitalize"> {{ ((item || {}).fileAction
                     ||
                     '') }}</p>
@@ -42,17 +42,17 @@
               </div>
             </div>
           </td>
-          <td class="hidden lg:table-cell">
+          <td class="hidden md:table-cell">
             <p v-show="((item || {}).fileAction) != 'doNotPost'" class="capitalize"> {{ ((item || {}).fileAction ||
               '') }}</p>
           </td>
           <td>
-            <p class="capitalize hidden lg:table-cell">
+            <p class="capitalize hidden md:table-cell">
               {{ ((item || {}).filePrivacy || '') }}
             </p>
           </td>
-          <td class=" ">
-            <div @click="shareLinkFF(item.paperLink, item.fileName)" class="flex  w-full justify-end cursor-pointer">
+          <td class=" flex justify-end">
+            <div @click="shareLinkFF(item.paperLink, item.fileName)"  class="flex w-[100px]  sm:w-full  justify-end ">
               <ShareOutlineIcon />
             </div>
           </td>

@@ -3,28 +3,29 @@
 
 <template>
   <div>
-
-       <!-- Start:: Create custom package -->
-       <div key="creating">
-        <p class="text-white text-center pb-4">Pay annually and get a 20% discount </p>
-        <select-custom-package @next-tab="$emit('next-tab', $event)" />
+    <!-- Start:: Create custom package -->
+    <div key="creating">
+      <div class="flex items-start justify-center">
+        <p class="text-white pb-4">Pay annually and get a 20% discount</p>
       </div>
-      <!-- End:: Create custom package -->
-    </transition>
+      <select-custom-package @next-tab="$emit('next-tab', $event)" />
+    </div>
+    <!-- End:: Create custom package -->
+    <!-- </transition> -->
   </div>
 </template>
 
 <script>
-import Vue from 'vue'
-import PackageCard from '~/components/settings/PackageCard.vue'
-import _ from 'lodash'
-import ArrowDownIcon from '~/components/svg-icons/ArrowDownIcon.vue'
-import CheckIcon from '~/components/svg-icons/CheckIcon.vue'
-import SelectCustomPackage from '../SelectCustomPackage.vue'
-import SelectMainPackage from '../select-package/SelectMainPackage.vue'
-import { Dummypackages } from '~/assets/json/dummy'
-import Slider from '~/mixins/Slider'
-import $ from 'jquery'
+import Vue from "vue";
+import PackageCard from "~/components/settings/PackageCard.vue";
+import _ from "lodash";
+import ArrowDownIcon from "~/components/svg-icons/ArrowDownIcon.vue";
+import CheckIcon from "~/components/svg-icons/CheckIcon.vue";
+import SelectCustomPackage from "../SelectCustomPackage.vue";
+import SelectMainPackage from "../select-package/SelectMainPackage.vue";
+import { Dummypackages } from "~/assets/json/dummy";
+import Slider from "~/mixins/Slider";
+import $ from "jquery";
 export default Vue.extend({
   components: {
     PackageCard,
@@ -33,7 +34,7 @@ export default Vue.extend({
     SelectCustomPackage,
     SelectMainPackage,
   },
-  name: 'SelectPackageTab',
+  name: "SelectPackageTab",
   // mixins:[Slider],
   data() {
     return {
@@ -46,20 +47,20 @@ export default Vue.extend({
       showNav: false,
       showNext: true,
       showPrev: false,
-    }
+    };
   },
   computed: {
     showPagination() {
-      return this.orderedPackages.length > 1
+      return this.orderedPackages.length > 1;
     },
     orderedPackages() {
       // let temp = _.cloneDeep(this.packages)
-      let temp = (this.packages || []).filter((el) => !el.visibility)
-      temp.sort((a, b) => a.monthly_price - b.monthly_price)
+      let temp = (this.packages || []).filter((el) => !el.visibility);
+      temp.sort((a, b) => a.monthly_price - b.monthly_price);
       if (this.pagesDefault) {
-        return temp
+        return temp;
       } else if (this.pagesCustom) {
-        return temp.filter((item) => item.type !== 'default')
+        return temp.filter((item) => item.type !== "default");
       }
     },
   },
@@ -70,30 +71,29 @@ export default Vue.extend({
     },
     pagesDefault: {
       type: String,
-      default: '',
+      default: "",
     },
     pagesCustom: {
       type: String,
-      default: '',
+      default: "",
     },
   },
   methods: {
-     scaleCenterPackage(child, parent){
-        let children = document.querySelectorAll(child);
-       let parentElem = document.querySelector(parent)
-       children.forEach(element => {
-        });
-     },
-     syncAllElemHeight(child, parent){
+    scaleCenterPackage(child, parent) {
+      let children = document.querySelectorAll(child);
+      let parentElem = document.querySelector(parent);
+      children.forEach((element) => {});
+    },
+    syncAllElemHeight(child, parent) {
       setTimeout(() => {
         let children = document.querySelectorAll(child);
-       let parentElem = document.querySelector(parent)
-       let parentHeight = parentElem.clientHeight
-       children.forEach(element => {
-           element.style.height = parentHeight - 48 + 'px'
+        let parentElem = document.querySelector(parent);
+        let parentHeight = parentElem.clientHeight;
+        children.forEach((element) => {
+          element.style.height = parentHeight - 48 + "px";
         });
       }, 20);
-     },
+    },
     // scrollPackages(toLeft) {
     //   const packagesContainer = this.$refs.packagesContainer
     //   if (!packagesContainer) return
@@ -104,24 +104,21 @@ export default Vue.extend({
     //   })
     // },
     sendPackageCode(event) {
-      let { value } = this.$refs.packagecode
-      this.$emit('setparams', value)
+      let { value } = this.$refs.packagecode;
+      this.$emit("setparams", value);
       //  this.promotionCode = null;
     },
   },
   mounted() {
-    let { name } = this.$route.query
-    this.creatingCustomPackage = !(name == 'default-package')
-    window.onresize = function(){
-      if($('.mySwiper'))
-      this.initialWidth = 0
-      $('.mySwiper').animate({ scrollLeft: this.initialWidth }, 500);
-    }
+    let { name } = this.$route.query;
+    this.creatingCustomPackage = !(name == "default-package");
+    window.onresize = function () {
+      if ($(".mySwiper")) this.initialWidth = 0;
+      $(".mySwiper").animate({ scrollLeft: this.initialWidth }, 500);
+    };
   },
-  watch: {
-
-  },
-})
+  watch: {},
+});
 </script>
 
 <style lang="scss" scoped>

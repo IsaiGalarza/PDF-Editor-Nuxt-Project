@@ -71,128 +71,116 @@
             </div>
             <h2 class="font-bold pl-4">{{ FilesInFolerContent.name }}</h2>
           </div>
-          <!-- <button @click="showFolders && !folderSelected ? showCreateCompanyFolderFunc() : showUploadModalFunction()"
-            class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-xl text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150">
+          <!-- <button
+            @click="
+              showFolders && !folderSelected
+                ? showCreateCompanyFolderFunc()
+                : showUploadModalFunction()
+            "
+            class="circle circle-18 p-2 ml-2 bg-paperdazgreen-400 text-xl text-white hover:bg-paperdazgreen-70 transition duration-0 hover:duration-150"
+          >
             <plus-icon />
           </button> -->
         </div>
         <!-- Start:: Folders -->
-        <div v-if="folders.length > 0 && !folderSelected" class="">
-          <div>
+        <div v-if="folders.length > 0 && !folderSelected && tabNumber === 2" class="">
+          <!-- <h4
+            class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 hidden sm:flex items-center"
+          >
+            Folders
+          </h4> -->
+          <div class="custom-scrollbar relative">
+            <!-- START: spinner container -->
             <div
-              v-show="isFolderTabSelected"
-              class="overflow-x-auto custom-scrollbar relative"
+              v-if="folderSpinner"
+              class="absolute z-10 w-full h-full bg-white top-0 left-0 rounded-lg flex justify-center items-center"
             >
-              <!-- START: spinner container -->
+              <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
+            </div>
+            <div class="my-12 flex items-center flex-wrap px-[1.5rem]">
               <div
-                v-if="fileSpinner"
-                class="absolute z-10 w-full h-full bg-white top-0 left-0 rounded-lg flex justify-center items-center"
+                class="items-center mb-3 border-2 py-[15px] pl-[15px] rounded-[16px] mr-[15px] border-[#909090] w-[calc(100%-15px)] sm:w-[calc(33.333333%-20px)] md:w-[calc(25%-15px)] min-w-[250px]"
+                v-for="(content, i) in folders"
+                :key="i"
               >
-                <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
-              </div>
-
-              <!-- <div>
-              <p className="text-center text-sm p-4">No file found</p>
-            </div> -->
-              <!-- END: spinner container -->
-              <!-- <empty-file-ledger class="min-h-[55vh]" v-if="(pdfUser.length < 1) && !fileSpinner" :isPaidUser="isPaidUser" /> -->
-              <!--START: No files container-->
-              <section class="px-0 min-w-[700px] w-full">
-                <div class="border-b-[1px] border-gray-200 flex items-center py-3">
-                  <p class="w-1/12 inline-block text-center font-[400]">Order</p>
-                  <p class="text-center inline-block w-3/12 font-[400]">Folder name</p>
-                  <p class="text-center inline-block w-2/12 font-[400]">Files</p>
-                  <p class="text-center inline-block w-2/12 font-[400]">Privacy</p>
-                  <p class="text-center inline-block w-2/12"></p>
-                  <p class="text-center inline-block w-2/12"></p>
-                  <p class="text-center inline-block w-1/12"></p>
-                </div>
-                <div
-                  class="border-b-[1px] border-gray-200 flex items-center py-3"
-                  v-for="(folder, i) in folders"
-                  :key="folder.id"
-                >
-                  <div class="w-1/12 flex items-center justify-center text-center">
-                    <img class="w-[28px]" src="~/assets/img/Vector.png" />
-                  </div>
-                  <div
-                    class="text-center flex items-center truncate justify-center w-3/12"
-                  >
-                    <p class="cursor-pointer" @click="showFolderFilesFunc(folder)">
-                      {{ folder.name }}
+                <div class="overflow-hidden px-[10px] flex justify-between">
+                  <div class="float-left flex">
+                    <span class="border-none inline-block float-left pt-[4px]">
+                      <img class="w-[28px]" src="~/assets/img/Vector.png" />
+                    </span>
+                    <p
+                      @click="showFolderFilesFunc(content)"
+                      class="text-base font-medium text-center text-[#414142] truncate cursor-pointer inline-block ml-[27px]"
+                    >
+                      {{ content.name }}
                     </p>
                   </div>
-                  <div class="text-center text-xs w-2/12">
-                    <p>{{ folder.files.length }}</p>
-                  </div>
-                  <div class="text-center text-xs w-2/12">
-                    <!-- <p>{{ folder.files.length }}</p> -->
-                  </div>
-                  <p class="text-center inline-block w-2/12"></p>
-                  <p class="text-center inline-block w-2/12"></p>
-                  <div class="text-center inline-block px-4 w-1/12">
-                    <el-dropdown trigger="click">
-                      <button
-                        class="el-dropdown-link w-8 h-8 cursor-pointer grid place-items-center rounded-full"
-                        :class="[
-                          createdByTeamMember(folder.createdBy) && isTeam
-                            ? 'bg-paperdazgreen-300/20'
-                            : '',
-                        ]"
-                      >
-                        <ellipsis-icon-vertical-icon />
-                      </button>
-                      <el-dropdown-menu slot="dropdown" class="table-menu-dropdown-menu">
-                        <div
-                          class="no-access"
-                          v-if="!createdByTeamMember(folder.createdBy)"
+                  <div class="float-right flex">
+                    <span>{{ content.files.length }}</span>
+                    <div class="grid place-items-center -mt-1">
+                      <el-dropdown trigger="click">
+                        <button
+                          class="el-dropdown-link w-8 h-8 cursor-pointer grid place-items-center rounded-full"
+                          :class="[
+                            createdByTeamMember(content.createdBy) && isTeam
+                              ? 'bg-paperdazgreen-300/20'
+                              : '',
+                          ]"
                         >
-                          no access right
-                        </div>
-                        <ul v-else class="min-w-[150px]">
-                          <li
-                            class="dropdown-item"
-                            @click="showEditCompanyFolderFunc(folder)"
+                          <ellipsis-icon-vertical-icon />
+                        </button>
+                        <el-dropdown-menu
+                          slot="dropdown"
+                          class="table-menu-dropdown-menu"
+                        >
+                          <div
+                            class="no-access"
+                            v-if="!createdByTeamMember(content.createdBy)"
                           >
-                            <div
-                              class="flex justify-between w-full border-t border-gray-200"
+                            no access right
+                          </div>
+                          <ul v-else class="min-w-[150px]">
+                            <li
+                              class="dropdown-item"
+                              @click="showEditCompanyFolderFunc(content)"
                             >
-                              <PenIcon
-                                width="16"
-                                height="16"
-                                class="inline-block float-left"
-                              />
-                              <span class="ml-1">Edit</span>
-                            </div>
-                          </li>
-                          <li
-                            class="dropdown-item"
-                            @click="showDeleteCompanyFolderFunc(folder)"
-                          >
-                            <div
-                              class="flex justify-between w-full border-t border-gray-200"
+                              <div
+                                class="flex justify-between w-full border-t border-gray-200"
+                              >
+                                <PenIcon
+                                  width="16"
+                                  height="16"
+                                  class="inline-block float-left"
+                                />
+                                <span class="ml-1">Edit</span>
+                              </div>
+                            </li>
+                            <li
+                              class="dropdown-item"
+                              @click="showDeleteCompanyFolderFunc(content)"
                             >
-                              <trash-can-icon
-                                width="16"
-                                height="16"
-                                class="inline-block float-left"
-                              />
-                              <span>Remove</span>
-                            </div>
-                          </li>
-                          <!-- <li class="dropdown-item" @click="showAddCompanyFolderFunc(content)">
+                              <div
+                                class="flex justify-between w-full border-t border-gray-200"
+                              >
+                                <trash-can-icon
+                                  width="16"
+                                  height="16"
+                                  class="inline-block float-left"
+                                />
+                                <span>Remove</span>
+                              </div>
+                            </li>
+                            <!-- <li class="dropdown-item" @click="showAddCompanyFolderFunc(content)">
                               <span>Add Files</span>
                             </li> -->
-                        </ul>
-                      </el-dropdown-menu>
-                    </el-dropdown>
+                          </ul>
+                        </el-dropdown-menu>
+                      </el-dropdown>
+                    </div>
                   </div>
                 </div>
-              </section>
-
-              <!-- <FilePagination :totalFile="totalFile" @setPage="setPage" /> -->
+              </div>
             </div>
-            <!-- <FilePagination v-if="!folderSelected" :totalFile="totalFile" @setPage="setPage" /> -->
           </div>
           <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
         </div>
@@ -256,217 +244,14 @@
           <!-- <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" /> -->
         </div>
         <!-- End:: Folders -->
-        <!-- FOlders files -->
         <!-- Start:: Files -->
-        <div v-show="tabNumber === 1">
-          <div class="overflow-x-auto custom-scrollbar relative">
-            <!-- START: spinner container -->
-            <div
-              v-if="fileSpinner"
-              class="absolute z-10 w-full h-full bg-white top-0 left-0 rounded-lg flex justify-center items-center"
-            >
-              <spinner-dotted-icon class="text-paperdazgreen-400 animate-spin" />
-            </div>
-
-            <!-- <div>
-              <p className="text-center text-sm p-4">No file found</p>
-            </div> -->
-            <!-- END: spinner container -->
-            <!-- <empty-file-ledger class="min-h-[55vh]" v-if="(pdfUser.length < 1) && !fileSpinner" :isPaidUser="isPaidUser" /> -->
-            <!--START: No files container-->
-            <section class="px-0 min-w-[700px] w-full">
-              <div class="border-b-[1px] border-gray-200 flex items-center py-3">
-                <p class="w-1/12 inline-block text-center">Order</p>
-                <p class="text-left ml-2 inline-block w-3/12">File name</p>
-                <p class="text-center inline-block w-1/12">Pages</p>
-                <p class="text-center inline-block w-2/12">Action required</p>
-                <p class="text-center inline-block w-2/12">Privacy</p>
-                <p class="text-center inline-block w-2/12">Date &amp; Time</p>
-                <p class="text-center inline-block w-1/12"></p>
-              </div>
-              <draggable
-                v-if="!folderSelected"
-                v-model="files"
-                group="paperlink"
-                @change="onChange"
-                class="px-0"
-              >
-                <div
-                  v-for="(file, i) in files"
-                  :key="file.id"
-                  class="py-2 border-b-[1px] border-gray-200 list-none px-0 flex items-center min-w-[700px] w-full"
-                >
-                  <div class="w-1/12 inline-flex justify-center">
-                    <button><DragIcon /></button>
-                  </div>
-                  <div class="text-left inline-block w-3/12 truncate">
-                    <div class="flex items-center gap-3 sm:min-w-[150px] truncate">
-                      <div class="truncate">
-                        <p
-                          class="truncate capitalize underline text-base font-normal text-left sm:ml-1"
-                        >
-                          <span
-                            class="cursor-pointer"
-                            @click="routeToFileManager(`/pdf/${file.paperLink}`)"
-                          >
-                            {{ file.fileName | removeExtension }}
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="text-center px-1 inline-block w-1/12 text-xs">
-                    {{ file.pages }}
-                  </div>
-                  <div
-                    class="text-sm text-center capitalize inline-block w-2/12"
-                    :class="
-                      file.fileAction === FileAction.COMPLETE
-                        ? 'text-paperdazgreen-400'
-                        : file.fileAction === FileAction.SIGNED
-                        ? 'text-blue-400'
-                        : file.fileAction === FileAction.CONFIRM
-                        ? 'text-purple-400'
-                        : ''
-                    "
-                  >
-                    {{
-                      file.fileAction && file.fileAction !== FileAction.SHARED
-                        ? file.fileAction
-                        : ""
-                    }}
-                  </div>
-                  <div
-                    class="text-sm text-center capitalize inline-block w-2/12 cursor-pointer"
-                    @click="
-                      file.filePrivacy == 'private' &&
-                        $emit('showPermission', true, file.id)
-                    "
-                  >
-                    {{ (file || {}).filePrivacy }}
-                  </div>
-                  <div class="text-center px-1 inline-block w-2/12 text-xs">
-                    {{ formatDateTime(file.updatedAt) }}
-                  </div>
-                  <div
-                    class="fixed-col right sm:w-[50px] text-center inline-block w-1/12"
-                  >
-                    <div class="w-full h-full grid place-items-center">
-                      <button
-                        class="sm:hidden w-8 h-8 cursor-pointer grid place-items-center rounded-full"
-                        :class="[
-                          createdByTeamMember(file.uploadedBy) && isTeam
-                            ? 'bg-paperdazgreen-300/20'
-                            : '',
-                        ]"
-                        @click="actionFile = file"
-                      >
-                        <ellipsis-icon-vertical-icon />
-                      </button>
-                      <el-dropdown trigger="click">
-                        <button
-                          class="hidden el-dropdown-link w-8 h-8 cursor-pointer sm:grid place-items-center rounded-full"
-                          :class="[
-                            createdByTeamMember(file.uploadedBy) && isTeam
-                              ? 'bg-paperdazgreen-300/20'
-                              : '',
-                          ]"
-                        >
-                          <ellipsis-icon-vertical-icon />
-                        </button>
-                        <el-dropdown-menu
-                          slot="dropdown"
-                          class="table-menu-dropdown-menu hidden sm:block"
-                        >
-                          <ul class="min-w-[150px]">
-                            <li
-                              class="dropdown-item"
-                              @click="showEditCompanyFileFunc(file)"
-                            >
-                              <div
-                                class="flex justify-between w-full border-t border-gray-200"
-                              >
-                                <PenIcon
-                                  width="16"
-                                  height="16"
-                                  class="inline-block float-left"
-                                />
-                                <span class="ml-1">Edit</span>
-                              </div>
-                            </li>
-
-                            <li
-                              class="dropdown-item"
-                              @click="showShareCompanyFileFunc(file)"
-                              divided
-                            >
-                              <div class="flex justify-between w-full">
-                                <share-icon
-                                  width="16"
-                                  height="16"
-                                  class="inline-block float-left"
-                                />
-                                <span>Share</span>
-                              </div>
-                            </li>
-
-                            <li
-                              class="dropdown-item"
-                              @click="showMoveCompanyFileFunc(file)"
-                              divided
-                            >
-                              <div class="flex justify-between w-full">
-                                <MoveIcon
-                                  width="16"
-                                  height="16"
-                                  class="inline-block float-left"
-                                />
-                                <span>Move</span>
-                              </div>
-                            </li>
-
-                            <li
-                              class="dropdown-item"
-                              @click="showRemoveCompanyFileFunc(file)"
-                            >
-                              <div
-                                class="flex justify-between w-full border-t border-gray-200"
-                              >
-                                <trash-can-icon
-                                  width="16"
-                                  height="16"
-                                  class="inline-block float-left"
-                                />
-                                <span>Remove</span>
-                              </div>
-                            </li>
-                          </ul>
-                        </el-dropdown-menu>
-                      </el-dropdown>
-                    </div>
-                  </div>
-                </div>
-              </draggable>
-
-              <FileInFolder
-                v-else
-                @showMoveCompanyFileFunc="showMoveCompanyFileFunc"
-                @showShareCompanyFileFunc="showShareCompanyFileFunc"
-                @showEditCompanyFileFunc="showEditCompanyFileFunc"
-                @showRemoveCompanyFileFunc="showRemoveCompanyFileFunc"
-                @emitPrivateModal="emitPrivateModal"
-                :FilesInFolerContent="FilesInFolerContent"
-              />
-            </section>
-
-            <!-- <FilePagination :totalFile="totalFile" @setPage="setPage" /> -->
-          </div>
-          <!-- <FilePagination v-if="!folderSelected" :totalFile="totalFile" @setPage="setPage" /> -->
-        </div>
-
-        <!-- End:: Files -->
-        <!-- Start:: Files -->
-        <div v-show="tabNumber === 2 && folderSelected">
+        <div :class="{ 'hidden sm:block': showFolders && !folderSelected }">
+          <!-- <h4
+            class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 hidden sm:flex items-center"
+            v-if="folders.length > 0 && !folderSelected"
+          >
+            Files
+          </h4> -->
           <div
             v-if="folderSelected"
             class="text-xl text-paperdazgreen-400 font-medium px-5 border-b border-gray-100 h-16 hidden sm:flex items-center"
@@ -492,7 +277,7 @@
             <!-- END: spinner container -->
             <!-- <empty-file-ledger class="min-h-[55vh]" v-if="(pdfUser.length < 1) && !fileSpinner" :isPaidUser="isPaidUser" /> -->
             <!--START: No files container-->
-            <section class="px-0 min-w-[700px] w-full">
+            <section v-if="tabNumber === 1" class="px-0 min-w-[700px] w-full">
               <div class="border-b-[1px] border-gray-200 flex items-center py-3">
                 <p class="w-1/12 inline-block text-center">Order</p>
                 <p class="text-left ml-2 inline-block w-3/12">File name</p>
@@ -515,18 +300,18 @@
                   class="py-2 border-b-[1px] border-gray-200 list-none px-0 flex items-center min-w-[700px] w-full"
                 >
                   <div class="w-1/12 inline-flex justify-center">
-                    <button>
-                      <DragIcon />
-                    </button>
+                    <button><DragIcon /></button>
                   </div>
                   <div class="text-left inline-block w-3/12 truncate">
-                    <div class="flex items-center gap-3 sm:min-w-[150px] truncate">
-                      <div class="truncate">
+                    <div
+                      class="flex items-center gap-3 max-w-[100px] sm:min-w-[150px] sm:max-w-[400px]"
+                    >
+                      <div class="max-sm:w-24">
                         <p
-                          class="truncate capitalize underline text-base font-normal text-left sm:ml-1"
+                          class="max-sm:truncate capitalize text-base font-normal text-left sm:ml-1"
                         >
                           <span
-                            class="cursor-pointer underline"
+                            class="cursor-pointer"
                             @click="routeToFileManager(`/pdf/${file.paperLink}`)"
                           >
                             {{ file.fileName | removeExtension }}
@@ -1107,15 +892,13 @@ export default Vue.extend({
       type: "",
       selectedFolderIndex: null,
       tabNumber: 1,
-      isFolderTabSelected: false,
     };
   },
   methods: {
     changeTab(num) {
       this.tabNumber = num;
-      // this.setRefresh();
-      if (num === 1) return (this.isFolderTabSelected = false);
-      if (num === 2) return (this.isFolderTabSelected = true);
+      this.folderSelected = false;
+      this.setRefresh();
     },
     emitPrivateModal(id) {
       this.$emit("showPermission", true, id);
@@ -1295,8 +1078,10 @@ export default Vue.extend({
           });
 
           this.files = filesData;
-          // push files to store
-          this.$store.commit("ADD_USER", this.files);
+
+          let totalPage =
+            // push files to storeGoing Paperless save
+            this.$store.commit("ADD_USER", this.files);
           console.log(this.files);
           // to stop spinner
           this.fileSpinner = false;
@@ -1477,9 +1262,6 @@ export default Vue.extend({
     }
   }
 }
-input[type="checkbox"] {
-  filter: hue-rotate(250deg);
-}
 
 .tab {
   @apply w-[130px] text-[1rem] cursor-pointer flex font-[500] items-center pl-[8px] text-[#000] border-[#77B550] rounded-t-[10px] shadow-lg border-[2px] h-[30px] bg-[#fff];
@@ -1487,5 +1269,8 @@ input[type="checkbox"] {
 
 .active-tab {
   @apply tab !bg-[#77B550]  !text-white;
+}
+input[type="checkbox"] {
+  filter: hue-rotate(250deg);
 }
 </style>

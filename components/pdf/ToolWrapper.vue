@@ -102,6 +102,8 @@ import moment from 'moment'
 import { mapState } from 'vuex'
 import TeamAccess from '~/models/TeamAccess'
 import AppendNameTool from './tools/AppendName.vue'
+import AppendFirstNameTool from './tools/AppendFirstName.vue'
+import AppendLastNameTool from './tools/AppendLastName.vue'
 
 export default {
   props: {
@@ -161,6 +163,8 @@ export default {
     AppendInitialTool,
     AppendDateTool,
     AppendNameTool,
+    AppendFirstNameTool,
+    AppendLastNameTool
   },
   data: () => ({
     lastPosX: 0,
@@ -449,7 +453,9 @@ export default {
     addOffset(val) {
       if (
         this.tool.type == this.TOOL_TYPE.appendDate ||
-        this.tool.type == this.TOOL_TYPE.appendName
+        this.tool.type == this.TOOL_TYPE.appendName ||
+        this.tool.type == this.TOOL_TYPE.appendFirstName ||
+        this.tool.type == this.TOOL_TYPE.appendLastName
       )
         this.$emit('parentOffset', val, this.id)
     },

@@ -387,7 +387,7 @@
     <SuccessFileModal :file="file" v-model="showSuccesshModal" />
     <DoneModal :file="file" v-model="showDoneModal" />
     <GuestModal v-model="showGuestModal" />
-    <AddToPageText v-model="showAddPageText"/>
+    <AddToPageText v-model="showAddPageText" :name_type="nameType"/>
   </div>
 </template>
 
@@ -576,7 +576,7 @@ export default mixins(PdfAuth).extend({
     showAddPageText: false,
     AllPdfParentPage: [],
     AllPdfParentPageDim: [],
-
+    nameType: "",
     userTime: ""
   }),
   created() {
@@ -787,6 +787,14 @@ export default mixins(PdfAuth).extend({
           identifier: { top: 20, left: 0 },
           tool: { top: 23, left: 10 },
         },
+        [TOOL_TYPE.appendFirstName]: {
+          identifier: { top: 20, left: 0 },
+          tool: { top: 23, left: 10 },
+        },
+        [TOOL_TYPE.appendLastName]: {
+          identifier: { top: 20, left: 0 },
+          tool: { top: 23, left: 10 },
+        },
       }
     },
     selectedTool() {
@@ -811,7 +819,8 @@ export default mixins(PdfAuth).extend({
        this.tools[ind] = {...this.tools[ind], top: newTop } 
        this.$forceUpdate()
     },
-    addTopagetextFunc(){
+    addTopagetextFunc(val){
+      this.nameType = val
       this.showAddPageText = true
     },
     scalingHandler(e) {

@@ -45,7 +45,9 @@ export const state = () => ({
     height: 0
   },
   pdfAnnotations: [] as any,
-  addToPagetextvalue: undefined
+  addToPagetextvalue: undefined,
+  addToPageFirstName: undefined,
+  addToPageLastName: undefined,
 })
 
 export type RootState = ReturnType<typeof state>
@@ -53,6 +55,12 @@ export type RootState = ReturnType<typeof state>
 export const getters: GetterTree<RootState, RootState> = {
   getAddToPageTextvalue( state: any){
     return state.addToPagetextvalue
+  },
+  getAddToPageFirstName( state: any){
+    return state.addToPageFirstName
+  },
+  getAddToPageLastName( state: any){
+    return state.addToPageLastName
   },
   getSaveUser( state: any){
     return state.saveUser
@@ -152,7 +160,20 @@ export const mutations: MutationTree<RootState> = {
     state.pdfUser = []
   },
   SET_SAVE_PAGE_TEXT_VALUE(state, payload) {
-    state.addToPagetextvalue = payload
+    console.log(payload)
+    switch (payload?.type) {
+      case 'name':
+        state.addToPagetextvalue = payload?.text
+        break;
+      case 'first_name':
+        state.addToPageFirstName = payload?.text
+        break;
+      case 'last_name':
+        state.addToPageLastName = payload?.text
+        break;
+      default:
+        break;
+    }
   },
   SET_SAVE_USER(state, payload) {
     state.saveUser = payload

@@ -67,6 +67,7 @@
         type: Boolean,
         default: false,
       },
+      name_type: {type: String},
       src: {
         type: String,
         default:
@@ -121,7 +122,7 @@
         this.$refs.inputElement.focus()
       },
       exportText(){
-        this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", this.textValue)
+        this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", { text: this.textValue, type: this.name_type})
          this.closeModal()
       }
     },

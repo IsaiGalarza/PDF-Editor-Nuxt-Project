@@ -145,6 +145,8 @@
               </td>
               <td class=" flex justify-end">
                 <div @click="shareLinkFunc(item.paperLink, item.fileName)" class="flex w-[100px]   sm:w-full   justify-end ">
+              <td class=" ">
+                <div @click="shareLinkFunc(item.paperLink, item.fileName)" class="flex  w-10 justify-end ">
                   <ShareOutlineIcon />
                 </div>
               </td>

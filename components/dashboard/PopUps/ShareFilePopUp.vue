@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="w-full text-center px-3 relative top-[180px] text-white">
+    <p class="w-full text-center px-3 p relative top-[180px] text-white">
       Click here to share Paperlink
     </p>
     <img

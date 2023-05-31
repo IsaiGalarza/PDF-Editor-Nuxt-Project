@@ -9,7 +9,7 @@
     >
       <template #title>
         <div class="tab-container">
-            Type Name
+          Type Name of person on file
         </div>
       </template>
   
@@ -19,11 +19,19 @@
             <input
             type="text"
             ref="inputElement"
-            placeholder="Type Name Here"
-            v-model="textValue"
+            placeholder="First Name "
+            v-model="firstNameValue"
             id="pdf-signature-type-input-box"
-            class="w-full bg-white border-b-0 border-paperdazgreen-400 cursor-text mt-2 py-3 px-5 rounded outline-none text-4xl sm:text-5xl caret-paperdazgreen-400 min-h-[110px]"
+            class="w-full bg-white border-b-0 border-paperdazgreen-400 cursor-text mt-2 py-3 px-2 rounded outline-none text-xl caret-paperdazgreen-400 "
           />
+          <input
+          type="text"
+          ref="inputElement"
+          placeholder="Last Name"
+          v-model="lastNameValue"
+          id="pdf-signature-type-input-box"
+          class="w-full bg-white border-b-0 border-paperdazgreen-400 cursor-text mt-2 py-3 px-2 rounded outline-none text-xl  caret-paperdazgreen-400 "
+        />
         </div>
       </transition>
       <!-- End:: Body -->
@@ -81,7 +89,8 @@
     data() {
       return {
         showModal: false,
-        textValue: "",
+        firstNameValue: "",
+        lastNameValue: "",
         activeTab: 'draw',
         tabs: [
           {
@@ -122,14 +131,16 @@
         this.$refs.inputElement.focus()
       },
       exportText(){
-        this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", { text: this.textValue, type: this.name_type})
+        this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", { text: this.lastNameValue, type: 'last_name'})
+        this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", { text: this.firstNameValue, type: 'first_name'})
+        this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", { text: `${this.firstNameValue} ${this.lastNameValue}`, type: 'name'})
          this.closeModal()
       }
     },
   })
   </script>
   
-  <style scoped>
+  <style lang="postcss" scoped>
   * >>> .el-dialog {
     width: 600px !important;
     max-width: 95% !important;
@@ -159,11 +170,8 @@
     padding-top: 0 !important;
     padding-bottom: 0 !important;
   }
-  </style>
-  
-  <style lang="postcss" scoped>
   .tab-container {
-    @apply w-full py-2 border-b border-paperdazgreen-400/30 text-center bg-paperdazgreen-300 text-white;
+    @apply w-full py-2 border-b border-paperdazgreen-400/30 text-center bg-paperdazgreen-300 text-white text-base;
   }
   
   .tab-button {

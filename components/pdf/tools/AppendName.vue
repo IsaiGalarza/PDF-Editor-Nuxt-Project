@@ -150,7 +150,7 @@ export default {
         (this.isAgreedSign !== 1 && this.isSign)
       )
         return
-      !this.hasTextvalue && this.$BUS.$emit('addTextToPage')
+      !this.hasTextvalue && this.$BUS.$emit('addTextToPage', 'name')
       this.hasClicked = true
       !this.confirmStar && this.hasClicked && !this.isCreator && this.$emit('addOffset', 13)
       !this.isCreator && (this.confirmStar = true)

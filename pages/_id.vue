@@ -124,7 +124,7 @@
                 </p>
               </td>
               <td class=" ">
-                <div @click="shareLinkFunc(item.paperLink, item.fileName)" class="flex  w-full justify-end ">
+                <div @click="shareLinkFunc(item.paperLink, item.fileName)" class="flex  w-10 justify-end ">
                   <ShareOutlineIcon />
                 </div>
               </td>

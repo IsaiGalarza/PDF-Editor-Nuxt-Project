@@ -69,7 +69,7 @@
             class="text-[11px]"
             :class="[this.password?.length > 8 ? 'text-[green]' : 'text-[#808080b8]']"
           >
-            Password must be morethan 8 characters</span
+            Password must be more than 8 characters</span
           >
         </div>
         <div class="error-wrapper">

@@ -49,7 +49,7 @@
             required
             v-model="partner.lastName"
             type="text"
-            placeholder="last Name"
+            placeholder="Last Name"
             class="contac-input mb-8"
           />
 

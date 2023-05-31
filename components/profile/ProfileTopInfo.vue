@@ -50,29 +50,25 @@
           />
         </div>
       </div>
+
       <!-- end of logo container -->
       <!-- dentals container -->
-      <div
-        class="bg-white px-4 sm:w-12/12 h-full flex flex-col profile-dental-container"
-      >
+      <div class="bg-white px-4 sm:w-12/12 h-full flex flex-col profile-dental-container">
         <!-- <h1>{{user.companyName || ''}}</h1> -->
         <div
-          class="text-600 text-[#414142] font-semibold lg:pl-7 lg:pb-2 lg:border-b border-[#DCDCDC] relative"
+          class="text-600 relative text-[#414142] font-semibold lg:pb-2 lg:border-b border-[#DCDCDC]"
         >
+          <div class="input-wrapper-title flex relative lg:justify-center items-center">
+            <span class="text-2xl text-grey"> {{ name }}</span>
+          </div>
+
           <div
-            class="input-wrapper-title flex relative lg:justify-center items-center"
+            class="flex row-auto bg-blue-300 absolute top-[50%] right-3 translate-y-[-50%]"
           >
-            <span class="text-2xl text-grey lg:pl-3"> {{ name }}</span>
-            <div class="flex row-auto">
-              <install-pwa-button
-                class="w-auto absolute right-4 hidden lg:block pr-12"
-              />
-              <span @click="openShareModal" class="cursor-pointer"
-                ><share-outline-icon
-                  :width="18"
-                  class="w-auto absolute right-4 hidden lg:block pr-3"
-              /></span>
-            </div>
+            <!-- <install-pwa-button class="w-auto absolute right-4 hidden lg:block pr-12" /> -->
+            <span @click="openShareModal" class="cursor-pointer"
+              ><share-outline-icon :width="18" class="w-auto hidden lg:block pr-3"
+            /></span>
           </div>
         </div>
         <!--<div class="text-sm px-2 border-b w-full py-2 text-gray-400"><i>@hookname</i></div>-->
@@ -90,44 +86,44 @@
 </template>
 <style src="~/assets/cropper.css"></style>
 <script>
-import Pencil from '~/assets/recent-icons/pencil.vue'
-import Vue from 'vue'
+import Pencil from "~/assets/recent-icons/pencil.vue";
+import Vue from "vue";
 //   import VueQrcode from 'vue-qrcode'
-import QRCode from 'qrcode'
-import login from '~/mixins/login'
-import mixins from 'vue-typed-mixins'
-import SpinnerDottedIcon from '../svg-icons/SpinnerDottedIcon.vue'
-import ballloader from '../loader/ballloader.vue'
-import { ErrorHandler } from '~/types/ErrorFunction'
-import CropperImageUpload from '../cropper/CropperImageUpload.vue'
-import { Cropper } from 'vue-advanced-cropper'
-import VerticalButtons from './cropper/VerticalButtons'
-import SquareButton from './cropper/SquareButton'
-import ShareOutlineIcon from '~/components/svg-icons/ShareOutlineIcon.vue'
-import UploadFileIcon from '~/components/svg-icons/UploadFileIcon.vue'
-import InstallPwaButton from './components/InstallPwaButton.vue'
-import registerServiceWorker from '~/plugins/register-service-worker'
+import QRCode from "qrcode";
+import login from "~/mixins/login";
+import mixins from "vue-typed-mixins";
+import SpinnerDottedIcon from "../svg-icons/SpinnerDottedIcon.vue";
+import ballloader from "../loader/ballloader.vue";
+import { ErrorHandler } from "~/types/ErrorFunction";
+import CropperImageUpload from "../cropper/CropperImageUpload.vue";
+import { Cropper } from "vue-advanced-cropper";
+import VerticalButtons from "./cropper/VerticalButtons";
+import SquareButton from "./cropper/SquareButton";
+import ShareOutlineIcon from "~/components/svg-icons/ShareOutlineIcon.vue";
+import UploadFileIcon from "~/components/svg-icons/UploadFileIcon.vue";
+import InstallPwaButton from "./components/InstallPwaButton.vue";
+import registerServiceWorker from "~/plugins/register-service-worker";
 
 //import 'vue-advanced-cropper/dist/style.css';
 
 export default mixins(login).extend({
-  name: 'profile-top-info',
-  props: ['userInfo'],
+  name: "profile-top-info",
+  props: ["userInfo"],
   data() {
     return {
       editEnalble: true,
       showScanner: false,
-      profilePicsSrc: '',
-      qrCls: 'qrcode',
-      qrText: 'https://photophobic.web.app',
+      profilePicsSrc: "",
+      qrCls: "qrcode",
+      qrText: "https://photophobic.web.app",
       size: 170,
-      background: 'transparent',
-      phone: '',
-      address: '',
-      name: '',
+      background: "transparent",
+      phone: "",
+      address: "",
+      name: "",
       isLoading: false,
       visibleUploadImageDialog: false,
-    }
+    };
   },
   // async asyncData({ params, query, $axios}) {
   //    let companyUser = $axios.get(`/users/${}`)
@@ -146,24 +142,18 @@ export default mixins(login).extend({
   },
   methods: {
     openShareModal() {
-      this.$emit(
-        'openShare',
-        `${window.location.origin}/${this.userInfo.businessPage}`
-      )
+      this.$emit("openShare", `${window.location.origin}/${this.userInfo.businessPage}`);
     },
     showImageCropperModal() {
-      this.isCreator ? (this.visibleUploadImageDialog = true) : null
+      this.isCreator ? (this.visibleUploadImageDialog = true) : null;
     },
     getTeamPublicFolder() {
-      this.$axios.get()
+      this.$axios.get();
     },
     patchUser() {
-      if (
-        (this.address.trim() == '' && this.phone.trim() == '') ||
-        this.isLoading
-      )
-        return
-      this.isLoading = true
+      if ((this.address.trim() == "" && this.phone.trim() == "") || this.isLoading)
+        return;
+      this.isLoading = true;
       this.$axios
         .$patch(`/users/${this.$auth.user.id}`, {
           address: this.address,
@@ -171,35 +161,35 @@ export default mixins(login).extend({
         })
         .then(() => {
           this.$notify.success({
-            message: 'Updated successfully',
-          })
-          this.initialInput = true
-          this.initialInput2 = true
-          this.showUpdateButton = false
-          this.isLoading = false
+            message: "Updated successfully",
+          });
+          this.initialInput = true;
+          this.initialInput2 = true;
+          this.showUpdateButton = false;
+          this.isLoading = false;
         })
         .catch(({ response }) => {
-          let message = ErrorHandler(response)
+          let message = ErrorHandler(response);
           this.$notify
             .error({
               message: message,
             })
             .finally(() => {
-              this.isLoading = false
-            })
-        })
+              this.isLoading = false;
+            });
+        });
     },
     toggleInput() {
-      this.editEnalble = !this.editEnalble
+      this.editEnalble = !this.editEnalble;
     },
   },
   destroyed() {
     // Revoke the object URL, to allow the garbage collector to destroy the uploaded before file
   },
   mounted() {
-    this.phone = this.userInfo?.phone
-    this.address = this.userInfo?.address
-    this.name = this.userInfo?.companyName
+    this.phone = this.userInfo?.phone;
+    this.address = this.userInfo?.address;
+    this.name = this.userInfo?.companyName;
     // this.phone = this.userInfo?.phone
     // this.address = this.userInfo?.address
     // this.name = this.userInfo?.companyName
@@ -211,57 +201,57 @@ export default mixins(login).extend({
     // ;(this.$refs.qrcancas as HTMLElement).removeAttribute('width')
     //     },
     if (process.client) {
-      registerServiceWorker(this.$route)
+      registerServiceWorker(this.$route);
     }
-    window.addEventListener('beforeinstallprompt', (event) => {
-      event.preventDefault()
-      this.deferredPrompt = event
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      this.deferredPrompt = event;
       console.log(
-        '%c deferredPrompt ',
-        'color: #FF9800; font-weight: bold',
+        "%c deferredPrompt ",
+        "color: #FF9800; font-weight: bold",
         this.deferredPrompt
-      )
-    })
+      );
+    });
   },
   computed: {
     isCreator() {
-      return this.user?.id == this.userInfo?.id
+      return this.user?.id == this.userInfo?.id;
     },
     firstCompanyName() {
-      let myString = this.userInfo?.companyName
-      let splitString = myString.split(' ') // Split the string by space
+      let myString = this.userInfo?.companyName;
+      let splitString = myString.split(" "); // Split the string by space
 
-      let firstLetters = splitString.map((word) => word.charAt(0)) // Extract the first letter of each word using charAt()
+      let firstLetters = splitString.map((word) => word.charAt(0)); // Extract the first letter of each word using charAt()
 
-      return firstLetters.join().replace(/,/g, '').toUpperCase()
+      return firstLetters.join().replace(/,/g, "").toUpperCase();
     },
     showUpdateButton() {
-      return !this.editEnalble || !this.editEnalble
+      return !this.editEnalble || !this.editEnalble;
     },
     qrCodeurl() {
-      return `${window.origin}/${this.userInfo?.businessPage}`
+      return `${window.origin}/${this.userInfo?.businessPage}`;
     },
     login() {
-      return this.$auth.loggedIn
+      return this.$auth.loggedIn;
     },
     user() {
-      return this.$auth?.user
+      return this.$auth?.user;
     },
     isUser() {
-      return this.user?.id == this.userInfo?.id
+      return this.user?.id == this.userInfo?.id;
     },
     profilePhoto() {
-      return this.userInfo?.profilePicture
+      return this.userInfo?.profilePicture;
     },
   },
   watch: {
-    '$auth.user': function () {
-      this.address = this.$auth.user?.address || ''
-      this.phone = this.$auth.user?.phone || ''
+    "$auth.user": function () {
+      this.address = this.$auth.user?.address || "";
+      this.phone = this.$auth.user?.phone || "";
       // QRCode.toCanvas(this.$refs.qrcancas, this.qrCodeurl, function () {});
     },
   },
-})
+});
 </script>
 <style lang="scss" scoped>
 .font-family {

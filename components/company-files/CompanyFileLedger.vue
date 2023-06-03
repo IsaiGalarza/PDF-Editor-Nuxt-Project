@@ -960,7 +960,7 @@
 <script>
 import Vue from "vue";
 import draggable from "vuedraggable";
-import FileInFolder from "./FilesInFolder.vue";
+import FileInFolder from "./FilesInFolder_.vue";
 import UploadDocumentModal from "../dashboard/UploadDocumentModal.vue";
 import CompanyIcon from "../svg-icons/CompanyIcon.vue";
 import EllipsisIconVerticalIcon from "../svg-icons/EllipsisIconVerticalIcon.vue";

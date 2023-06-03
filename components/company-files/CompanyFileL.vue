@@ -453,7 +453,7 @@
                 </div>
               </draggable>
 
-              <FileInFolder
+              <FileInFolder_L
                 v-else
                 @showMoveCompanyFileFunc="showMoveCompanyFileFunc"
                 @showShareCompanyFileFunc="showShareCompanyFileFunc"
@@ -746,7 +746,7 @@
 <script>
 import Vue from "vue";
 import draggable from "vuedraggable";
-import FileInFolder from "./FilesInFolder_.vue";
+import FileInFolder_L from "./FilesInFolder_.vue";
 import UploadDocumentModal from "../dashboard/UploadDocumentModal.vue";
 import CompanyIcon from "../svg-icons/CompanyIcon.vue";
 import EllipsisIconVerticalIcon from "../svg-icons/EllipsisIconVerticalIcon.vue";
@@ -786,7 +786,7 @@ import FilePagination from "../pagination/FilePagination.vue";
 import UserTypeEnum from "~/models/UserTypeEnum";
 import RequestModal from "./Tabs/RequestModal.vue";
 import TeamAccess from "~/models/TeamAccess";
-import FilesInFolder from "./Tabs/FilesInFolder.vue";
+import FilesInFolder from "./Tabs/Files_In_Folder.vue";
 import MaxPaperlinkModal from "./Tabs/MaxPaperlinkModal.vue";
 import FileAction from "~/models/FileAction";
 import ArrowDownIcon from "../svg-icons/ArrowDownIcon.vue";
@@ -839,7 +839,7 @@ export default Vue.extend({
     MaxInviteModal,
     draggable,
     DragIcon,
-    FileInFolder,
+    FileInFolder_L,
   },
   name: "CompanyFileLedger",
   data() {

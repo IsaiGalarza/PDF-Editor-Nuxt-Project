@@ -162,12 +162,12 @@ input {
 .arrow-head::before{
    content: "";
    position: absolute;
-   border-top: 13px solid transparent;
-   border-left: 13px solid transparent;
-   border-right: 13px solid transparent;
-   border-bottom: 17px solid rgb(119 195 96 );
+   border-top: 12px solid transparent;
+   border-left: 12px solid transparent;
+   border-right: 12px solid transparent;
+   border-bottom: 16px solid rgb(119 195 96 );
    bottom: 100%;
-   right: calc(96% - 20px);
+   right: calc(96% - 19px);
 }
 .arrow-head::after{
   content: "";
@@ -176,7 +176,8 @@ input {
   border-left: 9px solid transparent;
   border-right: 9px solid transparent;
   border-bottom: 13px solid white;
-  bottom: 100%;
+  z-inde: 9;
+  bottom: calc(100% - 1px);
   right: calc(96% - 16px);
 }
 </style>

@@ -48,6 +48,7 @@ export const state = () => ({
   addToPagetextvalue: undefined,
   addToPageFirstName: undefined,
   addToPageLastName: undefined,
+  descriptionForNoteTool: "",
 })
 
 export type RootState = ReturnType<typeof state>
@@ -55,6 +56,9 @@ export type RootState = ReturnType<typeof state>
 export const getters: GetterTree<RootState, RootState> = {
   getAddToPageTextvalue( state: any){
     return state.addToPagetextvalue
+  },
+  getDescriptionForNoteTool( state: any){
+    return state.descriptionForNoteTool
   },
   getAddToPageFirstName( state: any){
     return state.addToPageFirstName
@@ -177,6 +181,9 @@ export const mutations: MutationTree<RootState> = {
   },
   SET_SAVE_USER(state, payload) {
     state.saveUser = payload
+  },
+  SET_DESCRIPTION_NOTE_TOOL(state, payload) {
+    state.descriptionForNoteTool = payload
   },
   SET_PDF_ANNOTATIONS(state, payload) {
     state.pdfAnnotations =  [...state.pdfAnnotations,  ...payload]

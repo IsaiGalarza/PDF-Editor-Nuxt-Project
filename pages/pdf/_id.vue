@@ -157,8 +157,8 @@
             :generatePDF="generatePDF"
             @toolWrapperBeforeChecked="toolWrapperBeforeChecked"
             @toolWrapperAfterChecked="toolWrapperAfterChecked"
-            v-model="tool.value"
             :userId="tool.user"
+            :inputValue="inputValue"
             :setInitialSignType="setInitialSignType"
             @parentOffset="parentOffset"
           />
@@ -296,8 +296,8 @@
                 :generatePDF="generatePDF"
                 @toolWrapperBeforeChecked="toolWrapperBeforeChecked"
                 @toolWrapperAfterChecked="toolWrapperAfterChecked"
-                v-model="tool.value"
                 :userId="tool.user"
+                :inputValue="inputValue"
                 :setInitialSignType="setInitialSignType"
                 @parentOffset="parentOffset"
               />
@@ -388,6 +388,7 @@
     <DoneModal :file="file" v-model="showDoneModal" />
     <GuestModal v-model="showGuestModal" />
     <AddToPageText v-model="showAddPageText" :name_type="nameType"/>
+    <TextSaveForMobile v-model="showSaveforMopbile" :toolDescriptionFunc="toolDescriptionFunc" :tools="tools" :activeToolId="activeToolId"/>
   </div>
 </template>
 
@@ -450,6 +451,7 @@ import AddToPageDrawOrType from '~/components/modals/AddToPageDrawOrType.vue'
 import GlobalMixin from '~/mixins/GlobalMixin'
 import AddToPageText from '~/components/modals/AddToPageText.vue';
 import { AppendKeypressActionOnInput } from '~/types/AppendKeyPressAction';
+import TextSaveForMobile from '~/components/pdf/modals/TextSaveForMobile.vue';
 
 
 export default mixins(PdfAuth).extend({
@@ -487,7 +489,8 @@ export default mixins(PdfAuth).extend({
     PinchScrollZoom,
     PinchZoom,
     GuestModal,
-    AddToPageText
+    AddToPageText,
+    TextSaveForMobile
   },
   data: () => ({
     showGuestModal: false,
@@ -577,7 +580,8 @@ export default mixins(PdfAuth).extend({
     AllPdfParentPage: [],
     AllPdfParentPageDim: [],
     nameType: "",
-    userTime: ""
+    userTime: "",
+    showSaveforMopbile: false
   }),
   created() {
     this.fetchPdf()
@@ -590,6 +594,7 @@ export default mixins(PdfAuth).extend({
     this.$BUS.$on('signature-update', (v) => (this.signature = v))
     this.$BUS.$on('initials-update', (v) => (this.initial = v))
     this.$BUS.$on('addTextToPage', this.addTopagetextFunc)
+    this.$BUS.$on('openSaveDiscription', ()=>this.showSaveforMopbile = true)
     window.addEventListener("resize", this.resizeHandler);
     this.getUserTime()
   },
@@ -623,6 +628,7 @@ export default mixins(PdfAuth).extend({
     this.$BUS.$off('scrollToSignInitial')
     this.$BUS.$off('scroll-to-tools')
     this.$BUS.$off('reset-tools')
+    this.$BUS.$off('openSaveDiscription')
     this.$store.commit('SET_EDIT_ANNOTATION', true)
     this.$store.commit('SET_FILE_SIGNATURE', null)
     this.$store.commit('SET_FILE_INITIAL', null)
@@ -812,6 +818,11 @@ export default mixins(PdfAuth).extend({
       fetch('https://worldtimeapi.org/api/ip')
       .then((res)=> res.json())
       .then((response)=> this.userTime =  response?.datetime)
+    },
+    inputValue(val){
+      let index = this.tools.findIndex(tl => tl.id == this.activeToolId);
+      this.tools[index].value = val 
+      console.log(this.activeToolId, this.selectedToolId, val, this.tools[index])
     },
     parentOffset(val, id){  
        let ind = this.tools.findIndex((item)=> item.id == id)
@@ -1340,12 +1351,16 @@ export default mixins(PdfAuth).extend({
       let index = this.tools.findIndex(tl => tl.id == id);
       let IND_Page =  this.AllPdfParentPageDim[this.tools[index].pageNumber - 1]
       this.tools[index].reAdjust = val;
+      this.tools[index].justMounted = true;
       this.tools[index].parentWidth = IND_Page.width;
       this.tools[index].parentHeight = IND_Page.height;
-      console.log("readjust maent",this.tools[index], IND_Page)
+    },
+    toolDescriptionFunc(val){
+      let index = this.tools.findIndex(tl => tl.id == this.activeToolId);
+      this.tools[index].discription = val 
     },
     keyupHandler(event) {
-      if (event.ctrlKey && eve.nt.shiftKey && event.code === 'KeyZ') {
+      if (event.ctrlKey && event.shiftKey && event.code === 'KeyZ') {
         this.redo()
       } else if (event.ctrlKey && event.code === 'KeyZ') {
         this.undo()
@@ -1724,6 +1739,7 @@ export default mixins(PdfAuth).extend({
         isChecked: true,
         user: this.$auth?.user?.id,
         justMounted: true,
+        discription: "",
       }
       if (this.selectedToolType == this.TOOL_TYPE.line) {
         obj.x1 = obj.left
@@ -1737,7 +1753,9 @@ export default mixins(PdfAuth).extend({
         delete obj.top
       } else if (this.selectedToolType == this.TOOL_TYPE.draw) {
         obj.points = [obj.left, obj.top]
-      } else if (this.selectedToolType == this.TOOL_TYPE.date) {
+      }else if (this.selectedToolType == this.TOOL_TYPE.star) {
+        obj.points = [obj.left, obj.top]
+      }  else if (this.selectedToolType == this.TOOL_TYPE.date) {
         obj.value = moment().format('YYYY-MM-DD')
       } else if (this.selectedToolType == this.TOOL_TYPE.signature) {
         obj.value = this.signature
@@ -1753,7 +1771,7 @@ export default mixins(PdfAuth).extend({
       this.tools.push(obj)
       console.log(">>>>>???>>>>>>>>>>>>>>> place-tool", obj)
       this.stack.push(this.toolId)
-
+      this.activeToolId = this.tools.length - 1
     },
     async handleScale() {
       await this.$nextTick()

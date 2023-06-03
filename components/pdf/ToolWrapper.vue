@@ -1,9 +1,9 @@
 <template>
-  <div class="tool-wrapper" :class="{ 'pointer-events-none': selectedToolType }" :style="wrpStyle" ref="Wrp"
+  <div class="tool-wrapper text-field" :class="{ 'pointer-events-none': selectedToolType }" :style="wrpStyle" ref="Wrp"
     :id="getToolWrapperId">
     <!-- <div class="tool-wrapper" :style="wrpStyle" ref="Wrp" :id="getToolWrapperId"> -->
     <div
-      class="h-8 border text-black inline-flex items-center gap-1.5 px-1 backdrop-blur-sm bg-white/30 absolute tool-menu"
+      class="h-8 border text-black inline-flex items-center gap-1.5 px-1 backdrop-blur-sm bg-white/30 absolute tool-menu z-[1000] transition duration-150"
       v-show="isActive" ref="toolMenu" v-if="tool.user != file.userId ||
         (tool.user == file.userId && tool.justMounted) ||
         (isCreator && tool.user == file.userId && !tool.justMounted)
@@ -58,7 +58,9 @@
         :setInitialSignType="setInitialSignType" @onBlur="onBlur" :isCreator="isCreator" :responsiveDim="responsiveDim"
         :responsiveToolDim="responsiveToolDim" @addOffset="addOffset"
         :userTime="userTime"
+        :textareaStyles="textareaStyles"
         />
+
       <!-- <div :class="[
           'dr__right',
           { line: type == TOOL_TYPE.line },
@@ -72,6 +74,23 @@
         ]" v-hammer:pan="(ev) => handleToolDrag(ev, TOOL_DIRECTION.left)" v-if="isAvailableDrLeft && isCreator"></div>
        -->
     </div>
+    <div v-show="discribe.length && !editTitle && this.tool.type == this.TOOL_TYPE.star && isActive && !checkIsMobile" 
+    class="rounded-md hidden pop-label"
+    ref="popUpTitle"
+    :style="scaleStyle"
+        >
+             <p class="popper-up">
+                 {{ this.discribe }}
+                <img @click="resetDiscribe" src="./assets/delete_icon.svg" class="absolute bottom-2 right-2 bg-white rounded-full cursor-pointer"/>
+             </p>
+        </div>
+    
+       <div v-show="editTitle && !checkIsMobile && isActive" v-if="this.tool.type == this.TOOL_TYPE.star" class="input-wrapper transition duration-150" ref="textareaContainer" style="textArea" :style="scaleStyle">
+           <div class="md:flex items-center rounded-md  w-[180px] absolute top-full hidden">
+            <p ref="textarea" contenteditable="true" class="note-input-pc font-[300] tracking-wide" placeholder="Type Message here"></p>
+            <img @click="saveDiscription" class="ml-1 absolute top-[0px]  left-full cursor-pointer" src="./assets/check_icon.svg" ref="saveButton"/>
+           </div>
+       </div>
   </div>
 </template>
 
@@ -104,6 +123,7 @@ import TeamAccess from '~/models/TeamAccess'
 import AppendNameTool from './tools/AppendName.vue'
 import AppendFirstNameTool from './tools/AppendFirstName.vue'
 import AppendLastNameTool from './tools/AppendLastName.vue'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   props: {
@@ -140,6 +160,7 @@ export default {
     lineStart: Boolean,
     toolLength: Number,
     userId: Number,
+    inputValue: Function,
   },
   components: {
     TextTool,
@@ -173,6 +194,12 @@ export default {
     isDragFinal: false,
     top: 100,
     left: 0,
+    textareaStyles: {
+      top:"",
+      left: "",
+      bottom: "",
+      right: ""
+    },
     calendarValue: undefined,
     altDirection: false,
     incDecCount: 7,
@@ -181,6 +208,8 @@ export default {
     toolWrapperId: '',
     pageScale: 1,
     firstRender: false,
+    editTitle: false,
+    discribe: ""
   }),
   head() {
     return {
@@ -205,6 +234,9 @@ export default {
     //   this.$refs.Wrp?.classList.remomve('pointer-events-none')
   },
   watch: {
+    editTitle(val){
+      console.log("active-tool", val)
+    },
     x1() {
       this.clcPos()
     },
@@ -242,6 +274,15 @@ export default {
         return 'initial' + this.pageNumber
       } else {
         return ''
+      }
+    },
+    checkIsMobile(){
+      return isMobile
+    },
+    scaleStyle() {
+      return {
+        transform: `scale(${1 * this.responsiveToolDim.width})`,
+        transformOrigin: '0 0'
       }
     },
     isActive() {
@@ -322,6 +363,23 @@ export default {
     },
   },
   methods: {
+    resetDiscribe(){
+      if(!this.$refs.textarea) return
+      this.$refs.textarea.innerHTML = ""
+      this.discribe = ""
+      this.$emit('setToolDiscription', "")
+    },
+    saveDiscription(){
+      if(!this.$refs.textarea) return
+      this.discribe = this.$refs.textarea.textContent
+      this.editTitle = false
+      this.$emit('setToolDiscription', this.discribe)
+    },
+    setLabel(){
+      if(this.type !== TOOL_TYPE.star) return
+      this.checkIsMobile && this.$BUS.$emit("openSaveDiscription")
+      this.editTitle = true
+    },
     getCurrentPageDim() {
       if (!this.$refs.Wrp) return {}
       let all_PGD = this.$refs.Wrp.parentElement.getBoundingClientRect()
@@ -384,6 +442,8 @@ export default {
           this.TOOL_TYPE.appendDate,
           this.TOOL_TYPE.star,
           this.TOOL_TYPE.appendName,
+          this.TOOL_TYPE.appendFirstName,
+          this.TOOL_TYPE.appendLastName,
         ].includes(this.type)
       )
         return false
@@ -410,6 +470,7 @@ export default {
     // },
     onClick() {
       if (!this.tool.justMounted && !this.isCreator) return
+      this.setLabel()
       this.setActiveToolId(this.id)
       return
       this.$emit('resetJustMounted', this.id)
@@ -425,7 +486,7 @@ export default {
       }
       if (!this.isCreator) return
       this.$emit('toolWrapperAfterChecked', this.id)
-      this.setActiveToolId(null)
+      // this.setActiveToolId(null)
     },
     clcPos() {
       let top = this.top
@@ -455,7 +516,8 @@ export default {
         this.tool.type == this.TOOL_TYPE.appendDate ||
         this.tool.type == this.TOOL_TYPE.appendName ||
         this.tool.type == this.TOOL_TYPE.appendFirstName ||
-        this.tool.type == this.TOOL_TYPE.appendLastName
+        this.tool.type == this.TOOL_TYPE.appendLastName ||
+        this.tool.type == this.TOOL_TYPE.star
       )
         this.$emit('parentOffset', val, this.id)
     },
@@ -524,6 +586,9 @@ export default {
     async toolMenuPosCalculation() {
       await this.$nextTick()
       var elem = this.$refs.Wrp
+      var savebutton = this.$refs.saveButton
+      var textareaContainer = this.$refs.textareaContainer
+      var popUpTitle = this.$refs.popUpTitle
       // console.log(elem)
 
       let toolMenuHeight = this.$refs.toolMenu.clientHeight + 2
@@ -539,16 +604,46 @@ export default {
           }px`
         this.$refs.toolMenu.style.bottom = 'unset'
       }
+      //
+      if ((elem.parentElement.clientHeight - this.top) < toolMenuHeight + this.$refs.textarea.getBoundingClientRect().height) {
+        textareaContainer.style.top = 'unset'
+        textareaContainer.style.bottom = `${toolMenuHeight + this.$refs.textarea.getBoundingClientRect().height + fontSize - initFontSize
+          }px`
+          popUpTitle.style.top = "unset"
+          popUpTitle.style.bottom = `${toolMenuHeight + this.$refs.textarea.getBoundingClientRect().height + fontSize - initFontSize
+          }px`
+      } else {
+        textareaContainer.style.top = `unset`
+          textareaContainer.style.bottom = 'unset'
+          popUpTitle.style.top = "unset"
+          popUpTitle.style.bottom = "unset"
+      }
+      // move the tool menu base on the closeness to the parent element
       if (
         Math.abs(this.left - elem.parentElement.clientWidth) < toolMenuWidth
       ) {
         this.$refs.toolMenu.style.left = `${elem.clientWidth - toolMenuWidth}px`
       } else {
-        this.$refs.toolMenu.style.left = `0`
+        this.$refs.toolMenu.style.left = `0px`
       }
+ 
+    // move the text-box base on the closeness to the parent element
+      if (
+        Math.abs(elem.parentElement.clientWidth - this.left) < toolMenuWidth  + (textareaContainer ? textareaContainer.clientWidth : 0 ) - 2*(savebutton ? savebutton.clientWidth : 0) - 10
+      ) {
+        textareaContainer.style.left = `-${textareaContainer.clientWidth - 2*(savebutton ? savebutton.clientWidth : 0)}px`
+        popUpTitle.style.left = `-${textareaContainer.clientWidth - 2*(savebutton ? savebutton.clientWidth : 0)}px`
+      } else {
+        textareaContainer.style.left = `0px`
+        popUpTitle.style.left = "0px"
+      }
+
+      // this.$refs.textareaContainer.style.left = `${elem.clientWidth - toolMenuWidth}px`
     },
-    onInp(...v) {
-      this.$emit('input', ...v)
+    onInp(v) {
+      this.inputValue(v)
+      console.log(v)
+      // this.$emit('input', ...v)
     },
     onBlur() {
       this.onOutSideClick()
@@ -556,6 +651,7 @@ export default {
   },
   mounted: function () {
     this.getCurrentPageDim()
+    this.$refs.textarea && (this.$refs.textarea.innerHTML = this.tool.discription)
   },
 }
 </script>
@@ -567,7 +663,7 @@ export default {
   height: 27px;
   position: absolute;
   top: -27px;
-  z-index: 30;
+  z-index: 1000;
 }
 
 .tool-holder {
@@ -614,5 +710,29 @@ export default {
       }
     }
   }
+}
+.note-input{
+  @apply w-full rounded-md outline-none text-sm bg-white p-2 resize-none md:shadow-md md:shadow-black/30
+  min-h-[300px] max-h-[300px] overflow-auto
+}
+.note-input-pc{
+  @apply w-full rounded-md outline-none text-sm bg-white p-2 resize-none md:shadow-md md:shadow-black/30 max-h-[200px] overflow-y-auto
+}
+.note-input-pc[placeholder]:empty:before {
+  content: 'Type here...';
+  opacity: 0.5;
+  color: #555;
+}
+.pop-label{
+ @apply  md:shadow-md md:shadow-black/30 absolute
+}
+.input-wrapper{
+  @apply rounded-md md:w-[180px] md:h-auto z-[100]  flex justify-center items-center absolute
+}
+.text-field:hover  .pop-label{
+  @apply block
+}
+.popper-up{
+  @apply w-[180px] bg-white break-words p-2 pb-3 relative rounded-md text-sm font-[300] tracking-wide max-h-[200px] overflow-y-auto
 }
 </style>

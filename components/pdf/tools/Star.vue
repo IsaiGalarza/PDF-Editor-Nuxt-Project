@@ -3,6 +3,7 @@
     class="text-field tool"
     attr="star"
     :elemFill="confirmStar"
+    ref="starTool"
   >
   <!-- <span v-if="isFirstAction && $store.state.agreeSign == 1" class="toolTip"
   >Sign</span
@@ -18,12 +19,15 @@
       src="../../../assets/img/require-icon.svg"
     />
     <span v-if="!confirmStar" class="annot-button w-0 h-0 p-0 m-0 border-0"></span>
+    <span class="tip" ref="tip" v-if="!confirmStar && !isCreator && tool.discription.length">
+      <img @click="confirmStarAction" src="../assets/check_green_icon.svg" class="w-[15px] h-[15px] absolute check-position-left -top-1 check-position z-10"/>
+    </span>
     <div 
     v-if="!confirmStar && !isCreator && tool.discription.length"
     :style="scaleStyle"
-    class="w-[180px] text-[11px] arrow-head text-center bg-white p-2 rounded-md">
-      {{ tool.discription }}
-      <img @click="confirmStarAction" src="../assets/check_green_icon.svg" class="w-[15px] absolute -top-1  right-[calc(96%-15px)] z-10"/>
+    ref="toolTip"
+    class="w-[180px] text-[11px] arrow-head text-center bg-white p-2 rounded-md transition duration-150">
+     <div class="max-h-[200px] overflow-y-auto break-all pt-1"> {{ tool.discription }}</div>
     </div>
 
    
@@ -50,13 +54,17 @@ export default {
     tool: Object,
     responsiveDim: Object,
     responsiveToolDim: Object,
-    textareaStyles: Object
+    textareaStyles: Object,
+    calcTop: Number,
+    calcLeft: Number,
+    wrpStyle: Object
   },
   mounted() {
     this.checkToolIndex()
     setTimeout(() => {
-    !this.hasAddedOffset ? !this.isCreator && this.$emit('addOffset', 27 ) : null
+    !this.hasAddedOffset ? !this.isCreator && this.$emit('addOffset', 33 ) : null
     this.hasAddedOffset = true
+    this.checkToolPosition()
    }, 300);
   },
   computed: {
@@ -78,7 +86,22 @@ export default {
 
   },
   methods: {
-   
+    checkToolPosition(){
+      let pageheight = document.querySelectorAll(".pdf-page")[this.tool.pageNumber - 1].clientHeight
+      let pagewidth = document.querySelectorAll(".pdf-page")[this.tool.pageNumber - 1].clientWidth
+      let elem = this.$refs.toolTip
+      let top = Number(this.wrpStyle?.top.replace("px",''))
+      let left = Number(this.wrpStyle?.left.replace("px",''))
+      
+       if((elem.clientHeight + top) > pageheight){
+        this.$refs.toolTip.style.top = `-${elem.clientHeight + 20}px`
+        this.$refs.tip.className = 'down_tip'
+       }
+       if((elem.clientWidth + left) > pagewidth){
+        this.$refs.toolTip.style.left = `-${elem.clientWidth - 17}px`
+       }
+       console.log(document.querySelectorAll(".pdf-page")[this.tool.pageNumber - 1], elem.clientWidth)
+    },
     checkToolIndex(){
        let bl = document.querySelectorAll('.annot-button')
       Array.from(bl).forEach((element, index) => {
@@ -157,27 +180,66 @@ input {
   @apply block
 }
 .arrow-head{
-@apply md:shadow-md md:shadow-black/30 border-[2px] border-paperdazgreen-300
+@apply md:shadow-md md:shadow-black/30 border-[2px] border-paperdazgreen-300 absolute left-[-13px]
 }
-.arrow-head::before{
-   content: "";
-   position: absolute;
-   border-top: 12px solid transparent;
-   border-left: 12px solid transparent;
-   border-right: 12px solid transparent;
-   border-bottom: 16px solid rgb(119 195 96 );
-   bottom: 100%;
-   right: calc(96% - 19px);
-}
-.arrow-head::after{
+
+
+ .tip{
+    position: absolute;
+    display: inline-block;
+    top: 3px;
+    left: -3px
+ }
+ .tip::before{
   content: "";
   position: absolute;
-  border-top: 9px solid transparent;
-  border-left: 9px solid transparent;
-  border-right: 9px solid transparent;
-  border-bottom: 13px solid white;
-  z-inde: 9;
-  bottom: calc(100% - 1px);
-  right: calc(96% - 16px);
+  border-top: 12px solid transparent;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 16px solid rgb(119 195 96 );
+  bottom: 100%;
+  right: calc(96% - 19px);
+}
+.tip::after{
+ content: "";
+ position: absolute;
+ border-top: 9px solid transparent;
+ border-left: 9px solid transparent;
+ border-right: 9px solid transparent;
+ border-bottom: 13px solid white;
+ z-index: 9;
+ bottom: calc(100% - 1px);
+ right: calc(96% - 16px);
+}
+.down_tip{
+  position: absolute;
+  display: inline-block;
+  top: -17px;
+  left: 10px;
+  transform: rotateZ(180deg)
+}
+.down_tip::before{
+content: "";
+position: absolute;
+border-top: 16px solid transparent;
+border-left: 12px solid transparent;
+border-right: 12px solid transparent;
+border-bottom: 12px solid rgb(119 195 96 );
+bottom: 100%;
+right: calc(96% - 19px);
+}
+.down_tip::after{
+content: "";
+position: absolute;
+border-top: 13px solid transparent;
+border-left: 9px solid transparent;
+border-right: 9px solid transparent;
+border-bottom: 9px solid white;
+z-index: 9;
+bottom: calc(100% - 1px);
+right: calc(96% - 16px);
+}
+img{
+  max-width: none ;
 }
 </style>

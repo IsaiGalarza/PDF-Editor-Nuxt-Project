@@ -59,6 +59,7 @@
         :responsiveToolDim="responsiveToolDim" @addOffset="addOffset"
         :userTime="userTime"
         :textareaStyles="textareaStyles"
+        :wrpStyle="wrpStyle"
         />
 
       <!-- <div :class="[
@@ -161,6 +162,7 @@ export default {
     toolLength: Number,
     userId: Number,
     inputValue: Function,
+    toolDescriptionFunc: Function
   },
   components: {
     TextTool,
@@ -185,7 +187,8 @@ export default {
     AppendDateTool,
     AppendNameTool,
     AppendFirstNameTool,
-    AppendLastNameTool
+    AppendLastNameTool,
+    
   },
   data: () => ({
     lastPosX: 0,
@@ -373,7 +376,7 @@ export default {
       if(!this.$refs.textarea) return
       this.discribe = this.$refs.textarea.textContent
       this.editTitle = false
-      this.$emit('setToolDiscription', this.discribe)
+      this.toolDescriptionFunc(this.discribe)
     },
     setLabel(){
       if(this.type !== TOOL_TYPE.star) return
@@ -589,13 +592,15 @@ export default {
       var savebutton = this.$refs.saveButton
       var textareaContainer = this.$refs.textareaContainer
       var popUpTitle = this.$refs.popUpTitle
+      let left = Number(this.wrpStyle.left.replace('px',''))
+      let top = Number(this.wrpStyle.top.replace('px',''))
       // console.log(elem)
 
       let toolMenuHeight = this.$refs.toolMenu.clientHeight + 2
       let toolMenuWidth = this.$refs.toolMenu.clientWidth
       const initFontSize = 11
       const fontSize = this.fontSize || initFontSize
-      if (this.top < toolMenuHeight) {
+      if (top < toolMenuHeight) {
         this.$refs.toolMenu.style.top = 'unset'
         this.$refs.toolMenu.style.bottom = `-${toolMenuHeight + fontSize - initFontSize
           }px`
@@ -605,7 +610,7 @@ export default {
         this.$refs.toolMenu.style.bottom = 'unset'
       }
       //
-      if ((elem.parentElement.clientHeight - this.top) < toolMenuHeight + this.$refs.textarea.getBoundingClientRect().height) {
+      if ((elem.parentElement.clientHeight - top) < toolMenuHeight + this.$refs.textarea.getBoundingClientRect().height) {
         textareaContainer.style.top = 'unset'
         textareaContainer.style.bottom = `${toolMenuHeight + this.$refs.textarea.getBoundingClientRect().height + fontSize - initFontSize
           }px`
@@ -620,7 +625,7 @@ export default {
       }
       // move the tool menu base on the closeness to the parent element
       if (
-        Math.abs(this.left - elem.parentElement.clientWidth) < toolMenuWidth
+        Math.abs(left - elem.parentElement.clientWidth) < toolMenuWidth
       ) {
         this.$refs.toolMenu.style.left = `${elem.clientWidth - toolMenuWidth}px`
       } else {
@@ -629,12 +634,23 @@ export default {
  
     // move the text-box base on the closeness to the parent element
       if (
-        Math.abs(elem.parentElement.clientWidth - this.left) < toolMenuWidth  + (textareaContainer ? textareaContainer.clientWidth : 0 ) - 2*(savebutton ? savebutton.clientWidth : 0) - 10
+        Math.abs(elem.parentElement.clientWidth - left) < toolMenuWidth  + (textareaContainer ? textareaContainer.clientWidth : 0 ) - 2*(savebutton ? savebutton.clientWidth : 0) - 10
       ) {
-        textareaContainer.style.left = `-${textareaContainer.clientWidth - 2*(savebutton ? savebutton.clientWidth : 0)}px`
+        textareaContainer.style.left = `-${textareaContainer.clientWidth - (savebutton ? savebutton.clientWidth : 0)}px`
         popUpTitle.style.left = `-${textareaContainer.clientWidth - 2*(savebutton ? savebutton.clientWidth : 0)}px`
       } else {
         textareaContainer.style.left = `0px`
+        popUpTitle.style.left = "0px"
+      }
+
+        // move the popup-box base on the closeness to the parent element
+        if (
+        Math.abs(elem.parentElement.clientWidth - left) < toolMenuWidth  + (popUpTitle ? popUpTitle.clientWidth : 0 ) - 2*(savebutton ? savebutton.clientWidth : 0) - 10
+      ) {
+        // textareaContainer.style.left = `-${textareaContainer.clientWidth - 2*(savebutton ? savebutton.clientWidth : 0)}px`
+        popUpTitle.style.left = `-${textareaContainer.clientWidth - 2*(savebutton ? savebutton.clientWidth : 0)}px`
+      } else {
+        // textareaContainer.style.left = `0px`
         popUpTitle.style.left = "0px"
       }
 

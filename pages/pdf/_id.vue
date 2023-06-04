@@ -161,6 +161,7 @@
             :inputValue="inputValue"
             :setInitialSignType="setInitialSignType"
             @parentOffset="parentOffset"
+            :toolDescriptionFunc="toolDescriptionFunc"
           />
           <!-- </div> -->
           <pdf-page
@@ -300,6 +301,7 @@
                 :inputValue="inputValue"
                 :setInitialSignType="setInitialSignType"
                 @parentOffset="parentOffset"
+                :toolDescriptionFunc="toolDescriptionFunc"
               />
               <!-- </div> -->
               <pdf-page

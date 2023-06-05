@@ -58,6 +58,7 @@
         :setInitialSignType="setInitialSignType" @onBlur="onBlur" :isCreator="isCreator" :responsiveDim="responsiveDim"
         :responsiveToolDim="responsiveToolDim" @addOffset="addOffset"
         :userTime="userTime"
+        :isMobile="isMobile"
         :textareaStyles="textareaStyles"
         :wrpStyle="wrpStyle"
         />

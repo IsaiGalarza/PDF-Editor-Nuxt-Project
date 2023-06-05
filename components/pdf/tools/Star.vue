@@ -19,8 +19,9 @@
       src="../../../assets/img/require-icon.svg"
     />
     <span v-if="!confirmStar" class="annot-button w-0 h-0 p-0 m-0 border-0"></span>
-    <span class="tip" ref="tip" v-if="!confirmStar && !isCreator && tool.discription.length">
-      <img @click="confirmStarAction" src="../assets/check_green_icon.svg" class="w-[15px] h-[15px] absolute check-position-left -top-1 check-position z-10"/>
+    <span 
+      class="tip" ref="tip" v-if="!confirmStar && !isCreator && tool.discription.length">
+      <img  @click="confirmStarAction" src="../assets/check_green_icon.svg" class="lg::w-[15px] lg:h-[15px] sm:w-[11px] sm:h-[11px] w-[8px] h-[8px] absolute check-position-left -top-1 check-position z-10 "/>
     </span>
     <div 
     v-if="!confirmStar && !isCreator && tool.discription.length"
@@ -35,7 +36,6 @@
 </template>
 
 <script>
-import { isMobile } from 'mobile-device-detect'
 
 export default {
   data() {
@@ -57,7 +57,7 @@ export default {
     textareaStyles: Object,
     calcTop: Number,
     calcLeft: Number,
-    wrpStyle: Object
+    wrpStyle: Object,
   },
   mounted() {
     this.checkToolIndex()
@@ -94,11 +94,11 @@ export default {
       let left = Number(this.wrpStyle?.left.replace("px",''))
       
        if((elem.clientHeight + top) > pageheight){
-        this.$refs.toolTip.style.top = `-${elem.clientHeight + 20}px`
+        this.$refs.toolTip.style.top = `-${elem.clientHeight + 22}px`
         this.$refs.tip.className = 'down_tip'
        }
        if((elem.clientWidth + left) > pagewidth){
-        this.$refs.toolTip.style.left = `-${elem.clientWidth - 17}px`
+        this.$refs.toolTip.style.left = `-${elem.clientWidth - 16}px`
        }
        console.log(document.querySelectorAll(".pdf-page")[this.tool.pageNumber - 1], elem.clientWidth)
     },
@@ -214,8 +214,9 @@ input {
 .down_tip{
   position: absolute;
   display: inline-block;
-  top: -17px;
+  top: -19px;
   left: 10px;
+z-index: 10;
   transform: rotateZ(180deg)
 }
 .down_tip::before{
@@ -241,5 +242,8 @@ right: calc(96% - 16px);
 }
 img{
   max-width: none ;
+}
+.check-position-left{
+  @apply -left-[calc(50%-4px)] sm:-left-[calc(50%-2px)]
 }
 </style>

@@ -635,7 +635,7 @@ export default {
  
     // move the text-box base on the closeness to the parent element
       if (
-        Math.abs(elem.parentElement.clientWidth - left) < toolMenuWidth  + (textareaContainer ? textareaContainer.clientWidth : 0 ) - 2*(savebutton ? savebutton.clientWidth : 0) - 10
+        Math.abs(elem.parentElement.clientWidth - left) < toolMenuWidth  + (textareaContainer ? textareaContainer.clientWidth : 0 ) - (savebutton ? savebutton.clientWidth : 0) - 10
       ) {
         textareaContainer.style.left = `-${textareaContainer.clientWidth - (savebutton ? savebutton.clientWidth : 0)}px`
         popUpTitle.style.left = `-${textareaContainer.clientWidth - 2*(savebutton ? savebutton.clientWidth : 0)}px`

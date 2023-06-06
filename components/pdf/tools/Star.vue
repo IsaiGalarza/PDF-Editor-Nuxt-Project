@@ -21,7 +21,7 @@
     <span v-if="!confirmStar" class="annot-button w-0 h-0 p-0 m-0 border-0"></span>
     <span 
       class="tip" ref="tip" v-if="!confirmStar && !isCreator && tool.discription.length">
-      <img  @click="confirmStarAction" src="../assets/check_green_icon.svg" class="lg::w-[15px] lg:h-[15px] sm:w-[11px] sm:h-[11px] w-[8px] h-[8px] absolute check-position-left -top-1 check-position z-10 "/>
+      <img  @click="confirmStarAction" ref="check" src="../assets/check_green_icon.svg" class="lg::w-[15px] lg:h-[15px] sm:w-[11px] sm:h-[11px] w-[8px] h-[8px] absolute check-position-left -top-1 check-position z-10 "/>
     </span>
     <div 
     v-if="!confirmStar && !isCreator && tool.discription.length"
@@ -71,7 +71,6 @@ export default {
     scaleStyle() {
       return {
         transform: `scale(${1 * this.responsiveToolDim.width})`,
-        transformOrigin: '0 0'
       }
     },
     style() {
@@ -96,11 +95,18 @@ export default {
        if((elem.clientHeight + top) > pageheight){
         this.$refs.toolTip.style.top = `-${elem.clientHeight + 22}px`
         this.$refs.tip.className = 'down_tip'
+        this.$refs.check.style.transform = "rotateZ(180deg)"
+        this.$refs.toolTip.classList.add('transformOriginY_T')
+       } else {
+        this.$refs.toolTip.classList.add('transformOriginY_B')
        }
        if((elem.clientWidth + left) > pagewidth){
         this.$refs.toolTip.style.left = `-${elem.clientWidth - 16}px`
+        this.$refs.toolTip.classList.add('transformOriginX_T')
+       } else {
+        this.$refs.toolTip.classList.add('transformOriginX_B')
        }
-       console.log(document.querySelectorAll(".pdf-page")[this.tool.pageNumber - 1], elem.clientWidth)
+
     },
     checkToolIndex(){
        let bl = document.querySelectorAll('.annot-button')
@@ -180,7 +186,7 @@ input {
   @apply block
 }
 .arrow-head{
-@apply md:shadow-md md:shadow-black/30 border-[2px] border-paperdazgreen-300 absolute left-[-13px]
+@apply md:shadow-md md:shadow-black/30 border-[2px] border-paperdazgreen-300 absolute left-[-10px]
 }
 
 
@@ -245,5 +251,21 @@ img{
 }
 .check-position-left{
   @apply -left-[calc(50%-4px)] sm:-left-[calc(50%-2px)]
+}
+.transformOriginX_T{
+  -webkit-transform-origin-x: 100%;
+  -ms-transform-origin-x: 100%;
+}
+.transformOriginX_B{
+  -webkit-transform-origin-x: 0%;
+    -ms-transform-origin-x: 0%;
+}
+.transformOriginY_T{
+  -webkit-transform-origin-y: 100%;
+  -ms-transform-origin-y: 100%;
+}
+.transformOriginY_B{
+  -webkit-transform-origin-y: 0%;
+    -ms-transform-origin-y: 0%;
 }
 </style>

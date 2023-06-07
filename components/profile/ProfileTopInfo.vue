@@ -62,9 +62,7 @@
             <span class="text-2xl text-grey"> {{ name }}</span>
           </div>
 
-          <div
-            class="flex row-auto bg-blue-300 absolute top-[50%] right-3 translate-y-[-50%]"
-          >
+          <div class="flex row-auto absolute top-[50%] right-3 translate-y-[-50%]">
             <!-- <install-pwa-button class="w-auto absolute right-4 hidden lg:block pr-12" /> -->
             <span @click="openShareModal" class="cursor-pointer"
               ><share-outline-icon :width="18" class="w-auto hidden lg:block pr-3"

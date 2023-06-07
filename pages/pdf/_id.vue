@@ -1043,11 +1043,10 @@ export default mixins(PdfAuth).extend({
       this.generatePDF = val
     },
     comfirmedFile(){
-      if(!this.$store.getters.getAddToPageTextvalue){
-        this.showFilemanagerusernam = true
-      }
-      else if(this.isConfirm && !this.$store.getters?.getUserSignature){
+     if(this.isConfirm && !this.$store.getters?.getUserSignature){
         this.openTypeSignModal = true
+      } else if(!this.$store.getters.getAddToPageTextvalue){
+        this.showFilemanagerusernam = true
       } else {
         this.publishFileFunction()
       }

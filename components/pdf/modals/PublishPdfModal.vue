@@ -344,13 +344,13 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     }
   },
   watch: {
-    "$store.getters.getUserSignature"(){
-       if(!this.isConfirm) return
-       else {
-        this.showModal = true
-       this.file?.user?.allowCopy ? null : this.onSubmit()
-       }
-    },
+    // "$store.getters.getUserSignature"(){
+    //    if(!this.isConfirm) return
+    //    else {
+    //     this.showModal = true
+    //    this.file?.user?.allowCopy ? null : this.onSubmit()
+    //    }
+    // },
     visible(val) {
       this.showModal = val;
     },

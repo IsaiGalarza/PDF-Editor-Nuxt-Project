@@ -546,7 +546,7 @@
       @createFile="showUploadDocumentModal = true"
       v-model="showAddCompanyFiles"
     />
-    <FilesInFolder :folder="FilesInFolerContent" v-model="showFilesInFolder" />
+    <FilesFolder :folder="FilesInFolerContent" v-model="showFilesInFolder" />
     <QrcodeShare :userFile="userFile" v-model="showQrcodeFiles" />
     <MaxPaperlinkModal v-model="showMaxPaperlinkModal" :totalFile="totalFile" />
     <PdfCCFlowModal :file="userFile" v-model="showCCFlowModal" />
@@ -786,7 +786,7 @@ import FilePagination from "../pagination/FilePagination.vue";
 import UserTypeEnum from "~/models/UserTypeEnum";
 import RequestModal from "./Tabs/RequestModal.vue";
 import TeamAccess from "~/models/TeamAccess";
-import FilesInFolder from "./Tabs/Files_In_Folder.vue";
+import FilesFolder from "./Tabs/FilesFolder.vue";
 import MaxPaperlinkModal from "./Tabs/MaxPaperlinkModal.vue";
 import FileAction from "~/models/FileAction";
 import ArrowDownIcon from "../svg-icons/ArrowDownIcon.vue";
@@ -831,7 +831,7 @@ export default Vue.extend({
     QrcodeShare,
     FilePagination,
     RequestModal,
-    FilesInFolder,
+    FilesFolder,
     MaxPaperlinkModal,
     QrcodeIcon,
     ArrowDownIcon,

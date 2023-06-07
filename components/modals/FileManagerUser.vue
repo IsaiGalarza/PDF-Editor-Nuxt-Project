@@ -9,7 +9,7 @@
     >
       <template #title>
         <div class="tab-container">
-           <button class="mx-3"><img class="w-6" @click="closeModal" src="@/assets/img/Arrow-back.svg"/></button>
+           <button v-if="isConfirm" class="mx-3"><img class="w-6" @click="closeModal" src="@/assets/img/Arrow-back.svg"/></button>
            <span class="flex w-full justify-center">{{ isConfirm ? 'Done?' : 'Type Name of person on file' }} </span>
         </div>
       </template>
@@ -45,6 +45,7 @@
             <button
               class="h-9 rounded border border-gray-100 bg-paperdazgreen-300 text-base text-white px-8 hover:shadow"
               @click="exportText"
+              :class="[isDisabled ? 'opacity-50' : 'opacity-100']"
             >
               SAVE
             </button>
@@ -120,6 +121,9 @@
       isConfirm() {
       return String(this.file.fileAction).toLowerCase() === FileAction.CONFIRM
     },
+    isDisabled(){
+      return (!this.lastNameValue.length || !this.firstNameValue.length)
+    }
     },
     methods: {
       closeModal() {
@@ -131,6 +135,7 @@
         this.$refs.inputElement.focus()
       },
       exportText(){
+        if(this.isDisabled) return
         this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", { text: this.lastNameValue, type: 'last_name'})
         this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", { text: this.firstNameValue, type: 'first_name'})
         this.$store.commit("SET_SAVE_PAGE_TEXT_VALUE", { text: `${this.firstNameValue} ${this.lastNameValue}`, type: 'name'})

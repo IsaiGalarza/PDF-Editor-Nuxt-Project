@@ -1054,6 +1054,10 @@ export default mixins(PdfAuth).extend({
     publishFileFunction() {
       this.setToinitialScale()
       this.scrollToSignInitial()
+      if(!this.$store.getters.getAddToPageTextvalue){
+        this.comfirmedFile()
+        return
+      }
       if (this.filteredAnnotationButton.length > 0) {
         this.$notify.error({
           title: 'Please complete all data!',

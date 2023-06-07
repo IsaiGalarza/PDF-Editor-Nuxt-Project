@@ -9,7 +9,8 @@
     >
       <template #title>
         <div class="tab-container">
-            Type Name of person on file
+           <button class="mx-3"><img class="w-6" @click="closeModal" src="@/assets/img/Arrow-back.svg"/></button>
+           <span class="flex w-full justify-center">{{ isConfirm ? 'Done?' : 'Type Name of person on file' }} </span>
         </div>
       </template>
   
@@ -97,6 +98,13 @@
       }
     },
     watch: {
+    "$store.getters.getUserSignature"(){
+       if(!this.isConfirm) return
+       else {
+        this.showModal = true
+      //  this.file?.user?.allowCopy ? null : this.onSubmit()
+       }
+    },
       visible(val) {
         // this.$emit("updateVisibility", val)
         this.showModal = val
@@ -164,7 +172,7 @@
     padding-bottom: 0 !important;
   }
   .tab-container {
-    @apply w-full py-2 border-b border-paperdazgreen-400/30 text-center bg-paperdazgreen-300 text-white text-base;
+    @apply w-full py-2 border-b border-paperdazgreen-400/30 text-center bg-paperdazgreen-300 text-white text-base flex items-center;
   }
   
   .tab-button {

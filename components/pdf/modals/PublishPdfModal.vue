@@ -473,6 +473,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         userId: val == 'owner' ? this.file?.userId : 0,
         editedFileLink: this.generatedPdf?.downloadLink,
         fileId: this.file?.id,
+        name: this.$store.getters.getAddToPageTextvalue
       }
       //   // return
       try {

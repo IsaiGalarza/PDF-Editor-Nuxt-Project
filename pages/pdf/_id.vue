@@ -390,6 +390,7 @@
     <DoneModal :file="file" v-model="showDoneModal" />
     <GuestModal v-model="showGuestModal" />
     <AddToPageText v-model="showAddPageText" :name_type="nameType"/>
+    <FileManagerUser :file="file" :comfirmedFile=comfirmedFile v-model="showFilemanagerusernam"/>
     <TextSaveForMobile v-model="showSaveforMopbile" :toolDescriptionFunc="toolDescriptionFunc" :tools="tools" :activeToolId="activeToolId"/>
   </div>
 </template>
@@ -454,6 +455,7 @@ import GlobalMixin from '~/mixins/GlobalMixin'
 import AddToPageText from '~/components/modals/AddToPageText.vue';
 import { AppendKeypressActionOnInput } from '~/types/AppendKeyPressAction';
 import TextSaveForMobile from '~/components/pdf/modals/TextSaveForMobile.vue';
+import FileManagerUser from "~/components/modals/FileManagerUser.vue"
 
 
 export default mixins(PdfAuth).extend({
@@ -492,7 +494,8 @@ export default mixins(PdfAuth).extend({
     PinchZoom,
     GuestModal,
     AddToPageText,
-    TextSaveForMobile
+    TextSaveForMobile,
+    FileManagerUser
   },
   data: () => ({
     showGuestModal: false,
@@ -583,7 +586,8 @@ export default mixins(PdfAuth).extend({
     AllPdfParentPageDim: [],
     nameType: "",
     userTime: "",
-    showSaveforMopbile: false
+    showSaveforMopbile: false,
+    showFilemanagerusernam: false
   }),
   created() {
     this.fetchPdf()
@@ -616,7 +620,6 @@ export default mixins(PdfAuth).extend({
     this.checkFilePrivacyOnload()
     this.$store.commit('SET_GUEST_MODAL_FUNCTION', this.showGuestModalFunc)
     if(JSON.parse(localStorage.getItem('isGuest'))?.isGuest) localStorage.removeItem('isGuest')
-    console.log("anotations---toolsssssssssssss", this.tools)
   },
   destroyed() {
     document.removeEventListener('keyup', this.keyupHandler)
@@ -824,7 +827,6 @@ export default mixins(PdfAuth).extend({
     inputValue(val){
       let index = this.tools.findIndex(tl => tl.id == this.activeToolId);
       this.tools[index].value = val 
-      console.log(this.activeToolId, this.selectedToolId, val, this.tools[index])
     },
     parentOffset(val, id){  
        let ind = this.tools.findIndex((item)=> item.id == id)
@@ -933,7 +935,6 @@ export default mixins(PdfAuth).extend({
         this.filteredAnnotationButton = Array.from(annotationButton).filter(
           (item, index) => !item.hasAttribute('elemFill')
         )
-        console.log("???????????????????",annotationButton.length)
         if (type == 'mounted' && this.filteredAnnotationButton.length > 0) {
           let signNum = 0,
             initialNum = 0
@@ -1042,7 +1043,10 @@ export default mixins(PdfAuth).extend({
       this.generatePDF = val
     },
     comfirmedFile(){
-      if(this.isConfirm && !this.$store.getters?.getUserSignature){
+      if(!this.$store.getters.getAddToPageTextvalue){
+        this.showFilemanagerusernam = true
+      }
+      else if(this.isConfirm && !this.$store.getters?.getUserSignature){
         this.openTypeSignModal = true
       } else {
         this.publishFileFunction()
@@ -1124,7 +1128,6 @@ export default mixins(PdfAuth).extend({
       this.$axios
         .get(`/permissions?permissionUniqueId=${permissionQuery}`)
         .then((response) => { 
-          console.log(response)
           if(response.data[0]?.isGranted == 1){
             this.permissionLoading = { type: false, msg: 'permission granted'}
             this.displayPDF = true
@@ -1172,6 +1175,8 @@ export default mixins(PdfAuth).extend({
       //scroll to sign or initials button
       setTimeout(() => {
         this.scrollToSignInitial('mounted')
+        this.isComplete && !this.isCreator && (this.showFilemanagerusernam = true)
+        this.isSign && !this.isCreator && (this.showFilemanagerusernam = true)
       }, 1000)
       await this.pdfBoundingRect()
       await this.getALlInput()
@@ -1301,14 +1306,12 @@ export default mixins(PdfAuth).extend({
       let getAllPdfPages = document.querySelectorAll('.pdf-single-page-outer')
       Array.from(getAllPdfPages).forEach(element => {
         element.style.setProperty('touch-action', 'none', 'important');
-        console.log(element.getAttribute('style'))
       });
     }
      else {
       let getAllPdfPages = document.querySelectorAll('.pdf-single-page-outer')
       Array.from(getAllPdfPages).forEach(element => {
         element.style.setProperty('touch-action', 'auto', 'important');
-        console.log(element.getAttribute('style'))
       });
      }
      
@@ -1370,7 +1373,6 @@ export default mixins(PdfAuth).extend({
     },
    async  undo() {
       let lastId = this.stack.pop()
-      console.log(lastId)
       if (lastId) {
         let index = this.tools.findIndex((t) => t.id == lastId)
         if (index >= 0) {
@@ -1415,7 +1417,6 @@ export default mixins(PdfAuth).extend({
         this.tools[index].left = dx
         this.tools[index].top = dy
       }
-      console.log("drag-tools-update",this.tools[index], dx, dy, )
     },
     handleIncrease(id) {
       let index = this.tools.findIndex((t) => t.id == id)
@@ -1601,7 +1602,6 @@ export default mixins(PdfAuth).extend({
         this.$refs.scrollingElement
 
         let index = this.AllPdfParentPage.findIndex((item) => item == parent)
-        console.log("set-width-text", this.AllPdfParentPageDim)
 
       event = event || window.event
       const parentElement = elParent;
@@ -1611,7 +1611,7 @@ export default mixins(PdfAuth).extend({
       const x = (event.clientX - rect.left) * zoomLevelW;
       const y = (event.clientY - rect.top) * zoomLevelH;
        
-      console.log(`Mouse position relative to zoomed parent element: (${zoomLevelW}, ${zoomLevelH}), indx${index} ofx:${event.offsetX}, ofy:${event.offsetY}, clx:${event.clientX}, cly:${event.clientY}`, parentElement, event.target)
+      // console.log(`Mouse position relative to zoomed parent element: (${zoomLevelW}, ${zoomLevelH}), indx${index} ofx:${event.offsetX}, ofy:${event.offsetY}, clx:${event.clientX}, cly:${event.clientY}`, parentElement, event.target)
 
       // const scrollingElement =
       //   parent ||
@@ -1771,7 +1771,6 @@ export default mixins(PdfAuth).extend({
         obj.y1 = obj.top
       }
       this.tools.push(obj)
-      console.log(">>>>>???>>>>>>>>>>>>>>> place-tool", obj)
       this.stack.push(this.toolId)
       this.activeToolId = this.tools.length - 1
     },

@@ -255,63 +255,23 @@ export default Vue.extend({
   layout: 'profile',
   auth: false,
   // middleware: ['paid-user'],
-  // async asyncData({ store, params, $axios, error }) {
-  //   store.commit('SET_PAGE_NAME', { name: 'Profile' })
-  //   const userInfo = await $axios
-  //     .$get(`users/?businessPage=${params?.id}`)
-  //     .then((response) => {
-  //       const [userInfo] = response.data
-  //       if (!userInfo) error({ statusCode: 404 })
-  //       return userInfo
-  //     })
-  //     .catch((err) => {
-  //       error({
-  //         statusCode: 404,
-  //         message: err.message,
-  //       })
-  //     })
-
-  //   return { userInfo }
-  // },
-
   async asyncData({ store, params, $axios, error }) {
-    // Set page name
     store.commit('SET_PAGE_NAME', { name: 'Profile' })
-
-    try {
-      // Retrieve the stored businessId from local storage
-      const storedBusinessId = localStorage.getItem('businessId')
-
-      // If the stored businessId is available, use it
-      // Otherwise, use the params?.id value
-      const businessId = storedBusinessId || params?.id
-
-      // Store the businessId in local storage
-      localStorage.setItem('businessId', businessId)
-
-      const userInfo = await $axios
-        .$get(`users/?businessPage=${businessId}`)
-        .then((response) => {
-          const [userInfo] = response.data
-          if (!userInfo) error({ statusCode: 404 })
-          return userInfo
-        })
-        .catch((err) => {
-          error({
-            statusCode: 404,
-            message: err.message,
-          })
-        })
-
-      return { userInfo }
-    } catch (err) {
-      console.error('Error accessing localStorage:', err)
-      // Handle the error appropriately
-      error({
-        statusCode: 500,
-        message: 'Internal Server Error',
+    const userInfo = await $axios
+      .$get(`users/?businessPage=${params?.id}`)
+      .then((response) => {
+        const [userInfo] = response.data
+        if (!userInfo) error({ statusCode: 404 })
+        return userInfo
       })
-    }
+      .catch((err) => {
+        error({
+          statusCode: 404,
+          message: err.message,
+        })
+      })
+
+    return { userInfo }
   },
 
   mounted() {

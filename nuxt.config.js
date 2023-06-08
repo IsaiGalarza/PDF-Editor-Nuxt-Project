@@ -102,7 +102,7 @@ export default {
     { src: '~/plugins/paginate.js' },
     { src: '~/plugins/outside-click.js' },
     { src: '~/plugins/html2pdf.js', ssr: false },
-    { src: '~/plugins/register-service-worker.js', ssr: false },
+    // { src: '~/plugins/register-service-worker.js', ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -194,10 +194,10 @@ export default {
 
   // Set server to localhost so that service worker can be installed
   //TODO: Remove server setting when building the application for production!!! <<<<<<==================
-  server: {
-    port: 3000, // default: 3000
-    host: 'localhost', // default value is an IP Address of localhost which does not allow service worker file to run, mention 'localhost' explicitly
-  },
+  // server: {
+  //   port: 3000, // default: 3000
+  //   host: 'localhost', // default value is an IP Address of localhost which does not allow service worker file to run, mention 'localhost' explicitly
+  // },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {

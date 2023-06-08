@@ -43,9 +43,9 @@
   
           <div class="flex items-center justify-end gap-4">
             <button
-              class="h-9 rounded border border-gray-100 bg-paperdazgreen-300 text-base text-white px-8 hover:shadow"
+              class="h-9 rounded border border-gray-100 bg-paperdazgreen-300 text-base text-white px-8 hover:shadow-md"
               @click="exportText"
-              :class="[isDisabled ? 'opacity-50' : 'opacity-100']"
+              :class="[isDisabled ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-pointer']"
             >
               SAVE
             </button>

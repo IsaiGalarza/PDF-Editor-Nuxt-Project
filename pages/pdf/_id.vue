@@ -1054,7 +1054,7 @@ export default mixins(PdfAuth).extend({
     publishFileFunction() {
       this.setToinitialScale()
       this.scrollToSignInitial()
-      if(!this.$store.getters.getAddToPageTextvalue){
+      if(!this.$store.getters.getAddToPageTextvalue && !this.isCreator){
         this.comfirmedFile()
         return
       }

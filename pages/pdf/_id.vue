@@ -1061,7 +1061,6 @@ export default mixins(PdfAuth).extend({
       if (this.filteredAnnotationButton.length > 0) {
         this.$notify.error({
           title: 'Please complete all data!',
-          // message: 'Kindly fill all sign and initial placeholders',
         })
         this.scrollToSignInitial()
         return

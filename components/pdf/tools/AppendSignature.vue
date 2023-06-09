@@ -39,7 +39,7 @@
       v-else-if="theSignature"
       :src="theSignature"
       :width="`${55 * responsiveToolDim.width}px`"
-      :style="`height: ${27 * responsiveToolDim.height}px; object-fit:contain`"
+      :style="`height: ${27 * responsiveToolDim.height}px; object-fit:fill`"
     />
     <!-- <span v-show="!initialimgDisplay && !isCreator && !tool.justMounted && (isAgreedSign == 1 && isSign || isComplete)" class="toolTip hidden">Sign</span> -->
     <!-- <img v-else class="absolute-image" src="../../../assets/img/sign.png" /> -->
@@ -180,11 +180,11 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   watch: {
     initialimgDisplay(){
       if(this.theSignature) setTimeout(() => {
-        this.$BUS.$emit('scroll-to-tools')
+        !this.isComplete && this.$BUS.$emit('scroll-to-tools')
       }, 100);
     },
     theSignature(){
-      this.$BUS.$emit('scroll-to-tools')
+      !this.isComplete && this.$BUS.$emit('scroll-to-tools')
     },
     '$auth.user.signatureURL': async function () {
       this.changeSignToBase64()

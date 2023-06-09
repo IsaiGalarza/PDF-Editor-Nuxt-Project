@@ -12,51 +12,65 @@
     id="appbar"
   >
     <div class="" :class="collapsed ? 'overlay' : ''"></div>
-    <nav class="container h-full flex items-center justify-between">
-      
+    <nav class="h-full px-[6%] flex items-center justify-between">
       <!-- mobile -->
       <!------>
-      <div class="text-center w-full text-[0.8rem] md:text-[1.2rem] font-semibold flex justify-between items-center">
+      <div
+        class="text-center w-full text-[0.8rem] md:text-[1.2rem] font-semibold flex justify-between items-center"
+      >
         <div class="">
-        <nuxt-link to="/">
-          <logo-with-text class="mr-2  h-[30px] xs:h-6 sm:h-[60px] w-auto" />
-        </nuxt-link>
-      </div>
-        <abbr class="hidden text-[#F30B0B] text-[1.2rem] lg:block">Secure & Private! </abbr>
-       
-        <nuxt-link  v-if="!$auth.loggedIn && routeName !== 'login'" to="/login" class="px-4 py-2 capitalize text-black rounded-md ">
+          <nuxt-link to="/">
+            <logo-with-text class="mr-2 h-[30px] xs:h-6 sm:h-[60px] w-auto" />
+          </nuxt-link>
+        </div>
+        <abbr class="hidden text-[#F30B0B] text-[1.2rem] lg:block"
+          >Secure & Private!
+        </abbr>
+
+        <nuxt-link
+          v-if="!$auth.loggedIn && routeName !== 'login'"
+          to="/login"
+          class="px-4 py-2 capitalize text-black rounded-md"
+        >
           Login
         </nuxt-link>
-        <nuxt-link  v-if="!$auth.loggedIn && routeName === 'login'" to="/package?tablevel=1" class="px-4 py-2 capitalize text-black rounded-md ">
+        <nuxt-link
+          v-if="!$auth.loggedIn && routeName === 'login'"
+          to="/package?tablevel=1"
+          class="px-4 py-2 capitalize text-black rounded-md"
+        >
           Register
         </nuxt-link>
-        <nuxt-link v-if="$auth.loggedIn" to="/paperlink-pages" class="px-4 py-2 text-paperdazgreen-300 rounded-md border-paperdazgreen-300 border-2">
+        <nuxt-link
+          v-if="$auth.loggedIn"
+          to="/paperlink-pages"
+          class="px-4 py-2 text-paperdazgreen-300 rounded-md border-paperdazgreen-300 border-2"
+        >
           Dashboard
         </nuxt-link>
-       </div>
-
+      </div>
     </nav>
 
     <landing-page-search-modal v-model="showLandingPageSearchModal" />
   </div>
 </template>
 <script>
-import mixins from 'vue-typed-mixins'
-import GlobalMixin from '~/mixins/GlobalMixin'
-import LandingPageSearchModal from '../landing/LandingPageSearchModal.vue'
-import LogoWithText from '../LogoWithText.vue'
-import ArrowDownIcon from '../svg-icons/ArrowDownIcon.vue'
-import DashboardIcon from '../svg-icons/DashboardIcon.vue'
-import GearIcon from '../svg-icons/GearIcon.vue'
-import HamburgerIcon from '../svg-icons/HamburgerIcon.vue'
-import SearchIcon from '../svg-icons/SearchIcon.vue'
-import SignOutIcon from '../svg-icons/SignOutIcon.vue'
-import UserProfileSolidIcon from '../svg-icons/UserProfileSolidIcon.vue'
-import UserTypeEnum from '~/models/UserTypeEnum'
-import TimesIcon from '../svg-icons/TimesIcon.vue'
+import mixins from "vue-typed-mixins";
+import GlobalMixin from "~/mixins/GlobalMixin";
+import LandingPageSearchModal from "../landing/LandingPageSearchModal.vue";
+import LogoWithText from "../LogoWithText.vue";
+import ArrowDownIcon from "../svg-icons/ArrowDownIcon.vue";
+import DashboardIcon from "../svg-icons/DashboardIcon.vue";
+import GearIcon from "../svg-icons/GearIcon.vue";
+import HamburgerIcon from "../svg-icons/HamburgerIcon.vue";
+import SearchIcon from "../svg-icons/SearchIcon.vue";
+import SignOutIcon from "../svg-icons/SignOutIcon.vue";
+import UserProfileSolidIcon from "../svg-icons/UserProfileSolidIcon.vue";
+import UserTypeEnum from "~/models/UserTypeEnum";
+import TimesIcon from "../svg-icons/TimesIcon.vue";
 
 export default mixins(GlobalMixin).extend({
-  name: 'AppBar',
+  name: "AppBar",
   components: {
     LogoWithText,
     SearchIcon,
@@ -75,92 +89,92 @@ export default mixins(GlobalMixin).extend({
       collapsed: false,
       showLandingPageSearchModal: false,
       landingPage: true,
-    }
+    };
   },
   watch: {
     $route(formerVal, currentVal) {
       if (formerVal.fullPath !== currentVal.fullPath) {
-        this.collapsed = false
+        this.collapsed = false;
       }
-      if (formerVal.name == 'index') {
-        this.landingPage = true
+      if (formerVal.name == "index") {
+        this.landingPage = true;
       } else {
-        this.landingPage = false
+        this.landingPage = false;
       }
     },
   },
   computed: {
     routeName() {
-      return (this.$nuxt.$route.name || '').replace(/-/g, ' ')
+      return (this.$nuxt.$route.name || "").replace(/-/g, " ");
     },
     user() {
-      return this.$auth.user
+      return this.$auth.user;
     },
     profilePhoto() {
-      return this.$store.getters.profilePhoto
+      return this.$store.getters.profilePhoto;
     },
     isPaidUser() {
       switch (this.$auth?.user?.role) {
         case UserTypeEnum.PAID:
-          return true
+          return true;
         case UserTypeEnum.TEAM:
-          return true
+          return true;
         case UserTypeEnum.FREE:
-          return false
+          return false;
       }
     },
   },
 
   mounted() {
-    const self = this
-    this.scrollObserver()
-    document.addEventListener('scroll', () => {
-      if (self.collapsed) self.collapsed = false
-    })
+    const self = this;
+    this.scrollObserver();
+    document.addEventListener("scroll", () => {
+      if (self.collapsed) self.collapsed = false;
+    });
   },
   methods: {
-    removePopUp(){
-      this.toggleToast({ active: false, msg: ` You are done! File has been sent to `})
-      this.$store.commit('SET_FILL_AS_GUEST', false)
+    removePopUp() {
+      this.toggleToast({ active: false, msg: ` You are done! File has been sent to ` });
+      this.$store.commit("SET_FILL_AS_GUEST", false);
     },
     handleCommand(command) {
       switch (command) {
-        case 'logout':
-          this.logout(false)
-          break
-        case 'profile':
-          this.$nuxt.$router.push('/public/profile')
-          break
-        case 'dashboard':
-          this.$nuxt.$router.push('/dashboard')
-          break
-        case 'settings':
-          this.$nuxt.$router.push('/settings')
-          break
+        case "logout":
+          this.logout(false);
+          break;
+        case "profile":
+          this.$nuxt.$router.push("/public/profile");
+          break;
+        case "dashboard":
+          this.$nuxt.$router.push("/dashboard");
+          break;
+        case "settings":
+          this.$nuxt.$router.push("/settings");
+          break;
       }
     },
     scrollObserver() {
       const options = {
-        rootMargin: '0px',
+        rootMargin: "0px",
         threshold: 1.0,
-      }
+      };
 
-      const self = this
+      const self = this;
       const callback = (
         entries,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         observer
       ) => {
         entries.forEach((entry) => {
-          self.scrolled = !entry.isIntersecting
-        })
-      }
+          self.scrolled = !entry.isIntersecting;
+        });
+      };
 
-      const observer = new IntersectionObserver(callback, options)
-      observer.observe(this.$el)
+      const observer = new IntersectionObserver(callback, options);
+      observer.observe(this.$el);
     },
   },
-})
+});
 </script>
 <style lang="scss" scoped>
 #appbar {
@@ -178,8 +192,8 @@ export default mixins(GlobalMixin).extend({
     transition: all ease-in-out 200ms;
   }
 }
-a:hover{
-  color: inherit
+a:hover {
+  color: inherit;
 }
 // .active{
 //   opacity: 1 !important;

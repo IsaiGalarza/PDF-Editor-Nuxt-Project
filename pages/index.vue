@@ -1,13 +1,13 @@
 <template>
+  <div class="min-h-[60vh] bg-paperdazgreen-300">
+    <hero-page />
+    <ConfirmPassword
+      :userInfo="userDecodedInfo"
+      v-model="showConfirmPassword"
+    />
 
-  <div class="min-h-[60vh]  bg-paperdazgreen-300">
-      <hero-page />
-      <ConfirmPassword :userInfo="userDecodedInfo" v-model="showConfirmPassword" />
-
-      <Footer />
-
-    </div>
-
+    <Footer />
+  </div>
 </template>
 
 <script>
@@ -22,7 +22,6 @@ import ConfirmPassword from '~/components/modals/ConfirmPassword.vue'
 import jwt, { decode, JsonWebTokenError } from 'jsonwebtoken'
 import Footer from '~/components/footer.vue'
 
-
 import 'intro.js/minified/introjs.min.css'
 
 @Component({
@@ -36,7 +35,7 @@ import 'intro.js/minified/introjs.min.css'
     LandingJoinSection,
     LandingDivider,
     ConfirmPassword,
-    Footer
+    Footer,
   },
   // beforeRouteLeave(to, from, next) {
   //   location.href = to.fullPath
@@ -54,9 +53,16 @@ export default class LandingPage extends Vue {
   data() {
     return {
       showConfirmPassword: false,
-      userDecodedInfo: {}
+      userDecodedInfo: {},
     }
   }
+  beforeRouteEnter (to, from, next, $route) {
+    if(from.query.permissiontoken){
+      sessionStorage.setItem("redirectUrl", from.fullPath)  
+    } 
+    next()
+  }
+  
   mounted() {
     if (sessionStorage.getItem('requestSentFlag') == 'true') {
       this.$notify({
@@ -66,12 +72,12 @@ export default class LandingPage extends Vue {
     setTimeout(function () {
       sessionStorage.setItem('requestSentFlag', false)
     }, 300)
-
+    this
     if (!this.$route.query?.verificationToken) return
     this.$route.query?.verificationToken && (this.showConfirmPassword = true)
     let encodedUser = jwt.verify(
       this.$route.query?.verificationToken,
-      '+Erqnl5F0JnIsW++d9U0BfwpJ6w='
+      process.env.NUXT_ENV_BACKEND_JWT_TOKEN
     )
     this.userDecodedInfo = encodedUser
   }
@@ -130,3 +136,19 @@ export default class LandingPage extends Vue {
   } // end watcher method watchGsap
 } // end class LandingPage
 </script>
+<!-- /* Hide install button once app is downloaded*/ -->
+<style lang="css" scoped>
+/* Hide install button in Chrome */
+@media (display-mode: browser) {
+  .dl-button {
+    display: none !important;
+  }
+}
+
+/* Hide install button in other browsers */
+@media (display-mode: standalone) {
+  .dl-button {
+    display: none !important;
+  }
+}
+</style>

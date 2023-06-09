@@ -44,12 +44,28 @@ export const state = () => ({
     width: 0,
     height: 0
   },
-  pdfAnnotations: []
+  pdfAnnotations: [] as any,
+  addToPagetextvalue: undefined,
+  addToPageFirstName: undefined,
+  addToPageLastName: undefined,
+  descriptionForNoteTool: "",
 })
 
 export type RootState = ReturnType<typeof state>
 
 export const getters: GetterTree<RootState, RootState> = {
+  getAddToPageTextvalue( state: any){
+    return state.addToPagetextvalue
+  },
+  getDescriptionForNoteTool( state: any){
+    return state.descriptionForNoteTool
+  },
+  getAddToPageFirstName( state: any){
+    return state.addToPageFirstName
+  },
+  getAddToPageLastName( state: any){
+    return state.addToPageLastName
+  },
   getSaveUser( state: any){
     return state.saveUser
   },
@@ -137,11 +153,43 @@ export const getters: GetterTree<RootState, RootState> = {
 
 export const mutations: MutationTree<RootState> = {
   // -- Setting the user --
+  RESET_PDF_STATE(state){
+    state.base64Signature = null
+    state.base64Initial = null
+    state.pdfAnnotations = []
+    state.addToPagetextvalue = undefined
+    state.agreeSign = -1
+    state.file = {}
+    state.pdfPageName = {}
+    state.pdfUser = []
+  },
+  SET_SAVE_PAGE_TEXT_VALUE(state, payload) {
+    console.log(payload)
+    switch (payload?.type) {
+      case 'name':
+        state.addToPagetextvalue = payload?.text
+        break;
+      case 'first_name':
+        state.addToPageFirstName = payload?.text
+        break;
+      case 'last_name':
+        state.addToPageLastName = payload?.text
+        break;
+      default:
+        break;
+    }
+  },
   SET_SAVE_USER(state, payload) {
     state.saveUser = payload
   },
+  SET_DESCRIPTION_NOTE_TOOL(state, payload) {
+    state.descriptionForNoteTool = payload
+  },
   SET_PDF_ANNOTATIONS(state, payload) {
-    state.pdfAnnotations = payload
+    state.pdfAnnotations =  [...state.pdfAnnotations,  ...payload]
+  },
+  RESET_PDF_ANNOTATIONS(state) {
+    state.pdfAnnotations =  []
   },
   SET_PDF_ZOOM_SCALE(state, payload) {
     state.pdfZoomScale = payload

@@ -49,7 +49,7 @@
             required
             v-model="partner.lastName"
             type="text"
-            placeholder="last Name"
+            placeholder="Last Name"
             class="contac-input mb-8"
           />
 
@@ -113,7 +113,7 @@ import GlobalMixin from "~/mixins/GlobalMixin";
 export default mixins(GlobalMixin).extend({
   name: "ContactUsPage",
   layout: "dashboard",
-  auth: false,
+  auth: true,
   components: {
     SpinnerDottedIcon,
     MessageAlertWidget,

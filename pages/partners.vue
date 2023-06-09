@@ -168,9 +168,7 @@ export default mixins(GlobalMixin).extend({
       };
 
       await this.$axios
-        .post("/request", {
-          data,
-        })
+        .post("/request", data)
         .then(() => {
           this.toggleToast({
             active: true,

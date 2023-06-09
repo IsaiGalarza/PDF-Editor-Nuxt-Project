@@ -9,10 +9,7 @@
   >
     <!--Start:: Close Button -->
     <div class="absolute -top-3 -right-3" style="padding: inherit">
-      <span
-        class="circle circle-12 cursor-pointer text-red-600"
-        @click="closeModal()"
-      >
+      <span class="circle circle-12 cursor-pointer text-red-600" @click="closeModal()">
         <svg
           width="12"
           height="12"
@@ -65,154 +62,156 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
-import CloudIcon from '../svg-icons/CloudIcon.vue'
-import axios from "axios"
-import { server } from '~/services/new-service'
+import Vue from "vue";
+import SpinnerDottedIcon from "~/components/svg-icons/SpinnerDottedIcon.vue";
+import CloudIcon from "../svg-icons/CloudIcon.vue";
+import axios from "axios";
+import { server } from "~/services/new-service";
 
 export default Vue.extend({
-  name: 'UploadDocumentModal',
+  name: "UploadDocumentModal",
   components: { SpinnerDottedIcon, CloudIcon },
   model: {
-    prop: 'visible',
-    event: 'updateVisibility',
+    prop: "visible",
+    event: "updateVisibility",
   },
   props: {
     visible: {
       type: Boolean,
       default: false,
     },
-    folder:{
-      type:Object
-    }
+    folder: {
+      type: Object,
+    },
   },
   data() {
     return {
       showModal: false,
-      errorMessage: '',
+      errorMessage: "",
       loading: false,
       isDraggedOver: false,
-      dragErrorMessage: '',
-    }
+      dragErrorMessage: "",
+    };
   },
   watch: {
     visible(val) {
-      this.showModal = val
+      this.showModal = val;
     },
     showModal(val) {
-      this.$emit('updateVisibility', val)
+      this.$emit("updateVisibility", val);
     },
   },
   mounted() {
     this.showModal = this.visible;
-   
   },
-  methods: {  
-    async moveToFolder(id){
-      
-      if(Object.keys(this.folder).length < 1) return
+  methods: {
+    async moveToFolder(id) {
+      if (Object.keys(this.folder).length < 1) return;
 
       await this.$axios
         .$patch(`/files/${id}`, {
-          folderId: this.folder.id,})
+          folderId: this.folder.id,
+        })
         .then(() => {
           this.$notify.success({
-          title: '',
-          message: 'File moved successful',
-          })
-        })
-      this.$emit('resetUserFolder')
+            title: "",
+            message: "File moved successful",
+          });
+        });
+      this.$emit("resetUserFolder");
     },
     async uploadDocument(file) {
-      const formData = new FormData()
-      formData.append('upload', file, file.name);
+      const formData = new FormData();
+      formData.append("upload", file, file.name);
       formData.append("type", "file");
-      formData.append("userId",(this.$auth.user).id)
+      formData.append("userId", this.$auth.user.id);
+
+      this.showModal = false;
 
       const loadingNotification = this.$notify.info({
-        title: 'File Upload',
-        message: 'File uploading ...',
+        title: "File Upload",
+        message: "File uploading ...",
         duration: 1000 * 60,
-      })
-      await this.$axios.post('/files', formData)
+      });
+      await this.$axios
+        .post("/files", formData)
         .then((response) => {
-          this.$store.commit('SET_UPLOAD_STATE', true);
+          this.$store.commit("SET_UPLOAD_STATE", true);
           this.$notify.success({
-            title: 'File Upload',
-            message: 'File uploaded successfully',
-          })
-          this.$nuxt.$router.push(`/pdf/${response.data?.paperLink}`)
-          localStorage.setItem("from_publicpage", JSON.stringify({fromBusiness: false}))
+            title: "File Upload",
+            message: "File uploaded successfully",
+          });
+          this.moveToFolder(response.data?.id);
+          this.$nuxt.$router.push(`/pdf/${response.data?.paperLink}`);
+          localStorage.setItem(
+            "from_publicpage",
+            JSON.stringify({ fromBusiness: false })
+          );
         })
         .catch((error) => {
           this.$notify.error({
-            title: 'File Upload',
+            title: "File Upload",
             message: error?.response?.data || error.message,
-          })
+          });
         })
         .finally(() => {
-          loadingNotification.close()
-        })
+          loadingNotification.close();
+        });
     },
     dragover(event) {
-      event.preventDefault()
-      this.isDraggedOver = true
-      this.dragErrorMessage = ''
+      event.preventDefault();
+      this.isDraggedOver = true;
+      this.dragErrorMessage = "";
     },
     dragleave() {
-      this.isDraggedOver = false
-      this.dragErrorMessage = ''
+      this.isDraggedOver = false;
+      this.dragErrorMessage = "";
     },
     drop(event) {
-      event.preventDefault()
-      this.isDraggedOver = false
-      const file = event.dataTransfer?.files[0]
+      event.preventDefault();
+      this.isDraggedOver = false;
+      const file = event.dataTransfer?.files[0];
 
-      if (!file) return
+      if (!file) return;
 
-      if (file.type !== 'application/pdf') {
-        this.dragErrorMessage = 'File type not supported. Upload pdf.'
-        return
+      if (file.type !== "application/pdf") {
+        this.dragErrorMessage = "File type not supported. Upload pdf.";
+        return;
       }
 
-      this.uploadDocument(file)
+      this.uploadDocument(file);
     },
     uploadDocumentFromInput(event) {
-      const inputElement = event.currentTarget 
-      if (!inputElement) return
+      const inputElement = event.currentTarget;
+      if (!inputElement) return;
 
-      const file = inputElement.files?.length
-        ? inputElement.files[0]
-        : undefined
+      const file = inputElement.files?.length ? inputElement.files[0] : undefined;
 
-      if (!file) return
+      if (!file) return;
 
-      this.uploadDocument(file)
+      this.uploadDocument(file);
     },
     closeModal() {
-      this.$emit('updateVisibility', false)
+      this.$emit("updateVisibility", false);
     },
     onSubmit() {
-      event?.preventDefault()
+      event?.preventDefault();
 
-      if (this.loading) return
+      if (this.loading) return;
 
-      this.loading = true
-      this.errorMessage = ''
+      this.loading = true;
+      this.errorMessage = "";
 
       setTimeout(() => {
-        this.loading = false
-        ;(async () => {
+        this.loading = false;
+        (async () => {
           // await this.$notify.info({
           //   title: 'Unimplemented',
           //   message: 'This feature has not been implemented',
           // })
-        })()
-        this.closeModal()
-      }, 1000)
-
-
+        })();
+        this.closeModal();
+      }, 1000);
 
       // this.$axios
       //   .delete(`/package/${this.stagingPackage.id}`)
@@ -250,7 +249,7 @@ export default Vue.extend({
       //   })
     },
   },
-})
+});
 </script>
 
 <style scoped>
@@ -270,13 +269,13 @@ export default Vue.extend({
 * >>> .el-dialog__header,
 * >>> .el-dialog__footer {
   text-align: left !important;
-  background: #DBE9D2;
+  background: #dbe9d2;
 }
 
 * >>> .el-dialog__body {
   /* padding-top: 0 !important;
   padding-bottom: 0 !important; */
-  background: #DBE9D2;
+  background: #dbe9d2;
 }
 
 * >>> .el-select .el-input__inner {

@@ -1,28 +1,30 @@
 <template>
-  <div class="tool-wrapper" :class="{'pointer-events-none': selectedToolType}" :style="wrpStyle" ref="Wrp" :id="getToolWrapperId">
+  <div class="tool-wrapper text-field" :class="{ 'pointer-events-none': selectedToolType }" :style="wrpStyle" ref="Wrp"
+    :id="getToolWrapperId">
     <!-- <div class="tool-wrapper" :style="wrpStyle" ref="Wrp" :id="getToolWrapperId"> -->
     <div
-      class="h-8 border text-black inline-flex items-center gap-1.5 px-1 backdrop-blur-sm bg-white/30 absolute tool-menu"
-      v-show="isActive" ref="toolMenu" 
-      v-if="(tool.user != file.userId) ||
-       (tool.user == file.userId && tool.justMounted) ||
-       (isCreator && tool.user == file.userId && !tool.justMounted)"
-       v-hammer:pan="handleDrag">
-      <button class="h-full cursor-move" >
+      class="h-8 border text-black inline-flex items-center gap-1.5 px-1 backdrop-blur-sm bg-white/30 absolute tool-menu z-[1000] transition duration-150"
+      v-show="isActive" ref="toolMenu" v-if="tool.user != file.userId ||
+        (tool.user == file.userId && tool.justMounted) ||
+        (isCreator && tool.user == file.userId && !tool.justMounted)
+        " v-hammer:pan="handleDrag">
+      <button class="h-full cursor-move">
         <Move-icon />
       </button>
 
-      <button class="text-sm px-0.5 h-full" @click="dec" v-show="isMenuVisible('increase')" @mouseover="draggingMouseover">
+      <button class="text-sm px-0.5 h-full" @click="dec" v-show="isMenuVisible('increase')"
+        @mouseover="draggingMouseover">
         A
       </button>
-      <button class="text-lg px-0.5 h-full" @click="inc" v-show="isMenuVisible('increase')" @mouseover="draggingMouseover">
+      <button class="text-lg px-0.5 h-full" @click="inc" v-show="isMenuVisible('increase')"
+        @mouseover="draggingMouseover">
         A
       </button>
       <button class="px-0.5 h-full flex items-center relative text-[15px]" @click="openCalendar"
         v-if="type == TOOL_TYPE.date" @mouseover="draggingMouseover">
         <calendar-icon />
         <el-date-picker ref="datePicker" type="date" placeholder="Pick a day" v-model="calendarValue"
-          :default-value="new Date()" id="sdfadf" 
+          :default-value="new Date()" id="sdfadf"
           style="height: 0; width: 0; max-width: 0; margin-0; padding:0; overflow:hidden; position:absolute; top: 100%; right: 50%; transform: translateX(-50%)">
         </el-date-picker>
       </button>
@@ -42,25 +44,26 @@
             fill="#84C870" />
         </svg>
       </div>
-      <div v-else-if="(type == 'appendSignature' && tool.completed && isCreator)" ref="apinital">
-        <img :src="tool.completed" style="height:25px" />
+      <div v-else-if="type == 'appendSignature' && tool.completed && isCreator" ref="apinital">
+        <img :src="tool.completed" style="height: 25px" />
       </div>
-      <div v-else-if="(type == 'appendInitial' && tool.completed && isCreator)" ref="apsign">
-        <img :src="tool.completed" style="height:25px" />
+      <div v-else-if="type == 'appendInitial' && tool.completed && isCreator" ref="apsign">
+        <img :src="tool.completed" style="height: 25px" />
       </div>
-      <component v-else :scalefactor="responsiveDim.width" :is="`${type}-tool`" :x1="x1" :y1="y1" :x2="x2" :y2="y2" :id="id" :tool="tool"
-       :elemScale="elemScale" :incDecCount="incDecCount" :points="points"
-        :isActive="isActive" :fontSize="fontSize" :scale="scale" :file="file" :value="value" :justMounted="justMounted"
-        @input="onInp" :generatePDF="generatePDF" :showPublishModal="showPublishModal"
-        :selectedToolType="selectedToolType" :mouseUp="mouseUp" :lineStart="lineStart" :toolLength="toolLength"
-        :drawingStart="drawingStart" :setInitialSignType="setInitialSignType" @onBlur="onBlur" 
-        :isCreator="isCreator"
-        :responsiveDim="responsiveDim"
-        :responsiveToolDim="responsiveToolDim"
-        @addOffset="addOffset"
+      <component v-else :scalefactor="responsiveDim.width" :is="`${type}-tool`" :x1="x1" :y1="y1" :x2="x2" :y2="y2"
+        :id="id" :tool="tool" :elemScale="elemScale" :incDecCount="incDecCount" :points="points" :isActive="isActive"
+        :fontSize="fontSize" :scale="scale" :file="file" :value="value" :justMounted="justMounted" @input="onInp"
+        :generatePDF="generatePDF" :showPublishModal="showPublishModal" :selectedToolType="selectedToolType"
+        :mouseUp="mouseUp" :lineStart="lineStart" :toolLength="toolLength" :drawingStart="drawingStart"
+        :setInitialSignType="setInitialSignType" @onBlur="onBlur" :isCreator="isCreator" :responsiveDim="responsiveDim"
+        :responsiveToolDim="responsiveToolDim" @addOffset="addOffset"
+        :userTime="userTime"
+        :isMobile="isMobile"
+        :textareaStyles="textareaStyles"
+        :wrpStyle="wrpStyle"
         />
 
-        <!-- <div :class="[
+      <!-- <div :class="[
           'dr__right',
           { line: type == TOOL_TYPE.line },
           { 'line-alt': (x1 < x2 && y1 < y2) || (x1 > x2 && y1 > y2) },
@@ -73,6 +76,23 @@
         ]" v-hammer:pan="(ev) => handleToolDrag(ev, TOOL_DIRECTION.left)" v-if="isAvailableDrLeft && isCreator"></div>
        -->
     </div>
+    <div v-show="discribe.length && !editTitle && this.tool.type == this.TOOL_TYPE.star && isActive && !checkIsMobile" 
+    class="rounded-md hidden pop-label"
+    ref="popUpTitle"
+    :style="scaleStyle"
+        >
+             <p class="popper-up">
+                 {{ this.discribe }}
+                <img @click="resetDiscribe" src="./assets/delete_icon.svg" class="absolute bottom-2 right-2 bg-white rounded-full cursor-pointer"/>
+             </p>
+        </div>
+    
+       <div v-show="editTitle && !checkIsMobile && isActive" v-if="this.tool.type == this.TOOL_TYPE.star" class="input-wrapper transition duration-150" ref="textareaContainer" style="textArea" :style="scaleStyle">
+           <div class="md:flex items-center rounded-md  w-[180px] absolute top-full hidden">
+            <p ref="textarea" contenteditable="true" class="note-input-pc font-[300] tracking-wide" placeholder="Type Message here"></p>
+            <img @click="saveDiscription" class="ml-1 absolute top-[0px]  left-full cursor-pointer" src="./assets/check_icon.svg" ref="saveButton"/>
+           </div>
+       </div>
   </div>
 </template>
 
@@ -103,9 +123,13 @@ import moment from 'moment'
 import { mapState } from 'vuex'
 import TeamAccess from '~/models/TeamAccess'
 import AppendNameTool from './tools/AppendName.vue'
+import AppendFirstNameTool from './tools/AppendFirstName.vue'
+import AppendLastNameTool from './tools/AppendLastName.vue'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   props: {
+    userTime: String,
     tool: Object,
     x1: Number,
     y1: Number,
@@ -137,7 +161,9 @@ export default {
     value: undefined,
     lineStart: Boolean,
     toolLength: Number,
-    userId: Number
+    userId: Number,
+    inputValue: Function,
+    toolDescriptionFunc: Function
   },
   components: {
     TextTool,
@@ -160,7 +186,10 @@ export default {
     AppendSignatureTool,
     AppendInitialTool,
     AppendDateTool,
-    AppendNameTool
+    AppendNameTool,
+    AppendFirstNameTool,
+    AppendLastNameTool,
+    
   },
   data: () => ({
     lastPosX: 0,
@@ -169,6 +198,12 @@ export default {
     isDragFinal: false,
     top: 100,
     left: 0,
+    textareaStyles: {
+      top:"",
+      left: "",
+      bottom: "",
+      right: ""
+    },
     calendarValue: undefined,
     altDirection: false,
     incDecCount: 7,
@@ -176,17 +211,20 @@ export default {
     incDecMin: 7,
     toolWrapperId: '',
     pageScale: 1,
-    firstRender: false
+    firstRender: false,
+    editTitle: false,
+    discribe: ""
   }),
   head() {
     return {
       script: [
         // ...
         {
-          integrity: "sha512-IetiMzopsrb75HtZydIM8zRv1mlSmV42P0iZVT4sPHxDnhM0I9O8/75bFqlfWoCKTnDB+pFqvoQrlnkgUeShaA==",
+          integrity:
+            'sha512-IetiMzopsrb75HtZydIM8zRv1mlSmV42P0iZVT4sPHxDnhM0I9O8/75bFqlfWoCKTnDB+pFqvoQrlnkgUeShaA==',
           src: '/html-to-png/htmlToPng.js',
-          crossorigin: "anonymous",
-          referrerpolicy: "no-referrer"
+          crossorigin: 'anonymous',
+          referrerpolicy: 'no-referrer',
         },
       ],
     }
@@ -200,6 +238,9 @@ export default {
     //   this.$refs.Wrp?.classList.remomve('pointer-events-none')
   },
   watch: {
+    editTitle(val){
+      console.log("active-tool", val)
+    },
     x1() {
       this.clcPos()
     },
@@ -226,7 +267,7 @@ export default {
     },
     tool() {
       this.checkAndSetPosition()
-    }
+    },
   },
   computed: {
     ...mapState(['editAnnotation']),
@@ -239,17 +280,32 @@ export default {
         return ''
       }
     },
+    checkIsMobile(){
+      return isMobile
+    },
+    scaleStyle() {
+      return {
+        transform: `scale(${1 * this.responsiveToolDim.width})`,
+        transformOrigin: '0 0'
+      }
+    },
     isActive() {
       return this.id == this.activeToolId
     },
-    FrombusinessPage(){
-            return JSON.parse(localStorage.getItem("from_publicpage"))?.fromBusiness ?? true
-        },
+    FrombusinessPage() {
+      return (
+        JSON.parse(localStorage.getItem('from_publicpage'))?.fromBusiness ??
+        true
+      )
+    },
     isCreator() {
-      if(this.FrombusinessPage == null) return false
-      else if(this.FrombusinessPage){
+      if (this.FrombusinessPage == null) return false
+      else if (this.FrombusinessPage) {
         return false
-      } else if(!this.FrombusinessPage && this.file.userId == this.$auth.user?.id){
+      } else if (
+        !this.FrombusinessPage &&
+        this.file.userId == this.$auth.user?.id
+      ) {
         return true
       } else {
         return false
@@ -264,24 +320,29 @@ export default {
     elemScale() {
       return this.incDecCount / 11
     },
-    responsiveDim(){
+    responsiveDim() {
       return {
-        width: (this.$store.getters.getPdfpagesDim.parentWidth/this.tool.parentWidth),
-        height: (this.$store.getters.getPdfpagesDim.parentHeight/this.tool.parentHeight)
+        width:
+          this.$store.getters.getPdfpagesDim.parentWidth /
+          this.tool.parentWidth,
+        height:
+          this.$store.getters.getPdfpagesDim.parentHeight /
+          this.tool.parentHeight,
       }
     },
-    responsiveToolDim(){
+    responsiveToolDim() {
       return {
-        width: (this.$store.getters.getPdfpagesDim.parentWidth/809),
-        height: (this.$store.getters.getPdfpagesDim.parentHeight/1243)
+        width: this.$store.getters.getPdfpagesDim.parentWidth / 805,
+        height: this.$store.getters.getPdfpagesDim.parentHeight / 1243,
       }
     },
     wrpStyle() {
+      console.log(this.tool)
       let top = this.top
       let left = this.left
       return {
-        top: `${top * (this.firstRender ? 1 : this.responsiveDim.height)}px`,
-        left: `${left *  (this.firstRender ? 1 : this.responsiveDim.width)}px`,
+        top: `${top * (this.firstRender ? 1 : this.getCurrentPageDim().height || this.responsiveDim.height)}px`,
+        left: `${left * (this.firstRender ? 1 : this.getCurrentPageDim().width || this.responsiveDim.width)}px`,
       }
     },
     TOOL_TYPE() {
@@ -306,6 +367,31 @@ export default {
     },
   },
   methods: {
+    resetDiscribe(){
+      if(!this.$refs.textarea) return
+      this.$refs.textarea.innerHTML = ""
+      this.discribe = ""
+      this.$emit('setToolDiscription', "")
+    },
+    saveDiscription(){
+      if(!this.$refs.textarea) return
+      this.discribe = this.$refs.textarea.textContent
+      this.editTitle = false
+      this.toolDescriptionFunc(this.discribe)
+    },
+    setLabel(){
+      if(this.type !== TOOL_TYPE.star) return
+      this.checkIsMobile && this.$BUS.$emit("openSaveDiscription")
+      this.editTitle = true
+    },
+    getCurrentPageDim() {
+      if (!this.$refs.Wrp) return {}
+      let all_PGD = this.$refs.Wrp.parentElement.getBoundingClientRect()
+      return {
+        width: all_PGD.width / this.tool.parentWidth,
+        height: all_PGD.height / this.tool.parentHeight,
+      }
+    },
     handleDelete() {
       if (this.isDragFinal) {
         this.isDragFinal = !this.isDragFinal
@@ -315,14 +401,14 @@ export default {
       this.deleteTool(this.id)
     },
     async toDataURL(url) {
-      const response = await fetch(url);
-      const blob = await response.blob();
+      const response = await fetch(url)
+      const blob = await response.blob()
       return await new Promise((resolve, _) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.readAsDataURL(blob);
-      });
-   },
+        const reader = new FileReader()
+        reader.onloadend = () => resolve(reader.result)
+        reader.readAsDataURL(blob)
+      })
+    },
     inc(event) {
       if (this.isDragFinal) {
         this.isDragFinal = !this.isDragFinal
@@ -359,7 +445,9 @@ export default {
           this.TOOL_TYPE.appendSignature,
           this.TOOL_TYPE.appendDate,
           this.TOOL_TYPE.star,
-          this.TOOL_TYPE.appendName
+          this.TOOL_TYPE.appendName,
+          this.TOOL_TYPE.appendFirstName,
+          this.TOOL_TYPE.appendLastName,
         ].includes(this.type)
       )
         return false
@@ -385,11 +473,12 @@ export default {
     //   }
     // },
     onClick() {
-      if (!this.tool.justMounted && !this.isCreator) return;
+      if (!this.tool.justMounted && !this.isCreator) return
+      this.setLabel()
       this.setActiveToolId(this.id)
       return
       this.$emit('resetJustMounted', this.id)
-      if (!this.isCreator) return;
+      if (!this.isCreator) return
       this.setActiveToolId(this.id)
       this.$emit('toolWrapperBeforeChecked', this.id)
       // this.$BUS.$emit('tool-comp-click', this.id)
@@ -401,7 +490,7 @@ export default {
       }
       if (!this.isCreator) return
       this.$emit('toolWrapperAfterChecked', this.id)
-      this.setActiveToolId(null)
+      // this.setActiveToolId(null)
     },
     clcPos() {
       let top = this.top
@@ -427,8 +516,14 @@ export default {
       if (this.tool.left) this.left = this.tool.left
     },
     addOffset(val) {
-      if(this.tool.type == this.TOOL_TYPE.appendDate || this.tool.type == this.TOOL_TYPE.appendName)
-       val ? this.top = this.top + val : null
+      if (
+        this.tool.type == this.TOOL_TYPE.appendDate ||
+        this.tool.type == this.TOOL_TYPE.appendName ||
+        this.tool.type == this.TOOL_TYPE.appendFirstName ||
+        this.tool.type == this.TOOL_TYPE.appendLastName ||
+        this.tool.type == this.TOOL_TYPE.star
+      )
+        this.$emit('parentOffset', val, this.id)
     },
     draggingMouseover(event) {
       if (this.isDragging) {
@@ -440,37 +535,45 @@ export default {
     async handleDrag(event) {
       this.firstRender = true
       var elem = this.$refs.Wrp
-      if(!this.tool.justMounted) this.$emit('reAdjust', true, this.id)
+      if (!this.tool.justMounted) this.$emit('reAdjust', true, this.id)
 
       if (!this.isDragging) {
         this.isDragging = true
         this.lastPosX = elem.offsetLeft
         this.lastPosY = elem.offsetTop
         // console.log(elem.parentElement.getBoundingClientRect().width / elem.parentElement.clientWidth)
-        this.pageScale = elem.parentElement?.getBoundingClientRect()?.width / elem.parentElement.clientWidth
+        this.pageScale =
+          elem.parentElement?.getBoundingClientRect()?.width /
+          elem.parentElement.clientWidth
       } else {
         elem.style.cursor = 'move'
       }
 
-      let posX = event.deltaX/this.pageScale + this.lastPosX
-      let posY = event.deltaY/this.pageScale + this.lastPosY
-      
+      let posX = event.deltaX / this.pageScale + this.lastPosX
+      let posY = event.deltaY / this.pageScale + this.lastPosY
 
       // Set Boundary
       if (posX > 0 && posX + elem.clientWidth < elem.parentElement.clientWidth)
         this.left = posX
-      if (posY > 0 && posY + elem.clientHeight < elem.parentElement.clientHeight)
+      if (
+        posY > 0 &&
+        posY + elem.clientHeight < elem.parentElement.clientHeight
+      )
         this.top = posY
 
       if (event.isFinal) {
         this.isDragging = false
-        let dx, dy;
-        if(this.tool.type ==  this.TOOL_TYPE.line || this.tool.type ==  this.TOOL_TYPE.highlight ||  this.tool.type ==  this.TOOL_TYPE.draw ){
-         dx = (this.lastPosX - this.left)
-         dy = (this.lastPosY - this.top)
-        } else {     
-         dx = this.left
-         dy = this.top
+        let dx, dy
+        if (
+          this.tool.type == this.TOOL_TYPE.line ||
+          this.tool.type == this.TOOL_TYPE.highlight ||
+          this.tool.type == this.TOOL_TYPE.draw
+        ) {
+          dx = this.lastPosX - this.left
+          dy = this.lastPosY - this.top
+        } else {
+          dx = this.left
+          dy = this.top
         }
 
         this.$emit('pos-change', {
@@ -487,37 +590,86 @@ export default {
     async toolMenuPosCalculation() {
       await this.$nextTick()
       var elem = this.$refs.Wrp
+      var savebutton = this.$refs.saveButton
+      var textareaContainer = this.$refs.textareaContainer
+      var popUpTitle = this.$refs.popUpTitle
+      let left = Number(this.wrpStyle.left.replace('px',''))
+      let top = Number(this.wrpStyle.top.replace('px',''))
       // console.log(elem)
 
-      let toolMenuHeight = this.$refs.toolMenu.clientHeight +2
+      let toolMenuHeight = this.$refs.toolMenu.clientHeight + 2
       let toolMenuWidth = this.$refs.toolMenu.clientWidth
       const initFontSize = 11
       const fontSize = this.fontSize || initFontSize
-      if (this.top < toolMenuHeight) {
+      if (top < toolMenuHeight) {
         this.$refs.toolMenu.style.top = 'unset'
-        this.$refs.toolMenu.style.bottom = `-${toolMenuHeight + fontSize - initFontSize}px`
+        this.$refs.toolMenu.style.bottom = `-${toolMenuHeight + fontSize - initFontSize
+          }px`
       } else {
-        this.$refs.toolMenu.style.top = `-${toolMenuHeight + fontSize - initFontSize}px`
+        this.$refs.toolMenu.style.top = `-${toolMenuHeight + fontSize - initFontSize
+          }px`
         this.$refs.toolMenu.style.bottom = 'unset'
       }
+      //
+      if ((elem.parentElement.clientHeight - top) < toolMenuHeight + this.$refs.textarea.getBoundingClientRect().height) {
+        textareaContainer.style.top = 'unset'
+        textareaContainer.style.bottom = `${toolMenuHeight + this.$refs.textarea.getBoundingClientRect().height + fontSize - initFontSize
+          }px`
+          popUpTitle.style.top = "unset"
+          popUpTitle.style.bottom = `${toolMenuHeight + this.$refs.textarea.getBoundingClientRect().height + fontSize - initFontSize
+          }px`
+      } else {
+        textareaContainer.style.top = `unset`
+          textareaContainer.style.bottom = 'unset'
+          popUpTitle.style.top = "unset"
+          popUpTitle.style.bottom = "unset"
+      }
+      // move the tool menu base on the closeness to the parent element
       if (
-        Math.abs(this.left - elem.parentElement.clientWidth) < toolMenuWidth
+        Math.abs(left - elem.parentElement.clientWidth) < toolMenuWidth
       ) {
         this.$refs.toolMenu.style.left = `${elem.clientWidth - toolMenuWidth}px`
       } else {
-        this.$refs.toolMenu.style.left = `0`
+        this.$refs.toolMenu.style.left = `0px`
       }
+ 
+    // move the text-box base on the closeness to the parent element
+      if (
+        Math.abs(elem.parentElement.clientWidth - left) < toolMenuWidth  + (textareaContainer ? textareaContainer.clientWidth : 0 ) - (savebutton ? savebutton.clientWidth : 0) - 10
+      ) {
+        textareaContainer.style.left = `-${textareaContainer.clientWidth - (savebutton ? savebutton.clientWidth : 0)}px`
+        popUpTitle.style.left = `-${textareaContainer.clientWidth - 2*(savebutton ? savebutton.clientWidth : 0)}px`
+      } else {
+        textareaContainer.style.left = `0px`
+        popUpTitle.style.left = "0px"
+      }
+
+        // move the popup-box base on the closeness to the parent element
+        if (
+        Math.abs(elem.parentElement.clientWidth - left) < toolMenuWidth  + (popUpTitle ? popUpTitle.clientWidth : 0 ) - 2*(savebutton ? savebutton.clientWidth : 0) - 10
+      ) {
+        // textareaContainer.style.left = `-${textareaContainer.clientWidth - 2*(savebutton ? savebutton.clientWidth : 0)}px`
+        popUpTitle.style.left = `-${textareaContainer.clientWidth - 2*(savebutton ? savebutton.clientWidth : 0)}px`
+      } else {
+        // textareaContainer.style.left = `0px`
+        popUpTitle.style.left = "0px"
+      }
+
+      // this.$refs.textareaContainer.style.left = `${elem.clientWidth - toolMenuWidth}px`
     },
-    onInp(...v) {
-      this.$emit('input', ...v)
+    onInp(v) {
+      this.inputValue(v)
+      console.log(v)
+      // this.$emit('input', ...v)
     },
     onBlur() {
       this.onOutSideClick()
     },
   },
   mounted: function () {
-    // ..
-  }
+    this.getCurrentPageDim()
+    this.$refs.textarea && (this.$refs.textarea.innerHTML = this.tool.discription)
+  },
 }
 </script>
 
@@ -528,7 +680,7 @@ export default {
   height: 27px;
   position: absolute;
   top: -27px;
-  z-index: 30;
+  z-index: 1000;
 }
 
 .tool-holder {
@@ -575,5 +727,29 @@ export default {
       }
     }
   }
+}
+.note-input{
+  @apply w-full rounded-md outline-none text-sm bg-white p-2 resize-none md:shadow-md md:shadow-black/30
+  min-h-[300px] max-h-[300px] overflow-auto
+}
+.note-input-pc{
+  @apply w-full rounded-md outline-none text-sm bg-white p-2 resize-none md:shadow-md md:shadow-black/30 max-h-[200px] overflow-y-auto
+}
+.note-input-pc[placeholder]:empty:before {
+  content: 'Type here...';
+  opacity: 0.5;
+  color: #555;
+}
+.pop-label{
+ @apply  md:shadow-md md:shadow-black/30 absolute
+}
+.input-wrapper{
+  @apply rounded-md md:w-[180px] md:h-auto z-[100]  flex justify-center items-center absolute
+}
+.text-field:hover  .pop-label{
+  @apply block
+}
+.popper-up{
+  @apply w-[180px] bg-white break-words p-2 pb-3 relative rounded-md text-sm font-[300] tracking-wide max-h-[200px] overflow-y-auto
 }
 </style>

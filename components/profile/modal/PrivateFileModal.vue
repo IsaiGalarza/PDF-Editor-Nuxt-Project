@@ -34,6 +34,7 @@
         <h4 class="text-center font-semibold text-xl">Private File</h4>
       </template>
       <!-- Start:: Body -->
+     <form @submit.prevent="onSubmit">
       <p class="py-3 text-center">Enter name and email to request access.</p>
       <p
         class="text-center block font-medium  mx-auto mb-6 whitespace-none"
@@ -42,6 +43,8 @@
          v-model="email"
           class="w-full py-2 px-4 border-[1px] border-paperdazgrey-500 rounded-md"
          placeholder="Email"
+         required
+         type="email"
          />
       </p>
       <p
@@ -51,6 +54,7 @@
        v-model="name"
         class="w-full py-2 px-4 border-[1px] border-paperdazgrey-500 rounded-md"
        placeholder="Name"
+       required
        />
     </p>
       <div class="flex justify-around">
@@ -59,7 +63,6 @@
           shadow-md
            text-white rounded-lg bg-paperdazgreen-400"
           :disabled="loading"
-          @click="onSubmit"
         >
           <span class="inline-flex gap-1 items-center text-[16px]">
             Send request
@@ -72,6 +75,7 @@
           </span>
         </button>
       </div>
+     </form>
       <!-- end :: body -->
     </el-dialog>
   </template>

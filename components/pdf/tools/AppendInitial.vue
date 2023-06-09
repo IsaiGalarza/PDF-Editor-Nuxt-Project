@@ -40,7 +40,7 @@
     <img
       v-else-if="theInitial && !isCreator"
       :width="`${55 * responsiveToolDim.width}px`"
-      :style="`height: ${27 * responsiveToolDim.height}px; object-fit:contain`"
+      :style="`height: ${27 * responsiveToolDim.height}px; object-fit:fill`"
       :src="theInitial"
     />
     <!-- <span v-show="!initialimgDisplay  && !isCreator && !tool.justMounted && (isAgreedSign == 1 && isSign || isComplete)" class="toolTip hidden">Initial</span> -->
@@ -174,11 +174,11 @@ export default mixins(SaveSignatureInitialsMixin).extend({
   watch: {
     initialimgDisplay(){
       if(this.theInitial) setTimeout(() => {
-        this.$BUS.$emit('scroll-to-tools')
+        !this.isComplete && this.$BUS.$emit('scroll-to-tools')
       }, 100);
     },
     theInitial(){
-        this.$BUS.$emit('scroll-to-tools')
+        !this.isComplete && this.$BUS.$emit('scroll-to-tools')
     },
     '$auth.user.initialURL': async function () {
       this.changeInitialToBase64()

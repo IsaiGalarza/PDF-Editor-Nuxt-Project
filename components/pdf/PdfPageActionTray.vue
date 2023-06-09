@@ -96,7 +96,8 @@
           ($auth.loggedIn || $store.getters?.getFillAsGuest) &&
           !isCreator &&
           !isConfirm &&
-          !isSign
+          !isSign ||
+          ($store.getters.getUserSignature && isConfirm)
         "
         @click="saveChanges"
         class="mr-2 text-xs text-white bg-paperdazgreen-400 rounded px-3 h-7 disabled:bg-gray-400 disabled:cursor-not-allowed"
@@ -339,8 +340,6 @@ export default Vue.extend({
             : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
         localStorage.removeItem('store_public_profile_path')
       }
-      this.$store.commit('SET_FILE_SIGNATURE', null);
-      this.$store.commit('SET_FILE_INITIAL', null)
     },
     showQrcodeFileFunc() {
       this.showQrcodeFiles = true

@@ -1,7 +1,24 @@
 <template>
   <div class="mt-[70px] lg:mt-0 px-2">
 
-    <ProfileTopInfo :userInfo="userInfo" @openShare="handleCompanyNameShare(userInfo?.companyName,)" />
+    <ProfileTopInfo :userInfo="userInfo" @openShare="handleCompanyNameShare(userInfo?.companyName, userInfo?.businessPage)" />
+
+    <div class="h-full ml-3 mt-8  flex">
+        <div
+          @click="changeTab(1)"
+          :class="[tabNumber === 1 ? 'active-tab' : 'tab']"
+          class="mr-4"
+        >
+          <p>Files</p>
+        </div>
+        <div
+          :class="[tabNumber === 2 ? 'active-tab' : 'tab']"
+          @click="changeTab(2)"
+          class="tab"
+        >
+          <p>Folders</p>
+        </div>
+      </div>
 
     <div v-if="fileSpinner" class=" relative h-[300px]">
       <!-- START: spinner container -->
@@ -12,53 +29,67 @@
     </div>
 
 
-    <div class="mt-4">
-      <!-- Start:: Folders -->
-      <div class="bg-white rounded-xl mb-4" :class="{ 'hidden sm:block': !showFolders }">
-        <div class="w-full p-4 pb-0 sm:hidden">
-          <div class="flex items-center bg-gray-100 rounded text-sm w-full">
-            <div class="flex items-center justify-center h-10 w-1/2 cursor-pointer"
-              :class="{ 'text-white bg-gray-500 rounded': !showFolders }" @click="showFolders = false">Files</div>
-            <div class="flex items-center justify-center h-10 w-1/2 cursor-pointer"
-              :class="{ 'text-white bg-gray-500 rounded': showFolders }" @click="showFolders = true">Folders</div>
-          </div>
-        </div>
-
-
-
-
-        <!-- Start:: Single row -->
-        <div v-for="(item, i) in folders" :key="i + 'folder'"
-          class="grid grid-cols-[max-content,1fr,max-content] gap-2 items-center mx-4 folder-border py-2">
-          <img class="w-7" src="@/assets/recent-icons/OpenedFolder.svg" />
-          <div class="overflow-hidden">
-            <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
-              <nuxt-link :to="`/public-profile/${item.id}`" class="cursor-pointer">{{ (item || {}).name }}</nuxt-link>
-            </p>
-          </div>
-          <ShareFolder :folder="item" :showShareIcon="false" :isCompanyNameShare="isCompanyShare" />
-        </div>
-        <!-- End:: Single row -->
-      </div>
-      <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
-    </div>
-    <!-- End:: Folders -->
+   
 
 
 
 
 
     <!-- Start:: Files -->
-    <div v-if="isFetched" class="bg-white min-h-[67vh] rounded-xl pb-8 px-2" :class="{ 'hidden sm:block': showFolders }">
-      <div class="rounded-2xl min-w-[300px] overflow-x-auto custom-scrollbar relative">
+    <div v-if="isFetched && !showFolderFiles" class="border-t-[10px] lg:border-t-[5px] bg-white border-t-[#77C360] min-h-[67vh] rounded-xl pb-8 px-2" :class="{ 'hidden sm:block': showFolders }">
+
+      <div  v-show="tabNumber === 2" class="mt-4  bg-white mb-6 rounded-xl">
+      <!-- Start:: Folders -->
+      <div class="bg-white rounded-xl mb-4" >
+        <!-- <div class="w-full p-4 pb-0 sm:hidden">
+          <div class="flex items-center bg-gray-100 rounded text-sm w-full">
+            <div class="flex items-center justify-center h-10 w-1/2 cursor-pointer"
+              :class="{ 'text-white bg-gray-500 rounded': !showFolders }" @click="showFolders = false">Files</div>
+            <div class="flex items-center justify-center h-10 w-1/2 cursor-pointer"
+              :class="{ 'text-white bg-gray-500 rounded': showFolders }" @click="showFolders = true">Folders</div>
+          </div>
+        </div> -->
+
+
+
+
+        <!-- Start:: Single row -->
+        <div
+       
+        class="flex items-center flex-wrap px-[1.5rem] ">
+        <div class="items-center mb-3 border-2 py-[15px] pl-[15px] rounded-[16px] md:mr-[15px] border-[#909090] w-full  md:w-[calc(25%-15px)] "
+          v-for="(content, i) in folders" :key="content.id">
+          <div class="overflow-hidden px-[10px] flex justify-between">
+            <div class="float-left flex">
+              <span class="border-none inline-block float-left pt-[4px]">
+                <img class="w-[28px]" src="~/assets/img/Vector.png" />
+              </span>
+              <p
+                @click="showFolderFilesFunc(content)"
+                class="text-base font-medium text-center text-[#414142] truncate cursor-pointer inline-block ml-[27px]"
+              >
+                {{ content.name }}
+              </p>
+            </div>
+            <div class="float-right flex">
+              <span>{{ content.files.length }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      <FilePagination :totalFile="totalFolder" @setPage="setFolderPage" />
+    </div>
+    <!-- End:: Folders -->
+      <div  v-show="tabNumber === 1" class="rounded-2xl w-full md:min-w-[300px] overflow-x-auto custom-scrollbar relative">
         <table class="custom-table py-2">
           <thead class="text-[#414142]">
             <tr >
               <!-- <th class="w-12 text-center fixed-col left">No</th> -->
-              <th class="text-left font-[700] ">File name </th>
+              <th class="text-left font-[700] hidden md:table-cell ">File name </th>
 
-              <th class="hidden lg:table-cell">Action</th>
-              <th class="hidden lg:table-cell">Privacy</th>
+              <th class="hidden md:table-cell">Action</th>
+              <th class="hidden md:table-cell">Privacy</th>
               <th v-show="files.length > 10" class=" font-[700]  right">
                 <form  @submit.prevent
                   class="flex flex-1 justify-end items-center gap-2 text-xs text-gray-800 relative">
@@ -83,12 +114,12 @@
                   <img src="/icon.png" class="mr-3" width="23" height="23" />
                   <div class="">
                     <p class="text-[#414142] whitespace-nowrap truncate text-[15px]">
-                    <p @click="routeToFileManager(`/pdf/${item.paperLink}`, item.filePrivacy)" class="cursor-pointer capitalize">
+                    <p @click="routeToFileManager(`/pdf/${item.paperLink}`, item.filePrivacy, item.id)" class="cursor-pointer capitalize">
                       {{ ((item || {}).fileName || ' ') | removeExtension }}
                     </p>
 
 
-                    <div class="flex  lg:hidden items-center mt-1 text-[0.65rem] text-[#707070]">
+                    <div class="flex  md:hidden items-center mt-1 text-[0.65rem] text-[#707070]">
                       <p v-show="((item || {}).fileAction) != 'doNotPost'" class="capitalize"> {{ ((item || {}).fileAction
                         ||
                         '') }}</p>
@@ -103,17 +134,17 @@
                   </div>
                 </div>
               </td>
-              <td class="hidden lg:table-cell">
+              <td class="hidden md:table-cell">
                 <p v-show="((item || {}).fileAction) != 'doNotPost'" class="capitalize"> {{ ((item || {}).fileAction ||
                   '') }}</p>
               </td>
               <td>
-                <p class="capitalize hidden lg:table-cell">
+                <p class="capitalize hidden md:table-cell">
                   {{ ((item || {}).filePrivacy || '') }}
                 </p>
               </td>
-              <td class=" ">
-                <div @click="shareLinkFunc(item.paperLink, item.fileName)" class="flex  w-full justify-end ">
+              <td class=" flex justify-end">
+                <div @click="shareLinkFunc(item.paperLink, item.fileName)" class="flex w-[100px]   sm:w-full   justify-end ">
                   <ShareOutlineIcon />
                 </div>
               </td>
@@ -125,6 +156,24 @@
         </div>
       </div>
       <FilePagination :totalFile="totalFile" @setPage="setFilePage" />
+    </div>
+
+    <div v-if="showFolderFiles" class="border-t-[8px] lg:border-t-[5px] bg-white border-t-[#77C360] min-h-[67vh] rounded-xl pb-8 px-2" >
+      <div class="flex items-center w-full pt-2 px-4 mb-[-20px] ">
+        <button class="px-2 py-1 bg-paperdazgreen-300 text-white rounded-md sm:inline-block hidden" @click="showFolderFiles = false">
+          Back
+        </button>
+        <button class="h-2 w-3 outline-none border-none inline-block sm:hidden" @click="showFolderFiles = false">
+          <arrow-down-icon class="h-3 w-4 rotate-90" />
+        </button>
+        <div class="flex-1 flex justify-center text-paperdazgreen-300 font-semibold text-base">
+           {{ currentFolder.name }}
+        </div>
+      </div>
+    <BusinessPageFilesInFolder :currentFolder="currentFolder"
+    @handleShareInFolderFile="shareLink"
+    @emitPrivateModal="emitPrivateModal"
+    />
     </div>
 
 
@@ -168,6 +217,8 @@ import PG_Tutorial_5 from "~/components/profile/modal/PopUps/PG_Tutorial_5.vue"
 import PG_Tutorial_6 from "~/components/profile/modal/PopUps/PG_Tutorial_6.vue"
 import PG_Tutorial_7 from "~/components/profile/modal/PopUps/PG_Tutorial_7.vue"
 import PG_Tutorial_8 from "~/components/profile/modal/PopUps/PG_Tutorial_8.vue"
+import UserTypeEnum from '~/models/UserTypeEnum'
+import BusinessPageFilesInFolder from '~/components/profile/components/BusinessPageFilesInFolder.vue'
 
 
 export default Vue.extend({
@@ -197,7 +248,8 @@ export default Vue.extend({
     PG_Tutorial_5,
     PG_Tutorial_6,
     PG_Tutorial_7,
-    PG_Tutorial_8
+    PG_Tutorial_8,
+    BusinessPageFilesInFolder,
   },
   name: 'PublicProfilePage',
   layout: 'profile',
@@ -224,6 +276,7 @@ export default Vue.extend({
 
   mounted() {
     this.getUserFiles(this.returnedDataPage, this.searchFileParam)
+    this.fetchFolder(this.returnedFolderPage)
     this.generateQR()
     // document.body.style.overflow = 'auto'
   },
@@ -234,7 +287,7 @@ export default Vue.extend({
   },
   filters: {
     removeExtension(filename) {
-      return filename?.replace(/\.[^\/.]+$/, '');
+      return (filename || "").replace(/\.[^\/.]+$/, '');
     }
   },
 
@@ -264,6 +317,13 @@ export default Vue.extend({
       showGuideModal: false,
       type: "",
       permissionDecode: undefined,
+      folderSpinner: false,
+      totalFolder: 0,
+      currentFolder: {},
+      showFolderFiles: false,
+      tabNumber: 1,
+      isFolderTabSelected: false,
+
       popUps: [
         'PG_Tutorial_1',
         'PG_Tutorial_2',
@@ -278,6 +338,19 @@ export default Vue.extend({
     }
   },
   methods: {
+    changeTab(num) {
+      this.tabNumber = num;
+      // this.setRefresh();
+      if (num === 1) return (this.showFolderFiles = false);
+    },
+    emitPrivateModal(val){
+      this.fileId = val.id
+      this.showPrivateModal = true
+    },
+    showFolderFilesFunc(val){
+     this.currentFolder = val
+     this.showFolderFiles = true
+    },
     async increaseCount() {
       this.keepCount = this.keepCount + 1
       if (this.keepCount == this.popUps.length) {
@@ -287,18 +360,15 @@ export default Vue.extend({
         document.body.style.overflow = 'auto'
       }
     },
-
-    handleCompanyNameShare(name) {
+    handleCompanyNameShare(name, link) {
       this.isCompanyShare = true
-      let val = name.replace(' ', '')
-      let link = `https://paperlink.app/${val}`
-      this.shareLink(link, name)
+      let linkRX = `${window.location.origin}/${link}`
+      this.shareLink(linkRX, name)
     },
     shareLinkFunc(val, type) {
-      this.shareLink(`https://paperlink.app/pdf/${val}`, type)
+      this.shareLink(`${window.location.origin}/pdf/${val}`, type)
     },
     shareLink(val, type) {
-
       this.link = val
       this.type = type
       this.showShareCompanyName = true
@@ -329,10 +399,9 @@ export default Vue.extend({
     },
     async getUserFiles(page, search) {
       await this.$axios
-        .$get(`/files/?userId=${this.userInfo?.id}&fileName[$like]=${search}%&$skip=${page}&$sort[position]=1&filePrivacy[$ne]=doNotPost`, {
-          params: {
-            isEditing: 0
-          }
+        .$post(`/files`, {
+          action:"filesWithoutFolder",
+          userId: this.userInfo?.id
         })
         .then((response) => {
           const filesData = response.data.map((el) => {
@@ -346,6 +415,19 @@ export default Vue.extend({
           this.totalFile = response.total
         })
     },
+    async fetchFolder(page) {
+      await this.$axios
+        .$get(`/folders/?userId=${this.userInfo?.id}&$sort[updatedAt]=-1&$skip=${page}`)
+        .then((response) => {
+          console.table(response.data, 'table data')
+          this.totalFolder = response.total;
+          this.folders = response.data;
+          this.folderSpinner = false
+        })
+        .finally(() => {
+          this.folderSpinner = false;
+        });
+    },
     async generateQR() {
       QRCode.toCanvas(this.$refs.qrcancas, location.href, function () { })
       await this.$nextTick()
@@ -356,9 +438,8 @@ export default Vue.extend({
       this.getUserFiles(this.returnedDataPage, this.searchFileParam)
       this.$auth.setUser({})
     },
-    returnedDataPage: function () {
-      this.fileSpinner = true;
-      this.getUserFiles(this.returnedDataPage, this.searchFolderParam)
+    returnedFolderPage: function () {
+      this.fetchFolder(this.returnedFolderPage)
     },
     searchFileParam() {
       this.getUserFiles(this.returnedDataPage, this.searchFileParam)
@@ -382,8 +463,20 @@ export default Vue.extend({
   }
 }
 
+.tab {
+  @apply w-[90px] md:w-[120px] text-[0.9rem] cursor-pointer flex font-[500] items-center pl-[8px] text-[#000] border-[#77B550] rounded-t-[10px] shadow-lg border-[2px] h-[30px] bg-[#fff];
+}
+
+.active-tab {
+ @apply text-sm tab text-white ;
+ background-color: #77B550;
+ color: #fff;
+ 
+}
 #bottom-nav {
   display: none !important;
 }
+
+
 
 </style>

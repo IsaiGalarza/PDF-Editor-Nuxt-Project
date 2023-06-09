@@ -15,5 +15,7 @@ export default {
   appendSignature:'appendSignature',
   appendInitial:"appendInitial",
   appendDate: "appendDate",
-  appendName: "appendName"
+  appendName: "appendName",
+  appendFirstName: "appendFirstName",
+  appendLastName: "appendLastName"
 }

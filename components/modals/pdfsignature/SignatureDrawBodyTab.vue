@@ -45,9 +45,9 @@ export default mixins(SignatureBodyMixin).extend({
 
       if (!canvas) return
 
-      canvas.width = canvas.offsetWidth * ratio
-      canvas.height = canvas.offsetHeight * ratio
-      canvas.getContext('2d')?.scale(ratio, ratio)
+      canvas.width = canvas.offsetWidth * 1
+      canvas.height = canvas.offsetHeight * 1
+      canvas.getContext('2d')?.scale(1, 1)
     },
     clear() {
       if (!this.signaturePad) return
@@ -63,7 +63,7 @@ export default mixins(SignatureBodyMixin).extend({
       const trimmedCanvas = this.trimCanvas(canvas)
       
       if(!trimmedCanvas) return
-      return trimmedCanvas.toDataURL()
+      return canvas.toDataURL()
     }
   },
   beforeDestroy() {

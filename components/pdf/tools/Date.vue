@@ -3,11 +3,13 @@
     <p ref="datebox"
     :initialFontSize="initialFontSize"
     :scalefactor="responsiveToolDim.width"
-    class="whitespace-nowrap" :textImageContent="svgToImageData" :style="style">{{ value }}</p>
+    class="whitespace-nowrap" :textImageContent="svgToImageData" :style="style">{{ formatDate(value) }}</p>
   </div>
 </template>
 
 <script>
+import dateFormat from "dateformat";
+
 export default {
   props: {
     isActive: Boolean,
@@ -27,18 +29,22 @@ export default {
        return (this.fontSize || 12)*(this.tool?.pageScaleX || 1) 
     },
     computedFontSize(){
-     return `${(this.fontSize || 12)*(this.tool?.pageScaleX || 1) * this.responsiveToolDim.width * 1.2}px`
+     return `${(this.fontSize || 12)*(this.tool?.pageScaleX || 1) * this.responsiveToolDim.width}px`
     },
     style() {
       return {
         // fontSize: `${this.fontSize || 11}px`,
         fontSize: this.computedFontSize,
         lineHeight: this.computedFontSize,
-        fontWeight: 400
+        fontWeight: 400,
+        fontFamily: "helvetica !important",
       }
     },
   },
   methods: {
+    formatDate(val){
+      return dateFormat(val,  this.$store?.getters?.getDateFormat )
+    },
     async svgToImage() {
       this.svgToImageData = '';
       let dataPAz = ''

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="div_wrapper">
     <!-- <div class="text-base px-6 py-2 flex items-center bg-paperdazgreen-500 text-white"
       v-if="isConfirm && !isLoading && $auth.loggedIn && isCreator">
       Free user will be asked to scroll to the bottom of last page to click Confirm. A copy with free user signature
@@ -174,7 +174,7 @@
         UNDO</button>
     </div>
 
-    <div v-if="isComplete && isCreator && $auth.loggedIn" class="flex items-center justify-between py-1">
+    <div v-if="isComplete && isCreator && $auth.loggedIn" class="flex items-center justify-between py-1 flex-wrap md:flex-nowrap">
       <button class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm"
       :class="[activeTool == TOOL_TYPE.appendSignature ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onSignClick">
         <img src="../../assets/img/sign-icon.png" width="18" class="bg-slate-200 p-[2px]" />
@@ -190,10 +190,30 @@
         <img src="../../assets/img/date_icon.svg" width="18" class="bg-slate-200 p-[2px]" />
         Date
       </button>
+
+      <div class="w-auto relative mb-1">
+        <div class="w-auto flex bg-white rounded-md">
+          <button class="rounded-md h-8 sm:h-10 flex items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm"
+        :class="[activeTool == initialNameIcon?.type ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onNameClick(initialNameIcon?.type)">
+        <img v-show="initialNameIcon.title == 'Name'" src="../../assets/img/name_icon.svg" width="18" class="bg-slate-200 p-[2px]" />
+       {{ initialNameIcon?.title }}
+      </button>
+      <button :class="[ showNameDropDown ? 'turn-up' : 'turn-down']" @click="showNameDropDown = !showNameDropDown" class="name_dropdown"><img src="../pdf/assets/chevron_down.svg"/></button>
+        </div>
+      <div v-show="showNameDropDown" class="absolute top-full z-10">
+        <button 
+        v-for="(nameIcon, index) in filterednamesDropdown" :key="nameIcon.title"
+        class="rounded-md h-8 sm:h-10 flex items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm shadow-sm mt-2 w-full"
+        :class="[activeTool == nameIcon?.type ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onNameClick(nameIcon?.type, index)">
+        {{ nameIcon?.title }}
+        </button>
+      </div>
+      </div>
+
       <button class="rounded-md h-8 sm:h-10 flex sm:flex-row-reverse items-center gap-2 py-1 px-3 max-sm:!px-1 tool-item text-sm"
-      :class="[activeTool == TOOL_TYPE.star ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onImageClick">  
+      :class="[activeTool == TOOL_TYPE.star ? 'bg-paperdazgreen-300 text-white' : 'bg-white']" @click="onImageClick"> 
+        Req. Note 
         <img src="../../assets/img/require-icon.png" width="18" class="bg-slate-200 p-[2px]" />      
-        Require
       </button>
       <button @click="undoFunction"
         class="rounded-md h-8 sm:h-10 flex items-center gap-1 py-1 px-3 max-sm:!px-1 tool-item text-sm bg-white text-red-500">
@@ -312,12 +332,39 @@ export default {
     showInsertTools: false,
     isConfirmChecked: false,
     showDropDown: false,
+    showNameDropDown: false,
     agreedConfirmPolicy: false,
     initialIcon:  {
         type: TOOL_TYPE.tick,
         component: 'pdf-tick-icon',
         color: 'text-black'
       },
+    initialNameIcon:  {
+        type: TOOL_TYPE.appendName,
+        component: '../../assets/img/name_icon.svg',
+        color: 'text-black',
+        title: "Name"
+    },
+    nameDropdowm: [
+      {
+        type: TOOL_TYPE.appendName,
+        component: '../../assets/img/name_icon.svg',
+        color: 'text-black',
+        title: "Name"
+      },
+      {
+        type: TOOL_TYPE.appendFirstName,
+        component: '../../assets/img/name_icon.svg',
+        color: 'text-black',
+        title: "First Name"
+      },
+      {
+        type: TOOL_TYPE.appendLastName,
+        component: '../../assets/img/name_icon.svg',
+        color: 'text-black',
+        title: "Last Name"
+      },
+    ],
     toolsDropdowm: [
       {
         type: TOOL_TYPE.cross,
@@ -366,6 +413,9 @@ export default {
   },
   emits: ['zoomOut', 'zoomIn', 'cancel', 'confirmChecked'],
   computed: {
+    filterednamesDropdown(){
+      return this.nameDropdowm.filter(item => item.title != this.initialNameIcon.title)
+    },
     TOOL_TYPE() {
       return TOOL_TYPE
     },
@@ -423,9 +473,12 @@ export default {
         this.setSelectedType(this.TOOL_TYPE.appendDate)
       }
     },
-    onNameClick() {
+    onNameClick(val, index) {
       if (this.isCreator) {
-        this.setSelectedType(this.TOOL_TYPE.appendName)
+        this.setSelectedType(val)
+        const index = this.nameDropdowm.findIndex((v) => v.type == val)
+        this.initialNameIcon = this.nameDropdowm[index];
+        this.showNameDropDown = false
       }
     },
     handleInitialFocusOut(e) {
@@ -467,7 +520,10 @@ export default {
             return type == this.TOOL_TYPE.appendDate
           else if (type == this.TOOL_TYPE.appendName)
             return type == this.TOOL_TYPE.appendName
-
+          else if (type == this.TOOL_TYPE.appendFirstName)
+            return type == this.TOOL_TYPE.appendFirstName
+          else if (type == this.TOOL_TYPE.appendLastName)
+            return type == this.TOOL_TYPE.appendLastName
         default:
           return this.isCreator ? false : true
       }
@@ -475,6 +531,7 @@ export default {
     },
     undoFunction() {
       this.$emit('undo')
+      this.$forceUpdate()
     },
     imageExportedLocal(image, isSignature) {
       this.$BUS.$emit(
@@ -571,6 +628,8 @@ export default {
         this.selectedType == TOOL_TYPE.appendInitial || 
         this.selectedType == TOOL_TYPE.appendSignature || 
         this.selectedType == TOOL_TYPE.appendName || 
+        this.selectedType == TOOL_TYPE.appendFirstName || 
+        this.selectedType == TOOL_TYPE.appendLastName || 
         this.selectedType == TOOL_TYPE.date || 
         this.selectedType == TOOL_TYPE.text ||  this.selectedType == null) return
 
@@ -668,5 +727,11 @@ export default {
   height: 80%;
   width: 2px;
   @apply bg-slate-200;
+}
+.name_dropdown{
+  @apply h-10 w-8 bg-white rounded-md overflow-hidden flex justify-between items-center
+}
+.div_wrapper{
+  width : calc(100% - 30px)
 }
 </style>

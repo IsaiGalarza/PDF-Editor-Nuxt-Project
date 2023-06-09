@@ -10,12 +10,10 @@
       :textImageContent="svgToImageData"
       :initialFontSize="initialFontSize"
       :scalefactor="responsiveToolDim.width"
-      class="input-annotation whitespace-nowrap flex items-center"
+      class="annotationText input-annotation whitespace-nowrap flex items-center"
       placeholder="Type here..."
       ref="text_box"
-      @keyUp="keyUp"
-      @input="changeWidth"
-      @keyup="keyUp"
+      @input="getValue($event)"
     ></p>
 
     <!-- <p v-else ref="textbox" @click="isBlur = !isBlur" :style="style" class="whitespace-nowrap">{{ text || 'Type here...' }}</p> -->
@@ -50,6 +48,9 @@ export default {
     this.$refs.text_box && this.$refs.text_box.focus()
   },
   methods: {
+    getValue($event){
+       this.text = $event.target.textContent
+    },
     keyUp(e){
       var keyCode = event.which || event.keyCode;
       keyCode === 13 && event.preventDefault();
@@ -80,35 +81,15 @@ export default {
     },
   },
   watch: {
-    generatePDF: function () {
-      // if (this.generatePDF)
-        // this.svgToImage()
-    },
+    // generatePDF: function () {
+    //   // if (this.generatePDF)
+    //     // this.svgToImage()
+    // },
     value (v) {
       if (this.text != v) this.text = v
     },
     text (v) {
       if (this.value != v) this.$emit('input', v)
-      if (this.$refs.text_box && this.$refs.text_hidden) {
-        if (!v || v.length === 1) {
-          setTimeout(() => {
-            const inputWidth = this.$refs.text_hidden.clientWidth
-            this.$refs.text_box.style.width = `${inputWidth}px`
-            this.inputWidth = inputWidth
-          }, 200)
-        } else {
-          const extra = this.fontSize || 11
-          if (v.length < this.value.length) {
-            const inputWidth = this.$refs.text_hidden.clientWidth
-            this.$refs.text_box.style.width = `${inputWidth}px`
-            this.inputWidth = inputWidth
-          } else {
-            const inputWidth = this.$refs.text_hidden.clientWidth + extra
-            this.$refs.text_box.style.width = `${inputWidth}px`
-            this.inputWidth = inputWidth
-          }
-        }
-      }
     },
     fontSize() {
       if (this.$refs.text_box && this.$refs.text_hidden) {
@@ -124,7 +105,7 @@ export default {
         return (this.fontSize || 12)*(this.tool?.pageScaleX || 1) 
     },
     computedFontsize(){
-        return `${(this.fontSize || 12)*(this.tool?.pageScaleX || 1) * this.responsiveToolDim.width * 1.2}px`
+        return `${(this.fontSize || 12)*(this.tool?.pageScaleX || 1) * this.responsiveToolDim.width}px`
     },
     isCreator () {
       return (
@@ -139,6 +120,7 @@ export default {
         fontSize: this.computedFontsize,
         background: 'transparent',
         fontWeight: 400,
+        fontFamily: "helvetica !important",
         lineHeight: this.computedFontsize
         // width: `${this.inputWidth}px`
       }
@@ -172,6 +154,6 @@ export default {
 .input-annotation[placeholder]:empty:before {
   content: 'Type here...';
   opacity: 0.5;
-  color: #555; 
+  color: #555;
 }
 </style>

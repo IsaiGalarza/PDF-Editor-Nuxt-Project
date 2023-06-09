@@ -81,7 +81,7 @@ export default Vue.extend({
   components: { SearchIcon, ArrowDownIcon, ballloader, SpinnerDottedIcon },
   name: 'FaqPage',
   layout: 'dashboard',
-  auth: false,
+  auth: true,
   head() {
     return {
       script: [

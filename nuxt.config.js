@@ -48,8 +48,10 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
+      { name: 'theme-color', content: '#77c360' },
     ],
     link: [
+      { rel: 'manifest', type: 'application/json', href: '/manifest.json' },
       { rel: 'icon', type: 'image/png', href: '/icon.png' },
       {
         rel: 'stylesheet',
@@ -91,15 +93,16 @@ export default {
     '~/plugins/vue-carosel.client.js',
     // '~/plugins/tawkto.client.js',
     '~/plugins/axios',
-    "~/plugins/GlobalPlugin.js",
-    
+    '~/plugins/GlobalPlugin.js',
+
     // "~plugins/slider.client.js",
-    { src: '~/plugins/nuxt-hammer.js', ssr: false },    
-    { src: "~/plugins/clipboard.js", },    
+    { src: '~/plugins/nuxt-hammer.js', ssr: false },
+    { src: '~/plugins/clipboard.js' },
     { src: '~/plugins/bus.js' },
-    { src: '~/plugins/paginate.js'},
+    { src: '~/plugins/paginate.js' },
     { src: '~/plugins/outside-click.js' },
     { src: '~/plugins/html2pdf.js', ssr: false },
+    // { src: '~/plugins/register-service-worker.js', ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -113,7 +116,7 @@ export default {
     // '@nuxtjs/tailwindcss',
     '@nuxt/postcss8',
     // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa',
+    //'@nuxtjs/pwa',
   ],
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -122,6 +125,7 @@ export default {
     '@nuxtjs/auth-next',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    // '@nuxtjs/workbox',
     // '@nuxtjs/firebase',
     '@nuxtjs/toast',
     [
@@ -188,17 +192,25 @@ export default {
     },
   },
 
+  // Set server to localhost so that service worker can be installed
+  //TODO: Remove server setting when building the application for production!!! <<<<<<==================
+  // server: {
+  //   port: 3000, // default: 3000
+  //   host: 'localhost', // default value is an IP Address of localhost which does not allow service worker file to run, mention 'localhost' explicitly
+  // },
+
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
-    manifest: {
-      lang: 'en',
-      name: 'Paperdaz',
-      start_url: '/',
-      background_color: '#ffffff',
-      theme_color: '#ffffff',
-      display: 'standalone',
-      scope: '/',
+    meta: {
+      title: 'PaperLink',
+      author: 'Ali',
     },
+    manifest: {
+      path: '/manifest.json',
+    },
+    // workbox: {
+    //   enabled: true,
+    // },
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

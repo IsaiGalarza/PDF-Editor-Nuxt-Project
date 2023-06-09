@@ -15,61 +15,128 @@
                   <h6>Create a password</h6>
                   <div class="form-group">
                     <label for="">Password</label>
-                    <input class="form-control" v-model="user.password" type="password"
-                      :disabled="isLoading || isRedirecting" required placeholder="Password" />
-
-
+                    <input
+                      class="form-control"
+                      v-model="user.password"
+                      type="password"
+                      :disabled="isLoading || isRedirecting"
+                      required
+                      placeholder="Password"
+                    />
                   </div>
                   <div class="form-group">
                     <label for="">Retype password</label>
-                    <input class="form-control" type="password" v-model="user.confirmPassword"
-                      :disabled="isLoading || isRedirecting" placeholder="Password" />
+                    <input
+                      class="form-control"
+                      type="password"
+                      v-model="user.confirmPassword"
+                      :disabled="isLoading || isRedirecting"
+                      placeholder="Password"
+                    />
 
                     <div class="">
                       <div class="error-wrapper">
-                        <div :class="[alphabet.test(this.user.password) ? 'bg-[green]' : 'bg-[#808080b8]']"
-                          class="error-indicator">
-                        </div>
-                        <span class="text-[11px]"
-                          :class="[alphabet.test(this.user.password) ? 'text-[green]' : 'text-[#808080b8]']">
-                          Password must contain upper</span>
+                        <div
+                          :class="[
+                            alphabet.test(this.user.password)
+                              ? 'bg-[green]'
+                              : 'bg-[#808080b8]',
+                          ]"
+                          class="error-indicator"
+                        ></div>
+                        <span
+                          class="text-[11px]"
+                          :class="[
+                            alphabet.test(this.user.password)
+                              ? 'text-[green]'
+                              : 'text-[#808080b8]',
+                          ]"
+                        >
+                          Password must contain upper</span
+                        >
                       </div>
                       <div class="error-wrapper">
-                        <div :class="[number.test(this.user.password) ? 'bg-[green]' : 'bg-[#808080b8]']"
-                          class="error-indicator">
-                        </div>
-                        <span class="text-[11px]"
-                          :class="[number.test(this.user.password) ? 'text-[green]' : 'text-[#808080b8]']">
-                          Password must contain number</span>
+                        <div
+                          :class="[
+                            number.test(this.user.password)
+                              ? 'bg-[green]'
+                              : 'bg-[#808080b8]',
+                          ]"
+                          class="error-indicator"
+                        ></div>
+                        <span
+                          class="text-[11px]"
+                          :class="[
+                            number.test(this.user.password)
+                              ? 'text-[green]'
+                              : 'text-[#808080b8]',
+                          ]"
+                        >
+                          Password must contain number</span
+                        >
                       </div>
                       <div class="error-wrapper">
-                        <div :class="[charac.test(this.user.password) ? 'bg-[green]' : 'bg-[#808080b8]']"
-                          class="error-indicator">
-                        </div>
-                        <span class="text-[11px]"
-                          :class="[charac.test(this.user.password) ? 'text-[green]' : 'text-[#808080b8]']">
-                          Password must contain symbol</span>
+                        <div
+                          :class="[
+                            charac.test(this.user.password)
+                              ? 'bg-[green]'
+                              : 'bg-[#808080b8]',
+                          ]"
+                          class="error-indicator"
+                        ></div>
+                        <span
+                          class="text-[11px]"
+                          :class="[
+                            charac.test(this.user.password)
+                              ? 'text-[green]'
+                              : 'text-[#808080b8]',
+                          ]"
+                        >
+                          Password must contain symbol</span
+                        >
                       </div>
                       <div class="error-wrapper">
-                        <div :class="[this.user.password?.length > 8 ? 'bg-[green]' : 'bg-[#808080b8]']"
-                          class="error-indicator">
-                        </div>
-                        <span class="text-[11px]"
-                          :class="[this.user.password?.length > 8 ? 'text-[green]' : 'text-[#808080b8]']">
-                          Password must be morethan 8 characters</span>
+                        <div
+                          :class="[
+                            this.user.password?.length > 8
+                              ? 'bg-[green]'
+                              : 'bg-[#808080b8]',
+                          ]"
+                          class="error-indicator"
+                        ></div>
+                        <span
+                          class="text-[11px]"
+                          :class="[
+                            this.user.password?.length > 8
+                              ? 'text-[green]'
+                              : 'text-[#808080b8]',
+                          ]"
+                        >
+                          Password must be more than 8 characters</span
+                        >
                       </div>
                       <div class="error-wrapper">
-                        <div :class="[isPasswordEqual ? 'bg-[green]' : 'bg-[#808080b8]']" class="error-indicator">
-                        </div>
-                        <span class="text-[11px]" :class="[isPasswordEqual ? 'text-[green]' : 'text-[#808080b8]']">
-                          Password match</span>
+                        <div
+                          :class="[isPasswordEqual ? 'bg-[green]' : 'bg-[#808080b8]']"
+                          class="error-indicator"
+                        ></div>
+                        <span
+                          class="text-[11px]"
+                          :class="[isPasswordEqual ? 'text-[green]' : 'text-[#808080b8]']"
+                        >
+                          Password match</span
+                        >
                       </div>
                     </div>
-
                   </div>
-                  <button class="register-btn h-10 w-full mt-6 text-white rounded-lg shadow px-5 text-sm "
-                    :class="[isLoading ? 'cursor-progress opacity-60' : '', !isFormValid ? 'cursor-not-allowed opacity-60' : '']"
-                    :disabled="!isFormValid">
+                  <button
+                    class="register-btn h-10 w-full mt-6 text-white rounded-lg shadow px-5 text-sm"
+                    :class="[
+                      isLoading ? 'cursor-progress opacity-60' : '',
+                      !isFormValid ? 'cursor-not-allowed opacity-60' : '',
+                    ]"
+                    :disabled="!isFormValid"
+                  >
                     <span class="inline-flex items-center gap-3">
                       <span>Register</span>
                       <transition name="fade" :duration="100">
@@ -86,8 +153,8 @@
               <div class="flex flex-col w-full h-full items-center mt-[30px]">
                 <img src="../static/card2.png" class="w-[300px]" alt="" />
                 <div class="flex">
-                  <div class="text-2xl text-[#8E8989] font-bold px-3 text-center">Thank you for <br />being
-                    <br />Responsible!!
+                  <div class="text-2xl text-[#8E8989] font-bold px-3 text-center">
+                    Thank you for <br />being <br />Responsible!!
                   </div>
                 </div>
               </div>
@@ -96,27 +163,30 @@
         </div>
       </div>
     </div>
-    <SignUpEmailVerify :verificationEmail="verificationEmail" v-model="showEmailVerification" />
+    <SignUpEmailVerify
+      :verificationEmail="verificationEmail"
+      v-model="showEmailVerification"
+    />
   </section>
 </template>
 
 <script>
-import Vue from 'vue'
-import CheckIcon from '~/components/svg-icons/CheckIcon.vue'
-import SpinnerDottedIcon from '~/components/svg-icons/SpinnerDottedIcon.vue'
-import SvgIcon from '~/components/svg-icons/SvgIcon.vue'
-import InputField from '~/components/widgets/InputField.vue'
-import MessageAlertWidget from '~/components/widgets/MessageAlertWidget.vue'
-import PasswordField from '~/components/widgets/PasswordField.vue'
-import login from '~/mixins/login'
-import { ErrorHandler } from '~/types/ErrorFunction'
-import ExclamationIcon from '~/components/svg-icons/ExclamationIcon.vue'
-import SignUpEmailVerify from '~/components/pdf/modals/SignUpEmailVerify.vue'
-import SocialAuth from '~/components/auth/SocialAuth.vue'
-import jwt, { decode, JsonWebTokenError } from 'jsonwebtoken'
+import Vue from "vue";
+import CheckIcon from "~/components/svg-icons/CheckIcon.vue";
+import SpinnerDottedIcon from "~/components/svg-icons/SpinnerDottedIcon.vue";
+import SvgIcon from "~/components/svg-icons/SvgIcon.vue";
+import InputField from "~/components/widgets/InputField.vue";
+import MessageAlertWidget from "~/components/widgets/MessageAlertWidget.vue";
+import PasswordField from "~/components/widgets/PasswordField.vue";
+import login from "~/mixins/login";
+import { ErrorHandler } from "~/types/ErrorFunction";
+import ExclamationIcon from "~/components/svg-icons/ExclamationIcon.vue";
+import SignUpEmailVerify from "~/components/pdf/modals/SignUpEmailVerify.vue";
+import SocialAuth from "~/components/auth/SocialAuth.vue";
+import jwt, { decode, JsonWebTokenError } from "jsonwebtoken";
 
 export default Vue.extend({
-  name: 'confirm-password',
+  name: "confirm-password",
   auth: false,
   mixins: [login],
   components: {
@@ -131,21 +201,21 @@ export default Vue.extend({
     SignUpEmailVerify,
     SocialAuth,
   },
-  layout: 'landing',
+  layout: "landing",
 
   data() {
     return {
       confirmPassword: undefined,
       setDropDown: false,
-      countrycode: '',
-      country: '',
+      countrycode: "",
+      country: "",
       dropDownContent: [],
       totalCountriesArray: [],
       isTeamLoggin: false,
-      teamMemberLinkMessage: 'Already have an account?',
+      teamMemberLinkMessage: "Already have an account?",
       showEmailVerification: false,
       ConfirmedPassword: false,
-      verificationEmail: '',
+      verificationEmail: "",
       userParams: this.$route.query.verificationToken,
       decodedUserInfo: {},
       registered: false,
@@ -155,51 +225,48 @@ export default Vue.extend({
         confirmPassword: "",
         action: "reset_password",
         token: "",
-        isEmailVerified: true
+        isEmailVerified: true,
       },
       isLoading: false,
-      errorMessage: '',
+      errorMessage: "",
       isRedirecting: false,
       acceptTermsConditions: false,
       charac: /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/,
       number: /[0-9]/,
-      alphabet: /[A-Za-z]/
-
-    }
+      alphabet: /[A-Za-z]/,
+    };
   },
   watch: {
-    'user.password': function () {
-      this.getIsFormValid()
-      this.checkPasswordStrength()
+    "user.password": function () {
+      this.getIsFormValid();
+      this.checkPasswordStrength();
     },
-    'user.confirmPassword': function () {
-      this.getIsFormValid()
-      this.checkPasswordStrength()
+    "user.confirmPassword": function () {
+      this.getIsFormValid();
+      this.checkPasswordStrength();
     },
   },
   computed: {
     username() {
-      let userInfo = this.decodedUserInfo
-      return (userInfo.firstName + ' ' + userInfo.lastName) || ""
+      let userInfo = this.decodedUserInfo;
+      return userInfo.firstName + " " + userInfo.lastName || "";
     },
     isPasswordEqual() {
-      if (this.user.password?.trim()?.length === 0) return false
-      return this.user.password == this.user.confirmPassword
+      if (this.user.password?.trim()?.length === 0) return false;
+      return this.user.password == this.user.confirmPassword;
     },
   },
   beforeRouteLeave(to, from, next) {
-    this.$auth.logout()
-    next()
+    this.$auth.logout();
+    next();
   },
   mounted() {
-    let encodedUser = jwt.verify(
-      this.userParams,
-      '+Erqnl5F0JnIsW++d9U0BfwpJ6w='
-    )
-    this.decodedUserInfo = { ...encodedUser.data }
+    let encodedUser = jwt.verify(this.userParams, process.env.NUXT_ENV_BACKEND_JWT_TOKEN);
+    this.decodedUserInfo = { ...encodedUser.data };
     this.user.token = jwt.sign(
       { data: this.decodedUserInfo.user_id },
-      '+Erqnl5F0JnIsW++d9U0BfwpJ6w=')
+      process.env.NUXT_ENV_BACKEND_JWT_TOKEN
+    );
   },
   methods: {
     checkPasswordStrength() {
@@ -209,14 +276,13 @@ export default Vue.extend({
         this.alphabet.test(this.user.password) &&
         this.user.password?.length > 8
       ) {
-        this.ConfirmedPassword = false
+        this.ConfirmedPassword = false;
       } else {
-        this.ConfirmedPassword = true
+        this.ConfirmedPassword = true;
       }
     },
 
     getIsFormValid() {
-
       if (
         this.charac.test(this.user.password) &&
         this.number.test(this.user.password) &&
@@ -224,76 +290,64 @@ export default Vue.extend({
         this.user.password?.length > 8 &&
         this.user.password === this.user.confirmPassword
       ) {
-        this.isFormValid = true
-
+        this.isFormValid = true;
+      } else {
+        this.isFormValid = false;
       }
-      else {
-        this.isFormValid = false
-      }
-
-
     },
     cancleOut(e) {
-      if (e.target.tagname != 'LI') {
-        this.setDropDown = false
+      if (e.target.tagname != "LI") {
+        this.setDropDown = false;
       }
     },
     termsConditionClick(event) {
       event.target.checked
         ? (this.acceptTermsConditions = true)
-        : (this.acceptTermsConditions = false)
+        : (this.acceptTermsConditions = false);
     },
-
-
 
     //method to submit the user data
     submit() {
-      event?.preventDefault()
-
-
+      event?.preventDefault();
 
       // <-- checking if loading or redirecting -->
-      if (this.isLoading) return
+      if (this.isLoading) return;
 
-      this.isLoading = true
-      this.errorMessage = ''
-
+      this.isLoading = true;
+      this.errorMessage = "";
 
       if (this.user.confirmPassword !== this.user.password) {
-        return
+        return;
       }
-      let cloneUserData = this.user
-      cloneUserData.newPassword = cloneUserData.password
+      let cloneUserData = this.user;
+      cloneUserData.newPassword = cloneUserData.password;
 
-      delete cloneUserData.password
-      delete cloneUserData.confirmPassword
+      delete cloneUserData.password;
+      delete cloneUserData.confirmPassword;
       // return
       this.$axios
         .$patch(`/users/1`, { ...cloneUserData })
         .then(async (response) => {
           this.$notify.success({
-            title: 'Password comfirm',
-            message: "Password comfirm success"
-          })
-          this.$nuxt.$router.push('/login')
+            title: "Password comfirm",
+            message: "Password comfirm success",
+          });
+          this.$nuxt.$router.push("/login");
         })
         .catch(({ response }) => {
-
-          let message = ErrorHandler(response)
-          this.errorMessage = message
+          let message = ErrorHandler(response);
+          this.errorMessage = message;
           this.$notify.error({
-            title: 'Password comfirm',
-            message: "Something went wrong, Please try again"
-          })
-
-
+            title: "Password comfirm",
+            message: "Something went wrong, Please try again",
+          });
         })
         .finally(() => {
-          this.isLoading = false
-        })
+          this.isLoading = false;
+        });
     },
   },
-})
+});
 </script>
 <style lang="scss" scoped>
 .dropdown {
@@ -310,7 +364,7 @@ export default Vue.extend({
 }
 
 .register-btn {
-  background-color: #77B550 !important;
+  background-color: #77b550 !important;
 }
 
 .dropdown::-webkit-scrollbar {
@@ -331,7 +385,7 @@ export default Vue.extend({
   @apply border-[1px] border-transparent;
 }
 
-.dropdown>li {
+.dropdown > li {
   list-style-type: none;
   @apply py-2 px-1;
 }
@@ -346,10 +400,10 @@ export default Vue.extend({
 }
 
 .error-wrapper {
-  @apply my-2 flex flex-row items-center
+  @apply my-2 flex flex-row items-center;
 }
 
 .error-indicator {
-  @apply mr-2 w-[10px] overflow-hidden h-[10px] rounded-[100%] p-[2px]
+  @apply mr-2 w-[10px] overflow-hidden h-[10px] rounded-[100%] p-[2px];
 }
 </style>

@@ -64,10 +64,7 @@ export default {
 
       // < GET_USER -- user>
     async filterUsers() {
-      if (
-        this.$auth.loggedIn &&
-        localStorage.getItem('paperdaz_userID') &&
-        this.$auth.user)
+      if (this.$auth.loggedIn && localStorage.getItem('paperdaz_userID'))
           {
           const id = localStorage.getItem('paperdaz_userID')
           this.fetchUser(id)

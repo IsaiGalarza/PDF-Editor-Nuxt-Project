@@ -34,7 +34,7 @@
     <template #title>
       <h4
         class="text-center font-semibold text-2xl text-gray-800 pb-2"
-        v-if="!isCreator && !isConfirm"
+        v-if="!isCreator && !isConfirm && !isSign"
       >
         All Done?
       </h4>
@@ -90,7 +90,7 @@
 
 
 
-  <section v-if="!isCreator && !isConfirm">
+  <section v-if="!isCreator && !isConfirm && !isSign">
 
     <div v-if="nonUserRecieveEmail">
       <p class="w-full text-center">Enter email for the copy to be sent to</p>
@@ -164,21 +164,22 @@
 
 
 
-  <section v-if="!isCreator && isConfirm">
+  <section v-if="!isCreator && (isConfirm || isSign)">
 
-    <div v-if="file?.user?.allowCopy">
+    <form @submit.prevent="onSubmit" v-if="file?.user?.allowCopy">
       <p class="w-full text-center">Enter email for the copy to be sent to</p>
       <input
         v-model="externalGuestEmail"
-        type="text"
+        type="email"
+        required
         class="py-2 w-full rounded my-3 border-[1px] border-gray-200 px-2"
         placeholder="--Enter email--"
+
       />
       <p class="flex justify-center">
         <button
           class="disabled:bg-opacity-50 disabled:cursor-progress h-10 text-xs w-[150px] max-w-[50%] text-white rounded-lg shadow bg-paperdazgreen-400 ml-1"
           :disabled="isLoading"
-          @click="onSubmit"
         >
           <span class="inline-flex gap-1 items-center">
             Send
@@ -191,7 +192,7 @@
           </span>
         </button>
       </p>
-    </div>
+    </form>
 
     <div class="flex justify-around mt-0" v-if="!file?.user?.allowCopy">
       <button
@@ -343,13 +344,13 @@ export default mixins(SaveSignatureInitialsMixin).extend({
     }
   },
   watch: {
-    "$store.getters.getUserSignature"(){
-       if(!this.isConfirm) return
-       else {
-        this.showModal = true
-       this.file?.user?.allowCopy ? null : this.onSubmit()
-       }
-    },
+    // "$store.getters.getUserSignature"(){
+    //    if(!this.isConfirm) return
+    //    else {
+    //     this.showModal = true
+    //    this.file?.user?.allowCopy ? null : this.onSubmit()
+    //    }
+    // },
     visible(val) {
       this.showModal = val;
     },
@@ -426,8 +427,8 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           ...ExtractFormPdf({
             downloadLink: this.file?.downloadLink,
             file: this.confirmAnnotation,
-            pdfOffset_y: this.pdfOffsetY,
-            pdfOffset_x: this.pdfOffsetX,
+            pdfOffset_y: 0,
+            pdfOffset_x: 0,
             signLabel: this.signLabel,
           })[0],
         })
@@ -440,7 +441,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
           this.isLoading = false
         })
     },
-    async otherRequest() {
+    async otherRequest() {  
       try {
         await this.$axios
         .post('/pdf-generator', {
@@ -472,6 +473,7 @@ export default mixins(SaveSignatureInitialsMixin).extend({
         userId: val == 'owner' ? this.file?.userId : 0,
         editedFileLink: this.generatedPdf?.downloadLink,
         fileId: this.file?.id,
+        name: this.$store.getters.getAddToPageTextvalue
       }
       //   // return
       try {
@@ -482,9 +484,6 @@ export default mixins(SaveSignatureInitialsMixin).extend({
             msg: `Thank you for completing a Paperlink!`,
             msg_mobile: 'Thank You'
           })
-          this.$store.commit('SET_FILE_SIGNATURE', null)
-          this.$store.commit('SET_FILE_INITIAL', null)
-          this.$store.commit("UN_SET_AGREE_SIGN")
           this.$auth.loggedIn && this.isCreator
             ? this.$nuxt.$router.push('/paperlink-pages')
             : this.$nuxt.$router.push(`/${this.file?.user?.businessPage}`)
@@ -608,9 +607,9 @@ export default mixins(SaveSignatureInitialsMixin).extend({
       if (!this.isCreator && !this.proceedToSendEmail) {
         this.$notify.info({
           message: 'Pdf generating.....',
-          duration: 1000 * 7,
+          duration: 1000 * 2,
         })
-        this.allowLoadingAllAnnotations(6000).then(() => {
+        this.allowLoadingAllAnnotations(1000).then(() => {
           this.publishAsGuest()
           this.$emit('startGeneratePdf', false)
         })

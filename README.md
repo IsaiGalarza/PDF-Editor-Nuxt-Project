@@ -2,7 +2,7 @@
 
 ## Hosted links
 
-dev: https://paperdaz.com/
+dev: https://dev.paperdaz.com/
 
 ## Build Setup
 
